@@ -7,7 +7,9 @@
 \usepackage{hyperref}
 \usepackage{graphicx}
 \usepackage{pgfpages}
-\usepackage[T1]{fontenc}
+\usepackage{verbatim}
+%\usepackage{color}
+%\usepackage[T1]{fontenc}
 
 
 \hypersetup{pdfpagemode=UseNone,pdfstartview=FitV}
@@ -38,6 +40,35 @@
 %\DefineVerbatimEnvironment{Scode}{Verbatim}{fontshape=sl}
 
 
+% <<knitr-setup, include=FALSE>>=
+% opts_hooks$set(comment=function(x) return("comment"=NA))
+% ##knit_hooks$set(inline = function(x) {
+% ##    if(!require(highr)) {
+% ##        install.packages("highr")
+% ##    }
+% ##    if (is.numeric(x)) return(knitr:::format_sci(x, 'latex'))
+% ##    highr:::hi_latex(x)
+% ##})
+% @
+
+
+<<knitr-theme, include=FALSE>>=
+##knit_theme$set("navajo-night")
+knit_theme$set("edit-kwrite")
+@
+
+
+
+<<knitr-setup, include=FALSE>>=
+##opts_chunk$set(comment=NA)
+@
+
+
+
+\definecolor{inlinecolor}{rgb}{0.878, 0.918, 0.933}
+%\newcommand{\inr}[1]{\colorbox{inlinecolor}{\makebox[1em]\strut\textcolor{black}{\texttt{#1}}}}
+\newcommand{\inr}[1]{\colorbox{inlinecolor}{\texttt{#1}}}
+
 
 
 
@@ -57,7 +88,7 @@
   \vspace{0.9cm}
   \includegraphics[width=0.4\textwidth]{figs/Rlogo} \\
   \vspace{0.5cm}
-  August 15 \& 16, 2016 \\
+  August 13 \& 14, 2018 \\
   FANR 6750 \par}
 \end{frame}
 
@@ -224,14 +255,15 @@
     \item Everything in \R~is an object %and every object has a class.
     \item In this example, \verb+y+ is an object storing the number
       2.
-<<>>=
+<<y-def>>=
 y <- 2
 @
-    \item The ``\verb+<-+'' arrow assigns the value 2 to the object \verb+y+.
-    \item You cannot have a space between \verb+<+ and \verb+-+
-    \item You can use ``\verb+=+'' instead of ``\verb+<-+'' but this can cause confusion
+%    \item The \colorbox{inlinecolor}{\texttt{<-}} arrow assigns the value \Sexpr{y} to the object \texttt{y}.
+    \item The \inr{<-} arrow assigns the value \inr{y} to the object \inr{y}.
+    \item You cannot have a space between \inr{<} and \inr{-}
+    \item You can use \inr{=} instead of \inr{<-} but this can cause confusion
     \item Typing the name of the object returns its value:
-<<>>=
+<<y>>=
 y
 @
   \end{itemize}
@@ -245,20 +277,15 @@ y
   \frametitle{Vectors}
   \begin{itemize}[<+->]
     \item We store information in objects so that they can be easily manipulated:
-<<>>=
+<<y-math>>=
 y*2+1
 @
-%    \item Each object has a class. Important classes include
-%      \verb+data.frame+, \verb+matrix+, \verb+factor+, and \verb+numeric+
-%<<>>=
-%class(y)
-%@
     \item Usually, we want more than 1 number in an object
     \item In statistics, a vector is simply a set of numbers that can
       be thought of as a row or column of a matrix
     \item The easiest way to create a vector is to use the \verb+c+
-       function to ``concatenate'' numbers:
-<<>>=
+       function to ``combine'' numbers:
+<<z-def>>=
 z <- c(-1, 9, 33, -4)
 z
 @
@@ -302,7 +329,7 @@ z
 %x1
 %@
   \item { A sequence of numbers}
-<<>>=
+<<x1>>=
 x1 <- 1:3 # Same as: x1 <- c(1, 2, 3)
           # Note: anything after "#" is a comment
 x1
@@ -313,12 +340,12 @@ x1
 %% x2
 %% @
 %% \item[]
-<<>>=
+<<x2>>=
 x2 <- seq(from=1, to=7, by=2)
 x2
 @
 \item Repeat each element of a vector
-<<>>=
+<<rep>>=
 rep(x2, times=2)
 @
 \end{itemize}
@@ -330,7 +357,7 @@ rep(x2, times=2)
   \frametitle{Help with a function}
 \LARGE
 These do the same thing
-<<eval=FALSE>>=
+<<help,eval=FALSE>>=
 ?rep
 help(rep)
 @
@@ -343,17 +370,17 @@ help(rep)
   \frametitle{Types of vectors}
   \begin{itemize}[<+->]
   \item \verb+numeric+ vectors are used for continuous variables
-<<>>=
+<<y1-class>>=
 y1 <- c(2.1, 3.5, 99.0)
 class(y1)
 @
   \item Names can be stored as \verb+character+ vectors
-<<>>=
+<<y2-class>>=
 y2 <- c("Treatment", "Control")
 class(y2)
 @
   \item \verb+factor+s are similar, but keep track of ``levels''
-<<>>=
+<<y3-factor>>=
 y3 <- factor(rep(y2, each=2))
 y3
 @

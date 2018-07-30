@@ -11,16 +11,16 @@
 }
 \makeatother
 
-\definecolor{fgcolor}{rgb}{0.345, 0.345, 0.345}
-\newcommand{\hlnum}[1]{\textcolor[rgb]{0.686,0.059,0.569}{#1}}%
-\newcommand{\hlstr}[1]{\textcolor[rgb]{0.192,0.494,0.8}{#1}}%
-\newcommand{\hlcom}[1]{\textcolor[rgb]{0.678,0.584,0.686}{\textit{#1}}}%
+\definecolor{fgcolor}{rgb}{0, 0, 0}
+\newcommand{\hlnum}[1]{\textcolor[rgb]{0.69,0.494,0}{#1}}%
+\newcommand{\hlstr}[1]{\textcolor[rgb]{0.749,0.012,0.012}{#1}}%
+\newcommand{\hlcom}[1]{\textcolor[rgb]{0.514,0.506,0.514}{\textit{#1}}}%
 \newcommand{\hlopt}[1]{\textcolor[rgb]{0,0,0}{#1}}%
-\newcommand{\hlstd}[1]{\textcolor[rgb]{0.345,0.345,0.345}{#1}}%
-\newcommand{\hlkwa}[1]{\textcolor[rgb]{0.161,0.373,0.58}{\textbf{#1}}}%
-\newcommand{\hlkwb}[1]{\textcolor[rgb]{0.69,0.353,0.396}{#1}}%
-\newcommand{\hlkwc}[1]{\textcolor[rgb]{0.333,0.667,0.333}{#1}}%
-\newcommand{\hlkwd}[1]{\textcolor[rgb]{0.737,0.353,0.396}{\textbf{#1}}}%
+\newcommand{\hlstd}[1]{\textcolor[rgb]{0,0,0}{#1}}%
+\newcommand{\hlkwa}[1]{\textcolor[rgb]{0,0,0}{\textbf{#1}}}%
+\newcommand{\hlkwb}[1]{\textcolor[rgb]{0,0.341,0.682}{#1}}%
+\newcommand{\hlkwc}[1]{\textcolor[rgb]{0,0,0}{\textbf{#1}}}%
+\newcommand{\hlkwd}[1]{\textcolor[rgb]{0.004,0.004,0.506}{#1}}%
 \let\hlipl\hlkwb
 
 \usepackage{framed}
@@ -57,7 +57,9 @@
 \usepackage{hyperref}
 \usepackage{graphicx}
 \usepackage{pgfpages}
-\usepackage[T1]{fontenc}
+\usepackage{verbatim}
+%\usepackage{color}
+%\usepackage[T1]{fontenc}
 
 
 \hypersetup{pdfpagemode=UseNone,pdfstartview=FitV}
@@ -86,6 +88,31 @@
 %\DefineVerbatimEnvironment{Sinput}{Verbatim}{fontshape=sl,formatcom=\color{red}}
 %\DefineVerbatimEnvironment{Soutput}{Verbatim}{formatcom=\color{MidnightBlue}}
 %\DefineVerbatimEnvironment{Scode}{Verbatim}{fontshape=sl}
+
+
+% <<knitr-setup, include=FALSE>>=
+% opts_hooks$set(comment=function(x) return("comment"=NA))
+% ##knit_hooks$set(inline = function(x) {
+% ##    if(!require(highr)) {
+% ##        install.packages("highr")
+% ##    }
+% ##    if (is.numeric(x)) return(knitr:::format_sci(x, 'latex'))
+% ##    highr:::hi_latex(x)
+% ##})
+% @
+
+
+
+
+
+
+
+
+
+
+\definecolor{inlinecolor}{rgb}{0.878, 0.918, 0.933}
+%\newcommand{\inr}[1]{\colorbox{inlinecolor}{\makebox[1em]\strut\textcolor{black}{\texttt{#1}}}}
+\newcommand{\inr}[1]{\colorbox{inlinecolor}{\normalsize \texttt{#1}}}
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
 \begin{document}
 
@@ -103,7 +130,7 @@
   \vspace{0.9cm}
   \includegraphics[width=0.4\textwidth]{figs/Rlogo} \\
   \vspace{0.5cm}
-  August 15 \& 16, 2016 \\
+  August 13 \& 14, 2018 \\
   FANR 6750 \par}
 \end{frame}
 
@@ -271,18 +298,19 @@
     \item In this example, \verb+y+ is an object storing the number
       2.
 \begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlstd{y} \hlkwb{<-} \hlnum{2}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
-    \item The ``\verb+<-+'' arrow assigns the value 2 to the object \verb+y+.
-    \item You cannot have a space between \verb+<+ and \verb+-+
-    \item You can use ``\verb+=+'' instead of ``\verb+<-+'' but this can cause confusion
+%    \item The \colorbox{inlinecolor}{\texttt{<-}} arrow assigns the value y to the object \texttt{y}.
+    \item The \inr{<-} arrow assigns the value \inr{y} to the object \inr{y}.
+    \item You cannot have a space between \inr{<} and \inr{-}
+    \item You can use \inr{=} instead of \inr{<-} but this can cause confusion
     \item Typing the name of the object returns its value:
 \begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlstd{y}
 \end{alltt}
@@ -303,7 +331,7 @@
   \begin{itemize}[<+->]
     \item We store information in objects so that they can be easily manipulated:
 \begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlstd{y}\hlopt{*}\hlnum{2}\hlopt{+}\hlnum{1}
 \end{alltt}
@@ -312,18 +340,13 @@
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
-%    \item Each object has a class. Important classes include
-%      \verb+data.frame+, \verb+matrix+, \verb+factor+, and \verb+numeric+
-%<<>>=
-%class(y)
-%@
     \item Usually, we want more than 1 number in an object
     \item In statistics, a vector is simply a set of numbers that can
       be thought of as a row or column of a matrix
     \item The easiest way to create a vector is to use the \verb+c+
-       function to ``concatenate'' numbers:
+       function to ``combine'' numbers:
 \begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlstd{z} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlopt{-}\hlnum{1}\hlstd{,} \hlnum{9}\hlstd{,} \hlnum{33}\hlstd{,} \hlopt{-}\hlnum{4}\hlstd{)}
 \hlstd{z}
@@ -374,7 +397,7 @@
 %@
   \item { A sequence of numbers}
 \begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlstd{x1} \hlkwb{<-} \hlnum{1}\hlopt{:}\hlnum{3} \hlcom{# Same as: x1 <- c(1, 2, 3)}
           \hlcom{# Note: anything after "#" is a comment}
@@ -392,7 +415,7 @@
 %% @
 %% \item[]
 \begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlstd{x2} \hlkwb{<-} \hlkwd{seq}\hlstd{(}\hlkwc{from}\hlstd{=}\hlnum{1}\hlstd{,} \hlkwc{to}\hlstd{=}\hlnum{7}\hlstd{,} \hlkwc{by}\hlstd{=}\hlnum{2}\hlstd{)}
 \hlstd{x2}
@@ -404,7 +427,7 @@
 \end{knitrout}
 \item Repeat each element of a vector
 \begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlkwd{rep}\hlstd{(x2,} \hlkwc{times}\hlstd{=}\hlnum{2}\hlstd{)}
 \end{alltt}
@@ -423,7 +446,7 @@
 \LARGE
 These do the same thing
 \begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlopt{?}\hlstd{rep}
 \hlkwd{help}\hlstd{(rep)}
@@ -440,7 +463,7 @@ These do the same thing
   \begin{itemize}[<+->]
   \item \verb+numeric+ vectors are used for continuous variables
 \begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlstd{y1} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlnum{2.1}\hlstd{,} \hlnum{3.5}\hlstd{,} \hlnum{99.0}\hlstd{)}
 \hlkwd{class}\hlstd{(y1)}
@@ -452,7 +475,7 @@ These do the same thing
 \end{knitrout}
   \item Names can be stored as \verb+character+ vectors
 \begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlstd{y2} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlstr{"Treatment"}\hlstd{,} \hlstr{"Control"}\hlstd{)}
 \hlkwd{class}\hlstd{(y2)}
@@ -464,7 +487,7 @@ These do the same thing
 \end{knitrout}
   \item \verb+factor+s are similar, but keep track of ``levels''
 \begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlstd{y3} \hlkwb{<-} \hlkwd{factor}\hlstd{(}\hlkwd{rep}\hlstd{(y2,} \hlkwc{each}\hlstd{=}\hlnum{2}\hlstd{))}
 \hlstd{y3}
@@ -498,7 +521,7 @@ These do the same thing
   \pause
   First, create the vectors:
 \begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlstd{weight} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlnum{60}\hlstd{,} \hlnum{72}\hlstd{,} \hlnum{57}\hlstd{,} \hlnum{90}\hlstd{,} \hlnum{95}\hlstd{,} \hlnum{72}\hlstd{)}
 \hlstd{height} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlnum{1.8}\hlstd{,} \hlnum{1.8}\hlstd{,} \hlnum{1.7}\hlstd{,} \hlnum{1.9}\hlstd{,} \hlnum{1.7}\hlstd{,} \hlnum{1.9}\hlstd{)}
@@ -508,7 +531,7 @@ These do the same thing
   \pause
   Then, evaluate the equation in just 1 line:
 \begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlstd{BMI} \hlkwb{<-} \hlstd{weight}\hlopt{/}\hlstd{height}\hlopt{^}\hlnum{2}
 \hlstd{BMI}
@@ -574,7 +597,7 @@ These do the same thing
 \item  What is the sum of this vector? $\sum_{i=1}^5 y_i$ = ???
   \pause
 \begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlstd{y} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlnum{4}\hlstd{,}\hlnum{7}\hlstd{,}\hlnum{2}\hlstd{,}\hlnum{3}\hlstd{,}\hlnum{150}\hlstd{)}
 \hlkwd{sum}\hlstd{(y)}
@@ -588,7 +611,7 @@ These do the same thing
 \item \large What is the mean? $\frac{\sum_{i=1}^5 y_i}{5}$ = ???
   \pause
 \begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlkwd{mean}\hlstd{(y)}
 \end{alltt}
@@ -600,7 +623,7 @@ These do the same thing
   \pause
 \item  And the variance? $\frac{\sum_{i=1}^5 (y_i - \bar{y})^2}{5-1}$ = ???
 \begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlkwd{var}\hlstd{(y)}
 \end{alltt}
@@ -624,7 +647,7 @@ These do the same thing
   \begin{itemize}[<+->]
   \item Extract the first and third elements of a vector
 \begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlstd{y} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlnum{2}\hlstd{,} \hlnum{4}\hlstd{,} \hlnum{8}\hlstd{,} \hlnum{4}\hlstd{,} \hlnum{25}\hlstd{)}
 \hlstd{y.sub} \hlkwb{<-} \hlstd{y[}\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,}\hlnum{3}\hlstd{)]}
@@ -637,7 +660,7 @@ These do the same thing
 \end{knitrout}
 \item  Remove the second element
 \begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlstd{y[}\hlopt{-}\hlnum{2}\hlstd{]}
 \end{alltt}
@@ -648,7 +671,7 @@ These do the same thing
 \end{knitrout}
 \item Rearrange the order of the vector
 \begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlstd{y[}\hlkwd{c}\hlstd{(}\hlnum{5}\hlstd{,}\hlnum{4}\hlstd{,}\hlnum{3}\hlstd{,}\hlnum{2}\hlstd{,}\hlnum{1}\hlstd{)]}
 \end{alltt}
@@ -666,7 +689,7 @@ These do the same thing
 \begin{itemize}[<+->]
   \item Which elements of the vector equal 4? (logical indexing)
 \begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlstd{y} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlnum{2}\hlstd{,} \hlnum{4}\hlstd{,} \hlnum{6}\hlstd{,} \hlnum{4}\hlstd{,} \hlnum{25}\hlstd{)}
 \hlstd{y} \hlopt{==} \hlnum{4}
@@ -684,7 +707,7 @@ These do the same thing
 \end{knitrout}
   \item Add missing values, then remove them
 \begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlstd{y[}\hlkwd{c}\hlstd{(}\hlnum{3}\hlstd{,}\hlnum{5}\hlstd{)]} \hlkwb{<-} \hlnum{NA}
 \hlstd{y}
@@ -696,7 +719,7 @@ These do the same thing
 \end{knitrout}
   \item[]
 \begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlopt{!}\hlkwd{is.na}\hlstd{(y)}
 \end{alltt}
@@ -737,7 +760,7 @@ These do the same thing
   \frametitle{Creating a data frame}
   {\LARGE 3 variables measured at 4 sites}
 \begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlstd{y} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlnum{3}\hlstd{,} \hlnum{9}\hlstd{,} \hlnum{7}\hlstd{,} \hlnum{4}\hlstd{)}
 \hlstd{x1} \hlkwb{<-} \hlkwd{factor}\hlstd{(}\hlkwd{c}\hlstd{(}\hlstr{'High'}\hlstd{,} \hlstr{'High'}\hlstd{,} \hlstr{'Low'}\hlstd{,} \hlstr{'Low'}\hlstd{))}
@@ -764,7 +787,7 @@ These do the same thing
   \begin{itemize}[<+->]
     \item Bracket method. Row 1, columns 1 and 3
 \begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlstd{mydata[}\hlnum{1}\hlstd{,}\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,}\hlnum{3}\hlstd{)]}
 \end{alltt}
@@ -776,7 +799,7 @@ These do the same thing
 \end{knitrout}
     \item Bracket method. Rows 2 and 3, columns 1 and 3
 \begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlstd{mydata[}\hlkwd{c}\hlstd{(}\hlstr{'Site2'}\hlstd{,} \hlstr{'Site3'}\hlstd{),} \hlkwd{c}\hlstd{(}\hlstr{'Goats'}\hlstd{,} \hlstr{'Temp'}\hlstd{)]}
 \end{alltt}
@@ -789,7 +812,7 @@ These do the same thing
 \end{knitrout}
     \item Dollar sign method. Pull out column 1
 \begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlstd{mydata}\hlopt{$}\hlstd{Elev}
 \end{alltt}
@@ -808,7 +831,7 @@ These do the same thing
   \begin{itemize}[<+->]
     \item Open up a `spreadsheet'
 \begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlkwd{View}\hlstd{(mydata)}
 \end{alltt}
@@ -817,7 +840,7 @@ These do the same thing
     \item Compute some summary statistics
 {\small
 \begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlkwd{summary}\hlstd{(mydata)}
 \end{alltt}
@@ -836,7 +859,7 @@ These do the same thing
     \item A very compact and hard-to-understand-at-first summary
 {\small
 \begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlkwd{str}\hlstd{(mydata)}
 \end{alltt}
@@ -863,7 +886,7 @@ These do the same thing
   \begin{itemize}
     \item Export the \verb+data.frame+ we created earlier
 \begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlkwd{write.csv}\hlstd{(mydata,} \hlkwc{file}\hlstd{=}\hlstr{"mydata.csv"}\hlstd{)}
 \end{alltt}
@@ -872,7 +895,7 @@ These do the same thing
     \item Confirm that it is there
 {\small
 \begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlkwd{getwd}\hlstd{()}
 \end{alltt}
@@ -884,7 +907,7 @@ These do the same thing
 }
     \item Read it back in
 \begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlstd{mydata2} \hlkwb{<-} \hlkwd{read.csv}\hlstd{(}\hlstr{"mydata.csv"}\hlstd{)}
 \end{alltt}
@@ -932,26 +955,27 @@ These do the same thing
   \begin{itemize}[<+->]
     \item Viewing the objects in your workspace
 \begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlkwd{ls}\hlstd{()}
 \end{alltt}
 \begin{verbatim}
-##  [1] "BMI"     "height"  "mydata"  "mydata2" "weight"  "x1"      "x2"     
-##  [8] "y"       "y.sub"   "y1"      "y2"      "y3"      "z"
+##  [1] "BMI"     "height"  "mydata"  "mydata2" "reqval"  "sysval"  "weight" 
+##  [8] "x1"      "x2"      "y"       "y.sub"   "y1"      "y2"      "y3"     
+## [15] "z"
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
     \item Removing (deleting) some objects
 \begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlkwd{rm}\hlstd{(x1, x2, mydata2, y2, y3, height, weight, BMI,}
    \hlstd{y, y1, z)}
 \hlkwd{ls}\hlstd{()}
 \end{alltt}
 \begin{verbatim}
-## [1] "mydata" "y.sub"
+## [1] "mydata" "reqval" "sysval" "y.sub"
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -970,7 +994,7 @@ These do the same thing
   \pause
 If you prefer commands over point-and-click:
 \begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlkwd{save.image}\hlstd{(}\hlstr{"myimage.RData"}\hlstd{)} \hlcom{# Save all objects to file}
 \hlkwd{load}\hlstd{(}\hlstr{"myimage.RData"}\hlstd{)}       \hlcom{# Load the saved workspace}
@@ -992,7 +1016,7 @@ If you prefer commands over point-and-click:
 \begin{itemize}
   \item `Official' manuals
 \begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlkwd{help.start}\hlstd{()}
 \end{alltt}
