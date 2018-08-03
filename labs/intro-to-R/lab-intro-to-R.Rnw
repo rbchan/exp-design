@@ -10,6 +10,7 @@
 \usepackage{verbatim}
 %\usepackage{color}
 %\usepackage[T1]{fontenc}
+\usepackage{framed}
 
 
 \hypersetup{pdfpagemode=UseNone,pdfstartview=FitV}
@@ -64,9 +65,8 @@ knit_theme$set("edit-kwrite")
 @
 
 
-
+%% New command for inline code that isn't to be evaluated
 \definecolor{inlinecolor}{rgb}{0.878, 0.918, 0.933}
-%\newcommand{\inr}[1]{\colorbox{inlinecolor}{\makebox[1em]\strut\textcolor{black}{\texttt{#1}}}}
 \newcommand{\inr}[1]{\colorbox{inlinecolor}{\texttt{#1}}}
 
 
@@ -74,17 +74,17 @@ knit_theme$set("edit-kwrite")
 
 \begin{document}
 
+% This would affect all code boxes. Not a good idea.
+% \setlength\fboxsep{0pt}
 
-\setlength\fboxsep{0pt}
 
 
-
-%%% NOTE: Conduct survey asking who has used R
 \begin{frame}[plain]
   \LARGE
 %  \maketitle
   {\centering
-  {\Huge Lab 1 -- Introduction to \R} \\
+%  \textcolor{RoyalBlue}{\huge \bf Lab 1 -- Introduction to \R} \\
+  {\huge \bf Lab 1 -- Introduction to \R} \\
   \vspace{0.9cm}
   \includegraphics[width=0.4\textwidth]{figs/Rlogo} \\
   \vspace{0.5cm}
@@ -114,6 +114,7 @@ knit_theme$set("edit-kwrite")
   \large
   \begin{itemize}%[<+->]
     \item<1-> Flexible %If you're going to use a stats program, might as well use one that does everything!
+%    \item<1-> Many \inr{packages} \colorbox{BurntOrange}{written} for ecologists
     \item<1-> Many packages written for ecologists
     \item<1-> It's free
     \item<1-> Scripts save time
@@ -218,10 +219,69 @@ knit_theme$set("edit-kwrite")
 
 
 
-\begin{frame}
-  \frametitle{Overgrown calculator}
-  \includegraphics[width=\textwidth]{figs/math-ops}
+
+\begin{frame}[fragile]
+  \frametitle{How to read the code in these slides}
+  Anything in a shaded box like this one is \R~code:
+<<add2>>=
+2+2
+@
+\pause \vfill
+  The line \inr{2+2} is \R~code (input). You can copy and paste it
+  into the console. Note that the command prompt ($>$) is not
+  shown in these slides.
+\vfill
+  The \R~output is commented out by 2 hash signs (\texttt{\#\#}).
+\pause \vfill
+  You can copy and paste the entire code box directly into your
+  console. However, it might be easier to work with the \R~script
+  that accompanies the PDF. In this case, the script is called
+  \texttt{lab-intro-to-R.R}.
 \end{frame}
+
+
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Overgrown calculator}
+%  \includegraphics[width=\textwidth]{figs/math-ops}
+  \small
+%  Simple addition
+%<<add, size='small'>>=
+%2+2
+%@
+%\pause \vfill
+  Square-root of 3
+<<sq3, size='small'>>=
+sqrt(3)
+@
+\pause \vfill
+  6 squared
+<<six2, size='small'>>=
+6^2
+@
+\pause \vfill
+  cosine of $\pi$
+<<cos-pi, size='small'>>=
+cos(pi)
+@
+%<<pi>>=
+%pi
+%@
+\end{frame}
+
+
+
+
+
+
+
+
+
+
+
 
 
 %\begin{frame}[fragile]
@@ -251,22 +311,32 @@ knit_theme$set("edit-kwrite")
 \begin{frame}[fragile]
   \frametitle{Objects and assignment arrow}
 %  {\Large Important things to know about objects:}
-  \begin{itemize}[<+->]
-    \item Everything in \R~is an object %and every object has a class.
-    \item In this example, \verb+y+ is an object storing the number
-      2.
+%  \begin{itemize}[<+->]
+%    \item
+      Everything in \R~is an object
+      \pause \vfill
+%    \item
+      In this example, \inr{y} is an object storing the number 2:
 <<y-def>>=
 y <- 2
 @
+\pause \vfill
 %    \item The \colorbox{inlinecolor}{\texttt{<-}} arrow assigns the value \Sexpr{y} to the object \texttt{y}.
-    \item The \inr{<-} arrow assigns the value \inr{y} to the object \inr{y}.
-    \item You cannot have a space between \inr{<} and \inr{-}
-    \item You can use \inr{=} instead of \inr{<-} but this can cause confusion
-    \item Typing the name of the object returns its value:
+%    \item
+The \inr{<-} arrow assigns the value 2 to the object \inr{y}.
+      \pause \vfill
+%    \item
+      You cannot have a space between \inr{<} and \inr{-}
+      \pause \vfill
+%    \item
+      You can use \inr{=} instead of \inr{<-} but this can cause confusion
+      \pause \vfill
+%    \item
+      Typing the name of the object returns its value:
 <<y>>=
 y
 @
-  \end{itemize}
+%  \end{itemize}
 \end{frame}
 
 

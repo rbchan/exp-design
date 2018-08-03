@@ -37,4 +37,5 @@
 *.tikz
 *-tikzDictionary
 
+## auto
 auto/
