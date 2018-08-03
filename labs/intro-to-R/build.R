@@ -11,6 +11,7 @@ knit("lab-intro-to-R.Rnw")
 
 
 ## Create the PDF
+#tools::texi2dvi("lab-intro-to-R.tex", pdf=TRUE)
 tools::texi2dvi("lab-intro-to-R.tex", pdf=TRUE, clean=TRUE)
 
 

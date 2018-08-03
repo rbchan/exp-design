@@ -131,7 +131,10 @@
   \includegraphics[width=0.4\textwidth]{figs/Rlogo} \\
   \vspace{0.5cm}
   August 13 \& 14, 2018 \\
-  FANR 6750 \par}
+  FANR 6750 \par
+  \vfill
+  Richard Chandler and Bob Cooper \\
+  }
 \end{frame}
 
 
@@ -276,14 +279,15 @@
 \end{kframe}
 \end{knitrout}
 \pause \vfill
-  The line \inr{2+2} is \R~code (input). You can copy and paste it
-  into the console. Note that the command prompt $>$ is not
-  shown in these slides.
+  The line \inr{2+2} is \R~code (\alert{input}). You can copy
+  and paste it into the console. Note that the command prompt (\verb+>+) is
+  not shown in these slides.
 \vfill
-  The \R~output is commented out by 2 hash signs (\texttt{\#\#}).
+  The line \inr{\#\# [1] 4} is \alert{output}. Output is
+  commented out by 2 hash signs (\texttt{\#\#}).
 \pause \vfill
   You can copy and paste the entire code box directly into your
-  console. However, it might be easier to work with the ~\R script
+  console. However, it might be easier to work with the \R~script
   that accompanies the PDF. In this case, the script is called
   \texttt{lab-intro-to-R.R}.
 \end{frame}
@@ -383,7 +387,8 @@
 %  {\Large Important things to know about objects:}
 %  \begin{itemize}[<+->]
 %    \item
-      Everything in \R~is an object
+      Everything in \R~is an object. We can create objects using the
+      \inr{<-} assignment arrow.
       \pause \vfill
 %    \item
       In this example, \inr{y} is an object storing the number 2:
@@ -406,7 +411,7 @@ The \inr{<-} arrow assigns the value 2 to the object \inr{y}.
       You can use \inr{=} instead of \inr{<-} but this can cause confusion
       \pause \vfill
 %    \item
-      Typing the name of the object returns its value:
+      Typing the name of an object returns its value:
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
@@ -426,9 +431,10 @@ The \inr{<-} arrow assigns the value 2 to the object \inr{y}.
 
 \begin{frame}[fragile]
   \frametitle{Vectors}
-  \begin{itemize}[<+->]
-    \item We store information in objects so that they can be easily manipulated:
-\begin{knitrout}
+%  \begin{itemize}[<+->]
+%    \item
+We store information in objects so that they can be easily manipulated:
+\begin{knitrout}\small
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlstd{y}\hlopt{*}\hlnum{2}\hlopt{+}\hlnum{1}
@@ -438,12 +444,16 @@ The \inr{<-} arrow assigns the value 2 to the object \inr{y}.
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
-    \item Usually, we want more than 1 number in an object
-    \item In statistics, a vector is simply a set of numbers that can
-      be thought of as a row or column of a matrix
-    \item The easiest way to create a vector is to use the \verb+c+
-       function to ``combine'' numbers:
-\begin{knitrout}
+%    \item
+\pause \vfill
+Usually, we want more than one number in an object. In statistics, a
+vector is simply a set of numbers that can be thought of as a row or
+column of a matrix \\
+%\item
+\pause \vfill
+The easiest way to create a vector is to use the \inr{c}
+function to ``combine'' numbers:
+\begin{knitrout}\small
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlstd{z} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlopt{-}\hlnum{1}\hlstd{,} \hlnum{9}\hlstd{,} \hlnum{33}\hlstd{,} \hlopt{-}\hlnum{4}\hlstd{)}
@@ -454,7 +464,7 @@ The \inr{<-} arrow assigns the value 2 to the object \inr{y}.
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
-  \end{itemize}
+%  \end{itemize}
 \end{frame}
 
 
@@ -486,15 +496,16 @@ The \inr{<-} arrow assigns the value 2 to the object \inr{y}.
 
 \begin{frame}[fragile]
   \frametitle{Other useful ways of creating vectors}
-\begin{itemize}[<+->]
+%\begin{itemize}[<+->]
 %  \item The easiest way to create a vector is to use the \verb+c+
 %      function to ``combine'' numbers
 %<<>>=
 %x1 <- c(1, 2, 3, 9, -100)
 %x1
 %@
-  \item { A sequence of numbers}
-\begin{knitrout}
+%  \item
+A sequence of numbers
+\begin{knitrout}\small
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlstd{x1} \hlkwb{<-} \hlnum{1}\hlopt{:}\hlnum{3} \hlcom{# Same as: x1 <- c(1, 2, 3)}
@@ -506,13 +517,14 @@ The \inr{<-} arrow assigns the value 2 to the object \inr{y}.
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
-\item \verb+seq+ is more general
+%\item
+\inr{seq} is more general
 %% <<>>=
 %% x2 <- seq(from=1, to=3, by=1)
 %% x2
 %% @
 %% \item[]
-\begin{knitrout}
+\begin{knitrout}\small
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlstd{x2} \hlkwb{<-} \hlkwd{seq}\hlstd{(}\hlkwc{from}\hlstd{=}\hlnum{1}\hlstd{,} \hlkwc{to}\hlstd{=}\hlnum{7}\hlstd{,} \hlkwc{by}\hlstd{=}\hlnum{2}\hlstd{)}
@@ -523,8 +535,9 @@ The \inr{<-} arrow assigns the value 2 to the object \inr{y}.
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
-\item Repeat each element of a vector
-\begin{knitrout}
+%\item
+Use \inr{rep} to repeat elements of a vector
+\begin{knitrout}\small
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlkwd{rep}\hlstd{(x2,} \hlkwc{times}\hlstd{=}\hlnum{2}\hlstd{)}
@@ -534,7 +547,7 @@ The \inr{<-} arrow assigns the value 2 to the object \inr{y}.
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
-\end{itemize}
+%\end{itemize}
 \end{frame}
 
 
@@ -558,9 +571,10 @@ These do the same thing
 
 \begin{frame}[fragile]
   \frametitle{Types of vectors}
-  \begin{itemize}[<+->]
-  \item \verb+numeric+ vectors are used for continuous variables
-\begin{knitrout}
+%  \begin{itemize}[<+->]
+%  \item
+  Numeric vectors are used for continuous variables
+\begin{knitrout}\small
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlstd{y1} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlnum{2.1}\hlstd{,} \hlnum{3.5}\hlstd{,} \hlnum{99.0}\hlstd{)}
@@ -571,8 +585,10 @@ These do the same thing
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
-  \item Names can be stored as \verb+character+ vectors
-\begin{knitrout}
+%  \item
+\pause \vfill
+  Names can be stored as character vectors
+\begin{knitrout}\small
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlstd{y2} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlstr{"Treatment"}\hlstd{,} \hlstr{"Control"}\hlstd{)}
@@ -583,8 +599,10 @@ These do the same thing
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
-  \item \verb+factor+s are similar, but keep track of ``levels''
-\begin{knitrout}
+%  \item
+\pause \vfill
+Factors are similar, but they keep track of levels
+\begin{knitrout}\small
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlstd{y3} \hlkwb{<-} \hlkwd{factor}\hlstd{(}\hlkwd{rep}\hlstd{(y2,} \hlkwc{each}\hlstd{=}\hlnum{2}\hlstd{))}
@@ -596,7 +614,7 @@ These do the same thing
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
-  \end{itemize}
+%  \end{itemize}
 \end{frame}
 
 
@@ -627,8 +645,8 @@ These do the same thing
 \end{kframe}
 \end{knitrout}
   \pause
-  Then, evaluate the equation in just 1 line:
-\begin{knitrout}
+  Then, evaluate the equation in just one line:
+\begin{knitrout}\small
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlstd{BMI} \hlkwb{<-} \hlstd{weight}\hlopt{/}\hlstd{height}\hlopt{^}\hlnum{2}
@@ -679,6 +697,7 @@ These do the same thing
 % NOTE: Make them do this by hand
 \begin{frame}[fragile]
   \frametitle{Summarizing vectors}
+  \small
   \begin{center}
     \begin{tabular}{ccccc}
       \hline
@@ -691,10 +710,11 @@ These do the same thing
       \hline
     \end{tabular}
   \end{center}
-\begin{itemize}
-\item  What is the sum of this vector? $\sum_{i=1}^5 y_i$ = ???
+%\begin{itemize}
+%\item
+What is the sum of this vector? $\sum_{i=1}^5 y_i$ = ???
   \pause
-\begin{knitrout}
+\begin{knitrout}\footnotesize
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlstd{y} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlnum{4}\hlstd{,}\hlnum{7}\hlstd{,}\hlnum{2}\hlstd{,}\hlnum{3}\hlstd{,}\hlnum{150}\hlstd{)}
@@ -706,9 +726,10 @@ These do the same thing
 \end{kframe}
 \end{knitrout}
 \pause
-\item \large What is the mean? $\frac{\sum_{i=1}^5 y_i}{5}$ = ???
+%\item \large
+What is the mean? $\frac{\sum_{i=1}^5 y_i}{5}$ = ???
   \pause
-\begin{knitrout}
+\begin{knitrout}\footnotesize
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlkwd{mean}\hlstd{(y)}
@@ -719,8 +740,9 @@ These do the same thing
 \end{kframe}
 \end{knitrout}
   \pause
-\item  And the variance? $\frac{\sum_{i=1}^5 (y_i - \bar{y})^2}{5-1}$ = ???
-\begin{knitrout}
+%\item
+  And the variance? $\frac{\sum_{i=1}^5 (y_i - \bar{y})^2}{5-1}$ = ???
+\begin{knitrout}\footnotesize
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlkwd{var}\hlstd{(y)}
@@ -730,7 +752,7 @@ These do the same thing
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
-\end{itemize}
+%\end{itemize}
 \end{frame}
 
 
@@ -742,8 +764,9 @@ These do the same thing
 
 \begin{frame}[fragile]
   \frametitle{Indexing vectors}
-  \begin{itemize}[<+->]
-  \item Extract the first and third elements of a vector
+%  \begin{itemize}[<+->]
+%  \item
+  Extract the first and third elements of a vector
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
@@ -756,7 +779,9 @@ These do the same thing
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
-\item  Remove the second element
+%\item
+\pause \vfill
+Remove the second element
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
@@ -767,7 +792,9 @@ These do the same thing
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
-\item Rearrange the order of the vector
+\pause \vfill
+%\item
+Rearrange the order of the vector
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
@@ -778,15 +805,17 @@ These do the same thing
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
-\end{itemize}
+%\end{itemize}
 \end{frame}
 
 
 \begin{frame}[fragile]
   \frametitle{Indexing vectors}
-\begin{itemize}[<+->]
-  \item Which elements of the vector equal 4? (logical indexing)
-\begin{knitrout}
+%\begin{itemize}[<+->]
+%  \item
+  \small
+  Which elements of the vector equal 4? (logical indexing)
+\begin{knitrout}\small
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlstd{y} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlnum{2}\hlstd{,} \hlnum{4}\hlstd{,} \hlnum{6}\hlstd{,} \hlnum{4}\hlstd{,} \hlnum{25}\hlstd{)}
@@ -803,8 +832,10 @@ These do the same thing
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
-  \item Add missing values, then remove them
-\begin{knitrout}
+%  \item
+\pause \vfill
+Add missing values, then remove them
+\begin{knitrout}\small
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlstd{y[}\hlkwd{c}\hlstd{(}\hlnum{3}\hlstd{,}\hlnum{5}\hlstd{)]} \hlkwb{<-} \hlnum{NA}
@@ -815,8 +846,9 @@ These do the same thing
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
-  \item[]
-\begin{knitrout}
+%  \item[]
+\pause \vfill
+\begin{knitrout}\small
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlopt{!}\hlkwd{is.na}\hlstd{(y)}
@@ -832,7 +864,7 @@ These do the same thing
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
-\end{itemize}
+%\end{itemize}
 \end{frame}
 
 
@@ -841,15 +873,20 @@ These do the same thing
 
 \begin{frame}[fragile]
   \frametitle{Data frames}
-  \Large
-  \begin{itemize}[<+->]
-    \item Most basic datasets are stored as \verb+data.frame+s
-    \item They are like a matrix in which each column can be a
+  \large
+%  \begin{itemize}[<+->]
+%    \item
+  Most basic datasets are stored as \verb+data.frame+s
+  \pause \vfill
+%    \item
+  They are like a matrix in which each column can be a
       different type of vector (numeric, factor, etc...)
-    \item They have attributes for row names (e.g. the names of
+%    \item
+  \pause \vfill
+   They have attributes for row names (e.g. the names of
       the experimental units) and column names (e.g. the names of
       the response and predictor variables)
-  \end{itemize}
+%  \end{itemize}
 \end{frame}
 
 
@@ -876,14 +913,14 @@ These do the same thing
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
-
 \end{frame}
 
 
 \begin{frame}[fragile]
   \frametitle{Indexing data frames}
-  \begin{itemize}[<+->]
-    \item Bracket method. Row 1, columns 1 and 3
+%  \begin{itemize}[<+->]
+%    \item
+  Bracket method. Row 1, columns 1 and 3
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
@@ -895,7 +932,8 @@ These do the same thing
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
-    \item Bracket method. Rows 2 and 3, columns 1 and 3
+%    \item
+Bracket method. Rows 2 and 3, columns 1 and 3
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
@@ -908,7 +946,8 @@ These do the same thing
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
-    \item Dollar sign method. Pull out column 1
+%    \item
+Dollar sign method. Pull out column 1
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
@@ -920,14 +959,15 @@ These do the same thing
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
-  \end{itemize}
+%  \end{itemize}
 \end{frame}
 
 
 \begin{frame}[fragile]
   \frametitle{Summarizing data frames}
-  \begin{itemize}[<+->]
-    \item Open up a `spreadsheet'
+%  \begin{itemize}[<+->]
+%    \item
+  Open up a `spreadsheet'
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
@@ -935,9 +975,10 @@ These do the same thing
 \end{alltt}
 \end{kframe}
 \end{knitrout}
-    \item Compute some summary statistics
+%    \item
+Compute some summary statistics
 {\small
-\begin{knitrout}
+\begin{knitrout}\footnotesize
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlkwd{summary}\hlstd{(mydata)}
@@ -954,9 +995,10 @@ These do the same thing
 \end{kframe}
 \end{knitrout}
 }
-    \item A very compact and hard-to-understand-at-first summary
+%    \item
+A very compact and hard-to-understand-at-first summary
 {\small
-\begin{knitrout}
+\begin{knitrout}\footnotesize
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlkwd{str}\hlstd{(mydata)}
@@ -970,7 +1012,7 @@ These do the same thing
 \end{kframe}
 \end{knitrout}
 }
-  \end{itemize}
+%  \end{itemize}
 \end{frame}
 
 
@@ -981,8 +1023,9 @@ These do the same thing
   \frametitle{Importing and exporting data}
   \verb+read.csv+ and \verb+write.csv+ are easy options, but there are
   many more possibilities
-  \begin{itemize}
-    \item Export the \verb+data.frame+ we created earlier
+%  \begin{itemize}
+%    \item
+  Export the \verb+data.frame+ we created earlier
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
@@ -990,7 +1033,8 @@ These do the same thing
 \end{alltt}
 \end{kframe}
 \end{knitrout}
-    \item Confirm that it is there
+%    \item
+Confirm that it is there
 {\small
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
@@ -1003,7 +1047,8 @@ These do the same thing
 \end{kframe}
 \end{knitrout}
 }
-    \item Read it back in
+%    \item
+Read it back in
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
@@ -1011,7 +1056,7 @@ These do the same thing
 \end{alltt}
 \end{kframe}
 \end{knitrout}
-  \end{itemize}
+%  \end{itemize}
 \end{frame}
 
 
@@ -1050,9 +1095,10 @@ These do the same thing
 
 \begin{frame}[fragile]
   \frametitle{The workspace}
-  \begin{itemize}[<+->]
-    \item Viewing the objects in your workspace
-\begin{knitrout}
+%  \begin{itemize}[<+->]
+%    \item
+  Viewing the objects in your workspace
+\begin{knitrout}\small
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlkwd{ls}\hlstd{()}
@@ -1064,7 +1110,9 @@ These do the same thing
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
-    \item Removing (deleting) some objects
+%    \item
+\pause \vfill
+Removing (deleting) some objects
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
@@ -1077,7 +1125,7 @@ These do the same thing
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
-  \end{itemize}
+%  \end{itemize}
 \end{frame}
 
 
@@ -1111,8 +1159,9 @@ If you prefer commands over point-and-click:
 \begin{frame}[fragile]
   \frametitle{Additional Resources}
   \Large
-\begin{itemize}
-  \item `Official' manuals
+%\begin{itemize}
+%  \item
+  `Official' manuals
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
@@ -1120,22 +1169,26 @@ If you prefer commands over point-and-click:
 \end{alltt}
 \end{kframe}
 \end{knitrout}
-  \item[]
-  \item Useful books
-    \begin{itemize}
-      \large
-      \item Venables, W.N. and B.D. Ripley. 2002. Modern Applied Statistics with
-        S, 4th ed. Springer.
-      \item Crawley, M.J.. 2013. The \R~Book, 2nd ed. Wiley
-    \end{itemize}
-  \item[]
-  \item Online
+%  \item[]
+%  \item
+Useful books
+\begin{itemize}
+  \large
+\item Venables, W.N. and B.D. Ripley. 2002. Modern Applied Statistics with
+  S, 4th ed. Springer.
+\item Crawley, M.J.. 2013. The \R~Book, 2nd ed. Wiley
+\end{itemize}
+%  \item[]
+%  \item
+%\pause \vfill
+Online
     \begin{itemize}
       \large
       \item Always Google your error messages
-      \item Great site: \url{http://stackoverflow.com/}
+      \item \url{http://stackoverflow.com/}
+      \item \url{https://preludeinr.com/}
     \end{itemize}
-\end{itemize}
+%\end{itemize}
 \end{frame}
 
 
