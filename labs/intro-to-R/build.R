@@ -7,7 +7,14 @@ if(!reqval) {
 }
 
 ## Create the .tex file
-knit("lab-intro-to-R.Rnw", tangle=TRUE)
+knit("lab-intro-to-R.Rnw")
+
+
+## Create the .R file
+if(F) # switch
+    knit("lab-intro-to-R.Rnw", tangle=TRUE)
+
+
 
 
 ## Create the PDF

@@ -475,7 +475,7 @@ BMI
 
 
 \begin{frame}[fragile]
-  \frametitle{In-class assignment 1}
+  \frametitle{In-class assignment}
   {Calculate the circumference and area of circles with radii: 3,5,6,11} \\
   \pause
   \vspace{0.5cm}
@@ -491,7 +491,7 @@ BMI
   \end{enumerate}
   \vspace{1cm}
   \centering
-  \alert{You should be able to do this in just 3 lines in your
+  {\bf You should be able to do this in just 3 lines in your
     script. Write all of your code in the script, not in console. \\}
 \end{frame}
 
@@ -713,13 +713,13 @@ write.csv(mydata, file="mydata.csv")
 @
 %    \item
   \pause \vfill
-Confirm that it is there
-<<getwd, size='small'>>=
-getwd()
+Confirm that it is there:
+<<lsf, size='scriptsize', eval=FALSE>>=
+getwd() # Go to this location and look for 'mydata.csv'
 @
 %    \item
   \pause \vfill
-Read it back in
+Read it back in:
 <<read-csv, size='small'>>=
 mydata2 <- read.csv("mydata.csv")
 @
@@ -731,28 +731,30 @@ mydata2 <- read.csv("mydata.csv")
 
 
 
+
 \begin{frame}[fragile]
-  \frametitle{In-class assignment 2}
-  \begin{enumerate}[\bf (1)]
-    \item Create a \verb+data.frame+ that contains the information shown in the table below
-    \item Export the \verb+data.frame+ as a .csv file.
-    \item Import it back in
-  \end{enumerate}
-  \begin{center}
-    \begin{tabular}{lccc}
-      \hline
-      Individual & Mass & Weight & Treatment \\
-      \hline
-      1 & 3 & 4 & Control \\
-      2 & 3 & 5 & Control \\
-      3 & 2 & 4 & Control \\
-      4 & 4 & 6 & Treatment \\
-      5 & 5 & 5 & Treatment \\
-      6 & 5 & 7 & Treatment \\
-      \hline
-    \end{tabular}
-  \end{center}
+  \frametitle{The working directory}
+The working directory is the location on your computer where \R~will
+look for files by default. \\
+\pause \vfill
+You can check your working directory like this:
+<<getwd, size='small'>>=
+getwd()
+@
+\pause \vfill
+Change your working directory to another location:
+<<setwd, size='small', eval=FALSE>>=
+## Note the forward slashes, which could be replaced by "\\"
+setwd("C:/work/courses/")
+@
+\pause \vfill
+\centering
+{\bf At the beginning of every \R~session, you should use
+  \inr{setwd} to set your working directory \\}
 \end{frame}
+
+
+
 
 
 
@@ -836,21 +838,60 @@ Online
 \end{frame}
 
 
+
+
+
+
 \begin{frame}[fragile]
-  \frametitle{Assignment}
+  \frametitle{Assignment -- Part I}
+  \footnotesize
+  \begin{enumerate}[\bf (1)]
+    \item Create an \R~script named something like \verb+Chandler-R_lab1.R+
+    \item In your \R~script, write code to create a \verb+data.frame+
+      that contains the information shown in the table below
+    \item Add code to export the \verb+data.frame+ as a .csv file and
+      then import it back into \R.
+  \end{enumerate}
+  \begin{center}
+    \scriptsize
+    \begin{tabular}{lccc}
+      \hline
+      Individual & Mass & Weight & Treatment \\
+      \hline
+      1 & 3 & 4 & Control \\
+      2 & 3 & 5 & Control \\
+      3 & 2 & 4 & Control \\
+      4 & 4 & 6 & Treatment \\
+      5 & 5 & 5 & Treatment \\
+      6 & 5 & 7 & Treatment \\
+      \hline
+    \end{tabular}
+  \end{center}
+  Upload your \R~script to ELC before your next lab. The script should
+  be self-contained, meaning that it will run correctly when we copy
+  and paste it in the console.\footnote{\scriptsize \noindent If you
+    are familiar with RMarkdown, you can submit a \texttt{.Rmd} file
+    instead of a \texttt{.R} file }
+\end{frame}
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Assignment -- Part II}
   \begin{columns}
     \begin{column}{0.3\textwidth}
       \includegraphics[width=1\textwidth]{figs/introStatsR} \\
 %      \tiny
     \end{column}
     \begin{column}{0.6\textwidth}
-      \begin{enumerate}[\bf (1)]
-        \item Read chapters 1, 4, \& 5 for next week
-        \item[]
-        \item Create an R script to import a .csv file (you can use
-          any file you want). Upload the script and the .csv file to
-          ELC.
-      \end{enumerate}
+%      \begin{enumerate}[\bf (1)]
+%        \item
+      Read chapters 1, 4, \& 5 before next lab
+%        \item[]
+%        \item Create an R script to import a .csv file (you can use
+%          any file you want). Upload the script and the .csv file to
+%          ELC.
+%      \end{enumerate}
     \end{column}
   \end{columns}
   \vfill

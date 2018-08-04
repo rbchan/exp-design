@@ -122,11 +122,18 @@ str(mydata)
 ## ----export, size='small'------------------------------------------------
 write.csv(mydata, file="mydata.csv")
 
-## ----getwd, size='small'-------------------------------------------------
-getwd()
+## ----lsf, size='scriptsize', eval=FALSE----------------------------------
+## getwd() # Go to this location and look for 'mydata.csv'
 
 ## ----read-csv, size='small'----------------------------------------------
 mydata2 <- read.csv("mydata.csv")
+
+## ----getwd, size='small'-------------------------------------------------
+getwd()
+
+## ----setwd, size='small', eval=FALSE-------------------------------------
+## ## Note the forward slashes, which could be replaced by "\\"
+## setwd("C:/work/courses/")
 
 ## ----ls, size='scriptsize'-----------------------------------------------
 ls()
