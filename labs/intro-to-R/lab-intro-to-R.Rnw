@@ -1,30 +1,13 @@
 \documentclass[color=usenames,dvipsnames]{beamer}
 %\documentclass[color=usenames,dvipsnames,handout]{beamer}
 
-%\usepackage[roman]{../../pres1}
-\usepackage[sans]{../../pres1}
-%\usepackage{Sweave}
-\usepackage{hyperref}
-\usepackage{graphicx}
-\usepackage{pgfpages}
-\usepackage{verbatim}
-%\usepackage{color}
-%\usepackage[T1]{fontenc}
-\usepackage{framed}
+%\usepackage[roman]{../../lab1}
+\usepackage[sans]{../../lab1}
+% \usepackage{Sweave}
+
 
 
 \hypersetup{pdfpagemode=UseNone,pdfstartview=FitV}
-
-
-
-
-%% \mode<handout>{
-%%   \usetheme{default}
-%% %  \setbeamercolor{background canvas}{bg=black!5}
-%%   \pgfpagesuselayout{4 on 1}[letterpaper,landscape,border shrink=2.5mm]
-%% %  \pgfpagesuselayout{2 on 1}[letterpaper,border shrink=10mm]
-%% }
-
 
 
 

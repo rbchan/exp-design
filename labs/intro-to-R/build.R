@@ -7,7 +7,7 @@ if(!reqval) {
 }
 
 ## Create the .tex file
-knit("lab-intro-to-R.Rnw")
+knit("lab-intro-to-R.Rnw", tangle=TRUE)
 
 
 ## Create the PDF

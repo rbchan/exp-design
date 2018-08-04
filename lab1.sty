@@ -26,60 +26,28 @@
 
 
 
-%% Global indentation option
-%\newif\if@neverindent\@neverindentfalse
-%\DeclareOption{neverindent}{
-%  \@neverindenttrue
-%}
+
 
 \ExecuteOptions{sans,mroman}
 
 \ProcessOptions\relax
 
 %% Traditional LaTeX or TeX follows...
-% ...
-
-%\newlength{\pardefault}
-%\setlength{\pardefault}{\parindent}
-%\newcommand{\neverindent}{ \setlength{\parindent}{0pt} }
-%\newcommand{\autoindent}{ \setlength{\parindent}{\pardefault} }
-
-%\if@neverindent
-%\neverindent
-%\fi
-
-% ...
 
 
-
-%\RequirePackage[%
-%  papersize={\beamer@paperwidth,\beamer@paperheight},
-%  hmargin=0.2cm%,%
-%  vmargin=0cm,%
-%  head=0.5cm,% might be changed later
-%  headsep=0pt,%
-%  foot=0.5cm% might be changed later
-%  ]{geometry}% http://ctan.org/pkg/geometry
-
-%\usepackage{Sweave}
-%\usepackage{hyperref}
-%\usepackage{graphicx}
-%\usepackage{verbatim}
-%\usepackage{pgfpages}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{pgfpages}
+\usepackage{verbatim}
 %\usepackage{color}
-
-%\hypersetup{pdftex,pdfpagemode=UseNone,pdfstartview=FitV}
-%\hypersetup{pdfstartview=FitV}
-
-
+%\usepackage[T1]{fontenc}
+\usepackage{framed}
 
 
 
 \mode<handout>{
   \usetheme{default}
-%  \setbeamercolor{background canvas}{bg=black!5}
   \pgfpagesuselayout{4 on 1}[letterpaper,landscape,border shrink=2.5mm]
-%  \pgfpagesuselayout{2 on 1}[letterpaper,border shrink=10mm]
 }
 
 
@@ -170,17 +138,6 @@
 \newcommand{\jags}{{\bf JAGS}}
 
 
-
-% <<knitr_setup, echo=FALSE>>=
-% library(knitr)
-% ##opts_chunk$set(highlight = TRUE, cache = TRUE, eval = FALSE, size = "small")
-% ##options(width = 60)
-% ##opts_knit$set(out.format = "latex")
-% @
-% <<theme, cache=FALSE, echo=FALSE>>=
-% thm <- knit_theme$get("olive")
-% knit_theme$set(thm)
-% @
 
 
 
