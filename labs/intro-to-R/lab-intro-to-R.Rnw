@@ -91,7 +91,9 @@ knit_theme$set("edit-kwrite")
   August 13 \& 14, 2018 \\
   FANR 6750 \par
   \vfill
+  \large
   Richard Chandler and Bob Cooper \\
+  University of Georgia \\
   }
 \end{frame}
 
@@ -116,7 +118,7 @@ knit_theme$set("edit-kwrite")
   {\Large Good}
   \large
   \begin{itemize}%[<+->]
-    \item<1-> Flexible %If you're going to use a stats program, might as well use one that does everything!
+    \item<1-> Powerful platform for statistical analysis %Flexible %If you're going to use a stats program, might as well use one that does everything!
 %    \item<1-> Many \inr{packages} \colorbox{BurntOrange}{written} for ecologists
     \item<1-> Many packages written for ecologists
     \item<1-> It's free
@@ -203,7 +205,9 @@ knit_theme$set("edit-kwrite")
 %  \pause
   \small
   \vspace{0.5cm}
-  You are encouraged to learn and use these programs, but we will not use them for instruction
+  You are encouraged to learn and use these programs, but we will not
+  use them for instruction because we want to focus on \R itself, not
+  the interface.
 \end{frame}
 
 
@@ -224,22 +228,24 @@ knit_theme$set("edit-kwrite")
 
 
 \begin{frame}[fragile]
-  \frametitle{How to read the code in these slides}
+  \frametitle{How to read the code in the lab slides}
+%  \small
   Anything in a shaded box like this one is \R~code:
 <<add2>>=
 2+2
 @
-\pause \vfill
+\pause %\vfill
   The line \inr{2+2} is \R~code (\alert{input}). You can copy
   and paste it into the console. Note that the command prompt (\verb+>+) is
-  not shown in these slides.
+  not shown.
 \vfill
   The line \inr{\#\# [1] 4} is \alert{output}. Output is
-  commented out by 2 hash signs (\texttt{\#\#}).
+  always indicated by two hash signs (\texttt{\#\#}). Anything after a
+  \texttt{\#} is not evaluated at the command line.
 \pause \vfill
   You can copy and paste the entire code box directly into your
-  console. However, it might be easier to work with the \R~script
-  that accompanies the PDF. In this case, the script is called
+  console, but it might be easier to work with the \R~script
+  that accompanies the PDF: %. In this case, the script is called
   \texttt{lab-intro-to-R.R}.
 \end{frame}
 
@@ -280,32 +286,6 @@ cos(pi)
 
 
 
-
-
-
-
-
-
-
-
-%\begin{frame}[fragile]
-%\frametitle{What is 2 plus 2????}
-%
-%2+2
-%
-%\end{frame}
-
-
-%\begin{frame}
-%  \frametitle{Functions}
-%  Functions take arguments and return a result
-%\end{frame}
-
-
-
-
-
-
 %\section{Data frames}
 
 
@@ -321,14 +301,14 @@ cos(pi)
       \inr{<-} assignment arrow.
       \pause \vfill
 %    \item
-      In this example, \inr{y} is an object storing the number 2:
+      In this example, we assign the value 2 to the object \inr{y}:
 <<y-def>>=
 y <- 2
 @
-\pause \vfill
+%\pause \vfill
 %    \item The \colorbox{inlinecolor}{\texttt{<-}} arrow assigns the value \Sexpr{y} to the object \texttt{y}.
 %    \item
-The \inr{<-} arrow assigns the value 2 to the object \inr{y}.
+%The \inr{<-} arrow assigns the value 2 to the object \inr{y}.
       \pause \vfill
 %    \item
       You cannot have a space between \inr{<} and \inr{-}
@@ -352,7 +332,8 @@ y
   \frametitle{Vectors}
 %  \begin{itemize}[<+->]
 %    \item
-We store information in objects so that they can be easily manipulated:
+We store data in objects so that they can be easily manipulated:
+%  Notice how \inr{y} behaves just like the number 2:
 <<y-math, size='small'>>=
 y*2+1
 @
@@ -415,6 +396,7 @@ x1 <- 1:3 # Same as: x1 <- c(1, 2, 3)
           # Note: anything after "#" is a comment
 x1
 @
+\pause \vfill
 %\item
 \inr{seq} is more general
 %% <<>>=
@@ -427,6 +409,7 @@ x2 <- seq(from=1, to=7, by=2)
 x2
 @
 %\item
+\pause \vfill
 Use \inr{rep} to repeat elements of a vector
 <<rep, size='small'>>=
 rep(x2, times=2)
@@ -460,17 +443,17 @@ class(y1)
 @
 %  \item
 \pause \vfill
-  Names can be stored as character vectors
-<<y2-class, size='small'>>=
-y2 <- c("Treatment", "Control")
-class(y2)
-@
+%  Names can be stored as character vectors
+%<<y2-class, size='small'>>=
+%y2 <- c("Treatment", "Control")
+%class(y2)
+%@
 %  \item
-\pause \vfill
-Factors are similar, but they keep track of levels
-<<y3-factor, size='small'>>=
-y3 <- factor(rep(y2, each=2))
-y3
+%\pause \vfill
+Factors can be used to store categorical variables: %character strings
+<<y2-factor, size='small'>>=
+y2 <- factor(c("Treatment", "Control", "Treatment"))
+y2
 @
 %  \end{itemize}
 \end{frame}
@@ -500,7 +483,7 @@ height <- c(1.8, 1.8, 1.7, 1.9, 1.7, 1.9)
 @
   \pause
   Then, evaluate the equation in just one line:
-<<bmi, size='small'>>=
+<<bmi, size='footnotesize'>>=
 BMI <- weight/height^2
 BMI
 @
@@ -508,18 +491,25 @@ BMI
 
 
 
-\begin{frame}
+\begin{frame}[fragile]
   \frametitle{In-class assignment 1}
-  {\bf Calculate the circumference and area of circles with radii: 3, 5, 6, 11} \\
+  {Calculate the circumference and area of circles with radii: 3,5,6,11} \\
   \pause
   \vspace{0.5cm}
   \begin{enumerate}[\bf (1)]
-    \item Create a new script called ``lab1-prob1.R''
+    \item Create a new script called ``lab1-prob1.R''. You can do this by:
+      \begin{enumerate}[i]
+        \item Clicking on the Console
+        \item Choosing \verb_"File > New Script"_ from the drop-down menu
+        \item Clicking on \verb_"File > Save as..."_
+      \end{enumerate}
     \item Create a vector containing the radii
     \item Store the computed circumferences and areas in 2 new vectors
   \end{enumerate}
   \vspace{1cm}
-  \alert{You should be able to do this in just 3 lines in your script.}
+  \centering
+  \alert{You should be able to do this in just 3 lines in your
+    script. Write all of your code in the script, not in console. \\}
 \end{frame}
 
 
@@ -549,7 +539,7 @@ BMI
     \begin{tabular}{ccccc}
       \hline
 %      & \multicolumn{5}{c}{Number of chiggers on 5 different people} \\
-      \multicolumn{5}{c}{Number of chiggers} \\
+      \multicolumn{5}{c}{Number of ticks on 5 dogs} \\
       \hline %\cline{1-5}
       $y_1$ & $y_2$ & $y_3$ & $y_4$ & $y_5$ \\
       \hline
@@ -592,23 +582,26 @@ var(y)
   \frametitle{Indexing vectors}
 %  \begin{itemize}[<+->]
 %  \item
+  \small
   Extract the first and third elements of a vector
-<<y-sub>>=
+<<y-sub1, size='small'>>=
 y <- c(2, 4, 8, 4, 25)
-y.sub <- y[c(1,3)]
-y.sub
+y.sub1 <- y[c(1,3)]
+y.sub1
 @ %def
 %\item
 \pause \vfill
 Remove the second element
-<<>>=
-y[-2]
+<<y-sub2, size='small'>>=
+y.sub2 <- y[-2]
+y.sub2
 @
 \pause \vfill
 %\item
 Rearrange the order of the vector
-<<>>=
-y[c(5,4,3,2,1)]
+<<y-sub3, size='small'>>=
+y.re <- y[c(5,4,3,2,1)]
+y.re
 @
 %\end{itemize}
 \end{frame}
@@ -619,26 +612,17 @@ y[c(5,4,3,2,1)]
 %\begin{itemize}[<+->]
 %  \item
   \small
-  Which elements of the vector equal 4? (logical indexing)
-<<y-is4, size='small'>>=
+  Which elements of the vector are greater than 4? (logical test)
+<<y-g4, size='small'>>=
 y <- c(2, 4, 6, 4, 25)
-y == 4
-y[y == 4]
+y>4
 @
-%  \item
 \pause \vfill
-Add missing values, then remove them
-<<y-toNA, size='small'>>=
-y[c(3,5)] <- NA
-y
+  Extract the elements greater than 4 (logical indexing)
+<<y-g4-sub, size='small'>>=
+y.sub4 <- y[y>4]
+y.sub4
 @
-%  \item[]
-\pause \vfill
-<<y-test-sub, size='small'>>=
-!is.na(y)
-y[!is.na(y)]
-@
-%\end{itemize}
 \end{frame}
 
 
@@ -667,8 +651,8 @@ y[!is.na(y)]
 
 \begin{frame}[fragile]
   \frametitle{Creating a data frame}
-  {\LARGE 3 variables measured at 4 sites}
-<<datfr1>>=
+  {Simple example with 3 variables measured at 4 sites}
+<<datfr1, size='small'>>=
 y <- c(3, 9, 7, 4)
 x1 <- factor(c('High', 'High', 'Low', 'Low'))
 x2 <- c(2.2, 3.4, 4.4, 3.9)
@@ -683,18 +667,21 @@ mydata
   \frametitle{Indexing data frames}
 %  \begin{itemize}[<+->]
 %    \item
-  Bracket method. Row 1, columns 1 and 3
-<<mydat-sub1>>=
+  \small
+  Bracket method. Extract data from row 1, columns 1 and 3
+<<mydat-sub1, size='footnotesize'>>=
 mydata[1,c(1,3)]
 @
 %    \item
-Bracket method. Rows 2 and 3, columns 1 and 3
-<<mydat-sub2>>=
+\pause \vfill
+Bracket method. Extract from rows 2 and 3, columns 1 and 3
+<<mydat-sub2, size='footnotesize'>>=
 mydata[c('Site2', 'Site3'), c('Goats', 'Temp')]
 @
 %    \item
+\pause \vfill
 Dollar sign method. Pull out column 1
-<<mydat-sub3>>=
+<<mydat-sub3, size='footnotesize'>>=
 mydata$Elev
 @
 %  \end{itemize}
@@ -705,24 +692,23 @@ mydata$Elev
   \frametitle{Summarizing data frames}
 %  \begin{itemize}[<+->]
 %    \item
-  Open up a `spreadsheet'
-<<eval=FALSE>>=
+  \small
+  View the data as a `spreadsheet'
+<<eval=FALSE, size='footnotesize'>>=
 View(mydata)
 @
 %    \item
+\pause \vfill
 Compute some summary statistics
-{\small
-<<smry, size='footnotesize'>>=
+<<smry, size='scriptsize'>>=
 summary(mydata)
 @
-}
 %    \item
-A very compact and hard-to-understand-at-first summary
-{\small
-<<str, size='footnotesize'>>=
+\pause \vfill
+A very compact summary
+<<str, size='scriptsize'>>=
 str(mydata)
 @
-}
 %  \end{itemize}
 \end{frame}
 
@@ -733,23 +719,25 @@ str(mydata)
 \begin{frame}[fragile]
   \frametitle{Importing and exporting data}
   \verb+read.csv+ and \verb+write.csv+ are easy options, but there are
-  many more possibilities
+  many more possibilities that we won't cover. \\
 %  \begin{itemize}
 %    \item
+  \small
+  \pause \vfill
   Export the \verb+data.frame+ we created earlier
-<<>>=
+<<export, size='small'>>=
 write.csv(mydata, file="mydata.csv")
 @
 %    \item
+  \pause \vfill
 Confirm that it is there
-{\small
-<<>>=
+<<getwd, size='small'>>=
 getwd()
 @
-}
 %    \item
+  \pause \vfill
 Read it back in
-<<>>=
+<<read-csv, size='small'>>=
 mydata2 <- read.csv("mydata.csv")
 @
 %  \end{itemize}
@@ -794,15 +782,15 @@ mydata2 <- read.csv("mydata.csv")
 %  \begin{itemize}[<+->]
 %    \item
   Viewing the objects in your workspace
-<<ls, size='small'>>=
+<<ls, size='scriptsize'>>=
 ls()
 @
 %    \item
 \pause \vfill
 Removing (deleting) some objects
-<<rm>>=
-rm(x1, x2, mydata2, y2, y3, height, weight, BMI,
-   y, y1, z)
+<<rm, size='scriptsize'>>=
+rm(x1, x2, mydata2, y, y1, y2, y.re,
+   y.sub1, y.sub2, y.sub4, height, weight, BMI, z)
 ls()
 @
 %  \end{itemize}
@@ -834,7 +822,7 @@ load("myimage.RData")       # Load the saved workspace
 
 \begin{frame}[fragile]
   \frametitle{Additional Resources}
-  \Large
+  \large
 %\begin{itemize}
 %  \item
   `Official' manuals
@@ -843,6 +831,7 @@ help.start()
 @
 %  \item[]
 %  \item
+\vfill
 Useful books
 \begin{itemize}
   \large
@@ -852,7 +841,7 @@ Useful books
 \end{itemize}
 %  \item[]
 %  \item
-%\pause \vfill
+\vfill
 Online
     \begin{itemize}
       \large

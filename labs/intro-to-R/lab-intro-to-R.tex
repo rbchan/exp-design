@@ -133,7 +133,9 @@
   August 13 \& 14, 2018 \\
   FANR 6750 \par
   \vfill
+  \large
   Richard Chandler and Bob Cooper \\
+  University of Georgia \\
   }
 \end{frame}
 
@@ -158,7 +160,7 @@
   {\Large Good}
   \large
   \begin{itemize}%[<+->]
-    \item<1-> Flexible %If you're going to use a stats program, might as well use one that does everything!
+    \item<1-> Powerful platform for statistical analysis %Flexible %If you're going to use a stats program, might as well use one that does everything!
 %    \item<1-> Many \inr{packages} \colorbox{BurntOrange}{written} for ecologists
     \item<1-> Many packages written for ecologists
     \item<1-> It's free
@@ -245,7 +247,9 @@
 %  \pause
   \small
   \vspace{0.5cm}
-  You are encouraged to learn and use these programs, but we will not use them for instruction
+  You are encouraged to learn and use these programs, but we will not
+  use them for instruction because we want to focus on \R itself, not
+  the interface.
 \end{frame}
 
 
@@ -266,7 +270,8 @@
 
 
 \begin{frame}[fragile]
-  \frametitle{How to read the code in these slides}
+  \frametitle{How to read the code in the lab slides}
+%  \small
   Anything in a shaded box like this one is \R~code:
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
@@ -278,17 +283,18 @@
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
-\pause \vfill
+\pause %\vfill
   The line \inr{2+2} is \R~code (\alert{input}). You can copy
   and paste it into the console. Note that the command prompt (\verb+>+) is
-  not shown in these slides.
+  not shown.
 \vfill
   The line \inr{\#\# [1] 4} is \alert{output}. Output is
-  commented out by 2 hash signs (\texttt{\#\#}).
+  always indicated by two hash signs (\texttt{\#\#}). Anything after a
+  \texttt{\#} is not evaluated at the command line.
 \pause \vfill
   You can copy and paste the entire code box directly into your
-  console. However, it might be easier to work with the \R~script
-  that accompanies the PDF. In this case, the script is called
+  console, but it might be easier to work with the \R~script
+  that accompanies the PDF: %. In this case, the script is called
   \texttt{lab-intro-to-R.R}.
 \end{frame}
 
@@ -350,32 +356,6 @@
 
 
 
-
-
-
-
-
-
-
-
-%\begin{frame}[fragile]
-%\frametitle{What is 2 plus 2????}
-%
-%2+2
-%
-%\end{frame}
-
-
-%\begin{frame}
-%  \frametitle{Functions}
-%  Functions take arguments and return a result
-%\end{frame}
-
-
-
-
-
-
 %\section{Data frames}
 
 
@@ -391,7 +371,7 @@
       \inr{<-} assignment arrow.
       \pause \vfill
 %    \item
-      In this example, \inr{y} is an object storing the number 2:
+      In this example, we assign the value 2 to the object \inr{y}:
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
@@ -399,10 +379,10 @@
 \end{alltt}
 \end{kframe}
 \end{knitrout}
-\pause \vfill
+%\pause \vfill
 %    \item The \colorbox{inlinecolor}{\texttt{<-}} arrow assigns the value y to the object \texttt{y}.
 %    \item
-The \inr{<-} arrow assigns the value 2 to the object \inr{y}.
+%The \inr{<-} arrow assigns the value 2 to the object \inr{y}.
       \pause \vfill
 %    \item
       You cannot have a space between \inr{<} and \inr{-}
@@ -433,7 +413,8 @@ The \inr{<-} arrow assigns the value 2 to the object \inr{y}.
   \frametitle{Vectors}
 %  \begin{itemize}[<+->]
 %    \item
-We store information in objects so that they can be easily manipulated:
+We store data in objects so that they can be easily manipulated:
+%  Notice how \inr{y} behaves just like the number 2:
 \begin{knitrout}\small
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
@@ -517,6 +498,7 @@ A sequence of numbers
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
+\pause \vfill
 %\item
 \inr{seq} is more general
 %% <<>>=
@@ -536,6 +518,7 @@ A sequence of numbers
 \end{kframe}
 \end{knitrout}
 %\item
+\pause \vfill
 Use \inr{rep} to repeat elements of a vector
 \begin{knitrout}\small
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
@@ -587,29 +570,22 @@ These do the same thing
 \end{knitrout}
 %  \item
 \pause \vfill
-  Names can be stored as character vectors
-\begin{knitrout}\small
-\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlstd{y2} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlstr{"Treatment"}\hlstd{,} \hlstr{"Control"}\hlstd{)}
-\hlkwd{class}\hlstd{(y2)}
-\end{alltt}
-\begin{verbatim}
-## [1] "character"
-\end{verbatim}
-\end{kframe}
-\end{knitrout}
+%  Names can be stored as character vectors
+%<<y2-class, size='small'>>=
+%y2 <- c("Treatment", "Control")
+%class(y2)
+%@
 %  \item
-\pause \vfill
-Factors are similar, but they keep track of levels
+%\pause \vfill
+Factors can be used to store categorical variables: %character strings
 \begin{knitrout}\small
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlstd{y3} \hlkwb{<-} \hlkwd{factor}\hlstd{(}\hlkwd{rep}\hlstd{(y2,} \hlkwc{each}\hlstd{=}\hlnum{2}\hlstd{))}
-\hlstd{y3}
+\hlstd{y2} \hlkwb{<-} \hlkwd{factor}\hlstd{(}\hlkwd{c}\hlstd{(}\hlstr{"Treatment"}\hlstd{,} \hlstr{"Control"}\hlstd{,} \hlstr{"Treatment"}\hlstd{))}
+\hlstd{y2}
 \end{alltt}
 \begin{verbatim}
-## [1] Treatment Treatment Control   Control  
+## [1] Treatment Control   Treatment
 ## Levels: Control Treatment
 \end{verbatim}
 \end{kframe}
@@ -646,7 +622,7 @@ Factors are similar, but they keep track of levels
 \end{knitrout}
   \pause
   Then, evaluate the equation in just one line:
-\begin{knitrout}\small
+\begin{knitrout}\footnotesize
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlstd{BMI} \hlkwb{<-} \hlstd{weight}\hlopt{/}\hlstd{height}\hlopt{^}\hlnum{2}
@@ -661,18 +637,25 @@ Factors are similar, but they keep track of levels
 
 
 
-\begin{frame}
+\begin{frame}[fragile]
   \frametitle{In-class assignment 1}
-  {\bf Calculate the circumference and area of circles with radii: 3, 5, 6, 11} \\
+  {Calculate the circumference and area of circles with radii: 3,5,6,11} \\
   \pause
   \vspace{0.5cm}
   \begin{enumerate}[\bf (1)]
-    \item Create a new script called ``lab1-prob1.R''
+    \item Create a new script called ``lab1-prob1.R''. You can do this by:
+      \begin{enumerate}[i]
+        \item Clicking on the Console
+        \item Choosing \verb_"File > New Script"_ from the drop-down menu
+        \item Clicking on \verb_"File > Save as..."_
+      \end{enumerate}
     \item Create a vector containing the radii
     \item Store the computed circumferences and areas in 2 new vectors
   \end{enumerate}
   \vspace{1cm}
-  \alert{You should be able to do this in just 3 lines in your script.}
+  \centering
+  \alert{You should be able to do this in just 3 lines in your
+    script. Write all of your code in the script, not in console. \\}
 \end{frame}
 
 
@@ -702,7 +685,7 @@ Factors are similar, but they keep track of levels
     \begin{tabular}{ccccc}
       \hline
 %      & \multicolumn{5}{c}{Number of chiggers on 5 different people} \\
-      \multicolumn{5}{c}{Number of chiggers} \\
+      \multicolumn{5}{c}{Number of ticks on 5 dogs} \\
       \hline %\cline{1-5}
       $y_1$ & $y_2$ & $y_3$ & $y_4$ & $y_5$ \\
       \hline
@@ -766,13 +749,14 @@ What is the mean? $\frac{\sum_{i=1}^5 y_i}{5}$ = ???
   \frametitle{Indexing vectors}
 %  \begin{itemize}[<+->]
 %  \item
+  \small
   Extract the first and third elements of a vector
-\begin{knitrout}
+\begin{knitrout}\small
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlstd{y} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlnum{2}\hlstd{,} \hlnum{4}\hlstd{,} \hlnum{8}\hlstd{,} \hlnum{4}\hlstd{,} \hlnum{25}\hlstd{)}
-\hlstd{y.sub} \hlkwb{<-} \hlstd{y[}\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,}\hlnum{3}\hlstd{)]}
-\hlstd{y.sub}
+\hlstd{y.sub1} \hlkwb{<-} \hlstd{y[}\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,}\hlnum{3}\hlstd{)]}
+\hlstd{y.sub1}
 \end{alltt}
 \begin{verbatim}
 ## [1] 2 8
@@ -782,10 +766,11 @@ What is the mean? $\frac{\sum_{i=1}^5 y_i}{5}$ = ???
 %\item
 \pause \vfill
 Remove the second element
-\begin{knitrout}
+\begin{knitrout}\small
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlstd{y[}\hlopt{-}\hlnum{2}\hlstd{]}
+\hlstd{y.sub2} \hlkwb{<-} \hlstd{y[}\hlopt{-}\hlnum{2}\hlstd{]}
+\hlstd{y.sub2}
 \end{alltt}
 \begin{verbatim}
 ## [1]  2  8  4 25
@@ -795,10 +780,11 @@ Remove the second element
 \pause \vfill
 %\item
 Rearrange the order of the vector
-\begin{knitrout}
+\begin{knitrout}\small
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlstd{y[}\hlkwd{c}\hlstd{(}\hlnum{5}\hlstd{,}\hlnum{4}\hlstd{,}\hlnum{3}\hlstd{,}\hlnum{2}\hlstd{,}\hlnum{1}\hlstd{)]}
+\hlstd{y.re} \hlkwb{<-} \hlstd{y[}\hlkwd{c}\hlstd{(}\hlnum{5}\hlstd{,}\hlnum{4}\hlstd{,}\hlnum{3}\hlstd{,}\hlnum{2}\hlstd{,}\hlnum{1}\hlstd{)]}
+\hlstd{y.re}
 \end{alltt}
 \begin{verbatim}
 ## [1] 25  4  8  4  2
@@ -814,57 +800,31 @@ Rearrange the order of the vector
 %\begin{itemize}[<+->]
 %  \item
   \small
-  Which elements of the vector equal 4? (logical indexing)
+  Which elements of the vector are greater than 4? (logical test)
 \begin{knitrout}\small
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlstd{y} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlnum{2}\hlstd{,} \hlnum{4}\hlstd{,} \hlnum{6}\hlstd{,} \hlnum{4}\hlstd{,} \hlnum{25}\hlstd{)}
-\hlstd{y} \hlopt{==} \hlnum{4}
+\hlstd{y}\hlopt{>}\hlnum{4}
 \end{alltt}
 \begin{verbatim}
-## [1] FALSE  TRUE FALSE  TRUE FALSE
-\end{verbatim}
-\begin{alltt}
-\hlstd{y[y} \hlopt{==} \hlnum{4}\hlstd{]}
-\end{alltt}
-\begin{verbatim}
-## [1] 4 4
+## [1] FALSE FALSE  TRUE FALSE  TRUE
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
-%  \item
 \pause \vfill
-Add missing values, then remove them
+  Extract the elements greater than 4 (logical indexing)
 \begin{knitrout}\small
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlstd{y[}\hlkwd{c}\hlstd{(}\hlnum{3}\hlstd{,}\hlnum{5}\hlstd{)]} \hlkwb{<-} \hlnum{NA}
-\hlstd{y}
+\hlstd{y.sub4} \hlkwb{<-} \hlstd{y[y}\hlopt{>}\hlnum{4}\hlstd{]}
+\hlstd{y.sub4}
 \end{alltt}
 \begin{verbatim}
-## [1]  2  4 NA  4 NA
+## [1]  6 25
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
-%  \item[]
-\pause \vfill
-\begin{knitrout}\small
-\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlopt{!}\hlkwd{is.na}\hlstd{(y)}
-\end{alltt}
-\begin{verbatim}
-## [1]  TRUE  TRUE FALSE  TRUE FALSE
-\end{verbatim}
-\begin{alltt}
-\hlstd{y[}\hlopt{!}\hlkwd{is.na}\hlstd{(y)]}
-\end{alltt}
-\begin{verbatim}
-## [1] 2 4 4
-\end{verbatim}
-\end{kframe}
-\end{knitrout}
-%\end{itemize}
 \end{frame}
 
 
@@ -893,8 +853,8 @@ Add missing values, then remove them
 
 \begin{frame}[fragile]
   \frametitle{Creating a data frame}
-  {\LARGE 3 variables measured at 4 sites}
-\begin{knitrout}
+  {Simple example with 3 variables measured at 4 sites}
+\begin{knitrout}\small
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlstd{y} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlnum{3}\hlstd{,} \hlnum{9}\hlstd{,} \hlnum{7}\hlstd{,} \hlnum{4}\hlstd{)}
@@ -920,8 +880,9 @@ Add missing values, then remove them
   \frametitle{Indexing data frames}
 %  \begin{itemize}[<+->]
 %    \item
-  Bracket method. Row 1, columns 1 and 3
-\begin{knitrout}
+  \small
+  Bracket method. Extract data from row 1, columns 1 and 3
+\begin{knitrout}\footnotesize
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlstd{mydata[}\hlnum{1}\hlstd{,}\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,}\hlnum{3}\hlstd{)]}
@@ -933,8 +894,9 @@ Add missing values, then remove them
 \end{kframe}
 \end{knitrout}
 %    \item
-Bracket method. Rows 2 and 3, columns 1 and 3
-\begin{knitrout}
+\pause \vfill
+Bracket method. Extract from rows 2 and 3, columns 1 and 3
+\begin{knitrout}\footnotesize
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlstd{mydata[}\hlkwd{c}\hlstd{(}\hlstr{'Site2'}\hlstd{,} \hlstr{'Site3'}\hlstd{),} \hlkwd{c}\hlstd{(}\hlstr{'Goats'}\hlstd{,} \hlstr{'Temp'}\hlstd{)]}
@@ -947,8 +909,9 @@ Bracket method. Rows 2 and 3, columns 1 and 3
 \end{kframe}
 \end{knitrout}
 %    \item
+\pause \vfill
 Dollar sign method. Pull out column 1
-\begin{knitrout}
+\begin{knitrout}\footnotesize
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlstd{mydata}\hlopt{$}\hlstd{Elev}
@@ -967,8 +930,9 @@ Dollar sign method. Pull out column 1
   \frametitle{Summarizing data frames}
 %  \begin{itemize}[<+->]
 %    \item
-  Open up a `spreadsheet'
-\begin{knitrout}
+  \small
+  View the data as a `spreadsheet'
+\begin{knitrout}\footnotesize
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlkwd{View}\hlstd{(mydata)}
@@ -976,9 +940,9 @@ Dollar sign method. Pull out column 1
 \end{kframe}
 \end{knitrout}
 %    \item
+\pause \vfill
 Compute some summary statistics
-{\small
-\begin{knitrout}\footnotesize
+\begin{knitrout}\scriptsize
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlkwd{summary}\hlstd{(mydata)}
@@ -994,11 +958,10 @@ Compute some summary statistics
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
-}
 %    \item
-A very compact and hard-to-understand-at-first summary
-{\small
-\begin{knitrout}\footnotesize
+\pause \vfill
+A very compact summary
+\begin{knitrout}\scriptsize
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlkwd{str}\hlstd{(mydata)}
@@ -1011,7 +974,6 @@ A very compact and hard-to-understand-at-first summary
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
-}
 %  \end{itemize}
 \end{frame}
 
@@ -1022,11 +984,13 @@ A very compact and hard-to-understand-at-first summary
 \begin{frame}[fragile]
   \frametitle{Importing and exporting data}
   \verb+read.csv+ and \verb+write.csv+ are easy options, but there are
-  many more possibilities
+  many more possibilities that we won't cover. \\
 %  \begin{itemize}
 %    \item
+  \small
+  \pause \vfill
   Export the \verb+data.frame+ we created earlier
-\begin{knitrout}
+\begin{knitrout}\small
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlkwd{write.csv}\hlstd{(mydata,} \hlkwc{file}\hlstd{=}\hlstr{"mydata.csv"}\hlstd{)}
@@ -1034,9 +998,9 @@ A very compact and hard-to-understand-at-first summary
 \end{kframe}
 \end{knitrout}
 %    \item
+  \pause \vfill
 Confirm that it is there
-{\small
-\begin{knitrout}
+\begin{knitrout}\small
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlkwd{getwd}\hlstd{()}
@@ -1046,10 +1010,10 @@ Confirm that it is there
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
-}
 %    \item
+  \pause \vfill
 Read it back in
-\begin{knitrout}
+\begin{knitrout}\small
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlstd{mydata2} \hlkwb{<-} \hlkwd{read.csv}\hlstd{(}\hlstr{"mydata.csv"}\hlstd{)}
@@ -1098,30 +1062,30 @@ Read it back in
 %  \begin{itemize}[<+->]
 %    \item
   Viewing the objects in your workspace
-\begin{knitrout}\small
+\begin{knitrout}\scriptsize
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlkwd{ls}\hlstd{()}
 \end{alltt}
 \begin{verbatim}
 ##  [1] "BMI"     "height"  "mydata"  "mydata2" "reqval"  "sysval"  "weight" 
-##  [8] "x1"      "x2"      "y"       "y.sub"   "y1"      "y2"      "y3"     
-## [15] "z"
+##  [8] "x1"      "x2"      "y"       "y.re"    "y.sub1"  "y.sub2"  "y.sub4" 
+## [15] "y1"      "y2"      "z"
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
 %    \item
 \pause \vfill
 Removing (deleting) some objects
-\begin{knitrout}
+\begin{knitrout}\scriptsize
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlkwd{rm}\hlstd{(x1, x2, mydata2, y2, y3, height, weight, BMI,}
-   \hlstd{y, y1, z)}
+\hlkwd{rm}\hlstd{(x1, x2, mydata2, y, y1, y2, y.re,}
+   \hlstd{y.sub1, y.sub2, y.sub4, height, weight, BMI, z)}
 \hlkwd{ls}\hlstd{()}
 \end{alltt}
 \begin{verbatim}
-## [1] "mydata" "reqval" "sysval" "y.sub"
+## [1] "mydata" "reqval" "sysval"
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -1158,7 +1122,7 @@ If you prefer commands over point-and-click:
 
 \begin{frame}[fragile]
   \frametitle{Additional Resources}
-  \Large
+  \large
 %\begin{itemize}
 %  \item
   `Official' manuals
@@ -1171,6 +1135,7 @@ If you prefer commands over point-and-click:
 \end{knitrout}
 %  \item[]
 %  \item
+\vfill
 Useful books
 \begin{itemize}
   \large
@@ -1180,7 +1145,7 @@ Useful books
 \end{itemize}
 %  \item[]
 %  \item
-%\pause \vfill
+\vfill
 Online
     \begin{itemize}
       \large
