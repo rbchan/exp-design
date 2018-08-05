@@ -1,0 +1,915 @@
+\documentclass[color=usenames,dvipsnames]{beamer}\usepackage[]{graphicx}\usepackage[]{color}
+%% maxwidth is the original width if it is less than linewidth
+%% otherwise use linewidth (to make sure the graphics do not exceed the margin)
+\makeatletter
+\def\maxwidth{ %
+  \ifdim\Gin@nat@width>\linewidth
+    \linewidth
+  \else
+    \Gin@nat@width
+  \fi
+}
+\makeatother
+
+\definecolor{fgcolor}{rgb}{0, 0, 0}
+\newcommand{\hlnum}[1]{\textcolor[rgb]{0.69,0.494,0}{#1}}%
+\newcommand{\hlstr}[1]{\textcolor[rgb]{0.749,0.012,0.012}{#1}}%
+\newcommand{\hlcom}[1]{\textcolor[rgb]{0.514,0.506,0.514}{\textit{#1}}}%
+\newcommand{\hlopt}[1]{\textcolor[rgb]{0,0,0}{#1}}%
+\newcommand{\hlstd}[1]{\textcolor[rgb]{0,0,0}{#1}}%
+\newcommand{\hlkwa}[1]{\textcolor[rgb]{0,0,0}{\textbf{#1}}}%
+\newcommand{\hlkwb}[1]{\textcolor[rgb]{0,0.341,0.682}{#1}}%
+\newcommand{\hlkwc}[1]{\textcolor[rgb]{0,0,0}{\textbf{#1}}}%
+\newcommand{\hlkwd}[1]{\textcolor[rgb]{0.004,0.004,0.506}{#1}}%
+\let\hlipl\hlkwb
+
+\usepackage{framed}
+\makeatletter
+\newenvironment{kframe}{%
+ \def\at@end@of@kframe{}%
+ \ifinner\ifhmode%
+  \def\at@end@of@kframe{\end{minipage}}%
+  \begin{minipage}{\columnwidth}%
+ \fi\fi%
+ \def\FrameCommand##1{\hskip\@totalleftmargin \hskip-\fboxsep
+ \colorbox{shadecolor}{##1}\hskip-\fboxsep
+     % There is no \\@totalrightmargin, so:
+     \hskip-\linewidth \hskip-\@totalleftmargin \hskip\columnwidth}%
+ \MakeFramed {\advance\hsize-\width
+   \@totalleftmargin\z@ \linewidth\hsize
+   \@setminipage}}%
+ {\par\unskip\endMakeFramed%
+ \at@end@of@kframe}
+\makeatother
+
+\definecolor{shadecolor}{rgb}{.97, .97, .97}
+\definecolor{messagecolor}{rgb}{0, 0, 0}
+\definecolor{warningcolor}{rgb}{1, 0, 1}
+\definecolor{errorcolor}{rgb}{1, 0, 0}
+\newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
+
+\usepackage{alltt}
+%\documentclass[color=usenames,dvipsnames,handout]{beamer}
+
+%\usepackage[roman]{../../lab1}
+\usepackage[sans]{../../lab1}
+
+
+\hypersetup{pdftex,pdfstartview=FitV}
+
+
+
+
+
+
+%% New command for inline code that isn't to be evaluated
+\definecolor{inlinecolor}{rgb}{0.878, 0.918, 0.933}
+\newcommand{\inr}[1]{\colorbox{inlinecolor}{\texttt{#1}}}
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\begin{document}
+
+
+% \setlength\fboxsep{0pt}
+
+
+
+\section{Introduction}
+
+
+
+\begin{frame}[plain,fragile]
+  \LARGE
+  \centering \par
+%  {\bf Lab 2 -- Summary statistics, graphics, and the $t$-test \par}
+  \textcolor{RoyalBlue}{\huge \bf Lab 2 -- Summary statistics,
+    graphics, and the $t$-test} \\
+  \vspace{1cm}
+  August 20 \& 21, 2018 \par
+  FANR 6750 \par
+  \vfill
+  \large
+  Richard Chandler and Bob Cooper \\
+  University of Georgia \\
+\end{frame}
+
+
+
+
+\begin{frame}[plain]
+  \frametitle{Recap}
+  \Large
+  {\bf Last week we covered:}
+  \begin{itemize}
+    \item Vectors
+    \item Data frames
+    \item Indexing
+    \item Importing and exporting data
+    \item Saving and loading workspaces
+  \end{itemize}
+  \note{Ask students if they have questions about last week's
+    assignment or general questions about \R}
+\end{frame}
+
+
+
+
+
+
+\begin{frame}[plain]
+  \frametitle{Today's Topics}
+  \Large
+  \only<1>{\tableofcontents}%[hideallsubsections]}
+%  \only<2 | handout:0>{\tableofcontents[currentsection]}%,hideallsubsections]}
+\end{frame}
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Scenario}
+  \small
+  \begin{itemize}%[<+->]
+    \item We have 2 samples of data
+    \item<2-> Questions: Do the samples come from the same %statistical
+      population, or do they come from populations with different
+      means?   %2 populations have the same mean?
+    \item<3-> Problem: We don't know the true population means ($\mu_1, \mu_1$)% -- we only
+%      know the sample means ($\bar{y_1}, \bar{y_1}$) and sample standard deviations ($s_1.
+    \item<4-> Under the assumption that the variances of the two
+      populations are equal, the relevant hypotheses are:
+      \begin{itemize}
+        \item $H_0: \mu_1 = \mu_2$
+        \item $H_A: \mu_1 \neq \mu_2$
+      \end{itemize}
+  \end{itemize}
+  \normalsize
+  \uncover<5->{
+\begin{center}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}
+\includegraphics[width=\maxwidth]{figure/pop-1} 
+
+\end{knitrout}
+\end{center}
+}
+\end{frame}
+
+
+
+
+\begin{frame}[fragile]
+%  \frametitle{Reminder about the $t$-distribution}
+%  \frametitle{$t$-distribution with df=18}
+  \frametitle{Key points}
+\begin{center}
+
+\end{center}
+%\small
+\vspace{-1cm}
+%{\bf Key points}
+\begin{itemize}%[<+->]
+  \item<1-> If the two sample means ($\bar{y_1}, \bar{y_2}$) are very
+    different and the standard error of the difference in means is
+    small, the $t$ statistic will be far from zero
+  \item<2-> If the $t$ statistic is more extreme than the critical
+    values, you reject the null hypothesis ($H_0$)
+\end{itemize}
+\uncover<3>{
+\vspace{-0.1cm}
+\begin{center}
+  \includegraphics[width=0.7\textwidth]{figure/tdist-1}
+\end{center}
+}
+\end{frame}
+
+
+%\section{Summary Statistics}
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Exercise I}
+  \large
+  \begin{enumerate}[\bf (1)]
+    \item<1-> Open {\bf R} and set the working directory to a convenient
+      location on your computer. Do this using {\tt File > Change dir ...}, or the {\tt setwd} function.
+    \item[]
+    \item<2-> Put the file {\tt treedata.csv} into your working
+      directory
+    \item[]
+    \item<3-> Create a new {\bf R} script and import {\tt treedata.csv}. Name your object {\tt treedata}.
+    \item[]
+    \item<4-> Create 2 objects: \verb+yL+ is the tree density data for the
+      first 10 experimental units (low elevation), and \verb+yH+ is the tree density
+      data for the last 10 units (high elevation)
+    \item[]
+    \item<5-> Compute the mean, variance, and standard deviation of the 2 samples
+  \end{enumerate}
+\end{frame}
+
+
+
+
+
+
+
+
+
+\section{Graphics}
+
+
+
+\begin{frame}[plain]
+  \frametitle{Today's Topics}
+  \Large
+  \tableofcontents[currentsection,hideallsubsections]
+\end{frame}
+
+
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Boxplots}
+  \begin{center}
+  \footnotesize
+
+\vspace{-3mm}
+\includegraphics[width=3in,height=3in]{figure/boxplot-1}
+  \end{center}
+\end{frame}
+
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Histograms}
+  \footnotesize
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{hist}\hlstd{(yL,} \hlkwc{xlab}\hlstd{=}\hlstr{"Tree density (low elevation)"}\hlstd{,} \hlkwc{col}\hlstd{=}\hlstr{"lightblue"}\hlstd{,}
+     \hlkwc{xlim}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{0}\hlstd{,} \hlnum{40}\hlstd{))}
+\hlkwd{hist}\hlstd{(yH,} \hlkwc{xlab}\hlstd{=}\hlstr{"Tree density (high elevation)"}\hlstd{,} \hlkwc{col}\hlstd{=}\hlstr{"purple"}\hlstd{,}
+     \hlkwc{xlim}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{0}\hlstd{,} \hlnum{40}\hlstd{))}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\includegraphics[width=\textwidth]{figure/histogram-1}
+\end{frame}
+
+
+
+
+
+%% \begin{frame}[fragile]
+%%   \frametitle{Mean and error bars}
+%%   \tiny %\scriptsize
+%% <<meanerror,fig=TRUE,include=FALSE,width=6,fig.height=6>>=
+%% y.bar <- c(mean(yL), mean(yH))
+%% y.SE <- c(sd(yL)/sqrt(length(yL)), sd(yH)/sqrt(length(yH)))
+%% plot(1:2, y.bar, ylim=c(0, 25), xlim=c(0.5, 2.5), xaxt="n", pch=16,
+%%      xlab="", ylab="Tree density", cex=1.5)
+%% axis(1, 1:2, c("Low elevation", "High elevation"))
+%% arrows(1:2, y.bar-y.SE, 1:2, y.bar+y.SE, code=3, angle=90, length=0.05)
+%% @
+%% \vspace{-1cm}
+%% \begin{center}
+%%   \includegraphics[width=0.7\textwidth]{lab02-t-test-meanerror}
+%% \end{center}
+%% \end{frame}
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Exercise II}
+  \centering
+  \Large
+%  \begin{enumerate}[\bf (1)]
+%    \item
+      Create the same boxplots and histograms as before, but
+      change the colors of the boxplots and the number of break points in
+      the histograms. \par
+%  \end{enumerate}
+\end{frame}
+
+
+
+\section{$t$ tests}
+
+
+
+
+\begin{frame}[plain]
+  \frametitle{Today's Topics}
+  \Large
+  \tableofcontents[currentsection,hideallsubsections]
+\end{frame}
+
+
+
+\subsection{Two-sample $t$ test}
+
+
+
+\begin{comment}
+\begin{frame}
+  \frametitle{Conceptual Example}
+  \begin{itemize}
+    \item The (unknown) population means are:
+      \begin{itemize}
+        \item $\mu_A = 5$
+        \item $\mu_B = 7$
+      \end{itemize}
+    \item Both populations have variance $\sigma^2 = 4$.
+    \item We collect 2 samples, each with $n=15$
+    \item The sample means are:
+      \begin{itemize}
+        \item $\bar{y_1}$
+      \end{itemize}
+  \end{itemize}
+\end{frame}
+\end{comment}
+
+
+
+\begin{comment}
+\begin{frame}[fragile]
+  \frametitle{Example}
+%\centering \par
+  \vspace{-0.5cm}
+\begin{center}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}
+\includegraphics[width=\maxwidth]{figure/popsamp-1} 
+
+\end{knitrout}
+\end{center}
+\end{frame}
+\end{comment}
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Two-sample $t$-test with equal variances}
+  {\bf Step 1:} Compute the $t$ statistic:
+  \[
+  t = \frac{(\bar{y_L} - \bar{y_H}) - (\mu_L - \mu_H)}{
+    \sqrt{s^2_p/n_L + s^2_p/n_H}}
+%  t = \frac{(\bar{y_L} - \bar{y_H})}{
+%    \sqrt{(s_L/\sqrt{n_L})^2 + (s_H/\sqrt{n_H})^2}}
+  \]
+%  where $s_L$ and $s_H$ are the standard deviations of the low and
+%  high groups.
+  where $s^2_p$ is the pooled variance
+  \[
+  s^2_p = \frac{(n_L-1)s^2_L + (n_H-1)s^2_H}{n_L + n_H - 2}
+%  s_L = \sqrt{\frac{1}{n_L-1} \sum_{i=1}^{n_L} (y_{L i} - \bar{y_L})^2}
+  \]
+  \pause
+  {\bf Step 2:} Compare $t$ statistic to critical values
+  \[
+     \mbox{Critical values for 1-tailed test}\; t_{\alpha=0.05,18}= -1.73\, \mathrm{or}\, 1.73
+  \]
+  \[
+     \mbox{Critical values for 2-tailed test}\; t_{\alpha=0.05,18}= -2.10\, \mathrm{and}\, 2.10
+  \]
+\end{frame}
+
+
+
+
+
+%% \begin{frame}[fragile]
+%%   \frametitle{Exercise III}
+%%   \large
+%%   \begin{enumerate}[\bf (1)]
+%%     \item Test the null hypothesis $H_0: \mu_L = \mu_H$, with $H_a:
+%%       \mu_L \neq \mu_H$
+%%     \item[]
+%%     \item Show steps for computing the $t$-statistic
+%%     \item[]
+%%     \item Use only the functions \verb+mean+, \verb+var+, and possibly
+%%       \verb+length+
+%%   \end{enumerate}
+%% \end{frame}
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Do it by hand in \R}
+  {\bf Step 1:} Compute the $t$ statistic:
+  \footnotesize
+%  \note{Make them do this before you show the answer}
+\begin{knitrout}\scriptsize
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{mean.L} \hlkwb{<-} \hlkwd{mean}\hlstd{(yL)}
+\hlstd{mean.H} \hlkwb{<-} \hlkwd{mean}\hlstd{(yH)}
+\hlstd{s2.L} \hlkwb{<-} \hlkwd{var}\hlstd{(yL)}
+\hlstd{s2.H} \hlkwb{<-} \hlkwd{var}\hlstd{(yH)}
+\hlstd{n.L} \hlkwb{<-} \hlkwd{length}\hlstd{(yL)}
+\hlstd{n.H} \hlkwb{<-} \hlkwd{length}\hlstd{(yH)}
+\hlstd{s2.p} \hlkwb{<-} \hlstd{((n.L}\hlopt{-}\hlnum{1}\hlstd{)}\hlopt{*}\hlstd{s2.L} \hlopt{+} \hlstd{(n.H}\hlopt{-}\hlnum{1}\hlstd{)}\hlopt{*}\hlstd{s2.H)}\hlopt{/}\hlstd{(n.L}\hlopt{+}\hlstd{n.H}\hlopt{-}\hlnum{2}\hlstd{)}
+\hlstd{SE} \hlkwb{<-} \hlkwd{sqrt}\hlstd{(s2.p}\hlopt{/}\hlstd{n.L} \hlopt{+} \hlstd{s2.p}\hlopt{/}\hlstd{n.H)}
+\hlstd{t.stat} \hlkwb{<-} \hlstd{(mean.L} \hlopt{-} \hlstd{mean.H)} \hlopt{/} \hlstd{SE}
+\hlstd{t.stat}
+\end{alltt}
+\begin{verbatim}
+## [1] 5.404896
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\pause
+  \normalsize
+  {\bf Step 2:} Compare $t$ statistic to critical values (two-tailed)
+  \footnotesize
+\begin{knitrout}\scriptsize
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{alpha} \hlkwb{<-} \hlnum{0.05}
+\hlcom{## NOTE: qt returns critical values. No need to use "t tables"}
+\hlstd{critical.vals} \hlkwb{<-} \hlkwd{qt}\hlstd{(}\hlkwd{c}\hlstd{(alpha}\hlopt{/}\hlnum{2}\hlstd{,} \hlnum{1}\hlopt{-}\hlstd{alpha}\hlopt{/}\hlnum{2}\hlstd{),} \hlkwc{df}\hlstd{=n.L}\hlopt{+}\hlstd{n.H}\hlopt{-}\hlnum{2}\hlstd{)}
+\hlstd{critical.vals}
+\end{alltt}
+\begin{verbatim}
+## [1] -2.100922  2.100922
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Let \R~do all the work -- Option 1}
+  \footnotesize
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{t.test}\hlstd{(yH, yL,} \hlkwc{var.equal}\hlstd{=}\hlnum{TRUE}\hlstd{,}
+       \hlkwc{paired}\hlstd{=}\hlnum{FALSE}\hlstd{,} \hlkwc{alternative}\hlstd{=}\hlstr{"two.sided"}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## 
+## 	Two Sample t-test
+## 
+## data:  yH and yL
+## t = -5.4049, df = 18, p-value = 3.898e-05
+## alternative hypothesis: true difference in means is not equal to 0
+## 95 percent confidence interval:
+##  -19.580772  -8.619228
+## sample estimates:
+## mean of x mean of y 
+##       6.1      20.2
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\vfill
+{\centering \bf
+  Make sure you set {\tt var.equal=TRUE}. Otherwise, \R~will assume
+  that the variances of the two populations are unequal. \\
+}
+\end{frame}
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Let \R~do all the work -- Option 2}
+  \footnotesize
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{t.test}\hlstd{(treeDensity} \hlopt{~} \hlstd{Elevation,} \hlkwc{data}\hlstd{=treedata,} \hlkwc{var.equal}\hlstd{=}\hlnum{TRUE}\hlstd{,}
+       \hlkwc{paired}\hlstd{=}\hlnum{FALSE}\hlstd{,} \hlkwc{alternative}\hlstd{=}\hlstr{"two.sided"}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## 
+## 	Two Sample t-test
+## 
+## data:  treeDensity by Elevation
+## t = -5.4049, df = 18, p-value = 3.898e-05
+## alternative hypothesis: true difference in means is not equal to 0
+## 95 percent confidence interval:
+##  -19.580772  -8.619228
+## sample estimates:
+## mean in group High  mean in group Low 
+##                6.1               20.2
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\vfill
+{\centering \bf
+  This second option returns identical results, but it is preferred
+  because the notation is much more similar to the notation used to
+  fit ANOVA models. \\
+}
+\end{frame}
+
+
+
+
+
+%\subsection{Two sample $t$-test, unequal variances}
+
+
+
+
+\subsection{Equality of variance test}
+
+
+
+\begin{comment}
+\begin{frame}[fragile]
+  \frametitle{Test equality of variances by hand}
+  {\bf Step 1:} Compute ratio of variances $s^2_1/s^2_2$ (the $F$-statistic)
+  \footnotesize
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{var.ratio} \hlkwb{<-} \hlkwd{var}\hlstd{(yL)}\hlopt{/}\hlkwd{var}\hlstd{(yH)} \hlcom{# F-statistic}
+\hlstd{var.ratio}
+\end{alltt}
+\begin{verbatim}
+## [1] 1.149877
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+  \pause
+  \normalsize
+  {\bf Step 2:} Compare to critical value
+  \footnotesize
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{alpha} \hlkwb{<-} \hlnum{0.05}
+\hlstd{critical.vals} \hlkwb{<-} \hlkwd{qf}\hlstd{(}\hlkwd{c}\hlstd{(alpha}\hlopt{/}\hlnum{2}\hlstd{,} \hlnum{1}\hlopt{-}\hlstd{alpha}\hlopt{/}\hlnum{2}\hlstd{),} \hlkwc{df1}\hlstd{=n.L}\hlopt{-}\hlnum{1}\hlstd{,} \hlkwc{df2}\hlstd{=n.H}\hlopt{-}\hlnum{1}\hlstd{)}
+\hlstd{critical.vals}
+\end{alltt}
+\begin{verbatim}
+## [1] 0.2483859 4.0259942
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\pause
+{\bf \normalsize Do we reject the null hypothesis?}
+%\pause
+%<<>>=
+%var.ratio > critical.vals # Fail to reject null hypothesis
+@
+\end{frame}
+\end{comment}
+
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Test equality of variances using {\tt var.test}
+  }
+  \footnotesize
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{var.test}\hlstd{(yL, yH)}
+\end{alltt}
+\begin{verbatim}
+## 
+## 	F test to compare two variances
+## 
+## data:  yL and yH
+## F = 1.1499, num df = 9, denom df = 9, p-value = 0.8386
+## alternative hypothesis: true ratio of variances is not equal to 1
+## 95 percent confidence interval:
+##  0.2856132 4.6293987
+## sample estimates:
+## ratio of variances 
+##           1.149877
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+
+\begin{comment}
+\begin{frame}
+  \frametitle{$F$-distribution}
+
+\end{frame}
+\end{comment}
+
+
+
+\subsection{Paired $t$-test}
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Suppose the samples are paired}
+  {\bf The Caterpillar Data from Class}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{location} \hlkwb{<-} \hlnum{1}\hlopt{:}\hlnum{12}
+\hlstd{untreated} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlnum{23}\hlstd{,}\hlnum{18}\hlstd{,}\hlnum{29}\hlstd{,}\hlnum{22}\hlstd{,}\hlnum{33}\hlstd{,}\hlnum{20}\hlstd{,}\hlnum{17}\hlstd{,}\hlnum{25}\hlstd{,}\hlnum{27}\hlstd{,}\hlnum{30}\hlstd{,}\hlnum{25}\hlstd{,}\hlnum{27}\hlstd{)}
+\hlstd{treated} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlnum{19}\hlstd{,}\hlnum{18}\hlstd{,}\hlnum{24}\hlstd{,}\hlnum{23}\hlstd{,}\hlnum{31}\hlstd{,}\hlnum{22}\hlstd{,}\hlnum{16}\hlstd{,}\hlnum{23}\hlstd{,}\hlnum{24}\hlstd{,}\hlnum{26}\hlstd{,}\hlnum{24}\hlstd{,}\hlnum{28}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+  \pause
+  \vfill
+  {\bf For paired $t$-tests, we want to know if the mean of the
+    differences differs from zero}
+  \vfill
+  \pause
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{diff} \hlkwb{<-} \hlstd{untreated}\hlopt{-}\hlstd{treated}
+\hlstd{diff}
+\end{alltt}
+\begin{verbatim}
+##  [1]  4  0  5 -1  2 -2  1  2  3  4  1 -1
+\end{verbatim}
+\begin{alltt}
+\hlkwd{mean}\hlstd{(diff)}
+\end{alltt}
+\begin{verbatim}
+## [1] 1.5
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+
+
+%##boxplot(treated, untreated, names=c("Treated", "Untreated"),
+%##        col=c("lightgreen", "purple"),
+
+
+\begin{frame}[fragile]
+  \frametitle{Is the mean of the differences $>0$?}
+  \begin{center}
+  \footnotesize
+
+\vspace{-.2cm}
+\includegraphics[width=3in,height=3in]{figure/box2-1}
+  \end{center}
+\end{frame}
+
+
+
+\begin{comment}
+\begin{frame}[fragile]
+  \frametitle{Is the mean of the differences $>0$?}
+  \begin{center}
+  \footnotesize
+%<<pplot,fig=TRUE,include=FALSE,fig.width=8,fig.height=6>>=
+%#par(mai=c(0.9,0.9,0.1,0.1))
+%plot(1:12, treated, col="lightgreen", pch=16, cex=2,
+%     xlab="Location", ylab="Caterpillars", ylim=c(10,40))
+%points(1:12, untreated, col="purple", pch=16, cex=2)
+%legend(9, 40, c("Treated", "Untreated"),
+%       col=c("lightgreen", "purple"), pch=16, pt.cex=2)
+%@
+%<<>>=
+%hist(diff, breaks=4)
+%@
+\includegraphics[width=2.933in,height=2.2in]{figure/pplot-1}
+  \end{center}
+\end{frame}
+\end{comment}
+
+
+
+\begin{comment}
+\begin{frame}[fragile]
+  \frametitle{The differences}
+\begin{center}
+  \footnotesize
+
+\includegraphics[width=2.933in,height=2.2in]{figure/diff-1}
+\end{center}
+\end{frame}
+\end{comment}
+
+
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Paired $t$-test}
+  {\bf Recall:} Paired $t$-test is the same as a one-sample $t$-test on the
+      differences. The hypothesis \emph{in the Caterpillar example} is one-tailed:
+  \begin{itemize}
+    \item $H_0: \mu_d \le 0$
+    \item $H_A: \mu_d > 0$
+  \end{itemize}
+  \pause
+  \vfill
+  \normalsize
+  {\bf Step 1}. Calculate the standard deviation of the differences.
+  \[
+%    \mbox{SEM} = \frac{s}{\sqrt{n}} = \frac{\sqrt{\frac{1}{n-1} \sum_{i=1}^n
+%        (y_i - \bar{y})^2}}{\sqrt{n}}
+    s_d = \sqrt{\frac{1}{n-1} \sum_{i=1}^n
+        (y_i - \bar{y})^2}%}{\sqrt{n}}
+  \]
+  \pause
+  \vfill
+  {\bf Step 2}. Calculate the test statistic.
+  \[
+%     t = \frac{\bar{y} - 0}{\mbox{SEM}}
+     t = \frac{\bar{y} - 0}{s_d/\sqrt{n}}
+  \]
+  {\bf Step 3}. Compare to critical value.
+%  \[
+%  \]
+\end{frame}
+
+
+
+
+%% \begin{frame}
+%%   \frametitle{Exercise IV}
+%%   {\bf \Large Figure out 2 ways of doing paired $t$-test using the
+%%     function {\tt t.test}}.
+%% \end{frame}
+
+
+
+%% \begin{frame}[fragile]
+%%   \frametitle{Paired $t$-test in \R}
+%%   \tiny
+%% <<>>=
+%% diff <- untreated-treated
+%% diff
+%% t.test(untreated, treated, var.equal=TRUE, paired=TRUE)
+%% t.test(diff, var.equal=TRUE, paired=FALSE) # Same thing
+%% @
+%% \end{frame}
+
+
+
+
+\begin{frame}
+  \frametitle{Assignment}
+  \footnotesize
+  {\bf Create a script to do the following:}
+  \begin{enumerate}[\bf (1)]
+    \item Do a paired $t$ test on the caterpillar data without using the {\tt t.test}
+      function. Use only the functions {\tt mean}, {\tt sd}, and
+      possibly {\tt length}.
+    \item Do the paired $t$ test again, but this time using the {\tt
+        t.test} function.
+      \begin{itemize}
+        \item You will need to use the {\tt paired} argument when using the {\tt t.test} function
+        \item Assume variances are equal
+      \end{itemize}
+    \item Do a standard ({\it unpaired}) two-sample $t$ test using
+      the {\tt t.test} function.
+%    \item Assume equal variances for all tests
+    \item Add a comment to the end of your script explaining why the
+      results differ between the paired and unpaired analysis.
+  \end{enumerate}
+  \vfill
+  {\bf Upload your script to ELC before next week's lab.}
+  \begin{itemize}
+    \item The script must be self-contained.
+    \item In other words, you should be able to copy and paste the
+      entire thing into the {\bf R} console, and it should return the
+      correct answers to the questions.
+  \end{itemize}
+  \vfill
+   {\bf Read pp. 127--131 in ``Introductory Statistics with \R''}
+\end{frame}
+
+
+
+
+\end{document}
+
+
+
+%% \section{Bonus material}
+
+
+
+%% \begin{frame}[fragile]
+%% \frametitle{Understanding t-distribution}
+%% \footnotesize
+%% <<sim-t,fig=TRUE,include=FALSE,eps=FALSE>>=
+%% nReplicates <- 500
+%% nSamples <- 50
+%% mean.diff <- tval <- rep(NA, length=nReplicates)
+%% t.test.results <- list()
+%% for(i in 1:nReplicates) {
+%%   x1 <- rnorm(nSamples, mean=20, sd=2)
+%% #  x2 <- rnorm(nSamples, mean=20, sd=2)
+%%   mean.diff[i] <- mean(x1) - 0 #mean(x2)
+%%   tval[i] <- mean.diff[i]/(sd(x1)/sqrt(nSamples))
+%%   t.test.results[[i]] <- t.test(x1) #, x2)
+%%   }
+%% head(cbind(tval, sapply(t.test.results, "[[", "statistic")))
+%% hist(mean.diff, freq=FALSE)
+%% hist(sapply(t.test.results, "[[", "statistic"), freq=FALSE)
+%% curve(dt(x, df=nSamples*2-2), add=TRUE)
+%% @
+%% \end{frame}
+
+
+
+
+
+%% \begin{frame}
+%%   \includegraphics[width=\textwidth]{lab02-t-test-sim-t}
+%% \end{frame}
+
+
+
+%% \end{document}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+%% \section{Visualizing data}
+
+
+%% \begin{frame}[fragile]
+%% \frametitle{dog}
+%% <<>>=
+%% goats <- c(3, 8, 7, 12, 20, 5, 3, 13)
+%% treatment <- factor(rep(c("Treatment", "Control"), each=4))
+%% temp <- c(2, 8, 8, 11, 22, 3, 5, 10)
+%% goatdata <- data.frame(goats, treatment, temp)
+%% goatdata
+
+%% @
+%% \end{frame}
+
+
+%% \begin{frame}[fragile]
+%%   \frametitle{Boxplots}
+%% <<>>=
+%% #boxplot(goats ~ treatment, data=goatdata)
+%% # boxplot(treatment, goats, )
+%% @
+%% \end{frame}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+%% \begin{comment}
+%% \section{One sample $t$-tests}
+%% \begin{frame}
+%%   \frametitle{Scenario}
+%%   We have a sample of n observations from a population with mean
+%%   $\mu$.
+
+%%   The question is, does $\mu$ equal some value, say $X$?
+
+%%   More precisely, the null hypothesis is $H_0: \mu = X$ and the
+%%   alternative hypothesis is $H_a: \mu \neq X$.
+%% \end{frame}
+%% \end{comment}
+
