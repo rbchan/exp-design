@@ -15,7 +15,11 @@ The focus of the course is on the design and analysis of data from manipulative 
 
 
 ## History
-This is a course that I co-instruct with Bob Cooper at the University of Georgia. Bob desiged the course and has taught it for >15 years. I started in 2013, which is when
+This is a course that I co-instruct with Bob Cooper at the University
+of Georgia. Bob desiged the course and has taught it for >15 years. I
+started in 2013, which is when we added an `R` lab. This repository
+primarily contains the lab materials, but the lecture notes might be
+added later. 
 
 
 
