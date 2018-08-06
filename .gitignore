@@ -35,6 +35,8 @@ exams/
 
 ## knitr
 *-concordance.tex
+*cache/
+
 
 ## tikz
 *.tikz

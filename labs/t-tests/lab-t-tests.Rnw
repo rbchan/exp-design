@@ -8,6 +8,13 @@
 \hypersetup{pdftex,pdfstartview=FitV}
 
 
+<<build-fun, include=FALSE, cache=TRUE>>=
+## A function to compile and open the pdf
+## Usage:
+## rnw2pdf("lab-t-tests") # Don't include the file extension
+source("../rnw2pdf.R")
+@
+
 
 <<knitr-theme, include=FALSE>>=
 ##knit_theme$set("navajo-night")
@@ -85,24 +92,43 @@ knit_theme$set("edit-kwrite")
 \begin{frame}[fragile]
   \frametitle{Scenario}
   \small
-  \begin{itemize}%[<+->]
-    \item We have 2 samples of data
-    \item<2-> Questions: Do the samples come from the same %statistical
-      population, or do they come from populations with different
-      means?   %2 populations have the same mean?
-    \item<3-> Problem: We don't know the true population means ($\mu_1, \mu_1$)% -- we only
+%  \begin{itemize}%[<+->]
+%    \item We have 2 samples of data
+%    \item<2-> Questions: Do the samples come from the same %statistical
+%      population, or do they come from populations with different
+%      means?   %2 populations have the same mean?
+%    \item<3-> Problem: We don't know the true population means ($\mu_1, \mu_1$)% -- we only
 %      know the sample means ($\bar{y_1}, \bar{y_1}$) and sample standard deviations ($s_1.
-    \item<4-> Under the assumption that the variances of the two
-      populations are equal, the relevant hypotheses are:
-      \begin{itemize}
-        \item $H_0: \mu_1 = \mu_2$
-        \item $H_A: \mu_1 \neq \mu_2$
-      \end{itemize}
-  \end{itemize}
+    %% \item<4-> Under the assumption that the variances of the two
+    %%   populations are equal, the relevant hypotheses are:
+    %%   \begin{itemize}
+    %%     \item $H_0: \mu_1 = \mu_2$
+    %%     \item $H_A: \mu_1 \neq \mu_2$
+    %%   \end{itemize}
+%  \end{itemize}
+  We have 2 samples of data and we want to know if they came from
+  population. \\
+  \pause
+  \vfill
+  
+  The problem is that the true population means ($\mu_1, \mu_1$) are
+  unknown \\ %-- we only know the sample means ($\bar{y_1}, \bar{y_1}$)
+%  and sample standard deviations ($s_1, s_2$). \\
+  \pause
+  \vfill
+  
+Under the assumption that the variances of the two populations are
+equal, the relevant hypotheses are:
+\begin{itemize}
+  \footnotesize
+  \item $H_0: \mu_1 = \mu_2$
+  \item $H_A: \mu_1 \neq \mu_2$
+\end{itemize}
   \normalsize
-  \uncover<5->{
+%  \vfill
+  \uncover<4->{
 \begin{center}
-<<pop,echo=FALSE,include=TRUE,fig.width=9,fig.height=3>>=
+<<pop,echo=FALSE,include=TRUE,fig.width=9,fig.height=3,cache=TRUE>>=
 op <- par(mai=c(0.6,.1,0.4,0.1))
 curve(dnorm(x, mean=3, sd=1), 0, 10, xlab="Tree density", ylab="", xaxt="n", yaxt="n", frame=FALSE)
 curve(dnorm(x, mean=6, sd=1), 0, 10, add=TRUE, col=4)
@@ -149,18 +175,25 @@ arrows(xs2[1], dt(0,18)/1.5, xs2[1], ys2[1], length=0.1)
 par(op)
 @
 \end{center}
-%\small
-\vspace{-1cm}
+\small
+%\vspace{-1cm}
 %{\bf Key points}
-\begin{itemize}%[<+->]
-  \item<1-> If the two sample means ($\bar{y_1}, \bar{y_2}$) are very
-    different and the standard error of the difference in means is
-    small, the $t$ statistic will be far from zero
-  \item<2-> If the $t$ statistic is more extreme than the critical
-    values, you reject the null hypothesis ($H_0$)
-\end{itemize}
+%\begin{itemize}%[<+->]
+%  \item<1->
+If the two sample means ($\bar{y_1}, \bar{y_2}$) are very
+different and the standard error of the difference in means is
+small, the $t$ statistic will be far from zero \\
+\pause 
+\vfill
+
+%  \item<2->
+If the $t$ statistic is more extreme than the critical
+    values, you reject the null hypothesis ($H_0$) \\
+\vfill
+
+%\end{itemize}
 \uncover<3>{
-\vspace{-0.1cm}
+%\vspace{-0.1cm}
 \begin{center}
   \includegraphics[width=0.7\textwidth]{figure/tdist-1}
 \end{center}
