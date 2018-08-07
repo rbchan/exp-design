@@ -83,7 +83,8 @@
   \LARGE
   \centering \par
 %  {\bf Lab 2 -- Summary statistics, graphics, and the $t$-test \par}
-  \textcolor{RoyalBlue}{\huge \bf Lab 2 -- Summary statistics,
+  \textcolor{RoyalBlue}{\huge %\bf
+    Lab 2 -- Summary statistics,
     graphics, and the $t$-test} \\
   \vspace{1cm}
   August 20 \& 21, 2018 \par
@@ -148,13 +149,13 @@
   population. \\
   \pause
   \vfill
-  
+
   The problem is that the true population means ($\mu_1, \mu_1$) are
-  unknown \\ %-- we only know the sample means ($\bar{y_1}, \bar{y_1}$)
+  unknown. \\ %-- we only know the sample means ($\bar{y_1}, \bar{y_1}$)
 %  and sample standard deviations ($s_1, s_2$). \\
   \pause
   \vfill
-  
+
 Under the assumption that the variances of the two populations are
 equal, the relevant hypotheses are:
 \begin{itemize}
@@ -163,16 +164,17 @@ equal, the relevant hypotheses are:
   \item $H_A: \mu_1 \neq \mu_2$
 \end{itemize}
   \normalsize
-%  \vfill
-  \uncover<4->{
-\begin{center}
+  \pause
+  \vfill
+%  \uncover<4->{
+%\begin{center}
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}
 \includegraphics[width=\maxwidth]{figure/pop-1} 
 
 \end{knitrout}
-\end{center}
-}
+%\end{center}
+%}
 \end{frame}
 
 
@@ -182,9 +184,9 @@ equal, the relevant hypotheses are:
 %  \frametitle{Reminder about the $t$-distribution}
 %  \frametitle{$t$-distribution with df=18}
   \frametitle{Key points}
-\begin{center}
+%\begin{center}
 
-\end{center}
+%\end{center}
 \small
 %\vspace{-1cm}
 %{\bf Key points}
@@ -192,22 +194,24 @@ equal, the relevant hypotheses are:
 %  \item<1->
 If the two sample means ($\bar{y_1}, \bar{y_2}$) are very
 different and the standard error of the difference in means is
-small, the $t$ statistic will be far from zero \\
-\pause 
+small, the $t$ statistic will be far from zero. \\
+\pause
 \vfill
 
 %  \item<2->
 If the $t$ statistic is more extreme than the critical
-    values, you reject the null hypothesis ($H_0$) \\
-\vfill
+    values, you reject the null hypothesis ($H_0$). \\
+\pause
+    \vfill
 
 %\end{itemize}
-\uncover<3>{
+%\uncover<3>{
 %\vspace{-0.1cm}
-\begin{center}
-  \includegraphics[width=0.7\textwidth]{figure/tdist-1}
-\end{center}
-}
+%\begin{center}
+    \centering
+  \includegraphics[width=0.6\textwidth]{figure/tdist-1} \\
+%\end{center}
+%}
 \end{frame}
 
 
@@ -218,19 +222,20 @@ If the $t$ statistic is more extreme than the critical
 
 \begin{frame}[fragile]
   \frametitle{Exercise I}
-  \large
+%  \large
   \begin{enumerate}[\bf (1)]
     \item<1-> Open {\bf R} and set the working directory to a convenient
-      location on your computer. Do this using {\tt File > Change dir ...}, or the {\tt setwd} function.
+      location on your computer. Do this using {\tt File > Change dir ...}, or the \inr{setwd} function.
     \item[]
-    \item<2-> Put the file {\tt treedata.csv} into your working
+    \item<2-> Put the file {\tt treedata.csv} into your working.
       directory
     \item[]
-    \item<3-> Create a new {\bf R} script and import {\tt treedata.csv}. Name your object {\tt treedata}.
+    \item<3-> Create a new \R~script and import {\tt treedata.csv}. Name your object {\tt treedata}.
     \item[]
-    \item<4-> Create 2 objects: \verb+yL+ is the tree density data for the
-      first 10 experimental units (low elevation), and \verb+yH+ is the tree density
-      data for the last 10 units (high elevation)
+    \item<4-> Using the indexing methods we covered last time to
+      create 2 objects: \inr{yL} is the tree density data for the
+      first 10 experimental units (low elevation), and \inr{yH} is
+      the tree density data for the last 10 units (high elevation)
     \item[]
     \item<5-> Compute the mean, variance, and standard deviation of the 2 samples
   \end{enumerate}
@@ -395,7 +400,7 @@ If the $t$ statistic is more extreme than the critical
   \]
 %  where $s_L$ and $s_H$ are the standard deviations of the low and
 %  high groups.
-  where $s^2_p$ is the pooled variance
+  where $s^2_p$ is the pooled variance. Remember that $H_0$ states that $\mu_L-\mu_H =0$.
   \[
   s^2_p = \frac{(n_L-1)s^2_L + (n_H-1)s^2_H}{n_L + n_H - 2}
 %  s_L = \sqrt{\frac{1}{n_L-1} \sum_{i=1}^{n_L} (y_{L i} - \bar{y_L})^2}
@@ -403,7 +408,7 @@ If the $t$ statistic is more extreme than the critical
   \pause
   {\bf Step 2:} Compare $t$ statistic to critical values
   \[
-     \mbox{Critical values for 1-tailed test}\; t_{\alpha=0.05,18}= -1.73\, \mathrm{or}\, 1.73
+     \mbox{Critical value for 1-tailed test}\; t_{\alpha=0.05,18}= -1.73\, \mathrm{or}\, 1.73
   \]
   \[
      \mbox{Critical values for 2-tailed test}\; t_{\alpha=0.05,18}= -2.10\, \mathrm{and}\, 2.10
@@ -443,7 +448,7 @@ If the $t$ statistic is more extreme than the critical
 \hlstd{mean.H} \hlkwb{<-} \hlkwd{mean}\hlstd{(yH)}
 \hlstd{s2.L} \hlkwb{<-} \hlkwd{var}\hlstd{(yL)}
 \hlstd{s2.H} \hlkwb{<-} \hlkwd{var}\hlstd{(yH)}
-\hlstd{n.L} \hlkwb{<-} \hlkwd{length}\hlstd{(yL)}
+\hlstd{n.L} \hlkwb{<-} \hlkwd{length}\hlstd{(yL)} \hlcom{# length returns the number of elements in a vector}
 \hlstd{n.H} \hlkwb{<-} \hlkwd{length}\hlstd{(yH)}
 \hlstd{s2.p} \hlkwb{<-} \hlstd{((n.L}\hlopt{-}\hlnum{1}\hlstd{)}\hlopt{*}\hlstd{s2.L} \hlopt{+} \hlstd{(n.H}\hlopt{-}\hlnum{1}\hlstd{)}\hlopt{*}\hlstd{s2.H)}\hlopt{/}\hlstd{(n.L}\hlopt{+}\hlstd{n.H}\hlopt{-}\hlnum{2}\hlstd{)}
 \hlstd{SE} \hlkwb{<-} \hlkwd{sqrt}\hlstd{(s2.p}\hlopt{/}\hlstd{n.L} \hlopt{+} \hlstd{s2.p}\hlopt{/}\hlstd{n.H)}
@@ -456,10 +461,10 @@ If the $t$ statistic is more extreme than the critical
 \end{kframe}
 \end{knitrout}
 \pause
-  \normalsize
+%  \normalsize
   {\bf Step 2:} Compare $t$ statistic to critical values (two-tailed)
   \footnotesize
-\begin{knitrout}\scriptsize
+\begin{knitrout}\tiny
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlstd{alpha} \hlkwb{<-} \hlnum{0.05}
@@ -472,6 +477,10 @@ If the $t$ statistic is more extreme than the critical
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
+\scriptsize
+  {\bf Conclusion:} Reject $H_0$ because %5.4048957
+  5.4 is more
+  extreme than the critical values.
 \end{frame}
 
 
@@ -502,8 +511,8 @@ If the $t$ statistic is more extreme than the critical
 \end{kframe}
 \end{knitrout}
 \vfill
-{\centering \bf
-  Make sure you set {\tt var.equal=TRUE}. Otherwise, \R~will assume
+{\centering %\bf
+  Make sure you set \inr{var.equal=TRUE}. Otherwise, \R~will assume
   that the variances of the two populations are unequal. \\
 }
 \end{frame}
@@ -535,7 +544,7 @@ If the $t$ statistic is more extreme than the critical
 \end{kframe}
 \end{knitrout}
 \vfill
-{\centering \bf
+{\centering %\bf
   This second option returns identical results, but it is preferred
   because the notation is much more similar to the notation used to
   fit ANOVA models. \\
@@ -603,8 +612,10 @@ If the $t$ statistic is more extreme than the critical
 \begin{frame}[fragile]
   \frametitle{Test equality of variances using {\tt var.test}
   }
-  \footnotesize
-\begin{knitrout}
+  The standard 2 sample $t$-test assumes that the variances are
+  equal. Here's how you can test this assumption:
+%  \footnotesize
+\begin{knitrout}\small
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlkwd{var.test}\hlstd{(yL, yH)}
@@ -642,7 +653,8 @@ If the $t$ statistic is more extreme than the critical
 
 \begin{frame}[fragile]
   \frametitle{Suppose the samples are paired}
-  {\bf The Caterpillar Data from Class}
+  {%\bf
+    The Caterpillar Data from class}
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
@@ -654,8 +666,9 @@ If the $t$ statistic is more extreme than the critical
 \end{knitrout}
   \pause
   \vfill
-  {\bf For paired $t$-tests, we want to know if the mean of the
-    differences differs from zero}
+  {%\bf
+    For paired $t$-tests, we want to know if the \alert{mean of the
+    differences} differs from zero}
   \vfill
   \pause
 \begin{knitrout}
@@ -668,7 +681,7 @@ If the $t$ statistic is more extreme than the critical
 ##  [1]  4  0  5 -1  2 -2  1  2  3  4  1 -1
 \end{verbatim}
 \begin{alltt}
-\hlkwd{mean}\hlstd{(diff)}
+\hlkwd{mean}\hlstd{(diff)} \hlcom{## Estimate of the mean of the differences}
 \end{alltt}
 \begin{verbatim}
 ## [1] 1.5
@@ -801,17 +814,21 @@ If the $t$ statistic is more extreme than the critical
     \item Do the paired $t$ test again, but this time using the {\tt
         t.test} function.
       \begin{itemize}
+        \scriptsize
         \item You will need to use the {\tt paired} argument when using the {\tt t.test} function
         \item Assume variances are equal
       \end{itemize}
     \item Do a standard ({\it unpaired}) two-sample $t$ test using
       the {\tt t.test} function.
 %    \item Assume equal variances for all tests
-    \item Add a comment to the end of your script explaining why the
-      results differ between the paired and unpaired analysis.
+    \item Add a comment to the end of your script explain your
+      results. Also include the null and alternative hypotheses for
+      each test. % why the
+%      results differ between the paired and unpaired analysis.
   \end{enumerate}
   \vfill
-  {\bf Upload your script to ELC before next week's lab.}
+  {\bf Upload your script\footnote{\scriptsize Or upload an Rmarkdown
+      (.Rmd) file} to ELC before next week's lab.}
   \begin{itemize}
     \item The script must be self-contained.
     \item In other words, you should be able to copy and paste the

@@ -45,7 +45,8 @@ knit_theme$set("edit-kwrite")
   \LARGE
   \centering \par
 %  {\bf Lab 2 -- Summary statistics, graphics, and the $t$-test \par}
-  \textcolor{RoyalBlue}{\huge \bf Lab 2 -- Summary statistics,
+  \textcolor{RoyalBlue}{\huge %\bf
+    Lab 2 -- Summary statistics,
     graphics, and the $t$-test} \\
   \vspace{1cm}
   August 20 \& 21, 2018 \par
@@ -110,13 +111,13 @@ knit_theme$set("edit-kwrite")
   population. \\
   \pause
   \vfill
-  
+
   The problem is that the true population means ($\mu_1, \mu_1$) are
-  unknown \\ %-- we only know the sample means ($\bar{y_1}, \bar{y_1}$)
+  unknown. \\ %-- we only know the sample means ($\bar{y_1}, \bar{y_1}$)
 %  and sample standard deviations ($s_1, s_2$). \\
   \pause
   \vfill
-  
+
 Under the assumption that the variances of the two populations are
 equal, the relevant hypotheses are:
 \begin{itemize}
@@ -125,9 +126,10 @@ equal, the relevant hypotheses are:
   \item $H_A: \mu_1 \neq \mu_2$
 \end{itemize}
   \normalsize
-%  \vfill
-  \uncover<4->{
-\begin{center}
+  \pause
+  \vfill
+%  \uncover<4->{
+%\begin{center}
 <<pop,echo=FALSE,include=TRUE,fig.width=9,fig.height=3,cache=TRUE>>=
 op <- par(mai=c(0.6,.1,0.4,0.1))
 curve(dnorm(x, mean=3, sd=1), 0, 10, xlab="Tree density", ylab="", xaxt="n", yaxt="n", frame=FALSE)
@@ -137,8 +139,8 @@ segments(6, 0, 6, dnorm(6, 6, 1), col=4, lty=2)
 text(3, dnorm(3,3,1), expression(mu[1]), pos=1, cex=2)
 text(6, dnorm(6,6,1), expression(mu[2]), pos=1, cex=2, col=4)
 @
-\end{center}
-}
+%\end{center}
+%}
 \end{frame}
 
 
@@ -148,7 +150,7 @@ text(6, dnorm(6,6,1), expression(mu[2]), pos=1, cex=2, col=4)
 %  \frametitle{Reminder about the $t$-distribution}
 %  \frametitle{$t$-distribution with df=18}
   \frametitle{Key points}
-\begin{center}
+%\begin{center}
 <<tdist,echo=FALSE,include=FALSE,fig.height=6,fig.width=8>>=
 op <- par(mai=c(0.8, 0.2, 0.2, 0.2))
 curve(dt(x, df=18), -4, 4, xlab="t-value", ylab="", yaxt="n",
@@ -174,7 +176,7 @@ arrows(xs2[1], dt(0,18)/1.5, xs2[1], ys2[1], length=0.1)
 #arrows(3, dt(0,18), 3, dt(3,18), length=0.1)
 par(op)
 @
-\end{center}
+%\end{center}
 \small
 %\vspace{-1cm}
 %{\bf Key points}
@@ -182,22 +184,24 @@ par(op)
 %  \item<1->
 If the two sample means ($\bar{y_1}, \bar{y_2}$) are very
 different and the standard error of the difference in means is
-small, the $t$ statistic will be far from zero \\
-\pause 
+small, the $t$ statistic will be far from zero. \\
+\pause
 \vfill
 
 %  \item<2->
 If the $t$ statistic is more extreme than the critical
-    values, you reject the null hypothesis ($H_0$) \\
-\vfill
+    values, you reject the null hypothesis ($H_0$). \\
+\pause
+    \vfill
 
 %\end{itemize}
-\uncover<3>{
+%\uncover<3>{
 %\vspace{-0.1cm}
-\begin{center}
-  \includegraphics[width=0.7\textwidth]{figure/tdist-1}
-\end{center}
-}
+%\begin{center}
+    \centering
+  \includegraphics[width=0.6\textwidth]{figure/tdist-1} \\
+%\end{center}
+%}
 \end{frame}
 
 
@@ -208,19 +212,20 @@ If the $t$ statistic is more extreme than the critical
 
 \begin{frame}[fragile]
   \frametitle{Exercise I}
-  \large
+%  \large
   \begin{enumerate}[\bf (1)]
     \item<1-> Open {\bf R} and set the working directory to a convenient
-      location on your computer. Do this using {\tt File > Change dir ...}, or the {\tt setwd} function.
+      location on your computer. Do this using {\tt File > Change dir ...}, or the \inr{setwd} function.
     \item[]
-    \item<2-> Put the file {\tt treedata.csv} into your working
+    \item<2-> Put the file {\tt treedata.csv} into your working.
       directory
     \item[]
-    \item<3-> Create a new {\bf R} script and import {\tt treedata.csv}. Name your object {\tt treedata}.
+    \item<3-> Create a new \R~script and import {\tt treedata.csv}. Name your object {\tt treedata}.
     \item[]
-    \item<4-> Create 2 objects: \verb+yL+ is the tree density data for the
-      first 10 experimental units (low elevation), and \verb+yH+ is the tree density
-      data for the last 10 units (high elevation)
+    \item<4-> Using the indexing methods we covered last time to
+      create 2 objects: \inr{yL} is the tree density data for the
+      first 10 experimental units (low elevation), and \inr{yH} is
+      the tree density data for the last 10 units (high elevation)
     \item[]
     \item<5-> Compute the mean, variance, and standard deviation of the 2 samples
   \end{enumerate}
@@ -418,7 +423,7 @@ par(op)
   \]
 %  where $s_L$ and $s_H$ are the standard deviations of the low and
 %  high groups.
-  where $s^2_p$ is the pooled variance
+  where $s^2_p$ is the pooled variance. Remember that $H_0$ states that $\mu_L-\mu_H =0$.
   \[
   s^2_p = \frac{(n_L-1)s^2_L + (n_H-1)s^2_H}{n_L + n_H - 2}
 %  s_L = \sqrt{\frac{1}{n_L-1} \sum_{i=1}^{n_L} (y_{L i} - \bar{y_L})^2}
@@ -426,7 +431,7 @@ par(op)
   \pause
   {\bf Step 2:} Compare $t$ statistic to critical values
   \[
-     \mbox{Critical values for 1-tailed test}\; t_{\alpha=0.05,18}= -1.73\, \mathrm{or}\, 1.73
+     \mbox{Critical value for 1-tailed test}\; t_{\alpha=0.05,18}= -1.73\, \mathrm{or}\, 1.73
   \]
   \[
      \mbox{Critical values for 2-tailed test}\; t_{\alpha=0.05,18}= -2.10\, \mathrm{and}\, 2.10
@@ -464,7 +469,7 @@ mean.L <- mean(yL)
 mean.H <- mean(yH)
 s2.L <- var(yL)
 s2.H <- var(yH)
-n.L <- length(yL)
+n.L <- length(yL) # length returns the number of elements in a vector
 n.H <- length(yH)
 s2.p <- ((n.L-1)*s2.L + (n.H-1)*s2.H)/(n.L+n.H-2)
 SE <- sqrt(s2.p/n.L + s2.p/n.H)
@@ -472,15 +477,19 @@ t.stat <- (mean.L - mean.H) / SE
 t.stat
 @
 \pause
-  \normalsize
+%  \normalsize
   {\bf Step 2:} Compare $t$ statistic to critical values (two-tailed)
   \footnotesize
-<<hand2, size='scriptsize'>>=
+<<hand2, size='tiny'>>=
 alpha <- 0.05
 ## NOTE: qt returns critical values. No need to use "t tables"
 critical.vals <- qt(c(alpha/2, 1-alpha/2), df=n.L+n.H-2)
 critical.vals
 @
+\scriptsize
+  {\bf Conclusion:} Reject $H_0$ because %\Sexpr{t.stat}
+  5.4 is more
+  extreme than the critical values.
 \end{frame}
 
 
@@ -494,8 +503,8 @@ t.test(yH, yL, var.equal=TRUE,
        paired=FALSE, alternative="two.sided")
 @
 \vfill
-{\centering \bf
-  Make sure you set {\tt var.equal=TRUE}. Otherwise, \R~will assume
+{\centering %\bf
+  Make sure you set \inr{var.equal=TRUE}. Otherwise, \R~will assume
   that the variances of the two populations are unequal. \\
 }
 \end{frame}
@@ -510,7 +519,7 @@ t.test(treeDensity ~ Elevation, data=treedata, var.equal=TRUE,
        paired=FALSE, alternative="two.sided")
 @
 \vfill
-{\centering \bf
+{\centering %\bf
   This second option returns identical results, but it is preferred
   because the notation is much more similar to the notation used to
   fit ANOVA models. \\
@@ -564,8 +573,10 @@ critical.vals
 \begin{frame}[fragile]
   \frametitle{Test equality of variances using {\tt var.test}
   }
-  \footnotesize
-<<>>=
+  The standard 2 sample $t$-test assumes that the variances are
+  equal. Here's how you can test this assumption:
+%  \footnotesize
+<<vartest, size='small'>>=
 var.test(yL, yH)
 @
 \end{frame}
@@ -599,22 +610,24 @@ arrows(xs2[1], .7, xs2[1], ys2[1], length=0.1)
 
 \begin{frame}[fragile]
   \frametitle{Suppose the samples are paired}
-  {\bf The Caterpillar Data from Class}
-<<>>=
+  {%\bf
+    The Caterpillar Data from class}
+<<catdat>>=
 location <- 1:12
 untreated <- c(23,18,29,22,33,20,17,25,27,30,25,27)
 treated <- c(19,18,24,23,31,22,16,23,24,26,24,28)
 @
   \pause
   \vfill
-  {\bf For paired $t$-tests, we want to know if the mean of the
-    differences differs from zero}
+  {%\bf
+    For paired $t$-tests, we want to know if the \alert{mean of the
+    differences} differs from zero}
   \vfill
   \pause
 <<>>=
 diff <- untreated-treated
 diff
-mean(diff)
+mean(diff) ## Estimate of the mean of the differences
 @
 
 \end{frame}
@@ -751,17 +764,21 @@ abline(v=0, lty=2)
     \item Do the paired $t$ test again, but this time using the {\tt
         t.test} function.
       \begin{itemize}
+        \scriptsize
         \item You will need to use the {\tt paired} argument when using the {\tt t.test} function
         \item Assume variances are equal
       \end{itemize}
     \item Do a standard ({\it unpaired}) two-sample $t$ test using
       the {\tt t.test} function.
 %    \item Assume equal variances for all tests
-    \item Add a comment to the end of your script explaining why the
-      results differ between the paired and unpaired analysis.
+    \item Add a comment to the end of your script explain your
+      results. Also include the null and alternative hypotheses for
+      each test. % why the
+%      results differ between the paired and unpaired analysis.
   \end{enumerate}
   \vfill
-  {\bf Upload your script to ELC before next week's lab.}
+  {\bf Upload your script\footnote{\scriptsize Or upload an Rmarkdown
+      (.Rmd) file} to ELC before next week's lab.}
   \begin{itemize}
     \item The script must be self-contained.
     \item In other words, you should be able to copy and paste the
