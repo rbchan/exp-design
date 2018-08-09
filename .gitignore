@@ -23,6 +23,11 @@ exams/
 ## Output
 *.pdf
 
+## Office
+*.docx
+*.xlsx
+*.pptx
+
 ## beamer
 *.nav
 *.pre
