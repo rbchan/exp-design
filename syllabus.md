@@ -34,9 +34,20 @@ The above components of a scientific study need to be considered together rather
 
 | Week | Topic | Lab | Reading |
 | ---- | ----- | --- | ------- |
-1      | Course introduction | Introduction to R | Chapter 1 |
-       | t-tests             |                   | Chapter 8 |
-       | t-tests             |                   |           |
+| 1    | Course introduction | Introduction to `R` | Chapter 1  |
+|      | t-tests             |                     | Chapter 8  |
+|      | t-tests             |                     |            |
+| 2    | t-tests             | t-tests in `R`      | Chapter 10 |
+|      | Completely randomized ANOVA   |           |            |
+|      | Completely randomized ANOVA   |           |            |
+| 3    | Completely randomized ANOVA   | ANOVA     |            |
+|      | Multiple comparisons   |                  |            |
+|      | Multiple comparisons   |                  |            |
+| 4    | No class            | No lab              |            |
+|      | Statistical power   |       | Steidl and Thomas (2002) |
+|      | Hypothesis testing  |                  | Johnson (199) |
+
+
 
 
 
