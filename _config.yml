@@ -6,5 +6,7 @@ description: A course on experimental design and analysis offered at the Univers
 # remote_theme: chesterhow/tale
 theme: minima
 header_pages:
+  - home.md
   - syllabus.md
   - labs/labs.md
+  - lectures/lectures.md  
