@@ -1,7 +1,10 @@
-# FANR 6750 Syllabus
-# Experimental Methods in Natural Resources Research (Experimental Design)**
-*Lecture: M, W, F 11:15 – 12:05, room 1-304*
-*Lab: M 1:25 – 3:20 or Tue 12:30 – 2:30, room 4-419*
+# Syllabus
+# Experimental Methods in Natural Resources Research (aka, Experimental Design)
+
+Lecture: M, W, F 11:15 - 12:05, room 1-304
+
+Lab: M 1:25 - 3:20 or Tue 2:00 - 4:00, room 4-419
+
 
 
 ## Instructors
@@ -10,9 +13,9 @@ Dr. Robert J. Cooper, Room 3-409, Phone 2-6066, [rcooper@warnell.uga.edu](rcoope
 Office Hours:  Th 1:00 – 3:00
 
 Dr. Richard B. Chandler, Room 3-409B, Phone 2-5815, [rchandler@warnell.uga.edu](rchandler@warnell.uga.edu)
-Office Hours: Tues 2:30 – 3:30, Th 3:00 – 4:00
+Office Hours: Tues 1:00 – 2:00, Wed 1:00 – 2:00
 
-Will Lewis (TA), Room 3-402, [william.lewis27@uga.edu](william.lewis27@uga.edu) 
+Will Lewis (TA), Room 3-402,[william.lewis27@uga.edu](william.lewis27@uga.edu)
 Office Hours: TBA
 
 Sam Merker (TA), Room 3-402, [sam.merker@uga.edu](sam.merker@uga.edu)
@@ -24,9 +27,59 @@ To understand: (1) the logical structure of experiments, especially the design o
 
 ## Approach
 
-The above components of a scientific study need to be considered together rather than separately; design and analysis aspects will be completely blended in this course.  Emphasis will be on application, and will include instruction on the use of the R statistical software.  Important points will be reinforced by readings from the scientific literature and by discussions.  Homework assignments and exams (take home) are intended to keep the material fresh in the students' minds.  The syllabus below is subject to change, but the order of material is correct.
+The above components of a scientific study need to be considered together rather than separately; design and analysis aspects will be completely blended in this course.  Emphasis will be on application, and will include instruction on the use of the `R` statistical software.  Important points will be reinforced by readings from the scientific literature and by discussions.  Homework assignments and exams (take home) are intended to keep the material fresh in the students' minds.  The syllabus below is subject to change, but the order of material is correct.
 
 ## Schedule
+
+
+| Week | Topic | [R](https://www.r-project.org/) Lab | Reading  |
+| ---- | ----- | --- | ------- |
+| 1    | Course introduction | Introduction to `R` | Chapter 1  |
+|      | t-tests             |                     | Chapter 8  |
+|      | t-tests             |                     |            |
+| 2    | t-tests             | t-tests             | Chapter 10 |
+|      | Completely randomized ANOVA   |           |            |
+|      | Completely randomized ANOVA   |           |            |
+| 3    | Completely randomized ANOVA   | ANOVA     |            |
+|      | Multiple comparisons   |                  |            |
+|      | Multiple comparisons   |                  |            |
+| 4    | No class            | No lab              |            |
+|      | Statistical power   |       | Steidl and Thomas (2002) |
+|      | Hypothesis testing  |                 | Johnson (1999) |
+| 5    | Contrasts           | Multiple comparisons and power | |
+|      | Contrasts           |                     |            |
+|      | Assumptions and transformations  |        | Chapter 11 |
+| 6    | Nonparametrics  | Transformations and nonparametrics | |
+|      | Nonparametrics      |                     |            |
+|      | Random and fixed effects    |             |            |
+| 7    | Blocked designs  | TBA                    | Chapter 12 |
+|      | Blocked designs  |                        |            |
+|      | Blocked designs  |                        |            |
+| 8    | Paper discussion | Blocking          | Hurlbert (1984) |
+|      | AxB factorial designs |                   |            |
+|      | AxB factorial designs |                   |            |
+| 9    | AxBxC factorial designs | Factorial designs |          |
+|      | Nested designs |                          |            |
+|      | Nested designs |                          |            |
+| 10   | Paper discussion | Nested designs | Resetarits (1991), Williams and Semlitsch (2010) |
+|      | Split-plot designs |                      |            |
+|      | Split-plot designs |                      |            |
+| 11   | Split-plot designs | Split-plot designs   |            |
+|      | Repeated measures ANOVA |            | von Ende (2002) |
+|      | No class |                                |            |
+| 12   | Repeated measures ANOVA | Repeated measures  |         |
+|      | Paper discussion   |                      |            |
+|      | Regression review  |                      |            |
+| 13   | Analysis of covariance  | ANCOVA          | Chapter 13 |
+|      | Review of linear models |                 |            |
+|      | Generalized linear models |               |            |
+| 14   | Logistic regression     | GLMs            |            |
+|      | Poisson regression      |                 |            |
+|      | Generalized linear mixed effects models | |            |
+| 15   | Model selection     | Model selection     |            |
+|      | Goodness-of-fit     |                     |            |
+|      | Multi-model inference |                   |            |
+
 
 
 
