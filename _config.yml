@@ -1,6 +1,6 @@
 title: Experimental Design
 name: Richard Chandler
 description: Course materials
-theme: jekyll-theme-minima
+theme: jekyll-theme-minimal
 header_pages:
   - README.md
