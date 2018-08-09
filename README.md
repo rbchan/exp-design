@@ -1,8 +1,3 @@
----
-layout: default
-title: README
----
-
 # Experimental Design
 
 
