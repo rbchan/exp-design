@@ -1,6 +1,7 @@
 title: Course materials for FANR 6750
 name: Richard Chandler
-description: A course on experimental design and analysis
+email: rchandler@warnell.uga.edu
+description: A course on experimental design and analysis offered at the University of Georgia by Bob Cooper and me. 
 # theme: jekyll-theme-minimal
 # remote_theme: chesterhow/tale
 theme: minima

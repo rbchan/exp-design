@@ -1,9 +1,14 @@
 ---
 layout: page
-title: labs
+title: Lab materials
 ---
-# labs
+
+# Labs
+
+## Week 1
 
 [Introduction to R](intro-to-R/lab-intro-to-R.md)
+
+## Week 2
 
 [*t*-tests](t-tests/lab-t-tests.md)
