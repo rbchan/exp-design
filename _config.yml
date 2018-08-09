@@ -1,9 +1,9 @@
 title: Course materials for FANR 6750
 name: Richard Chandler
-description: Course materials
+description: A course on experimental design and analysis
 # theme: jekyll-theme-minimal
 # remote_theme: chesterhow/tale
 theme: minima
 header_pages:
-  - README.md
   - syllabus.md
+  - labs/
