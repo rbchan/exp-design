@@ -6,4 +6,4 @@ description: A course on experimental design and analysis
 theme: minima
 header_pages:
   - syllabus.md
-  - labs/
+  - labs/labs.md
