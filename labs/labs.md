@@ -1,9 +1,9 @@
 ---
 layout: page
-title: Lab materials
+title: Labs
 ---
 
-# Labs
+# Lab materials
 
 ## Week 1
 
