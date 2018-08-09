@@ -6,3 +6,4 @@ description: Course materials
 theme: minima
 header_pages:
   - README.md
+  - syllabus.md
