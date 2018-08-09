@@ -1,7 +1,10 @@
 # FANR 6750 Syllabus
-# Experimental Methods in Natural Resources Research (Experimental Design)**
-*Lecture: M, W, F 11:15 – 12:05, room 1-304*
-*Lab: M 1:25 – 3:20 or Tue 12:30 – 2:30, room 4-419*
+# Experimental Methods in Natural Resources Research (aka, Experimental Design)
+
+Lecture: M, W, F 11:15--12:05, room 1-304
+
+Lab: M 1:25--3:20 or Tue 2:00--4:00, room 4-419
+
 
 
 ## Instructors
