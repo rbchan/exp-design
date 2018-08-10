@@ -15,12 +15,6 @@ Office Hours:  Th 1:00 – 3:00
 Dr. Richard B. Chandler, Room 3-409B, Phone 2-5815, [rchandler@warnell.uga.edu](rchandler@warnell.uga.edu)
 Office Hours: Tues 1:00 – 2:00, Wed 1:00 – 2:00
 
-Will Lewis (TA), Room 3-402,[william.lewis27@uga.edu](william.lewis27@uga.edu)
-Office Hours: TBA
-
-Sam Merker (TA), Room 3-402, [sam.merker@uga.edu](sam.merker@uga.edu)
-Office Hours: TBA 
-
 
 ## Course Objectives
 To understand: (1) the logical structure of experiments, especially the design of manipulative experiments, (2) the analysis of such experiments, focusing on analysis of variance procedures, (3) the use of models in ecological studies (experimental and observational).

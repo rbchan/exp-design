@@ -36,6 +36,15 @@
 % @
 
 
+
+<<build-fun, include=FALSE, cache=TRUE>>=
+## A function to compile and open the pdf
+## Usage:
+## rnw2pdf("lab-intro-to-R") # Don't include the file extension
+source("../rnw2pdf.R")
+@
+
+
 <<knitr-theme, include=FALSE>>=
 ##knit_theme$set("navajo-night")
 knit_theme$set("edit-kwrite")
@@ -189,7 +198,7 @@ knit_theme$set("edit-kwrite")
   \small
   \vspace{0.5cm}
   You are encouraged to learn and use these programs, but we will not
-  use them for instruction because we want to focus on \R itself, not
+  use them for instruction because we want to focus on \R~itself, not
   the interface.
 \end{frame}
 
@@ -224,7 +233,7 @@ knit_theme$set("edit-kwrite")
 \vfill
   The line \inr{\#\# [1] 4} is \alert{output}. Output is
   always indicated by two hash signs (\texttt{\#\#}). Anything after a
-  \texttt{\#} is not evaluated at the command line.
+  \texttt{\#} is ignored by \R~at the command line.
 \pause \vfill
   You can copy and paste the entire code box directly into your
   console, but it might be easier to work with the \R~script
@@ -867,11 +876,11 @@ Online
       \hline
     \end{tabular}
   \end{center}
-  Upload your \R~script to ELC before your next lab. The script should
-  be self-contained, meaning that it will run correctly when we copy
-  and paste it in the console.\footnote{\scriptsize \noindent If you
+  Upload your \R~script\footnote{\scriptsize \noindent If you
     are familiar with RMarkdown, you can submit a \texttt{.Rmd} file
-    instead of a \texttt{.R} file }
+    instead of a \texttt{.R} file} to ELC before your next lab. The script should
+  be self-contained, meaning that it will run correctly when we copy
+  and paste it in the console.
 \end{frame}
 
 

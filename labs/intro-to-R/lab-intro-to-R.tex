@@ -93,6 +93,10 @@
 
 
 
+
+
+
+
 %% New command for inline code that isn't to be evaluated
 \definecolor{inlinecolor}{rgb}{0.878, 0.918, 0.933}
 \newcommand{\inr}[1]{\colorbox{inlinecolor}{\texttt{#1}}}
@@ -231,7 +235,7 @@
   \small
   \vspace{0.5cm}
   You are encouraged to learn and use these programs, but we will not
-  use them for instruction because we want to focus on \R itself, not
+  use them for instruction because we want to focus on \R~itself, not
   the interface.
 \end{frame}
 
@@ -273,7 +277,7 @@
 \vfill
   The line \inr{\#\# [1] 4} is \alert{output}. Output is
   always indicated by two hash signs (\texttt{\#\#}). Anything after a
-  \texttt{\#} is not evaluated at the command line.
+  \texttt{\#} is ignored by \R~at the command line.
 \pause \vfill
   You can copy and paste the entire code box directly into your
   console, but it might be easier to work with the \R~script
@@ -1021,7 +1025,7 @@ You can check your working directory like this:
 \hlkwd{getwd}\hlstd{()}
 \end{alltt}
 \begin{verbatim}
-## [1] "c:/Work/exp-design/labs/intro-to-R"
+## [1] "d:/exp-design/labs/intro-to-R"
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -1061,9 +1065,10 @@ Change your working directory to another location:
 \hlkwd{ls}\hlstd{()}
 \end{alltt}
 \begin{verbatim}
-##  [1] "BMI"     "height"  "mydata"  "mydata2" "reqval"  "sysval"  "weight" 
-##  [8] "x1"      "x2"      "y"       "y.re"    "y.sub1"  "y.sub2"  "y.sub4" 
-## [15] "y1"      "y2"      "z"
+##  [1] "BMI"      "clean"    "filestub" "height"   "mydata"   "mydata2" 
+##  [7] "open"     "reqval"   "rnw.file" "tangle"   "weight"   "x1"      
+## [13] "x2"       "y"        "y.re"     "y.sub1"   "y.sub2"   "y.sub4"  
+## [19] "y1"       "y2"       "z"
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -1078,7 +1083,8 @@ Removing (deleting) some objects
 \hlkwd{ls}\hlstd{()}
 \end{alltt}
 \begin{verbatim}
-## [1] "mydata" "reqval" "sysval"
+## [1] "clean"    "filestub" "mydata"   "open"     "reqval"   "rnw.file"
+## [7] "tangle"
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -1179,11 +1185,11 @@ Online
       \hline
     \end{tabular}
   \end{center}
-  Upload your \R~script to ELC before your next lab. The script should
-  be self-contained, meaning that it will run correctly when we copy
-  and paste it in the console.\footnote{\scriptsize \noindent If you
+  Upload your \R~script\footnote{\scriptsize \noindent If you
     are familiar with RMarkdown, you can submit a \texttt{.Rmd} file
-    instead of a \texttt{.R} file }
+    instead of a \texttt{.R} file} to ELC before your next lab. The script should
+  be self-contained, meaning that it will run correctly when we copy
+  and paste it in the console.
 \end{frame}
 
 
