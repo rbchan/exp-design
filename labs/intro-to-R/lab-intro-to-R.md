@@ -1,4 +1,10 @@
-# Intro to R
+---
+title: Intro to R
+layout: page
+---
+
+
+
 
 
 
