@@ -1,5 +1,8 @@
 # exp-design
-Course materials for 'Experimental Methods in Forestry and Natural Resources Research' (FANR 6750)
+Course materials for 'Experimental Methods in Forestry and Natural
+Resources Research' (FANR 6750). 
+
+## [Website](https://rbchan.github.io/exp-design/)
 
 
 ## Overview
