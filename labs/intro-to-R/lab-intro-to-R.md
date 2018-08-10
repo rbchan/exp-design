@@ -4,9 +4,7 @@ layout: page
 ---
 
 
-## Testing
-
-[Slides](https://github.com/rbchan/exp-design/blob/gh-pages/_includes/pdfs/lab-intro-to-R.pdf)
+## Slides
 
 <iframe src="//www.slideshare.net/slideshow/embed_code/key/uZpmSjykiuDhng" width="595" height="485" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;" allowfullscreen> </iframe> <div style="margin-bottom:5px"> <strong> <a href="//www.slideshare.net/richardchandler/introduction-to-r-lab-slides-for-uga-course-fanr-6750" title="Introduction to R - Lab slides for UGA course FANR 6750" target="_blank">Introduction to R - Lab slides for UGA course FANR 6750</a> </strong> from <strong><a href="https://www.slideshare.net/richardchandler" target="_blank">richardchandler</a></strong> </div>
 
