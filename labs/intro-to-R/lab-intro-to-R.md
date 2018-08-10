@@ -5,7 +5,7 @@ layout: page
 
 
 
-{% include pdfs/lab-intro-to-R.pdf %}
+{% includes pdfs/lab-intro-to-R.pdf %}
 
 
 
