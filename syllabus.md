@@ -28,10 +28,10 @@ The above components of a scientific study need to be considered together rather
 
 | Week | Topic | [R](https://www.r-project.org/) Lab | Reading  |
 | ---- | ----- | --- | ------- |
-| 1    | Course introduction | Introduction to `R` | Chapter 1  |
+| 1    | Course introduction | [Introduction to `R`](labs/intro-to-R/lab-intro-to-R.md) | Chapter 1  |
 |      | t-tests             |                     | Chapter 8  |
 |      | t-tests             |                     |            |
-| 2    | t-tests             | t-tests             | Chapter 10 |
+| 2    | t-tests             | [t-tests](labs/t-tests/lab-t-tests.md)             | Chapter 10 |
 |      | Completely randomized ANOVA   |           |            |
 |      | Completely randomized ANOVA   |           |            |
 | 3    | Completely randomized ANOVA   | ANOVA     |            |
@@ -77,14 +77,14 @@ The above components of a scientific study need to be considered together rather
 
 
 
-## Books 
+## Books
 
-Chapters above are from: 
+Chapters above are from:
 Dowdy, S., S. Weardon and D. Chilko. 2004. Statistics for Research, 3rd ed.  John Wiley & Sons
      [eBook available for free through the UGA library](http://dx.doi.org.proxy-remote.galib.uga.edu/10.1002/0471477435)
 
 Lab readings will be assigned from:
-Dalgaard, P. 2008. Introductory Statistics with R. 2nd edition. Springer. 
+Dalgaard, P. 2008. Introductory Statistics with R. 2nd edition. Springer.
       [eBook available for free through the UGA library](http://preproxy.galib.uga.edu/login?url=http://dx.doi.org/10.1007/978-0-387-79054-1)
 
 Additional readings will come from a variety of sources, including other textbooks and scientific journals.
@@ -92,7 +92,7 @@ Additional readings will come from a variety of sources, including other textboo
 ## Grades
 Three take-home exams, 25% each.  Exam dates above are approximate days when the exam will be provided.  The last exam will largely take the form of a scientific paper - more details later. The remaining 25% of the grade will come from weekly lab assignments.
 
-All academic work must meet the standards contained in the University's [academic honesty policy](https://honesty.uga.edu/).  All students are responsible for informing themselves about those standards before performing any academic work.  The [penalties for academic dishonesty](https://honesty.uga.edu/Academic-Honesty-Policy/Consequences_for_Honesty_Violations/) are severe, and ignorance is not an acceptable defense.	
+All academic work must meet the standards contained in the University's [academic honesty policy](https://honesty.uga.edu/).  All students are responsible for informing themselves about those standards before performing any academic work.  The [penalties for academic dishonesty](https://honesty.uga.edu/Academic-Honesty-Policy/Consequences_for_Honesty_Violations/) are severe, and ignorance is not an acceptable defense.
 
 
 
