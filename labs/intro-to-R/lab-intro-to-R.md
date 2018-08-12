@@ -13,11 +13,10 @@ layout: page
 
 [Compressed version of the slides](lab-intro-to-R-handout.pdf) with 4 slides per page
 
-<iframe src="./lab-intro-to-R-handout.pdf" id="iframepdf"></iframe>
 
 ## R script
 
-This [script](lab-intro-to-R.R) was automatically generated using [knitr](https://yihui.name/knitr/). You can ignore the comments and focus on the code.
+The [script](lab-intro-to-R.R) has the [R](https://www.r-project.org/) code from the slides. It was automatically generated using [knitr](https://yihui.name/knitr/). You can ignore the comments and focus on the code.
 
 
 
