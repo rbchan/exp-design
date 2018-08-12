@@ -1,0 +1,6 @@
+For 2017
+
+  o The group means are out of order if you use tapply in the first
+    in-class exercise. Omit coverage of tapply()?
+
+  o 

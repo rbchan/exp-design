@@ -1,0 +1,1001 @@
+\documentclass[color=usenames,dvipsnames]{beamer}\usepackage[]{graphicx}\usepackage[]{color}
+%% maxwidth is the original width if it is less than linewidth
+%% otherwise use linewidth (to make sure the graphics do not exceed the margin)
+\makeatletter
+\def\maxwidth{ %
+  \ifdim\Gin@nat@width>\linewidth
+    \linewidth
+  \else
+    \Gin@nat@width
+  \fi
+}
+\makeatother
+
+\definecolor{fgcolor}{rgb}{0, 0, 0}
+\newcommand{\hlnum}[1]{\textcolor[rgb]{0.69,0.494,0}{#1}}%
+\newcommand{\hlstr}[1]{\textcolor[rgb]{0.749,0.012,0.012}{#1}}%
+\newcommand{\hlcom}[1]{\textcolor[rgb]{0.514,0.506,0.514}{\textit{#1}}}%
+\newcommand{\hlopt}[1]{\textcolor[rgb]{0,0,0}{#1}}%
+\newcommand{\hlstd}[1]{\textcolor[rgb]{0,0,0}{#1}}%
+\newcommand{\hlkwa}[1]{\textcolor[rgb]{0,0,0}{\textbf{#1}}}%
+\newcommand{\hlkwb}[1]{\textcolor[rgb]{0,0.341,0.682}{#1}}%
+\newcommand{\hlkwc}[1]{\textcolor[rgb]{0,0,0}{\textbf{#1}}}%
+\newcommand{\hlkwd}[1]{\textcolor[rgb]{0.004,0.004,0.506}{#1}}%
+\let\hlipl\hlkwb
+
+\usepackage{framed}
+\makeatletter
+\newenvironment{kframe}{%
+ \def\at@end@of@kframe{}%
+ \ifinner\ifhmode%
+  \def\at@end@of@kframe{\end{minipage}}%
+  \begin{minipage}{\columnwidth}%
+ \fi\fi%
+ \def\FrameCommand##1{\hskip\@totalleftmargin \hskip-\fboxsep
+ \colorbox{shadecolor}{##1}\hskip-\fboxsep
+     % There is no \\@totalrightmargin, so:
+     \hskip-\linewidth \hskip-\@totalleftmargin \hskip\columnwidth}%
+ \MakeFramed {\advance\hsize-\width
+   \@totalleftmargin\z@ \linewidth\hsize
+   \@setminipage}}%
+ {\par\unskip\endMakeFramed%
+ \at@end@of@kframe}
+\makeatother
+
+\definecolor{shadecolor}{rgb}{.97, .97, .97}
+\definecolor{messagecolor}{rgb}{0, 0, 0}
+\definecolor{warningcolor}{rgb}{1, 0, 1}
+\definecolor{errorcolor}{rgb}{1, 0, 0}
+\newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
+
+\usepackage{alltt}
+%\documentclass[color=usenames,dvipsnames,handout]{beamer}
+
+\usepackage[sans]{../../lab1}
+
+\hypersetup{pdftex,pdfstartview=FitV}
+
+
+
+
+
+
+
+
+%% New command for inline code that isn't to be evaluated
+\definecolor{inlinecolor}{rgb}{0.878, 0.918, 0.933}
+\newcommand{\inr}[1]{\colorbox{inlinecolor}{\texttt{#1}}}
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\begin{document}
+
+
+%\setlength\fboxsep{0pt}
+
+
+%\section{Intro}
+
+\begin{frame}[plain]
+%  \maketitle
+  \LARGE
+  \centering \par
+  \textcolor{RoyalBlue}{\bf Lab 3 -- Completely Randomized ANOVA \\
+  (a.k.a. One-way ANOVA)} \par
+  \vspace{1cm}
+  Aug 27 \& 28, 2018 \\
+  FANR 6750 \\
+  \vfill
+  \large
+  Richard Chandler and Bob Cooper
+\end{frame}
+
+
+
+
+
+%% \begin{frame}[plain]
+%%   \frametitle{Recap}
+%%   \Large
+%%   Last week we covered:
+%%   \begin{itemize}
+%%     \item $t$-tests
+%%   \end{itemize}
+%%   \note{Ask students if they have questions about last week or general
+%%     questions about \R}
+%% \end{frame}
+
+
+
+\begin{frame}[plain]
+  \frametitle{Today's Topics}
+  \LARGE
+  \only<1>{\tableofcontents}%[hideallsubsections]}
+%  \only<2 | handout:0>{\tableofcontents[currentsection]}%,hideallsubsections]}
+\end{frame}
+
+
+
+\section{Brief Overview of ANOVA}
+
+
+
+\begin{frame}
+  \frametitle{One-way ANOVA}
+  {\Large Scenario}
+  \begin{itemize}
+    \item We have independent samples from $a>2$ groups
+    \item We assume a common variance
+  \end{itemize}
+%  \vspace{0.5cm}
+  \pause
+  \vfill
+  {\Large Questions}
+  \begin{itemize}
+    \item Do the means differ?
+    \item By how much? (What are the effect sizes?)
+  \end{itemize}
+%  \vspace{0.5cm}
+  \pause
+  \vfill
+  {\Large Null hypothesis}
+  \begin{itemize}
+    \item $H_0: \mu_1 = \mu_2 = \mu_3 = \ldots = \mu_a$
+    \item Or:
+    \item $H_0: \alpha_1 = \alpha_2 = \alpha_3 = \ldots = \alpha_a = 0$
+  \end{itemize}
+\end{frame}
+
+
+
+
+%% \begin{frame}[fragile]
+%%   \frametitle{One-way ANOVA}
+%%   \begin{center}
+%% <<popdists,include=FALSE,echo=FALSE>>=
+%% op <- par(mai=c(0.9,0.1,0.9,0.1))
+%% curve(dnorm(x, 5, 2), 0, 20, xlab="Some variable (y)", ylim=c(0,0.21),
+%%       yaxt="n", ylab="", frame=FALSE, lwd=2, cex.lab=1.3)
+%% curve(dnorm(x, 6, 2), 0, 20, add=TRUE, col="purple", lwd=2)
+%% curve(dnorm(x, 10, 2), 0, 20, add=TRUE, col="blue", lwd=2)
+%% segments(5, 0, 5, dnorm(5, 5, 2), lty=2)
+%% segments(6, 0, 6, dnorm(6, 6, 2), col="purple", lty=2)
+%% segments(10, 0, 10, dnorm(10, 10, 2), col="blue", lty=2)
+%% text(5, dnorm(5,5,2), expression(mu[1]), pos=3)
+%% text(6, dnorm(6,6,2), expression(mu[2]), pos=3, col="purple")
+%% text(10, dnorm(10,10,2), expression(mu[3]), pos=3, col="blue")
+%% legend(13, 0.2, c("Group 1", "Group 2", "Group 3"),
+%%        lwd=2, col=c("black", "purple", "blue"))
+%% par(op)
+%% @
+%% \includegraphics[height=8cm,width=8cm]{lab03-ANOVA1-popdists}
+%% \end{center}
+%% \end{frame}
+
+
+
+\section{ANOVA in \R}
+
+
+
+
+
+%% <<>>=
+%% set.seed(32245)
+%% n <- 8 # number of samples per group
+%% a <- 3 # number of groups
+%% sqShelterwood <- rnorm(n, mean=5, sd=2)
+%% sqSingletree <- rnorm(n, mean=6, sd=2)
+%% sqControl <- rnorm(n, mean=10, sd=2)
+%% sqdata <- data.frame(
+%%     sqDensity=c(sqShelterwood, sqSingletree, sqControl),
+%%     Treatment=rep(c("Shelterwood", "Single-tree", "Control"), each=n))
+%% rownames(sqdata) <- paste("Site", 1:(n*a), sep="")
+%% write.csv(sqdata, "sqdata.csv")
+%% @
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Chain Saw Data}
+{%\bf
+  The data as 4 vectors}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{kick.angle.brandA} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlnum{42}\hlstd{,}\hlnum{17}\hlstd{,}\hlnum{24}\hlstd{,}\hlnum{39}\hlstd{,}\hlnum{43}\hlstd{)}
+\hlstd{kick.angle.brandB} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlnum{28}\hlstd{,}\hlnum{50}\hlstd{,}\hlnum{44}\hlstd{,}\hlnum{32}\hlstd{,}\hlnum{61}\hlstd{)}
+\hlstd{kick.angle.brandC} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlnum{57}\hlstd{,}\hlnum{45}\hlstd{,}\hlnum{48}\hlstd{,}\hlnum{41}\hlstd{,}\hlnum{54}\hlstd{)}
+\hlstd{kick.angle.brandD} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlnum{29}\hlstd{,}\hlnum{40}\hlstd{,}\hlnum{22}\hlstd{,}\hlnum{34}\hlstd{,}\hlnum{30}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\pause
+\vspace{0.5cm}
+{%\bf
+  Format as a inr{data.frame}}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{n} \hlkwb{<-} \hlkwd{length}\hlstd{(kick.angle.brandA)}
+\hlstd{a} \hlkwb{<-} \hlnum{4}
+\hlstd{sawData} \hlkwb{<-} \hlkwd{data.frame}\hlstd{(}
+    \hlkwc{Kick.angle}\hlstd{=}\hlkwd{c}\hlstd{(kick.angle.brandA, kick.angle.brandB,}
+        \hlstd{kick.angle.brandC, kick.angle.brandD),}
+    \hlkwc{Brand}\hlstd{=}\hlkwd{rep}\hlstd{(}\hlkwd{c}\hlstd{(}\hlstr{"A"}\hlstd{,}\hlstr{"B"}\hlstd{,}\hlstr{"C"}\hlstd{,}\hlstr{"D"}\hlstd{),} \hlkwc{each}\hlstd{=n))}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Vizualize the data}
+  \footnotesize %\small
+
+\begin{center}
+  \includegraphics[width=0.85\textwidth]{figure/boxplot1-1}
+\end{center}
+\end{frame}
+
+
+
+
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Two ANOVA functions: {\tt aov} and {\tt lm}}
+  {\large
+%  \begin{itemize}
+%    \item
+    \R~has 2 common functions for doing ANOVA: \inr{aov} and \inr{lm} \\
+    \vfill
+%    \item
+    We will primarily use \inr{aov} in this class
+%  \end{itemize}
+  }
+  \pause
+%  \vspace{1cm}
+  \vfill
+  {%\bf
+    Crude characterization}
+  \begin{center}
+    \small
+  \begin{tabular}[H]{lcc}
+    \hline
+      & {\tt aov} & {\tt lm} \\
+    \hline
+    Emphasis & ANOVA tables & Linear models \\
+    Typical use & Designed experiments & Regression analysis \\
+    Multiple error strata? & Yes & No \\
+    \hline
+  \end{tabular}
+  \end{center}
+\end{frame}
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Using {\tt aov}}
+{%\bf
+  Do the analysis}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{aov.out1} \hlkwb{<-} \hlkwd{aov}\hlstd{(Kick.angle} \hlopt{~} \hlstd{Brand,} \hlkwc{data}\hlstd{=sawData)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\pause
+%\vspace{0.5cm}
+\vfill
+{%\bf
+  View the ANOVA table}
+%\small
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{summary}\hlstd{(aov.out1)}
+\end{alltt}
+\begin{verbatim}
+##             Df Sum Sq Mean Sq F value Pr(>F)  
+## Brand        3   1080   360.0   3.556 0.0382 *
+## Residuals   16   1620   101.2                 
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Estimates of means ($\mu$'s) and SE}
+%{\bf \large Estimates of means and SE}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{model.tables}\hlstd{(aov.out1,} \hlkwc{type}\hlstd{=}\hlstr{"means"}\hlstd{,} \hlkwc{se}\hlstd{=}\hlnum{TRUE}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## Tables of means
+## Grand mean
+##    
+## 39 
+## 
+##  Brand 
+## Brand
+##  A  B  C  D 
+## 33 43 49 31 
+## 
+## Standard errors for differences of means
+##         Brand
+##         6.364
+## replic.     5
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Estimates of effect sizes ($\alpha$'s) and SE}
+%{\bf \large Estimates of means and SE}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{model.tables}\hlstd{(aov.out1,} \hlkwc{type}\hlstd{=}\hlstr{"effects"}\hlstd{,} \hlkwc{se}\hlstd{=}\hlnum{TRUE}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## Tables of effects
+## 
+##  Brand 
+## Brand
+##  A  B  C  D 
+## -6  4 10 -8 
+## 
+## Standard errors of effects
+##         Brand
+##           4.5
+## replic.     5
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Create ANOVA table by hand}
+{%\bf
+  Grand mean}
+%  \small
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{ybar.} \hlkwb{<-} \hlkwd{mean}\hlstd{(sawData}\hlopt{$}\hlstd{Kick.angle)}
+\hlstd{ybar.}
+\end{alltt}
+\begin{verbatim}
+## [1] 39
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\pause
+\normalsize
+{%\bf
+  Find the group means, the hard way}
+%  \small
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{ybar.i} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlkwd{mean}\hlstd{(kick.angle.brandA),} \hlkwd{mean}\hlstd{(kick.angle.brandB),}
+            \hlkwd{mean}\hlstd{(kick.angle.brandC),} \hlkwd{mean}\hlstd{(kick.angle.brandD))}
+\hlstd{ybar.i}
+\end{alltt}
+\begin{verbatim}
+## [1] 33 43 49 31
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\pause
+\normalsize
+{%\bf
+  Find the group means, the easier way}
+%  \small
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{ybar.i} \hlkwb{<-} \hlkwd{tapply}\hlstd{(sawData}\hlopt{$}\hlstd{Kick.angle, sawData}\hlopt{$}\hlstd{Brand, mean)}
+\hlstd{ybar.i}
+\end{alltt}
+\begin{verbatim}
+##  A  B  C  D 
+## 33 43 49 31
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+
+\end{frame}
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Sums of squares}
+{%\bf
+  Sums of squares among}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{SSa} \hlkwb{<-} \hlstd{n}\hlopt{*}\hlkwd{sum}\hlstd{((ybar.i} \hlopt{-} \hlstd{ybar.)}\hlopt{^}\hlnum{2}\hlstd{)}
+\hlstd{SSa}
+\end{alltt}
+\begin{verbatim}
+## [1] 1080
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\pause
+\vfill
+{%\bf
+  Sums of squares within}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{y.ij} \hlkwb{<-} \hlstd{sawData}\hlopt{$}\hlstd{Kick.angle}
+\hlstd{SSw} \hlkwb{<-} \hlkwd{sum}\hlstd{((y.ij} \hlopt{-} \hlkwd{rep}\hlstd{(ybar.i,} \hlkwc{each}\hlstd{=n))}\hlopt{^}\hlnum{2}\hlstd{)}
+\hlstd{SSw}
+\end{alltt}
+\begin{verbatim}
+## [1] 1620
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Means squares and $F$ statistic}
+  {%\bf
+    Mean squares among}
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{df1} \hlkwb{<-} \hlstd{a}\hlopt{-}\hlnum{1}
+\hlstd{MSa} \hlkwb{<-} \hlstd{SSa} \hlopt{/} \hlstd{df1}
+\hlstd{MSa}
+\end{alltt}
+\begin{verbatim}
+## [1] 360
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\pause
+\vfill
+  {%\bf
+    Mean squares within}
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{df2} \hlkwb{<-} \hlstd{a}\hlopt{*}\hlstd{(n}\hlopt{-}\hlnum{1}\hlstd{)}
+\hlstd{MSw} \hlkwb{<-} \hlstd{SSw} \hlopt{/} \hlstd{df2}
+\hlstd{MSw}
+\end{alltt}
+\begin{verbatim}
+## [1] 101.25
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\pause
+\vfill
+  {%\bf
+    $F$ statistic}
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{F.stat} \hlkwb{<-} \hlstd{MSa} \hlopt{/} \hlstd{MSw}
+\hlstd{F.stat}
+\end{alltt}
+\begin{verbatim}
+## [1] 3.555556
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Critical values and $p$-values}
+  {%\bf
+    Critical value}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{F.crit} \hlkwb{<-} \hlkwd{qf}\hlstd{(}\hlnum{0.95}\hlstd{, df1, df2)}
+\hlstd{F.crit}
+\end{alltt}
+\begin{verbatim}
+## [1] 3.238872
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\pause
+\vfill
+  {%\bf
+    $p$-value}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{p.value} \hlkwb{<-} \hlnum{1} \hlopt{-} \hlkwd{pf}\hlstd{(F.stat, df1, df2)}
+\hlstd{p.value}
+\end{alltt}
+\begin{verbatim}
+## [1] 0.03823275
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+
+
+
+
+\begin{comment}
+\begin{frame}[fragile]
+  \frametitle{A fake dataset}
+%  \begin{tiny}
+%## <<echo=FALSE>>=
+%## set.seed(342)
+%## n <- 20
+%## pop1 <- rnorm(n, 8, sd=1.9)
+%## pop2 <- rnorm(n, 8, sd=1.9)
+%## pop3 <- rnorm(n, 10, sd=1.9)
+%## pop4 <- rnorm(n, 8, sd=1.9)
+%## pop5 <- rnorm(n, 10, sd=1.9)
+%## warblerWeight <- data.frame(weight=c(pop1, pop2, pop3, pop4, pop5),
+%##                             population=rep(LETTERS[1:5], each=n))
+%## write.csv(warblerWeight, "warblerWeight.csv")
+%## @
+
+  \end{tiny}
+\end{frame}
+\end{comment}
+
+
+%% \begin{frame}
+%%   \frametitle{Exercise I}
+%%   \large
+%%   {\bf Create a script to do the following:}
+%%   \begin{enumerate}[\bf (1)]
+%%     \item Import the data file: {\tt warblerWeight.csv}
+%%     \item Do an ANOVA using {\tt aov}
+%%     \item Do an ANOVA without using {\tt aov} (or {\tt lm}).
+%%     \item Answer the question: Do we reject the null hypothesis?
+%%   \end{enumerate}
+%%   \pause
+%%   \vspace{0.5cm}
+%%   {\bf Save the script. You will need it for subsequent exercises.}
+%% \end{frame}
+
+
+
+\section{Multiple comparisons}
+
+
+
+
+
+\begin{frame}[plain]
+  \frametitle{Today's Topics}
+  \LARGE
+  \tableofcontents[currentsection]
+\end{frame}
+
+
+
+
+%% \begin{frame}[fragile]
+%%   \frametitle{Vizualize the data using barplot}
+%% {\bf Simple usage}
+%% <<barplot1,include=FALSE>>=
+%% barplot(group.means, ylim=c(0, 60), xlab="Brand",
+%%         ylab="Chainsaw kickback angle")
+%% @
+%% \begin{center}
+%%   \includegraphics[width=6cm]{lab03-ANOVA1-barplot1}
+%% \end{center}
+%% \end{frame}
+
+
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Group means $+1$ SE}
+%{\bf With error bars ($+1$ SE)}
+\footnotesize
+
+\begin{center}
+  \includegraphics[width=0.85\textwidth]{figure/barplot2-1}
+\end{center}
+\end{frame}
+
+
+
+
+
+
+
+%% \begin{frame}[fragile]
+%%   \frametitle{Vizualize the data using boxplot}
+%% <<stripchart1,include=FALSE>>=
+%% stripchart(y ~ Brand, data=sawData, xlab="Brand",
+%%            ylab="Saw kickback angle", cex.lab=1.3,
+%%            vertical=TRUE, pch=16)
+%% @
+%% \begin{center}
+%%   \includegraphics[width=6cm]{lab03-ANOVA1-stripchart1}
+%% \end{center}
+%% \end{frame}
+
+
+
+
+
+%% \begin{frame}[fragile]
+%%   \frametitle{Testing pairwise differences in means}
+%% {\bf Option 1: Many pairwise $t$-tests}
+%% \small
+%% <<>>=
+%% pairwise.t.test(sawData$y, sawData$Brand,
+%%                 p.adjust.method="bonferroni")
+%% @ %def
+%% \end{frame}
+
+
+
+
+%% \begin{frame}[fragile]
+%%   \frametitle{Testing pairwise differences in means}
+%%   {\bf Option 2: Fisher's LSD test}
+%% {\tiny
+%% <<>>=
+%% ##install.packages("agricolae") # download the agricolae package
+%% ##library(agricolae) # load the package
+%% print(LSD.test(aov.out1, "Brand"))
+%% @
+%% }
+%% \end{frame}
+
+
+
+
+
+\begin{frame}[fragile]
+%  \frametitle{Testing pairwise differences in means}
+  \frametitle{Tukey's Honestly Significant Difference test}
+%  {\bf Option 2: Tukey's Honestly Significant Difference test}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{TukeyHSD}\hlstd{(aov.out1)}
+\end{alltt}
+\begin{verbatim}
+##   Tukey multiple comparisons of means
+##     95% family-wise confidence level
+## 
+## Fit: aov(formula = Kick.angle ~ Brand, data = sawData)
+## 
+## $Brand
+##     diff        lwr        upr     p adj
+## B-A   10  -8.207419 28.2074187 0.4213711
+## C-A   16  -2.207419 34.2074187 0.0955690
+## D-A   -2 -20.207419 16.2074187 0.9888365
+## C-B    6 -12.207419 24.2074187 0.7826478
+## D-B  -12 -30.207419  6.2074187 0.2726522
+## D-C  -18 -36.207419  0.2074187 0.0532168
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Plot Tukey's confidence intervals}
+%  {\bf Option 3: Tukey's Honestly Significant Difference test}
+  \tiny
+
+\begin{center}
+  \includegraphics[width=0.7\textwidth]{figure/tukey-1}
+\end{center}
+\end{frame}
+
+
+
+
+%% \begin{frame}
+%%   \frametitle{Exercise II}
+%%   {\bf Extend your script to do the following:}
+%%   \begin{enumerate}[\bf (1)]
+%%     \item Make a barplot of group means $+1$ SE using warbler data
+%%     \item Use Tukey's HSD test to determine if any of the means are
+%%       significantly different at $\alpha=0.05$
+%%   \end{enumerate}
+%% %  {\bf Save your script.}
+%% \end{frame}
+
+
+
+
+\begin{frame}
+  \frametitle{Assignment}
+  \small
+%  {\centering \large Do Assignment 1 (it's on ELC). \par}
+  A biologist wants to compare the growth of four different tree
+  species she is considering for use in reforestation efforts.  All 32
+  seedlings of the four species are planted at the same time in a
+  large plot. Heights in meters recorded after several years. The data
+  are in the file {\tt treeHt.csv}: \\
+  \vfill
+  Create an \R~script to do the following:
+  \begin{enumerate}[\bf (1)]
+  \item Create an ANOVA table using the ``aov'' and ``summary''
+    functions. %In other words, do the same thing as before, but the
+%    easy way.
+  \item Create an ANOVA table (degrees of freedom,
+    sums-of-squares, mean-squared error, and F-value) without using
+    ``aov''. Compute either the critical value of F or
+    the $p$-value.
+  \item Add a comment to the script indicating what the null
+    hypothesis is, and whether or not it can be rejected at the
+    $\alpha = 0.05$ level.
+  \item Use Tukey's HSD test to determine which pairs of means differ
+    at the $\alpha = 0.05$ level.  Add a comment, indicating which
+    pairs are different.
+  \item Create a barplot showing the means and SEs.
+  \end{enumerate}
+
+\end{frame}
+
+
+
+
+
+
+
+\end{document}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+%% \begin{comment}
+%% \section{Contrasts}
+
+
+
+
+
+%% \begin{frame}[fragile]
+%%   \frametitle{Contrasts}
+%%   {\bf Suppose we want to make 3 {\it a priori} comparisons:}
+%%   \begin{enumerate}
+%%     \item[(1)] Groups A\&D vs B\&C
+%%     \item[(2)] Groups A vs D
+%%     \item[(3)] Groups B vs C
+%%   \end{enumerate}
+%%   \pause
+%%   \vspace{0.5cm}
+%%   \begin{center}
+%%     \begin{tabular}{llr}
+%%       \hline
+%%         & Comparision & Null hypothesis \\
+%%       \hline
+%%       1 & AD vs BC & $\frac{\mu_A + \mu_D}{2} - \frac{\mu_B + \mu_C}{2} = 0$ \\
+%%       2 & A vs D & $\mu_A - \mu_D = 0$ \\
+%%       3 & B vs C & $\mu_B - \mu_C = 0$ \\
+%%       \hline
+%%     \end{tabular}
+%%   \end{center}
+%% \end{frame}
+
+
+%% \begin{frame}[fragile]
+%%   \frametitle{Constructing contrasts in \R}
+%% <<>>=
+%% ADvBC <- c(1/2, -1/2, -1/2, 1/2)
+%% AvD <- c(1, 0, 0, -1)
+%% BvC <- c(0, 1, -1, 0)
+%% @
+%% \pause
+%% {\bf
+%% Are they orthogonal?}
+%% \pause
+%% {\bf Yes!}
+%% <<>>=
+%% sum(ADvBC * AvD)
+%% sum(ADvBC * BvC)
+%% sum(AvD * BvC)
+%% @
+%% \end{frame}
+
+
+
+
+%% %% \begin{frame}[fragile]
+%% %%   \frametitle{We need to put the contrasts into a matrix}
+%% %%   The \verb+cbind+ function turns each vector into a row of a matrix
+%% %% <<>>=
+%% %% contrast.mat <- cbind(ADvBC, AvD, BvC)
+%% %% contrast.mat
+%% %% @
+%% %% {\bf In \R, we need to use fractions.}
+%% %% <<>>=
+%% %% R.contrasts <- cbind(ADvBC, AvD/2, BvC/2)
+%% %% R.contrasts
+%% %% @
+%% %% \end{frame}
+
+
+
+
+
+%% \begin{frame}[fragile]
+%%   \frametitle{We need to put the contrasts into a matrix}
+%%   {\bf The {\tt rbind} function turns each vector into a row of a matrix}
+%% \begin{footnotesize}
+%% <<>>=
+%% contrast.mat <- rbind(ADvBC, AvD, BvC)
+%% contrast.mat
+%% @
+%% \end{footnotesize}
+%% \end{frame}
+
+
+%% \begin{frame}[fragile]
+%%   \frametitle{Format constrats for \R}
+%%   {\bf \R~requires that the contrasts be converted to a form that it
+%%   likes. The easiest way to do this is to use the {\tt
+%%     make.contrasts} function in the {\tt gmodels} package}.
+%% \begin{footnotesize}
+%% <<>>=
+%% install.packages("gmodels")
+%% library(gmodels)
+%% R.contrasts <- zapsmall(make.contrasts(contrast.mat))
+%% R.contrasts
+%% @
+%% \end{footnotesize}
+%% \end{frame}
+
+
+
+
+
+%% \begin{frame}[fragile]
+%%   \frametitle{Contrasts}
+%% {\bf Rerun the model with new contrasts and ``split'' apart the sum-of-squares}
+%% \begin{footnotesize}
+%% <<>>=
+%% aov.out2 <- aov(y ~ Brand, data=sawData,
+%%                 contrasts=list(Brand=R.contrasts))
+%% summary(aov.out2, split = list(Brand =
+%%                       list("ADvBC"=1, "AvD"=2, "BvC"=3)))
+%% @
+%% \end{footnotesize}
+%% \end{frame}
+
+
+%% \begin{frame}[fragile]
+%%   \frametitle{Contrasts}
+%% {\bf Compute the standard error of a contrast \par}
+%% SE for A vs D
+%% <<>>=
+%% se.contrast(aov.out2, list(sawData$Brand=="A",
+%%                            sawData$Brand=="D"))
+%% @
+%% \pause
+%% SE for B vs C
+%% <<>>=
+%% se.contrast(aov.out2, list(sawData$Brand=="B",
+%%                            sawData$Brand=="C"))
+%% @
+%% \pause
+%% SE for AD vs BC
+%% \scriptsize
+%% <<>>=
+%% se.contrast(aov.out2, list(sawData$Brand=="A" | sawData$Brand=="D",
+%%                            sawData$Brand=="B" | sawData$Brand=="C"))
+%% @
+%% % \begin{scriptsize}
+%% %<<>>=
+%% %aov.summary <- summary.lm(aov.out2)
+%% %aov.summary
+%% %@
+%% %<<>>=
+%% %model.tables(aov.out2, type="effects", se=TRUE)
+%% %@
+%% %\end{scriptsize}
+%% \end{frame}
+
+
+
+%% %% \begin{frame}[fragile]
+%% %%   \frametitle{Contrasts}
+%% %% {\bf Compute the 95\% confidence intervals}
+%% %% <<>>=
+%% %% aov.CI <- confint(aov.out2, level=0.95)
+%% %% aov.CI
+%% %% @
+%% %% \end{frame}
+
+
+
+
+%%   \begin{enumerate}[\bf (1)]
+%%     \item<1-> Using the {\tt warblerWeight} data, construct an $F$-table
+%%        in \R~with the following contrasts:
+%%     \begin{itemize}
+%%       \item Groups A,B vs C,D,E
+%%       \item Groups A vs B
+%%       \item Groups C vs D,E
+%%       \item Groups D vs E
+%%     \end{itemize}
+%% %    \vspace{0.5cm}
+%%     \item<2-> For each contrast, compute the difference in the means and the
+%%       standard error of the difference
+%%   \end{enumerate}
+%%   \uncover<3->{
+%%   \vspace{0.5cm}
+%%   {\large {\color{red} \bf Due:} Upload the \R~script to ELC before the
+%%     next lab. The script should be self-contained.}
+%%   }
+
+
+%% \end{comment}
+
