@@ -13,7 +13,7 @@ layout: page
 
 [Compressed version of the slides](lab-intro-to-R-handout.pdf) with 4 slides per page
 
-<iframe src="lab-intro-to-R-handout.pdf" id="iframepdf"</iframe>
+<iframe src="./lab-intro-to-R-handout.pdf" id="iframepdf"></iframe>
 
 ## R script
 
