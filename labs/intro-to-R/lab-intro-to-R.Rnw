@@ -710,7 +710,7 @@ str(mydata)
 
 \begin{frame}[fragile]
   \frametitle{Importing and exporting data}
-  \verb+read.csv+ and \verb+write.csv+ are easy options, but there are
+  \inr{read.csv} and \inr{write.csv} are easy options, but there are
   many more possibilities that we won't cover. \\
 %  \begin{itemize}
 %    \item
