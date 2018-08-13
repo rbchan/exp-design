@@ -391,7 +391,7 @@ If the $t$ statistic is more extreme than the critical
 
 \begin{frame}[fragile]
   \frametitle{Two-sample $t$-test with equal variances}
-  {\bf Step 1:} Compute the $t$ statistic:
+  {\bf Step 1:} Compute the $t$ statistic\footnote{\scriptsize Remember, $H_0$ states that $\mu_L-\mu_H =0$.}:
   \[
   t = \frac{(\bar{y_L} - \bar{y_H}) - (\mu_L - \mu_H)}{
     \sqrt{s^2_p/n_L + s^2_p/n_H}}
@@ -400,7 +400,7 @@ If the $t$ statistic is more extreme than the critical
   \]
 %  where $s_L$ and $s_H$ are the standard deviations of the low and
 %  high groups.
-  where $s^2_p$ is the pooled variance. Remember that $H_0$ states that $\mu_L-\mu_H =0$.
+  where $s^2_p$ is the pooled variance:
   \[
   s^2_p = \frac{(n_L-1)s^2_L + (n_H-1)s^2_H}{n_L + n_H - 2}
 %  s_L = \sqrt{\frac{1}{n_L-1} \sum_{i=1}^{n_L} (y_{L i} - \bar{y_L})^2}
@@ -808,18 +808,18 @@ If the $t$ statistic is more extreme than the critical
   \footnotesize
   {\bf Create a script to do the following:}
   \begin{enumerate}[\bf (1)]
-    \item Do a paired $t$ test on the caterpillar data without using the {\tt t.test}
-      function. Use only the functions {\tt mean}, {\tt sd}, and
-      possibly {\tt length}.
-    \item Do the paired $t$ test again, but this time using the {\tt
+    \item Do a paired $t$ test on the caterpillar data without using the \inr{t.test}
+      function. Use only the functions \inr{mean}, \inr{sd}, and
+      possibly \inr{length}.
+    \item Do the paired $t$ test again, but this time using the \inr{
         t.test} function.
       \begin{itemize}
         \scriptsize
-        \item You will need to use the {\tt paired} argument when using the {\tt t.test} function
+        \item You will need to use the \texttt{``paired''} argument when using the \inr{t.test} function
         \item Assume variances are equal
       \end{itemize}
     \item Do a standard ({\it unpaired}) two-sample $t$ test using
-      the {\tt t.test} function.
+      the \inr{t.test} function.
 %    \item Assume equal variances for all tests
     \item Add a comment to the end of your script explain your
       results. Also include the null and alternative hypotheses for
