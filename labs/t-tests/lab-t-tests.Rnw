@@ -8,7 +8,7 @@
 \hypersetup{pdftex,pdfstartview=FitV}
 
 
-<<build-fun, include=FALSE, cache=TRUE>>=
+<<build-fun, include=FALSE, cache=TRUE, eval=FALSE>>=
 ## A function to compile and open the pdf
 ## Usage:
 ## rnw2pdf("lab-t-tests") # Don't include the file extension
@@ -108,7 +108,7 @@ knit_theme$set("edit-kwrite")
     %%   \end{itemize}
 %  \end{itemize}
   We have 2 samples of data and we want to know if they came from
-  population. \\
+  the same population. \\
   \pause
   \vfill
 

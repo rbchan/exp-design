@@ -1,8 +1,8 @@
-## ----build-fun, include=FALSE, cache=TRUE--------------------------------
-## A function to compile and open the pdf
-## Usage:
-## rnw2pdf("lab-t-tests") # Don't include the file extension
-source("../rnw2pdf.R")
+## ----build-fun, include=FALSE, cache=TRUE, eval=FALSE--------------------
+## ## A function to compile and open the pdf
+## ## Usage:
+## ## rnw2pdf("lab-t-tests") # Don't include the file extension
+## source("../rnw2pdf.R")
 
 ## ----knitr-theme, include=FALSE------------------------------------------
 ##knit_theme$set("navajo-night")
