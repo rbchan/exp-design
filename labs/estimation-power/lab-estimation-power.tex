@@ -1,0 +1,898 @@
+\documentclass[color=usenames,dvipsnames]{beamer}\usepackage[]{graphicx}\usepackage[]{color}
+%% maxwidth is the original width if it is less than linewidth
+%% otherwise use linewidth (to make sure the graphics do not exceed the margin)
+\makeatletter
+\def\maxwidth{ %
+  \ifdim\Gin@nat@width>\linewidth
+    \linewidth
+  \else
+    \Gin@nat@width
+  \fi
+}
+\makeatother
+
+\definecolor{fgcolor}{rgb}{0, 0, 0}
+\newcommand{\hlnum}[1]{\textcolor[rgb]{0.69,0.494,0}{#1}}%
+\newcommand{\hlstr}[1]{\textcolor[rgb]{0.749,0.012,0.012}{#1}}%
+\newcommand{\hlcom}[1]{\textcolor[rgb]{0.514,0.506,0.514}{\textit{#1}}}%
+\newcommand{\hlopt}[1]{\textcolor[rgb]{0,0,0}{#1}}%
+\newcommand{\hlstd}[1]{\textcolor[rgb]{0,0,0}{#1}}%
+\newcommand{\hlkwa}[1]{\textcolor[rgb]{0,0,0}{\textbf{#1}}}%
+\newcommand{\hlkwb}[1]{\textcolor[rgb]{0,0.341,0.682}{#1}}%
+\newcommand{\hlkwc}[1]{\textcolor[rgb]{0,0,0}{\textbf{#1}}}%
+\newcommand{\hlkwd}[1]{\textcolor[rgb]{0.004,0.004,0.506}{#1}}%
+\let\hlipl\hlkwb
+
+\usepackage{framed}
+\makeatletter
+\newenvironment{kframe}{%
+ \def\at@end@of@kframe{}%
+ \ifinner\ifhmode%
+  \def\at@end@of@kframe{\end{minipage}}%
+  \begin{minipage}{\columnwidth}%
+ \fi\fi%
+ \def\FrameCommand##1{\hskip\@totalleftmargin \hskip-\fboxsep
+ \colorbox{shadecolor}{##1}\hskip-\fboxsep
+     % There is no \\@totalrightmargin, so:
+     \hskip-\linewidth \hskip-\@totalleftmargin \hskip\columnwidth}%
+ \MakeFramed {\advance\hsize-\width
+   \@totalleftmargin\z@ \linewidth\hsize
+   \@setminipage}}%
+ {\par\unskip\endMakeFramed%
+ \at@end@of@kframe}
+\makeatother
+
+\definecolor{shadecolor}{rgb}{.97, .97, .97}
+\definecolor{messagecolor}{rgb}{0, 0, 0}
+\definecolor{warningcolor}{rgb}{1, 0, 1}
+\definecolor{errorcolor}{rgb}{1, 0, 0}
+\newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
+
+\usepackage{alltt}
+%\documentclass[color=usenames,dvipsnames,handout]{beamer}
+
+%\usepackage[roman]{../../lab1}
+\usepackage[sans]{../../lab1}
+
+
+\hypersetup{pdftex,pdfstartview=FitV}
+
+
+
+
+
+
+
+
+
+
+%% New command for inline code that isn't to be evaluated
+\definecolor{inlinecolor}{rgb}{0.878, 0.918, 0.933}
+\newcommand{\inr}[1]{\colorbox{inlinecolor}{\texttt{#1}}}
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\begin{document}
+
+
+
+
+
+%\section{Intro}
+
+\begin{frame}[plain]
+%  \maketitle
+  \LARGE
+  \centering \par
+  {\bf \color{RoyalBlue}{Lab 4 -- Contrasts, Estimation, and Power Analysis \par}}
+  \vspace{1cm}
+  \Large
+  September 10 \& 11, 2018 \\
+  FANR 6750 \par
+  \vfill
+  \large
+  Richard Chandler and Bob Cooper \\
+  University of Georgia \\
+\end{frame}
+
+
+
+
+
+\section{Contrasts}
+
+
+\begin{frame}[plain]
+  \frametitle{Today's Topics}
+  \Large
+  \only<1>{\tableofcontents}%[hideallsubsections]}
+  \only<2 | handout:0>{\tableofcontents[currentsection]}%,hideallsubsections]}
+\end{frame}
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Chain Saw Data}
+%% {\bf The data as 4 vectors}
+%% <<>>=
+%% brandA <- c(42,17,24,39,43)
+%% brandB <- c(28,50,44,32,61)
+%% brandC <- c(57,45,48,41,54)
+%% brandD <- c(29,40,22,34,30)
+%% @
+%% \pause
+%% \vspace{0.5cm}
+%% {\bf Format as a {\tt data.frame}}
+%% <<>>=
+%% n <- length(brandA)
+%% a <- 4
+%% sawData <- data.frame(
+%%     y=c(brandA, brandB, brandC, brandD),
+%%     Brand=rep(c("A","B","C","D"), each=n))
+%% @
+\begin{knitrout}\scriptsize
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{sawData} \hlkwb{<-} \hlkwd{read.csv}\hlstd{(}\hlstr{"sawData.csv"}\hlstd{)}
+\hlstd{sawData}
+\end{alltt}
+\begin{verbatim}
+##     y Brand
+## 1  42     A
+## 2  17     A
+## 3  24     A
+## 4  39     A
+## 5  43     A
+## 6  28     B
+## 7  50     B
+## 8  44     B
+## 9  32     B
+## 10 61     B
+## 11 57     C
+## 12 45     C
+## 13 48     C
+## 14 41     C
+## 15 54     C
+## 16 29     D
+## 17 40     D
+## 18 22     D
+## 19 34     D
+## 20 30     D
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Contrasts}
+  {\bf Suppose we want to make 3 {\it a priori} comparisons:}
+  \begin{enumerate}[\bf (1)]
+    \item Groups A\&D vs B\&C
+    \item Groups A vs D
+    \item Groups B vs C
+  \end{enumerate}
+  \pause
+  \vspace{0.5cm}
+  \begin{center}
+    \begin{tabular}{llr}
+      \hline
+        & Comparision & Null hypothesis \\
+      \hline
+      1 & AD vs BC & $\frac{\mu_A + \mu_D}{2} - \frac{\mu_B + \mu_C}{2} = 0$ \\
+      2 & A vs D & $\mu_A - \mu_D = 0$ \\
+      3 & B vs C & $\mu_B - \mu_C = 0$ \\
+      \hline
+    \end{tabular}
+  \end{center}
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{Constructing contrasts in \R}
+  \small
+  {\bf Coefficients}
+\begin{knitrout}\scriptsize
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{ADvBC} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlnum{1}\hlopt{/}\hlnum{2}\hlstd{,} \hlopt{-}\hlnum{1}\hlopt{/}\hlnum{2}\hlstd{,} \hlopt{-}\hlnum{1}\hlopt{/}\hlnum{2}\hlstd{,} \hlnum{1}\hlopt{/}\hlnum{2}\hlstd{)}
+\hlstd{AvD} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,} \hlnum{0}\hlstd{,} \hlnum{0}\hlstd{,} \hlopt{-}\hlnum{1}\hlstd{)}
+\hlstd{BvC} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlnum{0}\hlstd{,} \hlnum{1}\hlstd{,} \hlopt{-}\hlnum{1}\hlstd{,} \hlnum{0}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\pause
+{\bf
+Are they orthogonal?}
+\pause
+\begin{columns}
+  \begin{column}{0.5\textwidth}
+\begin{knitrout}\scriptsize
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{sum}\hlstd{(ADvBC)}
+\end{alltt}
+\begin{verbatim}
+## [1] 0
+\end{verbatim}
+\begin{alltt}
+\hlkwd{sum}\hlstd{(AvD)}
+\end{alltt}
+\begin{verbatim}
+## [1] 0
+\end{verbatim}
+\begin{alltt}
+\hlkwd{sum}\hlstd{(BvC)}
+\end{alltt}
+\begin{verbatim}
+## [1] 0
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+  \end{column}
+  \pause
+  \begin{column}{0.5\textwidth}
+\begin{knitrout}\scriptsize
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{sum}\hlstd{(ADvBC} \hlopt{*} \hlstd{AvD)}
+\end{alltt}
+\begin{verbatim}
+## [1] 0
+\end{verbatim}
+\begin{alltt}
+\hlkwd{sum}\hlstd{(ADvBC} \hlopt{*} \hlstd{BvC)}
+\end{alltt}
+\begin{verbatim}
+## [1] 0
+\end{verbatim}
+\begin{alltt}
+\hlkwd{sum}\hlstd{(AvD} \hlopt{*} \hlstd{BvC)}
+\end{alltt}
+\begin{verbatim}
+## [1] 0
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+  \end{column}
+\end{columns}
+\pause
+\vfill
+{%\centering
+  \bf Yes, they are. \par}
+\end{frame}
+
+
+
+
+%% \begin{frame}[fragile]
+%%   \frametitle{We need to put the contrasts into a matrix}
+%%   The \verb+cbind+ function turns each vector into a row of a matrix
+%% <<>>=
+%% contrast.mat <- cbind(ADvBC, AvD, BvC)
+%% contrast.mat
+%% @
+%% {\bf In \R, we need to use fractions.}
+%% <<>>=
+%% R.contrasts <- cbind(ADvBC, AvD/2, BvC/2)
+%% R.contrasts
+%% @
+%% \end{frame}
+
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{We need to put the contrasts into a matrix}
+  {\bf To use contrasts in {\tt R}, each set of coefficients must be formatted as a column in a matrix. \par }
+  \pause
+  \vfill
+  {\bf We can use {\tt cbind} for this:}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{contrast.mat} \hlkwb{<-} \hlkwd{cbind}\hlstd{(ADvBC, AvD, BvC)}
+\hlstd{contrast.mat}
+\end{alltt}
+\begin{verbatim}
+##      ADvBC AvD BvC
+## [1,]   0.5   1   0
+## [2,]  -0.5   0   1
+## [3,]  -0.5   0  -1
+## [4,]   0.5  -1   0
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+
+
+
+%% \begin{frame}[fragile]
+%%   \frametitle{Format constrats for \R}
+%%   {\bf \R~requires that the contrasts be converted to a form that it
+%%   likes. The easiest way to do this is to use the {\tt
+%%     make.contrasts} function in the {\tt gmodels} package}.
+%% \begin{footnotesize}
+%% <<>>=
+%% ##install.packages("gmodels")
+%% library(gmodels)
+%% R.contrasts <- zapsmall(make.contrasts(contrast.mat))
+%% R.contrasts
+%% @
+%% \end{footnotesize}
+%% \end{frame}
+
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Contrasts}
+{\bf Fit the model with contrasts}
+\begin{footnotesize}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{aov.out} \hlkwb{<-} \hlkwd{aov}\hlstd{(y} \hlopt{~} \hlstd{Brand,} \hlkwc{data}\hlstd{=sawData,}
+                \hlkwc{contrasts}\hlstd{=}\hlkwd{list}\hlstd{(}\hlkwc{Brand}\hlstd{=contrast.mat))}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\pause
+\vfill
+{\bf Now ``split'' apart the sum-of-squares}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{summary}\hlstd{(aov.out,} \hlkwc{split} \hlstd{=} \hlkwd{list}\hlstd{(}\hlkwc{Brand} \hlstd{=}
+                      \hlkwd{list}\hlstd{(}\hlstr{"ADvBC"}\hlstd{=}\hlnum{1}\hlstd{,} \hlstr{"AvD"}\hlstd{=}\hlnum{2}\hlstd{,} \hlstr{"BvC"}\hlstd{=}\hlnum{3}\hlstd{)))}
+\end{alltt}
+\begin{verbatim}
+##                Df Sum Sq Mean Sq F value  Pr(>F)   
+## Brand           3   1080   360.0   3.556 0.03823 * 
+##   Brand: ADvBC  1    980   980.0   9.679 0.00672 **
+##   Brand: AvD    1     10    10.0   0.099 0.75738   
+##   Brand: BvC    1     90    90.0   0.889 0.35980   
+## Residuals      16   1620   101.2                   
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{footnotesize}
+\end{frame}
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Difference in means for each contrast}
+  \footnotesize %\small
+{\bf Group means}
+\begin{knitrout}\scriptsize
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{(group.means} \hlkwb{<-} \hlkwd{tapply}\hlstd{(sawData}\hlopt{$}\hlstd{y, sawData}\hlopt{$}\hlstd{Brand, mean))}
+\end{alltt}
+\begin{verbatim}
+##  A  B  C  D 
+## 33 43 49 31
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\pause
+\vfill
+{\bf %\centering
+  Difference in means for A vs D \par}
+\begin{knitrout}\scriptsize
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{group.means} \hlkwb{<-} \hlkwd{unname}\hlstd{(group.means)} \hlcom{# Drop names}
+\hlstd{group.means[}\hlnum{1}\hlstd{]} \hlopt{-} \hlstd{group.means[}\hlnum{4}\hlstd{]}
+\end{alltt}
+\begin{verbatim}
+## [1] 2
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\pause
+\vfill
+{\bf %\centering
+  Difference in means for B vs C \par}
+\begin{knitrout}\scriptsize
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{group.means[}\hlnum{2}\hlstd{]} \hlopt{-} \hlstd{group.means[}\hlnum{3}\hlstd{]}
+\end{alltt}
+\begin{verbatim}
+## [1] -6
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\pause
+\vfill
+{\bf %\centering
+  Difference in means for AD vs BC \par}
+%\scriptsize
+\begin{knitrout}\scriptsize
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{mean}\hlstd{(group.means[}\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,}\hlnum{4}\hlstd{)])} \hlopt{-} \hlkwd{mean}\hlstd{(group.means[}\hlnum{2}\hlopt{:}\hlnum{3}\hlstd{])}
+\end{alltt}
+\begin{verbatim}
+## [1] -14
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+
+
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Standard errors for each contrast}%{Contrasts}
+  \small
+%{\bf Compute the standard error of a contrast \par}
+{\bf %\centering
+  SE for A vs D \par}
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{se.contrast}\hlstd{(aov.out,} \hlkwd{list}\hlstd{(sawData}\hlopt{$}\hlstd{Brand}\hlopt{==}\hlstr{"A"}\hlstd{,}
+                          \hlstd{sawData}\hlopt{$}\hlstd{Brand}\hlopt{==}\hlstr{"D"}\hlstd{))}
+\end{alltt}
+\begin{verbatim}
+## [1] 6.363961
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\pause
+\vfill
+{\bf %\centering
+  SE for B vs C \par}
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{se.contrast}\hlstd{(aov.out,} \hlkwd{list}\hlstd{(sawData}\hlopt{$}\hlstd{Brand}\hlopt{==}\hlstr{"B"}\hlstd{,}
+                           \hlstd{sawData}\hlopt{$}\hlstd{Brand}\hlopt{==}\hlstr{"C"}\hlstd{))}
+\end{alltt}
+\begin{verbatim}
+## [1] 6.363961
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\pause
+\vfill
+{\bf %\centering
+  SE for AD vs BC \par}
+%\scriptsize
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{se.contrast}\hlstd{(aov.out,} \hlkwd{list}\hlstd{(sawData}\hlopt{$}\hlstd{Brand}\hlopt{==}\hlstr{"A"} \hlopt{|}
+                          \hlstd{sawData}\hlopt{$}\hlstd{Brand}\hlopt{==}\hlstr{"D"}\hlstd{,}
+                          \hlstd{sawData}\hlopt{$}\hlstd{Brand}\hlopt{==}\hlstr{"B"} \hlopt{|}
+                          \hlstd{sawData}\hlopt{$}\hlstd{Brand}\hlopt{==}\hlstr{"C"}\hlstd{))}
+\end{alltt}
+\begin{verbatim}
+## [1] 4.5
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+% \begin{scriptsize}
+%<<>>=
+%aov.summary <- summary.lm(aov.out)
+%aov.summary
+%@
+%<<>>=
+%model.tables(aov.out, type="effects", se=TRUE)
+%@
+%\end{scriptsize}
+\end{frame}
+
+
+
+%% \begin{frame}[fragile]
+%%   \frametitle{Contrasts}
+%% {\bf Compute the 95\% confidence intervals}
+%% <<>>=
+%% aov.CI <- confint(aov.out, level=0.95)
+%% aov.CI
+%% @
+%% \end{frame}
+
+
+
+
+
+
+\section{Estimation}
+
+
+
+\begin{frame}[plain]
+  \frametitle{Today's Topics}
+  \Large
+  \tableofcontents[currentsection]
+\end{frame}
+
+
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Estimating confidence intervals}
+  In an ANOVA context, confidence intervals can be
+  constructed using the equation:
+  \[
+    \text{CI} = \text{Point estimate} \pm t_{\alpha/2,a(n-1)} \times \text{SE}
+  \]
+  As usual, the hard part is computing the SE\footnote{See page 300 of Dowdy et al.}
+%  \pause
+%\footnotesize
+%<<>>=
+%yA <- c(5, 8, 11, 7)
+%yB <- c(2, 4, 6, 3)
+%@
+%\pause
+%<<>>=
+%n <- length(yA)
+%#varP <- (var(yA) + var(yB)) / 2
+%varP <- (var(yA)*(n-1) + var(yB)*(n-1))/(2*n-2)
+%SE <- sqrt(varP/n + varP/n)
+%ybardiff <- mean(yA) - mean(yB)
+%alpha <- 0.05
+%t <- qt(1-alpha/2, n+n-2)
+%lower <- ybardiff - SE*t
+%upper <- ybardiff + SE*t
+%CI <- c(lower, upper)
+%CI
+%@
+\end{frame}
+
+
+
+
+
+%% \begin{frame}[fragile]
+%%   \frametitle{Confidence interval from 2-sample $t$-test}
+%%   \footnotesize
+%% <<>>=
+%% t.test(yA, yB, mu=0, paired=FALSE, var.equal=TRUE)
+%% @
+%% \end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{Confidence intervals from one-way ANOVA}
+  \small %\footnotesize
+%<<echo=false>>=
+%options("contrasts" = c("contr.treatment", "contr.poly"))
+%@
+%<<>>=
+%dat <- data.frame(y = c(5, 8, 11, 7, 2, 4, 6, 3, 9, 12, 15, 16),
+%                  group = rep(c("A","B","C"), each=4))
+%aov1 <- aov(y ~ group, dat)
+%@
+%\pause
+  {\bf SE's for the effect sizes ($\alpha$'s)}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{effects.SE} \hlkwb{<-} \hlkwd{model.tables}\hlstd{(aov.out,} \hlkwc{type}\hlstd{=}\hlstr{"effects"}\hlstd{,}
+                           \hlkwc{se}\hlstd{=}\hlnum{TRUE}\hlstd{)}
+\hlstd{effects.SE}
+\end{alltt}
+\begin{verbatim}
+## Tables of effects
+## 
+##  Brand 
+## Brand
+##  A  B  C  D 
+## -6  4 10 -8 
+## 
+## Standard errors of effects
+##         Brand
+##           4.5
+## replic.     5
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+%  \pause
+\end{frame}
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Confidence intervals from one-way ANOVA}
+  \small
+  {\bf Extract the $\alpha$'s and the SEs}
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# str(effects.SE)}
+\hlstd{alpha.i} \hlkwb{<-} \hlkwd{as.numeric}\hlstd{(effects.SE}\hlopt{$}\hlstd{tables}\hlopt{$}\hlstd{Brand)}
+\hlstd{SE} \hlkwb{<-} \hlkwd{as.numeric}\hlstd{(effects.SE}\hlopt{$}\hlstd{se)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+  \pause
+  {\bf Compute confidence intervals}
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{tc} \hlkwb{<-} \hlkwd{qt}\hlstd{(}\hlnum{0.975}\hlstd{,} \hlnum{4}\hlopt{*}\hlstd{(}\hlnum{5}\hlopt{-}\hlnum{1}\hlstd{))}
+\hlstd{lowerCI} \hlkwb{<-} \hlstd{alpha.i} \hlopt{-} \hlstd{tc} \hlopt{*} \hlstd{SE}
+\hlstd{upperCI} \hlkwb{<-} \hlstd{alpha.i} \hlopt{+} \hlstd{tc} \hlopt{*} \hlstd{SE}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+  \pause
+  {\bf Put results into a {\tt data.frame}}
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{CI} \hlkwb{<-} \hlkwd{data.frame}\hlstd{(}\hlkwc{effect.size}\hlstd{=alpha.i, SE,}
+                 \hlstd{lowerCI, upperCI)}
+\hlkwd{round}\hlstd{(CI,} \hlnum{2}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+##   effect.size  SE lowerCI upperCI
+## 1          -6 4.5  -15.54    3.54
+## 2           4 4.5   -5.54   13.54
+## 3          10 4.5    0.46   19.54
+## 4          -8 4.5  -17.54    1.54
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+%  \scriptsize
+%<<echo=false>>=
+%options("contrasts" = c("contr.treatment", "contr.poly"))
+%@
+%<<>>=
+%options("contrasts")
+%@
+%\pause
+%<<>>=
+%summary.lm(aov1)
+%@
+\end{frame}
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Plot effects and CIs}
+  \tiny %\scriptsize
+\begin{knitrout}\tiny
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{plot}\hlstd{(}\hlnum{1}\hlopt{:}\hlnum{4}\hlstd{, CI}\hlopt{$}\hlstd{effect.size,} \hlkwc{xlim}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{0.5}\hlstd{,} \hlnum{4.5}\hlstd{),} \hlkwc{ylim}\hlstd{=}\hlkwd{c}\hlstd{(}\hlopt{-}\hlnum{18}\hlstd{,} \hlnum{20}\hlstd{),} \hlkwc{xaxt}\hlstd{=}\hlstr{"n"}\hlstd{,}
+     \hlkwc{xlab}\hlstd{=}\hlstr{"Brand"}\hlstd{,} \hlkwc{ylab}\hlstd{=}\hlstr{"Difference from grand mean"}\hlstd{,} \hlkwc{pch}\hlstd{=}\hlnum{16}\hlstd{,} \hlkwc{cex.lab}\hlstd{=}\hlnum{1.5}\hlstd{)}
+\hlkwd{axis}\hlstd{(}\hlnum{1}\hlstd{,} \hlkwc{at}\hlstd{=}\hlnum{1}\hlopt{:}\hlnum{4}\hlstd{,} \hlkwc{labels}\hlstd{=}\hlkwd{c}\hlstd{(}\hlstr{"A"}\hlstd{,} \hlstr{"B"}\hlstd{,} \hlstr{"C"}\hlstd{,} \hlstr{"D"}\hlstd{))}
+\hlkwd{abline}\hlstd{(}\hlkwc{h}\hlstd{=}\hlnum{0}\hlstd{,} \hlkwc{lty}\hlstd{=}\hlnum{3}\hlstd{)}
+\hlkwd{arrows}\hlstd{(}\hlnum{1}\hlopt{:}\hlnum{4}\hlstd{, CI}\hlopt{$}\hlstd{lowerCI,} \hlnum{1}\hlopt{:}\hlnum{4}\hlstd{, CI}\hlopt{$}\hlstd{upperCI,} \hlkwc{code}\hlstd{=}\hlnum{3}\hlstd{,} \hlkwc{angle}\hlstd{=}\hlnum{90}\hlstd{,} \hlkwc{length}\hlstd{=}\hlnum{0.05}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\centering
+\includegraphics[width=0.85\textwidth]{figure/ciplot-1} \\
+\end{frame}
+
+
+
+
+%% \begin{comment}
+%% \begin{frame}[fragile]
+%%   \frametitle{Confidence intervals from one-way ANOVA}
+%%   \scriptsize
+%% <<>>=
+%% options("contrasts" = c("contr.sum", "contr.poly"))
+%% aov2 <- aov(y ~ group-1+offset(gm), dat)
+%% @
+%% \pause
+%% <<>>=
+%% summary.lm(aov2)
+%% @
+%% \end{frame}
+
+
+
+
+%% \begin{frame}[fragile]
+%%   \frametitle{Confidence intervals from one-way ANOVA}
+%% %  \footnotesize
+%% <<>>=
+%% options("contrasts" = c("contr.sum", "contr.poly"))
+%% @
+%% \pause
+%% <<>>=
+%% confint(aov2)
+%% @
+%% \end{frame}
+%% \end{comment}
+
+
+
+
+
+
+
+\section{Power}
+
+
+\begin{frame}[plain]
+  \frametitle{Today's Topics}
+  \Large
+  \tableofcontents[currentsection]
+\end{frame}
+
+
+
+%% \begin{frame}
+%%   \frametitle{Statistical Power}
+%%   Reminder about Type I and Type II errors, and definition of power
+%%   \begin{itemize}[<+->]
+%%     \item $\alpha$ = Pr(rejecting a null hypothesis that is true)
+%%     \item Power = $\beta$ = 1-Pr(failing to reject a null hypothesis that is false)
+%%   \end{itemize}
+%% %  \vspace{0.5cm}
+%% %  \uncover<4>{
+%% %    Prospective power analysis is a procedure for determining what
+%% %    sample size is needed to obtain a user-specified power, for a
+%% %    user-specified effect size
+%% %  }
+%% \end{frame}
+
+
+\begin{frame}[fragile]
+\frametitle{Power analysis for a 2-sample $t$-test}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{power.t.test}\hlstd{(}\hlkwc{n}\hlstd{=}\hlkwa{NULL}\hlstd{,} \hlkwc{delta}\hlstd{=}\hlnum{3}\hlstd{,} \hlkwc{sd}\hlstd{=}\hlnum{2}\hlstd{,} \hlkwc{sig.level}\hlstd{=}\hlnum{0.05}\hlstd{,}
+             \hlkwc{power}\hlstd{=}\hlnum{0.8}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## 
+##      Two-sample t test power calculation 
+## 
+##               n = 8.06031
+##           delta = 3
+##              sd = 2
+##       sig.level = 0.05
+##           power = 0.8
+##     alternative = two.sided
+## 
+## NOTE: n is number in *each* group
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Power analysis for one-way ANOVA}
+\begin{small}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{power.anova.test}\hlstd{(}\hlkwc{groups}\hlstd{=}\hlnum{4}\hlstd{,} \hlkwc{n}\hlstd{=}\hlnum{5}\hlstd{,} \hlkwc{between.var}\hlstd{=}\hlnum{360.0}\hlstd{,}
+                 \hlkwc{within.var}\hlstd{=}\hlnum{101.2}\hlstd{,} \hlkwc{power}\hlstd{=}\hlkwa{NULL}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## 
+##      Balanced one-way analysis of variance power calculation 
+## 
+##          groups = 4
+##               n = 5
+##     between.var = 360
+##      within.var = 101.2
+##       sig.level = 0.05
+##           power = 0.9999359
+## 
+## NOTE: n is number in each group
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{small}
+\end{frame}
+
+
+
+
+
+
+
+
+
+
+%% \begin{frame}[fragile]
+%%   \frametitle{Assignment}
+%%   \begin{enumerate}[\bf (1)]
+%%     \item Estimate 95\% CIs for the effect sizes in the
+%%       \inr{warblerWeight} data. Which effects are significant?
+%%     \item What is the power of a two sample $t$-test with an effect
+%%       size of 3, a pooled variance of 9, and $n=8$ at an alpha level
+%%       of 0.05?
+%%     \item What sample size would be necessary to achieve power=0.8
+%%   \end{enumerate}
+%%   \vfill
+%%   {\bf Due by the end of lab today }
+%%   \begin{itemize}
+%%     \item Upload answers as a single R script to ELC
+%%     \item Script should have comments answering the question in
+%%       words along with the code necessary to product the results
+%%   \end{itemize}
+%% \end{frame}
+
+
+
+
+
+
+
+
+\begin{frame}
+  \frametitle{Assignment}
+%  \scriptsize
+  \footnotesize
+  Researchers wish to know if food supplementation affects the growth
+  of nestling Canada warblers. The treatment groups are: (A) No
+  supplementation control, (B) low, (C) medium, (D) high, and (E) very
+  high. The response variable is the weight of a 10 day old nestling.
+  \begin{enumerate}[\bf (1)]
+    \footnotesize
+    \item<1-> The researchers are interested in the following
+      contrasts. Are they ortholognal?
+    \begin{itemize}
+    \footnotesize
+      \item Groups A,B vs C,D,E
+      \item Groups A vs B
+      \item Groups C vs D,E
+      \item Groups D vs E
+    \end{itemize}
+    \item<2-> Using the {\tt warblerWeight} data, test the null
+      hypothesis of each contrast by constructing an ANOVA table
+       in \R.
+%    \vspace{0.5cm}
+    \item<3-> For each contrast:
+      \begin{itemize}
+        \footnotesize
+        \item Compute the difference in the means
+        \item The SE of the difference in means
+        \item The 95\% CI for the difference in means
+      \end{itemize}
+%      compute the difference in the means and the
+%      standard error of the difference
+    \item<5-> Suppose you wanted to replicate the study with a
+      smaller sample size of $n=2$ per treatment group? What would be
+      your power?
+  \end{enumerate}
+  \uncover<5->{
+%  \vspace{0.2cm}
+  {{\color{red} \bf Due:} Put all of your answers in a
+    self-contained \R~script and upload it to ELC before the
+    next lab. %The script should be self-contained.}
+  }}
+
+\end{frame}
+%\end{comment}
+
+
+
+
+
+
+\end{document}
+
+
