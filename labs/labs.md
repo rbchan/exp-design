@@ -12,3 +12,8 @@ title: Labs
 ### Week 2
 
 #### [*t*-tests](t-tests/lab-t-tests.md)
+
+
+<!-- ### Week 3 -->
+
+<!-- #### [One-way ANOVA](ANOVA/lab-ANOVA.md) -->
