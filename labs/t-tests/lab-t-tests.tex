@@ -127,9 +127,27 @@
 
 
 
+\begin{frame}
+  \frametitle{Types of $t$-tests}
+  One sample
+  \begin{itemize}
+    \item Does the mean ($\mu$) differ from some value of interest?
+    \item One or two-tailed
+  \end{itemize}
+  \pause
+  \vfill
+  Two sample
+  \begin{itemize}
+    \item Do the two means ($\mu_1$ and $\mu_2$) differ from one another?
+    \item One or two-tailed
+    \item Paired or unpaired
+  \end{itemize}
+\end{frame}
+
+
 
 \begin{frame}[fragile]
-  \frametitle{Scenario}
+  \frametitle{Two-sample, two-tailed scenario}
   \small
 %  \begin{itemize}%[<+->]
 %    \item We have 2 samples of data
@@ -227,8 +245,7 @@ If the $t$ statistic is more extreme than the critical
     \item<1-> Open {\bf R} and set the working directory to a convenient
       location on your computer. Do this using {\tt File > Change dir ...}, or the \inr{setwd} function.
     \item[]
-    \item<2-> Put the file {\tt treedata.csv} into your working.
-      directory
+    \item<2-> Put the file {\tt treedata.csv} into your working directory
     \item[]
     \item<3-> Create a new \R~script and import {\tt treedata.csv}. Name your object {\tt treedata}.
     \item[]
@@ -668,7 +685,8 @@ If the $t$ statistic is more extreme than the critical
   \vfill
   {%\bf
     For paired $t$-tests, we want to know if the \alert{mean of the
-    differences} differs from zero}
+    differences} differs from zero. This allows us to account for
+    extraneous sources of variation among sample pairs.}
   \vfill
   \pause
 \begin{knitrout}
@@ -815,14 +833,15 @@ If the $t$ statistic is more extreme than the critical
         t.test} function.
       \begin{itemize}
         \scriptsize
-        \item You will need to use the \texttt{``paired''} argument when using the \inr{t.test} function
+        \item You will need to use the \texttt{``paired''} argument %when using the \inr{t.test} function
         \item Assume variances are equal
       \end{itemize}
     \item Do a standard ({\it unpaired}) two-sample $t$ test using
       the \inr{t.test} function.
 %    \item Assume equal variances for all tests
-    \item Add a comment to the end of your script explain your
-      results. Also include the null and alternative hypotheses for
+    \item Add a comment to the end of your script to interpret your
+      results and explain why the results differ from the paired vs
+      unpaired analyses. Also list the null and alternative hypotheses for
       each test. % why the
 %      results differ between the paired and unpaired analysis.
   \end{enumerate}
@@ -830,10 +849,9 @@ If the $t$ statistic is more extreme than the critical
   {\bf Upload your script\footnote{\scriptsize Or upload an Rmarkdown
       (.Rmd) file} to ELC before next week's lab.}
   \begin{itemize}
-    \item The script must be self-contained.
-    \item In other words, you should be able to copy and paste the
-      entire thing into the {\bf R} console, and it should return the
-      correct answers to the questions.
+    \item The script must be self-contained. In other words, you
+      should be able to copy and paste the entire thing into the {\bf
+        R} console, and it should return the correct results.
   \end{itemize}
   \vfill
    {\bf Read pp. 127--131 in ``Introductory Statistics with \R''}
