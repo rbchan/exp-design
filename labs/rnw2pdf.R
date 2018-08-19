@@ -1,4 +1,5 @@
-rnw2pdf <- function(filestub, tangle=FALSE, open=TRUE, clean=TRUE) {
+rnw2pdf <- function(filestub, env=globalenv(), tangle=FALSE,
+                    open=TRUE, clean=TRUE, ...) {
 
     ## Load knitr or install if need be
     reqval <- require(knitr)
@@ -9,7 +10,7 @@ rnw2pdf <- function(filestub, tangle=FALSE, open=TRUE, clean=TRUE) {
 
     ## Create the .tex file
     rnw.file <- paste(filestub, ".Rnw", sep="")
-    tex.file <- knit(rnw.file)
+    tex.file <- knit(rnw.file, envir=env, ...)
 
     ## Create the .R file
     if(tangle)

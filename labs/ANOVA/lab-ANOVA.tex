@@ -78,9 +78,10 @@
 %  \maketitle
   \LARGE
   \centering \par
-  \textcolor{RoyalBlue}{\bf Lab 3 -- Completely Randomized ANOVA \\
+  \textcolor{RoyalBlue}{Lab 3 -- Completely Randomized ANOVA \\
   (a.k.a. One-way ANOVA)} \par
   \vspace{1cm}
+  \large
   Aug 27 \& 28, 2018 \\
   FANR 6750 \\
   \vfill
@@ -212,7 +213,7 @@
 \pause
 \vspace{0.5cm}
 {%\bf
-  Format as a inr{data.frame}}
+  Format as a \inr{data.frame}}
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
@@ -234,10 +235,18 @@
 
 \begin{frame}[fragile]
   \frametitle{Vizualize the data}
-  \footnotesize %\small
-
+\begin{knitrout}\scriptsize
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{boxplot}\hlstd{(Kick.angle} \hlopt{~} \hlstd{Brand,} \hlkwc{data}\hlstd{=sawData,} \hlkwc{xlab}\hlstd{=}\hlstr{"Brand"}\hlstd{,}
+        \hlkwc{ylab}\hlstd{=}\hlstr{"Kickback angle"}\hlstd{,} \hlkwc{cex.lab}\hlstd{=}\hlnum{1.3}\hlstd{,} \hlkwc{col}\hlstd{=}\hlstr{"darkcyan"}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+%\vfill{-2cm}
 \begin{center}
-  \includegraphics[width=0.85\textwidth]{figure/boxplot1-1}
+%\centering
+  \includegraphics[width=0.75\textwidth]{figure/boxplot1-1} %\\
 \end{center}
 \end{frame}
 
@@ -627,10 +636,20 @@
 \begin{frame}[fragile]
   \frametitle{Group means $+1$ SE}
 %{\bf With error bars ($+1$ SE)}
-\footnotesize
-
+\begin{knitrout}\scriptsize
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{xx} \hlkwb{<-} \hlkwd{barplot}\hlstd{(ybar.i,} \hlkwc{ylim}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{0}\hlstd{,} \hlnum{60}\hlstd{),} \hlkwc{xlab}\hlstd{=}\hlstr{"Brand"}\hlstd{,} \hlkwc{cex.lab}\hlstd{=}\hlnum{1.5}\hlstd{,}
+              \hlkwc{ylab}\hlstd{=}\hlstr{"Chainsaw kickback angle"}\hlstd{)}
+\hlstd{mean.SE} \hlkwb{<-} \hlnum{6.364} \hlcom{# from model.tables(). See slide 8.}
+\hlkwd{arrows}\hlstd{(xx, ybar.i, xx, ybar.i}\hlopt{+}\hlstd{mean.SE,} \hlkwc{angle}\hlstd{=}\hlnum{90}\hlstd{,} \hlkwc{length}\hlstd{=}\hlnum{0.05}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\vspace{-.1cm}
 \begin{center}
-  \includegraphics[width=0.85\textwidth]{figure/barplot2-1}
+%\centering
+  \includegraphics[width=0.75\textwidth]{figure/barplot2-1} %\\
 \end{center}
 \end{frame}
 
@@ -720,9 +739,15 @@
   \frametitle{Plot Tukey's confidence intervals}
 %  {\bf Option 3: Tukey's Honestly Significant Difference test}
   \tiny
-
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{plot}\hlstd{(}\hlkwd{TukeyHSD}\hlstd{(aov.out1))}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
 \begin{center}
-  \includegraphics[width=0.7\textwidth]{figure/tukey-1}
+  \includegraphics[width=0.65\textwidth]{figure/tukey-1}
 \end{center}
 \end{frame}
 
@@ -750,7 +775,7 @@
   A biologist wants to compare the growth of four different tree
   species she is considering for use in reforestation efforts.  All 32
   seedlings of the four species are planted at the same time in a
-  large plot. Heights in meters recorded after several years. The data
+  large plot. Heights in meters are recorded after several years. The data
   are in the file {\tt treeHt.csv}: \\
   \vfill
   Create an \R~script to do the following:
