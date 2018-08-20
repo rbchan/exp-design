@@ -1,0 +1,654 @@
+\documentclass[color=usenames,dvipsnames]{beamer}
+%\documentclass[color=usenames,dvipsnames,handout]{beamer}
+
+%\usepackage[roman]{../../lab1}
+\usepackage[sans]{../../lab1}
+
+\hypersetup{pdftex,pdfstartview=FitV}
+
+
+
+<<build-fun, include=FALSE, cache=TRUE, eval=FALSE, purl=FALSE>>=
+## A function to compile and open the pdf
+## Usage:
+## rnw2pdf("lab-assump-nonpar") # Don't include the file extension
+source("../rnw2pdf.R")
+@
+
+
+<<knitr-theme, include=FALSE, purl=FALSE>>=
+##knit_theme$set("navajo-night")
+knit_theme$set("edit-kwrite")
+@
+
+
+%% New command for inline code that isn't to be evaluated
+\definecolor{inlinecolor}{rgb}{0.878, 0.918, 0.933}
+\newcommand{\inr}[1]{\colorbox{inlinecolor}{\texttt{#1}}}
+
+
+
+
+
+
+\begin{document}
+
+
+
+
+
+%\section{Intro}
+
+\begin{frame}[plain]
+%  \maketitle
+  \LARGE
+  \centering \par
+  {\bf \color{RoyalBlue}{Lab 5 -- Assumptions of ANOVA}} \par
+  \vspace{1cm}
+  \Large
+  September 17 \& 18, 2018 \\
+  FANR 6750 \\
+  \vfill
+  \large
+  Richard Chandler and Bob Cooper
+\end{frame}
+
+
+
+
+
+\begin{frame}[plain]
+  \frametitle{Today's Topics}
+  \Large
+  \only<1>{\tableofcontents}%[hideallsubsections]}
+%  \only<2 | handout:0>{\tableofcontents[currentsection]}%,hideallsubsections]}
+\end{frame}
+
+
+
+
+
+
+\section{Normality Diagnostics}
+
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Normality diagnostics}
+<<infectData,echo=FALSE>>=
+set.seed(3550)
+M <- 100
+p1 <- 0.5
+p2 <- 0.3
+p3 <- 0.2
+n <- 30
+y <- c(rbinom(n, M, p1), rbinom(n, M, p2),
+       rbinom(n, M, p3)) / M
+infectionRates <- data.frame(percentInfected=round(sin(y)^2,2),
+                             landscape=rep(c("Park", "Suburban", "Urban"), each=n))
+write.csv(infectionRates, "infectionRates.csv", row.names=FALSE)
+@
+  {%\bf %\large
+    Consider the data:}
+  \scriptsize %\small
+<<>>=
+str(infectionRates)
+summary(infectionRates)
+@
+  \normalsize %\bf
+These data are made-up, but imagine they come from a study in which
+100 crows are placed in $n=30$ enclosures in each of 3 landscapes. The
+response variable is the proportion of crows infected with West Nile
+virus at the end of the study. \\
+\end{frame}
+
+
+
+
+
+
+%% \begin{frame}[fragile]
+%%   \frametitle{Is it normally distributed?}
+%%   \small
+%% <<boxfor0,fig=true,include=false>>=
+%% boxplot(forestCover$pcForest, col="lightgreen",
+%%         ylab="Percent forest cover", main="", cex.lab=1.5)
+%% @
+%% \vspace{-0.5cm}
+%% \centering
+%% \includegraphics[width=0.7\textwidth]{lab05-assump-nonpar-boxfor0} \\
+%% \end{frame}
+
+
+
+
+
+%% \begin{frame}[fragile]
+%%   \frametitle{Is it normally distributed?}
+%%   \small
+%% <<histfor0,fig=true,include=false>>=
+%% hist(forestCover$pcForest, col="lightgreen", cex.lab=1.5,
+%%      xlab="Percent forest cover", main="")
+%% @
+%% \vspace{-0.5cm}
+%% \centering
+%% \includegraphics[width=0.7\textwidth]{lab05-assump-nonpar-histfor0} \\
+%% \end{frame}
+
+
+
+%% \begin{frame}[fragile]
+%%   \frametitle{Is it normally distributed?}
+%% <<>>=
+%% shapiro.test(forestCover$pcForest)
+%% @
+%% \end{frame}
+
+
+
+
+\begin{frame}
+  \frametitle{Does any of this matter?}
+  {%\bf
+    A common misconception is that the response variable must be
+    normally distributed when conducting an ANOVA.}
+  \pause
+  \vfill
+  {%\bf
+    This is incorrect because the normality assumptions pertain to
+    the {\it residuals}, \alert{not} the response variable. The key assumption of
+    ANOVA is that the residuals are independent and come from a normal
+    distribution with mean 0 and variance $\sigma^2$.}
+  \pause
+  \large
+\[
+  y_{ij} = \mu + \alpha_i + \varepsilon_{ij}
+\]
+\[
+  \varepsilon_{ij} \sim \text{Normal}(0, \sigma^2)
+\]
+\pause
+\vfill
+\normalsize
+  {%\bf
+    We can assess this assumption by looking at the residuals
+    themselves, or the data within each treatment}
+\end{frame}
+
+
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{ANOVA diagnostics}
+<<anova1,size='small'>>=
+anova1 <- aov(percentInfected ~ landscape,
+              data=infectionRates)
+summary(anova1)
+@
+\pause
+\vfill
+%\bf
+Significant, but did we meet the assumptions?
+\end{frame}
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Boxplots}
+<<boxfor1,fig.show='hide',size='small'>>=
+boxplot(percentInfected~landscape, infectionRates,
+        col="lightgreen", cex.lab=1.5, cex.axis=1.3,
+        ylab="Percent forest cover")
+@
+\vspace{-0.5cm}
+\centering
+\includegraphics[width=0.7\textwidth]{figure/boxfor1-1} \\
+\end{frame}
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Are group variances equal?}
+  \small
+<<bartlett,size='small'>>=
+bartlett.test(percentInfected~landscape, data=infectionRates)
+@
+\vfill
+{We reject the null hypothesis that the group variances are equal}
+\end{frame}
+
+
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Histogram of residuals}
+\scriptsize
+%\begin{center}
+<<histresid0,fig.show='hide'>>=
+resids <- resid(anova1)
+hist(resids, col="turquoise", breaks=10, xlab="Residuals")
+@
+%\end{center}
+\centering
+\includegraphics[width=0.65\textwidth]{figure/histresid0-1} \\
+\end{frame}
+
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Normality test on residuals}
+<<shapiro>>=
+shapiro.test(resids)
+@
+\pause
+\vspace{0.6cm}
+%% {\bf Remember, this is not the correct test:}
+%% <<>>=
+%% shapiro.test(infectionRates$pcForest)
+%% @
+{We reject the null hypothesis that the residuals come from a normal
+  distribution. Time to consider transformations and/or nonparametric
+  tests}
+\end{frame}
+
+
+
+
+
+
+
+
+
+
+%% \begin{frame}[fragile]
+%%   \frametitle{Two Vectors}
+%% <<echo=false,eval=false>>=
+%% set.seed(393)
+%% cat(round(rnorm(30, 5), 1), sep=", ", fill=TRUE)
+%% cat(round(exp(rnorm(30, 5)), 1), sep=", ", fill=TRUE)
+%% @
+%% \small
+%% <<>>=
+%% # Weights
+%% u1 <- c(4.4, 5, 5.6, 4.2, 4.3, 5.3, 4.2, 3.6, 4.8, 4.9,
+%%         5.7, 4.6, 5.8, 6.3, 4.5, 4.1, 3.6, 4, 4.5, 4.6,
+%%         6.6, 4.3, 4.8, 3.7, 5.5, 2.9, 4.3, 4.2, 3.6, 4.7)
+%% #
+%% #
+%% # Tree diameters
+%% u2 <- c(137.6, 102.6, 327.6, 550.4, 214, 86, 185.2, 24.5,
+%%         134.6, 169.1, 263.5, 226.4, 225.3, 82, 391.8, 567.1,
+%%         74.8, 52.8, 72.2, 474.2, 138, 42.4, 172.5, 209.6,
+%%         102.6, 563.4, 241.1, 260.6, 203.1, 137.9)
+%% @
+%% \pause
+%% {\LARGE \bf Are they normally distributed?}
+%% \end{frame}
+
+
+%% \begin{frame}[fragile]
+%%   \frametitle{Shapiro-Wilk Test}
+%% %\pause
+%% <<>>=
+%% shapiro.test(u1)
+%% @
+%% \pause
+%% \vspace{0.3cm}
+%% <<>>=
+%% shapiro.test(u2)
+%% @
+%% \pause
+%% \vspace{0.3cm}
+%% {\LARGE \bf What to do about \verb+u2+?}
+%% \end{frame}
+
+
+%\section{Visual Inspecting Data}
+
+
+%% \begin{frame}[fragile]
+%%   \frametitle{Boxplot -- Normal}
+%% %%<<echo=false>>=
+%% %#par(mai=c(0.9,0.9,0.1,0.1))
+%% %@
+%%   \scriptsize
+%% %\vspace{-1cm}
+%% \begin{center}
+%% <<fig=true>>=
+%% boxplot(u1, col="lightgreen", xlab="u1")
+%% @
+%% \end{center}
+%% \end{frame}
+
+
+%% \begin{frame}[fragile]
+%%   \frametitle{Boxplot -- Not}
+%% %<<echo=false>>=
+%% %par(mai=c(0.9,0.9,0.1,0.1))
+%% %@
+%% \scriptsize
+%% \begin{center}
+%% <<fig=true>>=
+%% boxplot(u2, col="purple", xlab="u2")
+%% @
+%% \end{center}
+%% %\vspace{-1cm}
+%% \end{frame}
+
+
+
+%% \begin{frame}[fragile]
+%%   \frametitle{Boxplot -- Not}
+%%   \scriptsize
+%% \begin{center}
+%% <<fig=true>>=
+%% boxplot(u2, col="purple", horizontal=TRUE)
+%% @
+%% \end{center}
+%% \end{frame}
+
+
+
+%% \begin{frame}[fragile]
+%%   \frametitle{Histogram -- Normal}
+%%   \scriptsize
+%% \begin{center}
+%% <<fig=true>>=
+%% hist(u1, col="lightgreen")
+%% @
+%% \end{center}
+%% \end{frame}
+
+
+%% \begin{frame}[fragile]
+%%   \frametitle{Histogram -- Not}
+%%   \vspace{-.2cm}
+%%   \tiny
+%% \begin{center}
+%% <<fig=true>>=
+%% hist(u2, col="purple", ylim=c(0, 9), breaks=8)
+%% boxplot(u2, col="purple", horizontal=TRUE, add=TRUE, at=8)
+%% @
+%% \end{center}
+%% \end{frame}
+
+
+
+
+
+%\begin{comment}
+\section{Transformations}
+
+
+
+
+%\begin{frame}[plain]
+%  \frametitle{Outline}
+%  \Large
+%  \only<1>{\tableofcontents}%[hideallsubsections]}
+%  \only<2 | handout:0>{\tableofcontents[currentsection]}%,hideallsubsections]}
+%  \tableofcontents[currentsection]
+%\end{frame}
+
+
+
+
+\begin{frame}
+  \frametitle{Logarithmic Transformation}
+  \LARGE
+  \[
+  y = \log(u + C)
+  \]
+  \large
+  \begin{itemize}%[<+->]
+    \item The constant $C$ is often 1, or 0 if there are no zeros in the data ($u$)
+    \item Useful when group variances are proportional to the means
+%      (count data)
+%    \item Could use $\log_{10}$, but the natural logarithm is preferred
+  \end{itemize}
+\end{frame}
+
+
+
+%% \begin{frame}[fragile]
+%%   \frametitle{Logarithmic Transformation}
+%% <<loguy,fig=true,include=FALSE, width=12, height=6>>=
+%% par(mfrow=c(1,2), mai=c(0.9, 0.9, 0.1, 0.1))
+%% hist(u2, main="")
+%% hist(log(u2), main="")
+%% @
+%% \includegraphics[width=\textwidth]{lab05-assump-nonpar-loguy}
+%% \end{frame}
+
+
+
+\begin{frame}
+  \frametitle{Square Root Transformation}
+  \LARGE
+  \[
+  y = \sqrt{u + C}
+  \]
+  \large
+  \begin{itemize}%[<+->]
+    \item $C$ is often 0.5 or some other small number
+    \item Useful when group variances are proportional to the means
+%      (count data)
+  \end{itemize}
+\end{frame}
+
+
+
+%% \begin{frame}[fragile]
+%%   \frametitle{Square Root Transformation}
+%% <<sqrtuy,fig=true,include=FALSE, width=12, height=6>>=
+%% par(mfrow=c(1,2), mai=c(0.9, 0.9, 0.1, 0.1))
+%% hist(u2, main="")
+%% hist(sqrt(u2), main="")
+%% @
+%% \includegraphics[width=\textwidth]{lab05-assump-nonpar-sqrtuy}
+%% \end{frame}
+
+
+
+\begin{frame}
+  \frametitle{Arcsine-square root Transformation}
+  \LARGE
+  \[
+  y = \mathrm{arcsin}(\sqrt{u})
+  \]
+  \large
+  \begin{itemize}%[<+->]
+    \item Used on proportions.
+    \item logit transformation is an alternative: $y = \log(\frac{u}{1-u})$
+%    \item Binomial (logistic) regression is an alternative for proportions.
+  \end{itemize}
+\end{frame}
+
+
+
+
+\begin{frame}
+  \frametitle{Reciprocal Transformation}
+  \LARGE
+  \[
+  y = \frac{1}{u + C}
+  \]
+  \large
+  \begin{itemize}%[<+->]
+    \item $C$ is often 1 but could be 0 if there are no zeros in $u$
+    \item Useful when group SDs are proportional to the squared group means
+  \end{itemize}
+\end{frame}
+
+
+
+\begin{frame}[fragile]
+  \frametitle{ANOVA on transformed data}
+  \small
+  {Tranformation can be done in the \inr{aov} formula}
+<<anova2,size='footnotesize'>>=
+anova2 <- aov(log(percentInfected)~landscape,
+              data=infectionRates)
+summary(anova2)
+@
+  \pause
+  \vfill
+  {Now we fail to reject the normality assumption -- good news}
+<<shapiro2,size='footnotesize'>>=
+shapiro.test(resid(anova2))
+@
+\end{frame}
+
+
+
+
+
+%% \begin{frame}[fragile]
+%%   \frametitle{Exercise I}
+%% <<echo=false>>=
+%% set.seed(3550)
+%% M <- 100
+%% p1 <- 0.5
+%% p2 <- 0.3
+%% p3 <- 0.2
+%% n <- 30
+%% y <- c(rbinom(n, M, p1), rbinom(n, M, p2),
+%%        rbinom(n, M, p3)) / M
+%% infectionRates <- data.frame(pcForest=sin(y)^2,
+%%                           landscape=rep(c("Park", "Suburbs", "Urban"), each=n))
+%% write.csv(infectionRates, "infectionRates.csv", row.names=FALSE)
+%% @
+%%   {\bf \large Consider the data:}
+%%   \small
+%% <<>>=
+%% str(infectionRates)
+%% head(infectionRates)
+%% @
+%% \end{frame}
+
+
+
+%% \begin{frame}[fragile]
+%%   \frametitle{The {\tt aov plot()} method}
+%%   \footnotesize
+%% <<aov-plot,fig=true,include=false>>=
+%% par(mfrow = c(2, 2))
+%% plot(anova1)
+%% @
+%% \vspace{-1cm}
+%% \begin{center}
+%%   \includegraphics[width=0.7\textwidth]{lab05-assump-nonpar-aov-plot}
+%% \end{center}
+%% \end{frame}
+
+
+
+
+
+
+
+
+\section{Non-parametrics}
+
+
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Non-parametric Tests}
+%  {\bf Mann-Whitney $U$-test}
+  \large
+  {Wilcoxan rank sum test}
+  \begin{itemize}
+    \item For 2 group comparisons
+    \item a.k.a. the Mann-Whitney $U$ test
+    \item \inr{wilcox.test}
+  \end{itemize}
+  \pause
+  \vspace{0.5cm}
+  {Kruskal-Wallis One-Way ANOVA}
+  \begin{itemize}
+    \item For testing differences in $>2$ groups
+    \item \inr{kruskal.test}
+  \end{itemize}
+\pause
+\vfill
+\centering
+These two functions can be used in almost the exact same way as
+\inr{t.test} and \inr{aov}, respectively. \\
+\end{frame}
+
+
+
+
+
+
+
+%% \begin{frame}
+%%   \frametitle{In-class assignment}
+%%   \begin{itemize}
+%%     \item[\bf (1)] Import the \inr{forestCover} data
+%%     \item[\bf (2)] Decide which transformation do you think would be best?
+%%     \item[\bf (3)] Conduct an ANOVA on the untransformed and transformed
+%%       data. Use at least two of the following tranformations:
+%%       \begin{itemize}
+%%         \item log
+%%         \item square-root
+%%         \item acrsine square-root
+%%         \item reciprocal
+%%       \end{itemize}
+%%     \item[\bf (4)] Determine which (if any) transformation is best for \inr{pcForest}
+%%     \item[\bf (5)] Does transformation alter the main conclusion?
+%%   \end{itemize}
+%% \end{frame}
+
+
+
+
+\begin{frame}
+  \frametitle{Assignment}
+  \small
+  \begin{enumerate}
+    \item[\bf (1)] Decide which transformation is best for the
+      \inr{infectionRates} data by conducting an ANOVA on the
+      untransformed and transformed data. Use graphical assessments,
+%      Bartlett's test,
+      and Shapiro's test to evaluate each of the
+      following tranformations:
+      \begin{itemize}
+        \item log
+        \item square-root
+        \item acrsine square-root
+        \item reciprocal
+      \end{itemize}
+    \item[\bf (2)] Does transformation alter the conclusion about the
+      null hypothesis of no difference in means? If not, were the
+      transformations necessary?
+    \item[\bf (3)] Test the hypothesis that infection rates are equal
+      between suburban and urban landscapes using a Wilcoxan rank sum
+      test. What is the conclusion?
+    \item[\bf (4)] Conduct a Kruskal-Wallis test on the data. What
+      is the conclusion (in terms of the null hypothesis)?
+  \end{enumerate}
+  \centering
+  Use comments in your R script to explain your answers. \\
+\end{frame}
+
+
+
+
+
+
+
+
+
+\end{document}
