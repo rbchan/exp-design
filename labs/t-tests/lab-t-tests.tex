@@ -283,11 +283,18 @@ If the $t$ statistic is more extreme than the critical
 
 \begin{frame}[fragile]
   \frametitle{Boxplots}
-  \begin{center}
   \footnotesize
-
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{boxplot}\hlstd{(yL, yH,} \hlkwc{xlab}\hlstd{=}\hlstr{"Elevation"}\hlstd{,} \hlkwc{names}\hlstd{=}\hlkwd{c}\hlstd{(}\hlstr{"Low"}\hlstd{,} \hlstr{"High"}\hlstd{),}
+        \hlkwc{ylab}\hlstd{=}\hlstr{"Tree density"}\hlstd{,} \hlkwc{col}\hlstd{=}\hlkwd{c}\hlstd{(}\hlstr{"lightblue"}\hlstd{,} \hlstr{"purple"}\hlstd{))}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
 \vspace{-3mm}
-\includegraphics[width=3in,height=3in]{figure/boxplot-1}
+  \begin{center}
+    \includegraphics[width=2.5in,height=2.5in]{figure/boxplot-1}
   \end{center}
 \end{frame}
 
@@ -717,11 +724,19 @@ If the $t$ statistic is more extreme than the critical
 
 \begin{frame}[fragile]
   \frametitle{Is the mean of the differences $>0$?}
-  \begin{center}
   \footnotesize
-
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{boxplot}\hlstd{(diff,} \hlkwc{col}\hlstd{=}\hlstr{"lightgreen"}\hlstd{,} \hlkwc{size}\hlstd{=}\hlstr{'small'}\hlstd{,}
+        \hlkwc{ylab}\hlstd{=}\hlstr{"Differences in caterpillars (untreated-treated)"}\hlstd{)}
+\hlkwd{abline}\hlstd{(}\hlkwc{h}\hlstd{=}\hlnum{0}\hlstd{,} \hlkwc{col}\hlstd{=}\hlstr{"grey"}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
 \vspace{-.2cm}
-\includegraphics[width=3in,height=3in]{figure/box2-1}
+  \begin{center}
+    \includegraphics[width=2.5in,height=2.5in]{figure/box2-1}
   \end{center}
 \end{frame}
 

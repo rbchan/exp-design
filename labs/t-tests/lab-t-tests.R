@@ -1,16 +1,6 @@
-## ----build-fun, include=FALSE, cache=TRUE, eval=FALSE--------------------
-## ## A function to compile and open the pdf
-## ## Usage:
-## ## rnw2pdf("lab-t-tests") # Don't include the file extension
-## source("../rnw2pdf.R")
-
-## ----knitr-theme, include=FALSE------------------------------------------
-##knit_theme$set("navajo-night")
-knit_theme$set("edit-kwrite")
-
 ## ----pop,echo=FALSE,include=TRUE,fig.width=9,fig.height=3,cache=TRUE-----
 op <- par(mai=c(0.6,.1,0.4,0.1))
-curve(dnorm(x, mean=3, Sc=1), 0, 10, xlab="Tree density", ylab="", xaxt="n", yaxt="n", frame=FALSE)
+curve(dnorm(x, mean=3, sd=1), 0, 10, xlab="Tree density", ylab="", xaxt="n", yaxt="n", frame=FALSE)
 curve(dnorm(x, mean=6, sd=1), 0, 10, add=TRUE, col=4)
 segments(3, 0, 3, dnorm(3, 3, 1), lty=2)
 segments(6, 0, 6, dnorm(6, 6, 1), col=4, lty=2)
@@ -50,7 +40,7 @@ treedata <- data.frame(treeDensity=c(yL, yH),
                            rep('High', length(yH))))
 write.csv(treedata, "treedata.csv", row.names=FALSE)
 
-## ----boxplot,include=FALSE,fig.width=6,fig.height=6----------------------
+## ----boxplot,fig.show='hide',fig.width=6,fig.height=6--------------------
 boxplot(yL, yH, xlab="Elevation", names=c("Low", "High"),
         ylab="Tree density", col=c("lightblue", "purple"))
 
@@ -155,8 +145,8 @@ diff <- untreated-treated
 diff
 mean(diff) ## Estimate of the mean of the differences
 
-## ----box2,include=FALSE,fig.width=6,fig.height=6-------------------------
-boxplot(diff, col="lightgreen",
+## ----box2,fig.show='hide',fig.width=6,fig.height=6-----------------------
+boxplot(diff, col="lightgreen", size='small',
         ylab="Differences in caterpillars (untreated-treated)")
 abline(h=0, col="grey")
 

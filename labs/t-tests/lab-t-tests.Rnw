@@ -280,14 +280,14 @@ write.csv(treedata, "treedata.csv", row.names=FALSE)
 
 \begin{frame}[fragile]
   \frametitle{Boxplots}
-  \begin{center}
   \footnotesize
-<<boxplot,include=FALSE,fig.width=6,fig.height=6>>=
+<<boxplot,fig.show='hide',fig.width=6,fig.height=6>>=
 boxplot(yL, yH, xlab="Elevation", names=c("Low", "High"),
         ylab="Tree density", col=c("lightblue", "purple"))
 @
 \vspace{-3mm}
-\includegraphics[width=3in,height=3in]{figure/boxplot-1}
+  \begin{center}
+    \includegraphics[width=2.5in,height=2.5in]{figure/boxplot-1}
   \end{center}
 \end{frame}
 
@@ -658,15 +658,15 @@ mean(diff) ## Estimate of the mean of the differences
 
 \begin{frame}[fragile]
   \frametitle{Is the mean of the differences $>0$?}
-  \begin{center}
   \footnotesize
-<<box2,include=FALSE,fig.width=6,fig.height=6>>=
-boxplot(diff, col="lightgreen",
+<<box2,fig.show='hide',fig.width=6,fig.height=6>>=
+boxplot(diff, col="lightgreen", size='small',
         ylab="Differences in caterpillars (untreated-treated)")
 abline(h=0, col="grey")
 @
 \vspace{-.2cm}
-\includegraphics[width=3in,height=3in]{figure/box2-1}
+  \begin{center}
+    \includegraphics[width=2.5in,height=2.5in]{figure/box2-1}
   \end{center}
 \end{frame}
 
