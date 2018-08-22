@@ -1,5 +1,5 @@
 ---
-title: ANOVA
+title: One-way ANOVA for completely randomized designs
 layout: page
 ---
 
