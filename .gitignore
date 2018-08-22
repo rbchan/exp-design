@@ -1,6 +1,10 @@
 ## Ignore the 'exams' directory
 exams/
 
+## Ignore assignment KEYs
+KEY*
+
+
 ## Core latex/pdflatex auxiliary files:
 *.aux
 *.lof
