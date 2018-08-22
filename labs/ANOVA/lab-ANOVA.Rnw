@@ -8,9 +8,11 @@
 
 <<build-fun, include=FALSE, cache=TRUE, eval=FALSE, purl=FALSE>>=
 ## A function to compile and open the pdf
-## Usage:
-## rnw2pdf("lab-ANOVA") # Don't include the file extension
 source("../rnw2pdf.R")
+if(1==2) {
+    ## Usage:
+    rnw2pdf("lab-ANOVA") # Don't include the file extension
+}
 @
 
 
@@ -102,6 +104,25 @@ knit_theme$set("edit-kwrite")
     \item $H_0: \mu_1 = \mu_2 = \mu_3 = \ldots = \mu_a$
     \item Or:
     \item $H_0: \alpha_1 = \alpha_2 = \alpha_3 = \ldots = \alpha_a = 0$
+  \end{itemize}
+\end{frame}
+
+
+
+
+
+\begin{frame}
+  \frametitle{Additive model}
+  \Large
+  \[
+    y_{ij} = \mu + \alpha_j + \varepsilon_{ij}
+  \]
+%  \large
+  \vfill
+  where:
+  \begin{itemize}
+    \item Residuals: $\varepsilon_{ij} \sim \mathrm{Norm}(0, \sigma^2)$
+    \item Group means: $\mu_j = \mu + \alpha_j$
   \end{itemize}
 \end{frame}
 
@@ -216,7 +237,7 @@ boxplot(Kick.angle ~ Brand, data=sawData, xlab="Brand",
     We will primarily use \inr{aov} in this class
 %  \end{itemize}
   }
-  \pause
+%  \pause
 %  \vspace{1cm}
   \vfill
   {%\bf
@@ -381,6 +402,9 @@ F.crit
 p.value <- 1 - pf(F.stat, df1, df2)
 p.value
 @
+\pause
+\vfill
+Conclusion: Reject the null
 \end{frame}
 
 
@@ -542,7 +566,7 @@ arrows(xx, ybar.i, xx, ybar.i+mean.SE, angle=90, length=0.05)
 %  \frametitle{Testing pairwise differences in means}
   \frametitle{Tukey's Honestly Significant Difference test}
 %  {\bf Option 2: Tukey's Honestly Significant Difference test}
-<<>>=
+<<tukey,size='small'>>=
 TukeyHSD(aov.out1)
 @
 \end{frame}
@@ -554,11 +578,11 @@ TukeyHSD(aov.out1)
   \frametitle{Plot Tukey's confidence intervals}
 %  {\bf Option 3: Tukey's Honestly Significant Difference test}
   \tiny
-<<tukey,fig.show='hide',size='footnotesize'>>=
+<<tukey-plot,fig.show='hide',size='footnotesize'>>=
 plot(TukeyHSD(aov.out1))
 @
 \begin{center}
-  \includegraphics[width=0.65\textwidth]{figure/tukey-1}
+  \includegraphics[width=0.65\textwidth]{figure/tukey-plot-1}
 \end{center}
 \end{frame}
 
@@ -591,12 +615,11 @@ plot(TukeyHSD(aov.out1))
   \vfill
   Create an \R~script to do the following:
   \begin{enumerate}[\bf (1)]
-  \item Create an ANOVA table using the ``aov'' and ``summary''
-    functions. %In other words, do the same thing as before, but the
-%    easy way.
+  \item Create an ANOVA table using the \inr{aov} and \inr{summary}
+    functions.
   \item Create an ANOVA table (degrees of freedom,
     sums-of-squares, mean-squared error, and F-value) without using
-    ``aov''. Compute either the critical value of F or
+    \inr{aov}. Compute either the critical value of F or
     the $p$-value.
   \item Add a comment to the script indicating what the null
     hypothesis is, and whether or not it can be rejected at the

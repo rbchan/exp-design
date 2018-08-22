@@ -148,6 +148,25 @@
 
 
 
+
+\begin{frame}
+  \frametitle{Additive model}
+  \Large
+  \[
+    y_{ij} = \mu + \alpha_j + \varepsilon_{ij}
+  \]
+%  \large
+  \vfill
+  where:
+  \begin{itemize}
+    \item Residuals: $\varepsilon_{ij} \sim \mathrm{Norm}(0, \sigma^2)$
+    \item Group means: $\mu_j = \mu + \alpha_j$
+  \end{itemize}
+\end{frame}
+
+
+
+
 %% \begin{frame}[fragile]
 %%   \frametitle{One-way ANOVA}
 %%   \begin{center}
@@ -268,7 +287,7 @@
     We will primarily use \inr{aov} in this class
 %  \end{itemize}
   }
-  \pause
+%  \pause
 %  \vspace{1cm}
   \vfill
   {%\bf
@@ -556,6 +575,9 @@
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
+\pause
+\vfill
+Conclusion: Reject the null
 \end{frame}
 
 
@@ -708,7 +730,7 @@
 %  \frametitle{Testing pairwise differences in means}
   \frametitle{Tukey's Honestly Significant Difference test}
 %  {\bf Option 2: Tukey's Honestly Significant Difference test}
-\begin{knitrout}
+\begin{knitrout}\small
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlkwd{TukeyHSD}\hlstd{(aov.out1)}
@@ -747,7 +769,7 @@
 \end{kframe}
 \end{knitrout}
 \begin{center}
-  \includegraphics[width=0.65\textwidth]{figure/tukey-1}
+  \includegraphics[width=0.65\textwidth]{figure/tukey-plot-1}
 \end{center}
 \end{frame}
 
@@ -780,12 +802,11 @@
   \vfill
   Create an \R~script to do the following:
   \begin{enumerate}[\bf (1)]
-  \item Create an ANOVA table using the ``aov'' and ``summary''
-    functions. %In other words, do the same thing as before, but the
-%    easy way.
+  \item Create an ANOVA table using the \inr{aov} and \inr{summary}
+    functions.
   \item Create an ANOVA table (degrees of freedom,
     sums-of-squares, mean-squared error, and F-value) without using
-    ``aov''. Compute either the critical value of F or
+    \inr{aov}. Compute either the critical value of F or
     the $p$-value.
   \item Add a comment to the script indicating what the null
     hypothesis is, and whether or not it can be rejected at the
