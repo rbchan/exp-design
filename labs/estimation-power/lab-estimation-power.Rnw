@@ -12,9 +12,11 @@
 
 <<build-fun,include=FALSE,cache=TRUE,eval=FALSE,purl=FALSE>>=
 ## A function to compile and open the pdf
-## Usage:
-## rnw2pdf("lab-estimation-power") # Don't include the file extension
 source("../rnw2pdf.R")
+if(1==2) {
+    ## Usage:
+    rnw2pdf("lab-estimation-power") # Don't include the file extension
+}
 @
 
 
@@ -221,7 +223,7 @@ contrast.mat
 \begin{footnotesize}
 <<>>=
 aov.out <- aov(y ~ Brand, data=sawData,
-                contrasts=list(Brand=contrast.mat))
+               contrasts=list(Brand=contrast.mat))
 @
 \pause
 \vfill
@@ -248,7 +250,7 @@ summary(aov.out, split = list(Brand =
 {\bf %\centering
   Difference in means for A vs D \par}
 <<gmeans2,size='scriptsize'>>=
-group.means <- unname(group.means) # Drop names
+group.means <- unname(group.means) # Drop names (optional)
 group.means[1] - group.means[4]
 @
 \pause
@@ -618,16 +620,17 @@ power.anova.test(groups=4, n=5, between.var=360.0,
       \end{itemize}
 %      compute the difference in the means and the
 %      standard error of the difference
-    \item<5-> Suppose you wanted to replicate the study with a
+    \item<4-> Suppose you wanted to replicate the study with a
       smaller sample size of $n=2$ per treatment group? What would be
       your power?
   \end{enumerate}
   \uncover<5->{
 %  \vspace{0.2cm}
-  {{\color{red} \bf Due:} Put all of your answers in a
-    self-contained \R~script and upload it to ELC before the
+%  {{\color{red} \bf Due:}
+    Submit your answers in a
+    self-contained script before the
     next lab. %The script should be self-contained.}
-  }}
+  }
 
 \end{frame}
 %\end{comment}

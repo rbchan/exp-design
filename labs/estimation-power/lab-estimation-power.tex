@@ -338,7 +338,7 @@ Are they orthogonal?}
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlstd{aov.out} \hlkwb{<-} \hlkwd{aov}\hlstd{(y} \hlopt{~} \hlstd{Brand,} \hlkwc{data}\hlstd{=sawData,}
-                \hlkwc{contrasts}\hlstd{=}\hlkwd{list}\hlstd{(}\hlkwc{Brand}\hlstd{=contrast.mat))}
+               \hlkwc{contrasts}\hlstd{=}\hlkwd{list}\hlstd{(}\hlkwc{Brand}\hlstd{=contrast.mat))}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
@@ -391,7 +391,7 @@ Are they orthogonal?}
 \begin{knitrout}\scriptsize
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlstd{group.means} \hlkwb{<-} \hlkwd{unname}\hlstd{(group.means)} \hlcom{# Drop names}
+\hlstd{group.means} \hlkwb{<-} \hlkwd{unname}\hlstd{(group.means)} \hlcom{# Drop names (optional)}
 \hlstd{group.means[}\hlnum{1}\hlstd{]} \hlopt{-} \hlstd{group.means[}\hlnum{4}\hlstd{]}
 \end{alltt}
 \begin{verbatim}
@@ -536,7 +536,8 @@ Are they orthogonal?}
   \[
     \text{CI} = \text{Point estimate} \pm t_{\alpha/2,a(n-1)} \times \text{SE}
   \]
-  As usual, the hard part is computing the SE\footnote{See page 300 of Dowdy et al.}
+  As usual, the hard part is computing the SE\footnote{See page 300 of
+    Dowdy et al. for SE formulas}
 %  \pause
 %\footnotesize
 %<<>>=
@@ -874,16 +875,17 @@ Are they orthogonal?}
       \end{itemize}
 %      compute the difference in the means and the
 %      standard error of the difference
-    \item<5-> Suppose you wanted to replicate the study with a
+    \item<4-> Suppose you wanted to replicate the study with a
       smaller sample size of $n=2$ per treatment group? What would be
       your power?
   \end{enumerate}
   \uncover<5->{
 %  \vspace{0.2cm}
-  {{\color{red} \bf Due:} Put all of your answers in a
-    self-contained \R~script and upload it to ELC before the
+%  {{\color{red} \bf Due:}
+    Submit your answers in a
+    self-contained script before the
     next lab. %The script should be self-contained.}
-  }}
+  }
 
 \end{frame}
 %\end{comment}

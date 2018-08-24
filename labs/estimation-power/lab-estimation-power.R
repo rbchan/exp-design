@@ -23,7 +23,7 @@ contrast.mat
 
 ## ------------------------------------------------------------------------
 aov.out <- aov(y ~ Brand, data=sawData,
-                contrasts=list(Brand=contrast.mat))
+               contrasts=list(Brand=contrast.mat))
 
 ## ------------------------------------------------------------------------
 summary(aov.out, split = list(Brand =
@@ -33,7 +33,7 @@ summary(aov.out, split = list(Brand =
 (group.means <- tapply(sawData$y, sawData$Brand, mean))
 
 ## ----gmeans2,size='scriptsize'-------------------------------------------
-group.means <- unname(group.means) # Drop names
+group.means <- unname(group.means) # Drop names (optional)
 group.means[1] - group.means[4]
 
 ## ----gdiff1,size='scriptsize'--------------------------------------------
