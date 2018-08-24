@@ -32,3 +32,9 @@ course.
 
 #### [One-way ANOVA](ANOVA/lab-ANOVA.md)
 
+
+
+### Week 4
+
+#### [Contrasts, estimation, and power](estimation-power/lab-estimation-power.md)
+
