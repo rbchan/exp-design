@@ -3,9 +3,9 @@ author: Richard Chandler
 email: rchandler@warnell.uga.edu
 description: A course on experimental design and statistical analysis.
 # theme: jekyll-theme-minimal
-remote_theme: Sylhare/Type-on-Strap
+# remote_theme: Sylhare/Type-on-Strap
 google_analytics: "UA-123815645-1"
-# theme: minima
+theme: minima
 header_pages:
   - syllabus.md
   - labs/labs.md
