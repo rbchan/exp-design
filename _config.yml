@@ -1,11 +1,11 @@
 title: Experimental design and analysis
 author: Richard Chandler
 email: rchandler@warnell.uga.edu
-description: A course on experimental design and analysis offered at the University of Georgia by Bob Cooper and Richard Chandler.
+description: A course on experimental design and statistical analysis.
 # theme: jekyll-theme-minimal
-# remote_theme: chesterhow/tale
+remote_theme: chesterhow/tale
 google_analytics: "UA-123815645-1"
-theme: minima
+# theme: minima
 header_pages:
   - syllabus.md
   - labs/labs.md
