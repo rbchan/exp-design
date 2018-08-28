@@ -12,6 +12,7 @@ source("../rnw2pdf.R")
 if(1==2) {
     ## Usage:
     rnw2pdf("lab-ANOVA") # Don't include the file extension
+    rnw2pdf("lab-ANOVA", tangle=TRUE) # If you want the .R file
 }
 @
 
@@ -117,7 +118,7 @@ knit_theme$set("edit-kwrite")
   \[
     y_{ij} = \mu + \alpha_j + \varepsilon_{ij}
   \]
-%  \large
+  \large
   \vfill
   where:
   \begin{itemize}
