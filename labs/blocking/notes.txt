@@ -1,0 +1,2 @@
+
+  o Expand slides to explain of classes in R (e.g. coercing a variable to a factor).

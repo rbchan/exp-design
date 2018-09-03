@@ -115,14 +115,14 @@ knit_theme$set("edit-kwrite")
   \frametitle{Additive model}
   \Large
   \[
-    y_{ij} = \mu + \alpha_j + \varepsilon_{ij}
+    y_{ij} = \mu + \alpha_i + \varepsilon_{ij}
   \]
 %  \large
   \vfill
   where:
   \begin{itemize}
     \item Residuals: $\varepsilon_{ij} \sim \mathrm{Norm}(0, \sigma^2)$
-    \item Group means: $\mu_j = \mu + \alpha_j$
+    \item Group means: $\mu_i = \mu + \alpha_i$
   \end{itemize}
 \end{frame}
 

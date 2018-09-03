@@ -1,0 +1,413 @@
+\documentclass[color=usenames,dvipsnames]{beamer}
+%\documentclass[color=usenames,dvipsnames,handout]{beamer}
+
+
+%\usepackage[roman]{../../lab1}
+\usepackage[sans]{../../lab1}
+
+\hypersetup{pdftex,pdfstartview=FitV}
+
+
+
+<<build-fun, include=FALSE, cache=TRUE, eval=FALSE, purl=FALSE>>=
+## A function to compile and open the pdf
+## Usage:
+##
+source("../rnw2pdf.R")
+if(1==2) {
+  rnw2pdf("lab-blocking", tangle=TRUE)
+}
+@
+
+
+<<knitr-theme, include=FALSE, purl=FALSE>>=
+##knit_theme$set("navajo-night")
+knit_theme$set("edit-kwrite")
+@
+
+
+%% New command for inline code that isn't to be evaluated
+\definecolor{inlinecolor}{rgb}{0.878, 0.918, 0.933}
+\newcommand{\inr}[1]{\colorbox{inlinecolor}{\texttt{#1}}}
+
+
+
+\begin{document}
+
+
+%\setlength\fboxsep{0pt}
+
+
+
+%\section{Intro}
+
+\begin{frame}[plain]
+%  \maketitle
+  \LARGE
+  \centering \par
+  {\color{RoyalBlue}{Lab 6 -- Randomized Complete Block Design \par}}
+  \vspace{1cm}
+  \large
+  October 1 \& 2, 2018 \\
+  FANR 6750 \\
+  \vfill
+  \large
+  Richard Chandler and Bob Cooper
+\end{frame}
+
+
+\section{Recap}
+
+\begin{frame}
+  \frametitle{Recap}
+  \large
+%  \begin{itemize}%[<+->]
+%    \item
+  Like one-way ANOVA but experimental units are
+  organized into blocks to account for extraneous sources of
+  variation \\
+      \pause
+      \vfill
+%    \item
+      Blocks could be regions, time periods, individual subjects,
+      etc$\ldots$ \\
+      \pause
+      \vfill
+%    \item
+      Blocking must occur during the design phase of the study \\
+      \pause
+      \vfill
+%  \end{itemize}
+      Additive model:
+  \[
+    y_{ij} = \mu + \alpha_i + \beta_j + \varepsilon_{ij}
+  \]
+\end{frame}
+
+
+\section{Blocked ANOVA ``By Hand''}
+
+
+\begin{comment}
+\begin{frame}[fragile]
+  \frametitle{Gypsy Moth Data}
+<<makeGypsyData>>=
+a <- 3 # Number of treatments
+b <- 4 # Number of blocks
+larvae <- c(16, 3, 10, 18, 25, 10, 15, 32, 14, 2, 16, 12)
+treatment <- factor(rep(c("Bt", "Control", "Dimilin"), each=b))
+block <- factor(rep(1:4, times=a))
+gypsyData <- data.frame(caterpillars=larvae, pesticide=treatment, region=block)
+gypsyData
+write.csv(gypsyData, "gypsyData.csv", row.names=FALSE)
+@
+\end{frame}
+\end{comment}
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Gypsy Moth Data}
+%  \small
+  \footnotesize
+<<gypsyData>>=
+gypsyData <- read.csv("gypsyData.csv")
+gypsyData$region <- factor(gypsyData$region)
+gypsyData
+@
+\vfill
+\alert{Note:} Numeric grouping variables must be coded as factors.
+\end{frame}
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Compute the means}
+  \small
+{Grand mean ($\bar{y}_.$)}
+<<gmean,size='footnotesize'>>=
+caterpillars <- gypsyData$caterpillars
+(grand.mean <- mean(caterpillars))
+@
+\pause
+%\vspace{0.3cm}
+{ Treatment means ($\bar{y}_i$)}
+<<tmeans,size='footnotesize'>>=
+pesticide <- gypsyData$pesticide
+(treatment.means <- tapply(caterpillars, pesticide, mean))
+@
+\pause
+%\vspace{0.3cm}
+{ Block means ($\bar{y}_j$)}
+<<bmeans,size='footnotesize'>>=
+region <- gypsyData$region
+(block.means <- tapply(caterpillars, region, mean))
+@
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{Treatment sums-of-squares}
+  {\Large
+  \[
+  b \times \sum_{i=1}^a (\bar{y}_i - \bar{y}_.)^2
+  \]
+  }
+<<SSt>>=
+b <- 4
+b <- nlevels(region)
+SS.treat <- b*sum((treatment.means - grand.mean)^2)
+SS.treat
+@
+\end{frame}
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Block sums-of-squares}
+  {\Large
+  \[
+  a \times \sum_{j=1}^b (\bar{y}_j - \bar{y}_.)^2
+  \]
+  }
+<<SSb>>=
+a <- nlevels(pesticide)
+SS.block <- a*sum((block.means - grand.mean)^2)
+SS.block
+@
+\end{frame}
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Within groups sums-of-squares}
+  {\Large
+    \[
+    \sum_{i=1}^a \sum_{j=1}^b (y_{ij} - \bar{y}_i - \bar{y}_j + \bar{y}_.)^2
+    \]
+  }
+%  \pause
+<<SSw,size='small'>>=
+treatment.means.long <- rep(treatment.means, each=b)
+block.means.long <- rep(block.means, times=a)
+SS.within <- sum((caterpillars - treatment.means.long -
+                  block.means.long + grand.mean)^2)
+SS.within
+@
+\pause
+\vfill
+{\bf NOTE:} For this to work, \inr{treatment.means} and
+\inr{block.means} must be in the same order as in the original
+data. \\
+\end{frame}
+
+
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Create ANOVA table}
+<<ANOVAtable,size='small'>>=
+df.treat <- a-1
+df.block <- b-1
+df.within <- df.treat*df.block
+ANOVAtable <- data.frame(
+    df = c(df.treat, df.block, df.within),
+    SS = c(SS.treat, SS.block, SS.within))
+rownames(ANOVAtable) <- c("Treatment", "Block", "Within")
+ANOVAtable
+@
+\end{frame}
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Create ANOVA table, continued$\dots$}
+  \small
+  { Mean squares}
+<<MSE>>=
+MSE <- ANOVAtable$SS / ANOVAtable$df
+ANOVAtable$MSE <- MSE
+@
+\pause
+%\vspace{0.3cm}
+{ $F$ values}
+<<F1>>=
+F <- c(MSE[1]/MSE[3], MSE[2]/MSE[3], NA)
+ANOVAtable$F <- F
+@
+\pause
+%\vspace{0.3cm}
+{ $P$-values}
+<<P>>=
+P <- c(1 - pf(F[1], 2, 6), 1 - pf(F[2], 3, 6), NA)
+ANOVAtable$P <- P
+round(ANOVAtable, 3)
+@
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{Reminder about $P$-values}
+  \footnotesize
+<<Fdist,echo=FALSE,fig.show=TRUE,include=FALSE,fig.width=12,fig.height=6>>=
+curve(df(x, df1=2, df2=6), 0, 10, xlab="F", ylab="")
+xx <- seq(F[1], 20, length=50)
+den <- df(xx, 2, 6)
+polygon(c(xx, rev(xx)), c(den, rep(0, length(xx))), col="red")
+#abline(h=0, col=gray(0.5))
+crit <- qf(0.95, 2, 6)
+text(crit, 0.4, "critical value")
+arrows(crit, 0.38, crit, 0.05, length=0.1)
+text(F[1], 0.3, "F-value")
+arrows(F[1], 0.28, F[1], 0.05, length=0.1)
+@
+Critical value
+<<Cval,size='scriptsize'>>=
+qf(0.95, df1=2, df2=6) # 95% of the distribution is before this value of F
+@
+$P$-value
+<<Pval,size='scriptsize'>>=
+1-pf(F[1], df1=2, df2=6) # Proportion of the distribution beyond this F value
+@
+\begin{center}
+  \includegraphics[width=9cm]{figure/Fdist-1}
+\end{center}
+\end{frame}
+
+
+
+\section{Blocked ANOVA Using {\tt aov}}
+
+
+\begin{frame}[fragile]
+  \frametitle{Using {\tt aov}}
+  \small
+<<aov1>>=
+aov1 <- aov(caterpillars ~ pesticide + region, gypsyData)
+summary(aov1)
+@
+\pause
+<<atable>>=
+round(ANOVAtable, 3)
+@
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{Using {\tt aov}}
+  { Look what happens if we ignore the blocking variable \par}
+  \small
+<<aov2>>=
+aov2 <- aov(caterpillars ~ pesticide, gypsyData)
+summary(aov2)
+@
+\pause
+\vfill
+%\centering
+  { Why is the effect of pesticide no longer significant? \\}
+\end{frame}
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Treating block effects as random effects}
+%  \small
+  \footnotesize
+<<aov3>>=
+aov3 <- aov(caterpillars ~ pesticide + Error(region), gypsyData)
+summary(aov3)
+@
+\pause
+\vfill
+The values of the ANOVA table are the same as before, and there is
+no reason to use random effects here if interest only lies in
+testing the null hypothesis concerning pesticides. Later, we will see
+cases where it is important to use random and fixed effects.
+\end{frame}
+
+
+
+
+\begin{frame}
+  \frametitle{Assignment: Due before lab next week}
+  \tiny
+%  \scriptsize
+%  Due prior to your lab section on the week of Oct 5. \par
+  Plantations of {\it Pinus caribaea} were established at
+  four locations on Puerto Rico.  %As part of a spacing study,
+  Four spacings were used at each location to determine the effect of
+  stocking density on tree height. Twenty years after the
+  plantations were established, the following tree heights were recorded: \par
+  \vfill
+{  \centering
+%  \begin{columns}
+  %   \begin{center}
+%  \begin{column}{0.5\textwidth}
+    \tiny %\scriptsize
+    \begin{tabular}{lcc}
+      \hline
+      Location  & Spacing (ft) & Height (ft) \\
+      \hline
+      Caracoles & 5            & 72          \\
+                & 7            & 80          \\
+                & 10           & 85          \\
+                & 14           & 91          \\
+      Utado     & 5            & 75          \\
+                & 7            & 90          \\
+                & 10           & 94          \\
+                & 14           & 112         \\
+      Guzman    & 5            & 88          \\
+                & 7            & 95          \\
+                & 10           & 94          \\
+                & 14           & 91          \\
+      Lares     & 5            & 79          \\
+                & 7            & 94          \\
+                & 10           & 104         \\
+                & 14           & 106         \\
+      \hline
+    \end{tabular} \\
+    }
+%  \end{column}
+  % \end{center}
+%  \begin{column}{0.5\textwidth}
+%  \scriptsize
+%  \flushleft
+    Create an \R~script to the address the following:
+    \begin{enumerate}[(1)]
+      \item What are the null and alternative hypotheses?.
+      \item Test for effects of location and spacing on plant height
+        using the \inr{aov} function. Do the ANOVA again but without
+        \inr{aov}. Treat the block effects as fixed, not random. HINTS:
+        \begin{itemize}
+          \tiny
+          \item Spacing must be treated as a factor.
+          \item You must put the group means and block means in the
+            correct order when computing the sums-of-squares.
+        \end{itemize}
+      \item Perform a Tukey test to determine which spacings differ.
+      \item Summarize the main results in 2-3 sentences. Upload the
+        script to ELC the day before your next lab.
+    \end{enumerate}
+%  \end{column}
+%  \end{columns}
+%  \tiny
+%  \vfill
+%%  Upload the R script to ELC. The script should not include any
+%%  output, just commands and comments. We should be able to copy and
+%%  paste it into the R console to get the correct results.
+%  This exericse will not be graded, but this material will be on the
+%  next exam \\
+
+\end{frame}
+
+
+
+
+
+
+
+
+\end{document}
