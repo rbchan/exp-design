@@ -12,6 +12,7 @@ source("../rnw2pdf.R")
 if(1==2) {
     ## Usage:
     rnw2pdf("lab-ANOVA") # Don't include the file extension
+    rnw2pdf("lab-ANOVA", tangle=TRUE) # If you want the .R file
 }
 @
 
@@ -117,7 +118,7 @@ knit_theme$set("edit-kwrite")
   \[
     y_{ij} = \mu + \alpha_i + \varepsilon_{ij}
   \]
-%  \large
+  \large
   \vfill
   where:
   \begin{itemize}
@@ -501,7 +502,7 @@ write.csv(warblerWeight, "warblerWeight.csv")
 <<barplot2,fig.show='hide',fig.width=8,fig.height=6,size='scriptsize'>>=
 xx <- barplot(ybar.i, ylim=c(0, 60), xlab="Brand", cex.lab=1.5,
               ylab="Chainsaw kickback angle")
-mean.SE <- 6.364 # from model.tables(). See slide 8.
+mean.SE <- 6.364 # from model.tables(). See slide 9.
 arrows(xx, ybar.i, xx, ybar.i+mean.SE, angle=90, length=0.05)
 @
 \vspace{-.1cm}
