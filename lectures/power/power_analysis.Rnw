@@ -1,0 +1,439 @@
+\documentclass[color=usenames,dvipsnames]{beamer}
+%\documentclass[color=usenames,dvipsnames,handout]{beamer}
+
+\usepackage[sans]{../../lab1}
+
+\hypersetup{pdftex,pdfstartview=FitV}
+
+
+
+<<build-fun, include=FALSE, cache=TRUE, eval=FALSE, purl=FALSE>>=
+## A function to compile and open the pdf
+source("../rnw2pdf.R")
+if(1==2) {
+    ## Usage:
+    rnw2pdf("power_analysis") # Don't include the file extension
+    rnw2pdf("power_analysis", tangle=TRUE) # If you want the .R file
+}
+@
+
+
+<<knitr-theme, include=FALSE, purl=FALSE>>=
+##knit_theme$set("navajo-night")
+knit_theme$set("edit-kwrite")
+@
+
+
+%% New command for inline code that isn't to be evaluated
+\definecolor{inlinecolor}{rgb}{0.878, 0.918, 0.933}
+\newcommand{\inr}[1]{\colorbox{inlinecolor}{\texttt{#1}}}
+
+
+
+
+
+\begin{document}
+
+
+
+\begin{frame}[plain]
+  \begin{center}
+    \Large
+    {\color{NavyBlue}{\huge \bf Power Analysis \\}}
+    \vspace{2cm}
+    \large
+    { September 7, 2018} \par
+    \vspace{1cm}
+    \large
+    {FANR 6750: Experimental Methods in Natural Resources
+      Research}  \par
+  \end{center}
+\end{frame}
+
+
+
+\section{Motivation}
+
+
+
+\begin{frame}[plain]
+  \frametitle{Outline}
+   \LARGE
+   \only<1>{\tableofcontents[hideallsubsections]}
+%   \only<2 | handout:0>{\tableofcontents[currentsection,hideallsubsections]}
+\end{frame}
+
+
+
+\begin{frame}
+  \frametitle{Motivation}
+  \large
+  \begin{quote}
+    A statistical test will not be able to detect a true difference if
+    the sample size is too small compared with the magnitude of the
+    difference.
+  \end{quote}
+  \uncover<2->{
+  \begin{quote}
+    Since data are sampled at random, there is always a risk of
+    reaching a wrong conclusion, and things can go wrong in two ways.
+  \end{quote}
+  }
+  \uncover<1->{\flushright \footnotesize Dalgaard (2008) \par}
+\end{frame}
+
+
+
+
+\section{Type I \& II errors}
+
+
+\begin{frame}
+  \frametitle{Type I \& type II errors}
+  {\bf Type I error:} The null hypothesis is correct, but the test rejects it.
+  \pause
+%  \vfill
+  \[
+    \alpha = \text{Pr(Type I error)} %= \text{Pr(rejecting a true null hypothesis)}
+  \]
+  \pause
+  \vfill
+  {\bf Type II error:} The null hypothesis is wrong, but the test fails to reject it.
+%  \pause
+%  \[
+%    \text{Pr(Type II error)} = \text{Pr(not rejecting a false null hypothesis)}
+%  \]
+  \pause
+  \vfill
+  {\bf Power} ($\beta$): The test's ability to reject a null hypothesis that is false.
+%  \vfill
+  \[
+    \beta = 1 - \text{Pr(Type II error)} %The probability of rejecting a
+%      false hypothesis.}
+  \]
+\end{frame}
+
+
+
+
+\begin{frame}
+  \frametitle{Type I \& type II errors}
+  {\bf The type I error rate is set by the scientist.} \par
+  \pause
+  \vfill
+  {\bf The type II error rate, and hence the power of the test, depend
+    on many factors.}
+  \pause
+  \vfill
+  {\bf In the context of a two-sample $t$ test, these factors are:}
+  \begin{enumerate}[\bf (1)]
+    \item Magnitude of the difference ($\delta$)
+    \item Standard deviation (or variance) of population ($\sigma$)
+    \item The sample size ($n$)
+    \item The Type I error rate ($\alpha$)
+  \end{enumerate}
+\end{frame}
+
+
+
+
+\section{Two-sample $t$ test}
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Magnitude of the difference ($\delta$)}
+<<delta1,include=FALSE,echo=FALSE,fig.width=8,fig.height=6>>=
+curve(dnorm(x, 100, 10), 0, 200, lwd=2,
+      xlab="", ylab="",
+      main="Hard to detect a difference")
+curve(dnorm(x, 95, 10), 0, 200, lwd=2, col="blue", add=TRUE)
+@
+<<delta2,include=FALSE,echo=FALSE,fig.width=8,fig.height=6>>=
+curve(dnorm(x, 100, 10), 0, 200, lwd=2,
+      xlab="", ylab="",
+      main="Easy to detect a difference")
+curve(dnorm(x, 50, 10), 0, 200, lwd=2, col="blue", add=TRUE)
+@
+\only<1>{\includegraphics[width=\textwidth]{figure/delta1-1}}
+%\only<2>{\includegraphics[width=\textwidth]{power_analysis-delta2}}
+\end{frame}
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Magnitude of the difference ($\delta$)}
+\includegraphics[width=\textwidth]{figure/delta2-1}
+\end{frame}
+
+
+
+
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Standard deviation of the population ($\sigma$)}
+<<sigma1,include=FALSE,echo=FALSE,fig.width=8,fig.height=6>>=
+curve(dnorm(x, 100, 10), 0, 200, lwd=2,
+      xlab="", ylab="",
+      main="Easy to detect a difference")
+curve(dnorm(x, 50, 10), 0, 200, lwd=2, col="blue", add=TRUE)
+@
+<<sigma2,include=FALSE,echo=FALSE,fig.width=8,fig.height=6>>=
+curve(dnorm(x, 100, 50), 0, 200, lwd=2,
+      xlab="", ylab="",
+      main="Hard to detect a difference")
+curve(dnorm(x, 50, 50), 0, 200, lwd=2, col="blue", add=TRUE)
+@
+\only<1>{\includegraphics[width=\textwidth]{figure/sigma1-1}}
+%\only<2>{\includegraphics[width=\textwidth]{power_analysis-sigma2}}
+\end{frame}
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Standard deviation of the population ($\sigma$)}
+%\only<1>{\includegraphics[width=\textwidth]{power_analysis-sigma1}}
+\includegraphics[width=\textwidth]{figure/sigma2-1}
+\end{frame}
+
+
+
+
+
+
+
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Sample size ($n$)}
+<<n1,include=FALSE,echo=FALSE,fig.width=8,fig.height=6>>=
+curve(dnorm(x, 100, 10), 0, 200, lwd=2,
+      xlab="", ylab="",
+      main="Hard to detect a difference (n=10)")
+set.seed(2340)
+points(rnorm(10, 100, 10), rep(0,10), cex=1.5, pch=16, col=rgb(0,0,0,0.2))
+curve(dnorm(x, 95, 10), 0, 200, lwd=2, col="blue", add=TRUE)
+points(rnorm(10, 95, 10), rep(0.001,10), col=rgb(0,0,1,0.2), cex=1.5, pch=16)
+@
+<<n2,include=FALSE,echo=FALSE,fig.width=8,fig.height=6>>=
+curve(dnorm(x, 100, 10), 0, 200, lwd=2,
+      xlab="", ylab="",
+      main="Easier to detect a difference (n=100)")
+points(rnorm(100, 100, 10), rep(0,100), cex=1.5, pch=16, col=rgb(0,0,0,0.2))
+curve(dnorm(x, 95, 10), 0, 200, lwd=2, col="blue", add=TRUE)
+points(rnorm(100, 95, 10), rep(0.001,100), col=rgb(0,0,1,0.2), cex=1.5, pch=16)
+
+@
+\only<1>{\includegraphics[width=\textwidth]{figure/n1-1}}
+%\only<2>{\includegraphics[width=\textwidth]{power_analysis-n2}}
+\end{frame}
+
+
+
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Sample size ($n$)}
+  \includegraphics[width=\textwidth]{figure/n2-1}
+\end{frame}
+
+
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Type I error rate}
+<<alpha1,echo=FALSE,include=FALSE,fig.height=6,fig.width=8>>=
+op <- par(mai=c(0.8, 0.2, 0.2, 0.2))
+curve(dt(x, df=18), -4, 4, xlab="t value", ylab="", yaxt="n",
+      ylim=c(0,0.5),
+      frame=FALSE , main="Hard to detect a difference", cex.main=1.5)
+xs1 <- seq(qt(.005, df=18), -4, by=-0.1)
+ys1 <- dt(xs1, df=19)
+xs2 <- seq(qt(.995, df=18), 4, by=0.1)
+ys2 <- dt(xs2, df=19)
+polygon(c(xs1, rev(xs1)), c(rep(0, length(xs1)), rev(ys1)), col=gray(0.7))
+polygon(c(xs2, rev(xs2)), c(rep(0, length(xs2)), rev(ys2)), col=gray(0.7))
+par(op)
+@
+<<alpha2,include=FALSE,echo=FALSE,fig.width=8,fig.height=6>>=
+op <- par(mai=c(0.8, 0.2, 0.2, 0.2))
+curve(dt(x, df=18), -4, 4, xlab="t value", ylab="", yaxt="n",
+      ylim=c(0,0.5),
+      frame=FALSE , main="Easier to detect a difference", cex.main=1.5)
+xs1 <- seq(qt(.05, df=18), -4, by=-0.1)
+ys1 <- dt(xs1, df=19)
+xs2 <- seq(qt(.95, df=18), 4, by=0.1)
+ys2 <- dt(xs2, df=19)
+polygon(c(xs1, rev(xs1)), c(rep(0, length(xs1)), rev(ys1)), col=gray(0.7))
+polygon(c(xs2, rev(xs2)), c(rep(0, length(xs2)), rev(ys2)), col=gray(0.7))
+par(op)
+@
+\only<1>{\includegraphics[width=\textwidth]{figure/alpha1-1}}
+%\only<2>{\includegraphics[width=\textwidth]{power_analysis-alpha2}}
+\end{frame}
+
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Type I error rate}
+  \includegraphics[width=\textwidth]{figure/alpha2-1}
+\end{frame}
+
+
+
+
+
+
+
+
+\begin{frame}
+  \frametitle{Factors affecting power}
+  \large
+  {\bf In two-sample $t$ test, power increases when:}
+  \begin{enumerate}[\bf (1)]
+    \item The difference in means increases
+    \item The standard deviation of the population decreases
+    \item The sample size increases
+    \item The Type I error rate increases
+  \end{enumerate}
+%  \pause
+%  {\bf How can one know power ahead of time?}
+\end{frame}
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Example in {\bf R}}
+  \small
+<<pwrR>>=
+power.t.test(n=5, delta=10, sd=5,
+             sig.level=0.05, power=NULL)
+@
+\end{frame}
+
+
+
+
+
+
+%\section{Prospective vs retrospective}
+
+
+
+\begin{frame}
+  \frametitle{When should I do a power analysis?}
+  {\bf A prospective power analysis is always better than a
+    retrospective power analysis.} \par
+  \pause
+  \vfill
+  {\bf Retrospective}
+  \begin{itemize}
+    \item Conducted after experiment
+    \item If you failed to reject the null, then your power was low
+    \item But you can't use this as an excuse!
+    \item Only useful as a way of planning a subsequent experiment
+  \end{itemize}
+  \pause
+  \vfill
+  {\bf Prospective}
+  \begin{itemize}
+    \item Done before the experiment
+    \item Used to determine sample size or power, given $\delta$ and $\sigma$
+    \item How can $\delta$ and/or $\sigma$ be known ahead of time?
+    \item Requires prior knowledge, perhaps from a pilot study
+    \item Requires clear-headed thinking about what consitutes a
+      biologically significant difference.
+  \end{itemize}
+\end{frame}
+
+
+
+\begin{frame}
+  \frametitle{What level of power should I aim for?}
+  {\bf We want power to be as close to 1 as possible.} \par
+  \pause
+  \vspace{1cm}
+  {\bf Sometimes it may be prohibitively expensive to obtain a sample
+    size large enough to achieve power close to 1.} \par
+  \pause
+  \vspace{1cm}
+  {\bf In practice, we are usually satisfied with power $>$0.8. }
+\end{frame}
+
+
+
+
+\section{ANOVA}
+
+
+\begin{frame}
+  \frametitle{One-way ANOVA}
+  \large
+  {\bf To conduct a power analysis in the context of a one-way ANOVA,
+    we need:}
+  \begin{itemize}
+    \item The among group variance (MSa) instead of the difference in means, and
+    \item The within group variance (MSe) instead of the standard deviation
+      of the population
+  \end{itemize}
+  \pause
+  \vfill
+  {\bf Power goes up when:}
+  \begin{itemize}
+    \item MSa increases
+    \item MSe decreases
+    \item Same rules about $n$ and $\alpha$ from before also apply
+  \end{itemize}
+\end{frame}
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Example in {\bf R}}
+<<pwrRanova,size='footnotesize'>>=
+power.anova.test(groups=4, n=5, between.var=101,
+                 within.var=20, sig.level=0.05, power=NULL)
+@
+\end{frame}
+
+
+
+
+
+
+
+
+\begin{frame}
+  \frametitle{Summary}
+  \begin{itemize}[<+->]
+    \item Power analysis let's you determine the necessary sample size
+      (or power) for testing an effect size of interest
+    \item Power is influenced by the magnitude of the effect, the
+      standard deviation of the population, the Type I error rate, and
+      the sample size
+    \item Retrospective power analysis isn't useful unless you are
+      planning a subsequent experiment
+    \item {\bf R} has several functions for conducting power analysis,
+      but only for simple tests
+    \item More complicated power analysis can be performed using
+      simulation (not covered in this course)
+  \end{itemize}
+\end{frame}
+
+
+
+\end{document}
