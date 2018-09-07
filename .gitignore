@@ -1,3 +1,55 @@
+## Ignore the 'exams' directory
+exams/
+
+## Ignore assignment KEYs
+KEY*
+
+
+## Core latex/pdflatex auxiliary files:
+*.aux
+*.lof
+*.log
+*.lot
+*.fls
+*.out
+*.toc
+*.fmt
+*.fot
+*.cb
+*.cb2
+.*.lb
+
+## Intermediate documents:
+*.dvi
+*.xdv
+
+
+## Output
 *.pdf
+
+## Office
+*.docx
+*.xlsx
+*.pptx
+
+## beamer
+*.nav
+*.pre
+*.snm
+*.vrb
+
+
+## hyperref
+*.brf
+
+## knitr
+*-concordance.tex
 *cache/
+
+
+## tikz
+*.tikz
+*-tikzDictionary
+
+## auto
 auto/
