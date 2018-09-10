@@ -38,3 +38,9 @@ course.
 
 #### [Contrasts, estimation, and power](estimation-power/lab-estimation-power.md)
 
+
+
+### Week 5
+
+#### [Assumptions of ANOVA. Nonparametrics](assump-nonpar/assump-nonpar.md)
+

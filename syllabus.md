@@ -34,13 +34,13 @@ The above components of a scientific study need to be considered together rather
 | 2    | t-tests             | [t-tests](labs/t-tests/lab-t-tests.md)             | Chapter 10 |
 |      | Completely randomized ANOVA   |           |            |
 |      | Completely randomized ANOVA   |           |            |
-| 3    | Completely randomized ANOVA   | ANOVA     |            |
+| 3    | Completely randomized ANOVA   | [ANOVA](labs/ANOVA/lab-ANOVA.md)     |            |
 |      | Multiple comparisons   |                  |            |
 |      | Multiple comparisons   |                  |            |
 | 4    | No class            | No lab              |            |
 |      | Statistical power   |       | Steidl and Thomas (2002) |
 |      | Hypothesis testing  |                 | Johnson (1999) |
-| 5    | Contrasts           | Multiple comparisons and power | |
+| 5    | Contrasts           | [Contrasts, estimation, and power](labs/estimation-power/lab-estimation-power.md) | |
 |      | Contrasts           |                     |            |
 |      | Assumptions and transformations  |        | Chapter 11 |
 | 6    | Nonparametrics  | Transformations and nonparametrics | |
