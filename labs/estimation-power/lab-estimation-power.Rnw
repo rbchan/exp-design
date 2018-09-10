@@ -223,7 +223,7 @@ contrast.mat
 {\bf Fit the model with contrasts}
 \begin{footnotesize}
 <<>>=
-aov.out <- aov(y ~ Brand, data=sawData,
+aov.out <- aov(Kick.Angle ~ Brand, data=sawData,
                contrasts=list(Brand=contrast.mat))
 @
 \pause
