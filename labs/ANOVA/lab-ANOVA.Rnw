@@ -317,8 +317,8 @@ ybar.
   Find the group means, the hard way}
 %  \small
 <<ybar-i, size='footnotesize'>>=
-ybar.i <- c(mean(kick.angle.brandA), mean(kick.angle.brandB),
-            mean(kick.angle.brandC), mean(kick.angle.brandD))
+ybar.i <- c(A=mean(kick.angle.brandA), B=mean(kick.angle.brandB),
+            D=mean(kick.angle.brandC), C=mean(kick.angle.brandD))
 ybar.i
 @
 \pause
@@ -339,7 +339,7 @@ ybar.i
 \begin{frame}[fragile]
   \frametitle{Sums of squares}
 {%\bf
-  Sums of squares among}
+  Sum of squares among}
 <<SSa>>=
 SSa <- n*sum((ybar.i - ybar.)^2)
 SSa
@@ -347,10 +347,14 @@ SSa
 \pause
 \vfill
 {%\bf
-  Sums of squares within}
-<<y-ij>>=
+  Sum of squares within}
+<<y-ij,size='small'>>=
+## Extract the response variable
 y.ij <- sawData$Kick.angle
-SSw <- sum((y.ij - rep(ybar.i, each=n))^2)
+## Expand the group means and put them in the correct order
+## This will only work if 'ybar.i' has names
+ybar.ij <- ybar.i[as.character(sawData$Brand)]
+SSw <- sum((y.ij - ybar.ij)^2)
 SSw
 @
 \end{frame}

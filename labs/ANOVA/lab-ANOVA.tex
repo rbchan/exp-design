@@ -153,14 +153,14 @@
   \frametitle{Additive model}
   \Large
   \[
-    y_{ij} = \mu + \alpha_j + \varepsilon_{ij}
+    y_{ij} = \mu + \alpha_i + \varepsilon_{ij}
   \]
   \large
   \vfill
   where:
   \begin{itemize}
     \item Residuals: $\varepsilon_{ij} \sim \mathrm{Norm}(0, \sigma^2)$
-    \item Group means: $\mu_j = \mu + \alpha_j$
+    \item Group means: $\mu_i = \mu + \alpha_i$
   \end{itemize}
 \end{frame}
 
@@ -427,12 +427,13 @@
 \begin{knitrout}\footnotesize
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlstd{ybar.i} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlkwd{mean}\hlstd{(kick.angle.brandA),} \hlkwd{mean}\hlstd{(kick.angle.brandB),}
-            \hlkwd{mean}\hlstd{(kick.angle.brandC),} \hlkwd{mean}\hlstd{(kick.angle.brandD))}
+\hlstd{ybar.i} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlkwc{A}\hlstd{=}\hlkwd{mean}\hlstd{(kick.angle.brandA),} \hlkwc{B}\hlstd{=}\hlkwd{mean}\hlstd{(kick.angle.brandB),}
+            \hlkwc{D}\hlstd{=}\hlkwd{mean}\hlstd{(kick.angle.brandC),} \hlkwc{C}\hlstd{=}\hlkwd{mean}\hlstd{(kick.angle.brandD))}
 \hlstd{ybar.i}
 \end{alltt}
 \begin{verbatim}
-## [1] 33 43 49 31
+##  A  B  D  C 
+## 33 43 49 31
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -478,11 +479,15 @@
 \vfill
 {%\bf
   Sums of squares within}
-\begin{knitrout}
+\begin{knitrout}\small
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
+\hlcom{## Extract the response variable}
 \hlstd{y.ij} \hlkwb{<-} \hlstd{sawData}\hlopt{$}\hlstd{Kick.angle}
-\hlstd{SSw} \hlkwb{<-} \hlkwd{sum}\hlstd{((y.ij} \hlopt{-} \hlkwd{rep}\hlstd{(ybar.i,} \hlkwc{each}\hlstd{=n))}\hlopt{^}\hlnum{2}\hlstd{)}
+\hlcom{## Expand the group means and put them in the correct order}
+\hlcom{## This will only work if 'ybar.i' has names}
+\hlstd{ybar.ij} \hlkwb{<-} \hlstd{ybar.i[}\hlkwd{as.character}\hlstd{(sawData}\hlopt{$}\hlstd{Brand)]}
+\hlstd{SSw} \hlkwb{<-} \hlkwd{sum}\hlstd{((y.ij} \hlopt{-} \hlstd{ybar.ij)}\hlopt{^}\hlnum{2}\hlstd{)}
 \hlstd{SSw}
 \end{alltt}
 \begin{verbatim}
@@ -663,7 +668,7 @@ Conclusion: Reject the null
 \begin{alltt}
 \hlstd{xx} \hlkwb{<-} \hlkwd{barplot}\hlstd{(ybar.i,} \hlkwc{ylim}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{0}\hlstd{,} \hlnum{60}\hlstd{),} \hlkwc{xlab}\hlstd{=}\hlstr{"Brand"}\hlstd{,} \hlkwc{cex.lab}\hlstd{=}\hlnum{1.5}\hlstd{,}
               \hlkwc{ylab}\hlstd{=}\hlstr{"Chainsaw kickback angle"}\hlstd{)}
-\hlstd{mean.SE} \hlkwb{<-} \hlnum{6.364} \hlcom{# from model.tables(). See slide 8.}
+\hlstd{mean.SE} \hlkwb{<-} \hlnum{6.364} \hlcom{# from model.tables(). See slide 9.}
 \hlkwd{arrows}\hlstd{(xx, ybar.i, xx, ybar.i}\hlopt{+}\hlstd{mean.SE,} \hlkwc{angle}\hlstd{=}\hlnum{90}\hlstd{,} \hlkwc{length}\hlstd{=}\hlnum{0.05}\hlstd{)}
 \end{alltt}
 \end{kframe}
