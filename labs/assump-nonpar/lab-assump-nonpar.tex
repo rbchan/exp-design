@@ -106,48 +106,8 @@
 
 
 
-\section{Normality Diagnostics}
+\section{Assumptions of ANOVA}
 
-
-
-
-
-\begin{frame}[fragile]
-  \frametitle{Normality diagnostics}
-
-  {%\bf %\large
-    Consider the data:}
-  \scriptsize %\small
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlkwd{str}\hlstd{(infectionRates)}
-\end{alltt}
-\begin{verbatim}
-## 'data.frame':	90 obs. of  2 variables:
-##  $ percentInfected: num  0.21 0.25 0.17 0.26 0.21 0.21 0.22 0.27 0.23 0.14 ...
-##  $ landscape      : Factor w/ 3 levels "Park","Suburban",..: 1 1 1 1 1 1 1 1 1 1 ...
-\end{verbatim}
-\begin{alltt}
-\hlkwd{summary}\hlstd{(infectionRates)}
-\end{alltt}
-\begin{verbatim}
-##  percentInfected    landscape 
-##  Min.   :0.010   Park    :30  
-##  1st Qu.:0.040   Suburban:30  
-##  Median :0.090   Urban   :30  
-##  Mean   :0.121                
-##  3rd Qu.:0.210                
-##  Max.   :0.330
-\end{verbatim}
-\end{kframe}
-\end{knitrout}
-  \normalsize %\bf
-These data are made-up, but imagine they come from a study in which
-100 crows are placed in $n=30$ enclosures in each of 3 landscapes. The
-response variable is the proportion of crows infected with West Nile
-virus at the end of the study. \\
-\end{frame}
 
 
 
@@ -195,7 +155,7 @@ virus at the end of the study. \\
 
 
 \begin{frame}
-  \frametitle{Does any of this matter?}
+  \frametitle{Assumptions of ANOVA}
   {%\bf
     A common misconception is that the response variable must be
     normally distributed when conducting an ANOVA.}
@@ -219,8 +179,53 @@ virus at the end of the study. \\
 \normalsize
   {%\bf
     We can assess this assumption by looking at the residuals
-    themselves, or the data within each treatment}
+    themselves or the data within each treatment}
 \end{frame}
+
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Normality diagnostics}
+
+\small
+%  {%\bf %\large
+    Consider the data: %}
+%  \scriptsize %\small
+\begin{knitrout}\tiny
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{infectionRates} \hlkwb{<-} \hlkwd{read.csv}\hlstd{(}\hlstr{"infectionRates.csv"}\hlstd{)}
+\hlkwd{str}\hlstd{(infectionRates)}
+\end{alltt}
+\begin{verbatim}
+## 'data.frame':	90 obs. of  2 variables:
+##  $ percentInfected: num  0.21 0.25 0.17 0.26 0.21 0.21 0.22 0.27 0.23 0.14 ...
+##  $ landscape      : Factor w/ 3 levels "Park","Suburban",..: 1 1 1 1 1 1 1 1 1 1 ...
+\end{verbatim}
+\begin{alltt}
+\hlkwd{summary}\hlstd{(infectionRates)}
+\end{alltt}
+\begin{verbatim}
+##  percentInfected    landscape 
+##  Min.   :0.010   Park    :30  
+##  1st Qu.:0.040   Suburban:30  
+##  Median :0.090   Urban   :30  
+##  Mean   :0.121                
+##  3rd Qu.:0.210                
+##  Max.   :0.330
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+%  \normalsize %\bf
+\vfill
+These data are made-up, but imagine they come from a study in which
+100 crows are placed in $n=30$ enclosures in each of 3 landscapes. The
+response variable is the proportion of crows infected with West Nile
+virus at the end of the study. \\
+\end{frame}
+
 
 
 
@@ -229,7 +234,7 @@ virus at the end of the study. \\
 
 \begin{frame}[fragile]
   \frametitle{ANOVA diagnostics}
-\begin{knitrout}\small
+\begin{knitrout}\footnotesize
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlstd{anova1} \hlkwb{<-} \hlkwd{aov}\hlstd{(percentInfected} \hlopt{~} \hlstd{landscape,}
@@ -255,7 +260,7 @@ Significant, but did we meet the assumptions?
 
 \begin{frame}[fragile]
   \frametitle{Boxplots}
-\begin{knitrout}\small
+\begin{knitrout}\footnotesize
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlkwd{boxplot}\hlstd{(percentInfected}\hlopt{~}\hlstd{landscape, infectionRates,}
@@ -274,7 +279,7 @@ Significant, but did we meet the assumptions?
 \begin{frame}[fragile]
   \frametitle{Are group variances equal?}
   \small
-\begin{knitrout}\small
+\begin{knitrout}\footnotesize
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlkwd{bartlett.test}\hlstd{(percentInfected}\hlopt{~}\hlstd{landscape,} \hlkwc{data}\hlstd{=infectionRates)}
@@ -342,7 +347,7 @@ Significant, but did we meet the assumptions?
 %% @
 {We reject the null hypothesis that the residuals come from a normal
   distribution. Time to consider transformations and/or nonparametric
-  tests}
+  tests.}
 \end{frame}
 
 
@@ -724,13 +729,13 @@ These two functions can be used in almost the exact same way as
 
 \begin{frame}
   \frametitle{Assignment}
-  \small
+%  \small
+  \footnotesize
   \begin{enumerate}
     \item[\bf (1)] Decide which transformation is best for the
       \inr{infectionRates} data by conducting an ANOVA on the
       untransformed and transformed data. Use graphical assessments,
-%      Bartlett's test,
-      and Shapiro's test to evaluate each of the
+      Bartlett's test, and Shapiro's test to evaluate each of the
       following tranformations:
       \begin{itemize}
         \item log
@@ -745,10 +750,12 @@ These two functions can be used in almost the exact same way as
       between suburban and urban landscapes using a Wilcoxan rank sum
       test. What is the conclusion?
     \item[\bf (4)] Conduct a Kruskal-Wallis test on the data. What
-      is the conclusion (in terms of the null hypothesis)?
+      is the conclusion? % (in terms of the null hypothesis)?
   \end{enumerate}
-  \centering
-  Use comments in your R script to explain your answers. \\
+%  \centering
+  \vfill
+  Use comments in your R script to explain your answers. Upload your
+  results to ELC at least one day before your next lab.\\
 \end{frame}
 
 
