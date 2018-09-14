@@ -42,5 +42,5 @@ course.
 
 ### Week 5
 
-#### [Assumptions of ANOVA. Nonparametrics](assump-nonpar/assump-nonpar.md)
+#### [Assumptions of ANOVA, transformations, and nonparametrics](assump-nonpar/assump-nonpar.md)
 
