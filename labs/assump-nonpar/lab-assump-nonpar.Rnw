@@ -409,19 +409,22 @@ shapiro.test(resids)
 
 
 
-\begin{frame}
+\begin{frame}[fragile]
   \frametitle{Logarithmic Transformation}
-  \LARGE
+%  \LARGE
   \[
   y = \log(u + C)
   \]
-  \large
+%  \large
   \begin{itemize}%[<+->]
+    \small %\normalsize
     \item The constant $C$ is often 1, or 0 if there are no zeros in the data ($u$)
     \item Useful when group variances are proportional to the means
-%      (count data)
-%    \item Could use $\log_{10}$, but the natural logarithm is preferred
   \end{itemize}
+<<log,fig.width=6,fig.height=6,fig.align='center',out.width="40%",size='scriptsize'>>=
+boxplot(log(percentInfected)~landscape, infectionRates, col="green",
+        cex.lab=1.5, cex.axis=1.3, ylab="log(percent forest cover)")
+@
 \end{frame}
 
 
@@ -438,18 +441,23 @@ shapiro.test(resids)
 
 
 
-\begin{frame}
+\begin{frame}[fragile]
   \frametitle{Square Root Transformation}
-  \LARGE
+%  \LARGE
   \[
   y = \sqrt{u + C}
   \]
-  \large
+%  \large
   \begin{itemize}%[<+->]
+    \small
     \item $C$ is often 0.5 or some other small number
     \item Useful when group variances are proportional to the means
 %      (count data)
   \end{itemize}
+<<sqrt,fig.width=6,fig.height=6,fig.align='center',out.width="40%",size='scriptsize'>>=
+boxplot(sqrt(percentInfected)~landscape, infectionRates, col="yellow",
+        cex.lab=1.5, cex.axis=1.3, ylab="sqrt(percent forest cover)")
+@
 \end{frame}
 
 
@@ -466,34 +474,44 @@ shapiro.test(resids)
 
 
 
-\begin{frame}
+\begin{frame}[fragile]
   \frametitle{Arcsine-square root Transformation}
-  \LARGE
+%  \LARGE
   \[
   y = \mathrm{arcsin}(\sqrt{u})
   \]
-  \large
+%  \large
   \begin{itemize}%[<+->]
+    \small
     \item Used on proportions.
     \item logit transformation is an alternative: $y = \log(\frac{u}{1-u})$
 %    \item Binomial (logistic) regression is an alternative for proportions.
   \end{itemize}
+<<asin,fig.width=6,fig.height=6,fig.align='center',out.width="40%",size='scriptsize'>>=
+boxplot(asin(sqrt(percentInfected))~landscape, infectionRates, col="orange",
+        cex.lab=1.5, cex.axis=1.3, ylab="asin(sqrt(percent forest cover))")
+@
 \end{frame}
 
 
 
 
-\begin{frame}
+\begin{frame}[fragile]
   \frametitle{Reciprocal Transformation}
-  \LARGE
+%  \LARGE
   \[
   y = \frac{1}{u + C}
   \]
-  \large
+%  \large
   \begin{itemize}%[<+->]
+    \small
     \item $C$ is often 1 but could be 0 if there are no zeros in $u$
     \item Useful when group SDs are proportional to the squared group means
   \end{itemize}
+<<recip,fig.width=6,fig.height=6,fig.align='center',out.width="40%",size='scriptsize'>>=
+boxplot(1/percentInfected~landscape, infectionRates, col="pink",
+        cex.lab=1.5, cex.axis=1.3, ylab="1/percent forest cover")
+@
 \end{frame}
 
 
@@ -635,7 +653,7 @@ These two functions can be used in almost the exact same way as
       \begin{itemize}
         \item log
         \item square-root
-        \item acrsine square-root
+        \item arcsine square-root
         \item reciprocal
       \end{itemize}
     \item[\bf (2)] Does transformation alter the conclusion about the
