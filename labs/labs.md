@@ -44,3 +44,9 @@ course.
 
 #### [Assumptions of ANOVA, transformations, and nonparametrics](assump-nonpar/assump-nonpar.md)
 
+
+
+### Week 6
+
+#### [Randomized complete block design](blocking/blocking.md)
+
