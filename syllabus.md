@@ -9,10 +9,10 @@ Lab: M 1:25 - 3:20 or Tue 2:00 - 4:00, room 4-419
 
 ## Instructors
 
-Dr. Robert J. Cooper, Room 3-409, Phone 2-6066, [mailto:rcooper@warnell.uga.edu]
+Dr. Robert J. Cooper, Room 3-409, Phone 2-6066, [rcooper@warnell.uga.edu](mailto:rcooper@warnell.uga.edu)
 Office Hours:  Th 1:00 – 3:00
 
-Dr. Richard B. Chandler, Room 3-409B, Phone 2-5815, [mailto:rchandler@warnell.uga.edu]
+Dr. Richard B. Chandler, Room 3-409B, Phone 2-5815, [rchandler@warnell.uga.edu](mailto:rchandler@warnell.uga.edu)
 Office Hours: Tues 1:00 – 2:00, Wed 1:00 – 2:00
 
 
