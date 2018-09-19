@@ -15,6 +15,7 @@
 ##
 source("../rnw2pdf.R")
 if(1==2) {
+  rnw2pdf("lab-blocking")
   rnw2pdf("lab-blocking", tangle=TRUE)
 }
 @
@@ -48,7 +49,8 @@ knit_theme$set("edit-kwrite")
   {\color{RoyalBlue}{Lab 6 -- Randomized Complete Block Design \par}}
   \vspace{1cm}
   \large
-  October 1 \& 2, 2018 \\
+%  October 1 \& 2, 2018 \\
+  September 24 \& 25, 2018 \\
   FANR 6750 \\
   \vfill
   \large
@@ -91,7 +93,7 @@ knit_theme$set("edit-kwrite")
 \begin{comment}
 \begin{frame}[fragile]
   \frametitle{Gypsy Moth Data}
-<<makeGypsyData>>=
+<<makeGypsyData,purl=FALSE>>=
 a <- 3 # Number of treatments
 b <- 4 # Number of blocks
 larvae <- c(16, 3, 10, 18, 25, 10, 15, 32, 14, 2, 16, 12)
@@ -335,14 +337,14 @@ cases where it is important to use random and fixed effects.
   \frametitle{Assignment: Due before lab next week}
   \tiny
 %  \scriptsize
-%  Due prior to your lab section on the week of Oct 5. \par
   Plantations of {\it Pinus caribaea} were established at
   four locations on Puerto Rico.  %As part of a spacing study,
   Four spacings were used at each location to determine the effect of
   stocking density on tree height. Twenty years after the
-  plantations were established, the following tree heights were recorded: \par
+  plantations were established, the following tree heights were
+  recorded: \\ %par
   \vfill
-{  \centering
+  {  \centering
 %  \begin{columns}
   %   \begin{center}
 %  \begin{column}{0.5\textwidth}
@@ -368,13 +370,8 @@ cases where it is important to use random and fixed effects.
                 & 10           & 104         \\
                 & 14           & 106         \\
       \hline
-    \end{tabular} \\
-    }
-%  \end{column}
-  % \end{center}
-%  \begin{column}{0.5\textwidth}
-%  \scriptsize
-%  \flushleft
+    \end{tabular} %\\
+  }
     Create an \R~script to the address the following:
     \begin{enumerate}[(1)]
       \item What are the null and alternative hypotheses?.
@@ -391,16 +388,6 @@ cases where it is important to use random and fixed effects.
       \item Summarize the main results in 2-3 sentences. Upload the
         script to ELC the day before your next lab.
     \end{enumerate}
-%  \end{column}
-%  \end{columns}
-%  \tiny
-%  \vfill
-%%  Upload the R script to ELC. The script should not include any
-%%  output, just commands and comments. We should be able to copy and
-%%  paste it into the R console to get the correct results.
-%  This exericse will not be graded, but this material will be on the
-%  next exam \\
-
 \end{frame}
 
 

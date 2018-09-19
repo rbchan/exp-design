@@ -1,13 +1,3 @@
-## ----makeGypsyData-------------------------------------------------------
-a <- 3 # Number of treatments
-b <- 4 # Number of blocks
-larvae <- c(16, 3, 10, 18, 25, 10, 15, 32, 14, 2, 16, 12)
-treatment <- factor(rep(c("Bt", "Control", "Dimilin"), each=b))
-block <- factor(rep(1:4, times=a))
-gypsyData <- data.frame(caterpillars=larvae, pesticide=treatment, region=block)
-gypsyData
-write.csv(gypsyData, "gypsyData.csv", row.names=FALSE)
-
 ## ----gypsyData-----------------------------------------------------------
 gypsyData <- read.csv("gypsyData.csv")
 gypsyData$region <- factor(gypsyData$region)
