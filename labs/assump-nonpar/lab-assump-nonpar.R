@@ -36,6 +36,22 @@ hist(resids, col="turquoise", breaks=10, xlab="Residuals")
 ## ----shapiro-------------------------------------------------------------
 shapiro.test(resids)
 
+## ----log,fig.width=6,fig.height=6,fig.align='center',out.width="40%",size='scriptsize'----
+boxplot(log(percentInfected)~landscape, infectionRates, col="green",
+        cex.lab=1.5, cex.axis=1.3, ylab="log(percent forest cover)")
+
+## ----sqrt,fig.width=6,fig.height=6,fig.align='center',out.width="40%",size='scriptsize'----
+boxplot(sqrt(percentInfected)~landscape, infectionRates, col="yellow",
+        cex.lab=1.5, cex.axis=1.3, ylab="sqrt(percent forest cover)")
+
+## ----asin,fig.width=6,fig.height=6,fig.align='center',out.width="40%",size='scriptsize'----
+boxplot(asin(sqrt(percentInfected))~landscape, infectionRates, col="orange",
+        cex.lab=1.5, cex.axis=1.3, ylab="asin(sqrt(percent forest cover))")
+
+## ----recip,fig.width=6,fig.height=6,fig.align='center',out.width="40%",size='scriptsize'----
+boxplot(1/percentInfected~landscape, infectionRates, col="pink",
+        cex.lab=1.5, cex.axis=1.3, ylab="1/percent forest cover")
+
 ## ----anova2,size='footnotesize'------------------------------------------
 anova2 <- aov(log(percentInfected)~landscape,
               data=infectionRates)
