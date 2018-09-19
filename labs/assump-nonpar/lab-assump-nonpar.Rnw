@@ -154,7 +154,7 @@ knit_theme$set("edit-kwrite")
 
 \begin{frame}[fragile]
   \frametitle{Normality diagnostics}
-<<infectData,echo=FALSE>>=
+<<infectData,echo=FALSE,purl=FALSE>>=
 set.seed(3550)
 M <- 100
 p1 <- 0.5
