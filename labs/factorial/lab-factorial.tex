@@ -1,0 +1,623 @@
+\documentclass[color=usenames,dvipsnames]{beamer}\usepackage[]{graphicx}\usepackage[]{color}
+%% maxwidth is the original width if it is less than linewidth
+%% otherwise use linewidth (to make sure the graphics do not exceed the margin)
+\makeatletter
+\def\maxwidth{ %
+  \ifdim\Gin@nat@width>\linewidth
+    \linewidth
+  \else
+    \Gin@nat@width
+  \fi
+}
+\makeatother
+
+\definecolor{fgcolor}{rgb}{0, 0, 0}
+\newcommand{\hlnum}[1]{\textcolor[rgb]{0.69,0.494,0}{#1}}%
+\newcommand{\hlstr}[1]{\textcolor[rgb]{0.749,0.012,0.012}{#1}}%
+\newcommand{\hlcom}[1]{\textcolor[rgb]{0.514,0.506,0.514}{\textit{#1}}}%
+\newcommand{\hlopt}[1]{\textcolor[rgb]{0,0,0}{#1}}%
+\newcommand{\hlstd}[1]{\textcolor[rgb]{0,0,0}{#1}}%
+\newcommand{\hlkwa}[1]{\textcolor[rgb]{0,0,0}{\textbf{#1}}}%
+\newcommand{\hlkwb}[1]{\textcolor[rgb]{0,0.341,0.682}{#1}}%
+\newcommand{\hlkwc}[1]{\textcolor[rgb]{0,0,0}{\textbf{#1}}}%
+\newcommand{\hlkwd}[1]{\textcolor[rgb]{0.004,0.004,0.506}{#1}}%
+\let\hlipl\hlkwb
+
+\usepackage{framed}
+\makeatletter
+\newenvironment{kframe}{%
+ \def\at@end@of@kframe{}%
+ \ifinner\ifhmode%
+  \def\at@end@of@kframe{\end{minipage}}%
+  \begin{minipage}{\columnwidth}%
+ \fi\fi%
+ \def\FrameCommand##1{\hskip\@totalleftmargin \hskip-\fboxsep
+ \colorbox{shadecolor}{##1}\hskip-\fboxsep
+     % There is no \\@totalrightmargin, so:
+     \hskip-\linewidth \hskip-\@totalleftmargin \hskip\columnwidth}%
+ \MakeFramed {\advance\hsize-\width
+   \@totalleftmargin\z@ \linewidth\hsize
+   \@setminipage}}%
+ {\par\unskip\endMakeFramed%
+ \at@end@of@kframe}
+\makeatother
+
+\definecolor{shadecolor}{rgb}{.97, .97, .97}
+\definecolor{messagecolor}{rgb}{0, 0, 0}
+\definecolor{warningcolor}{rgb}{1, 0, 1}
+\definecolor{errorcolor}{rgb}{1, 0, 0}
+\newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
+
+\usepackage{alltt}
+%\documentclass[color=usenames,dvipsnames,handout]{beamer}
+
+
+%\usepackage[roman]{../../lab1}
+\usepackage[sans]{../../lab1}
+
+\hypersetup{pdftex,pdfstartview=FitV}
+
+
+
+
+
+
+
+
+
+%% New command for inline code that isn't to be evaluated
+\definecolor{inlinecolor}{rgb}{0.878, 0.918, 0.933}
+\newcommand{\inr}[1]{\colorbox{inlinecolor}{\texttt{#1}}}
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\begin{document}
+
+
+
+
+
+
+\section{Intro}
+
+\begin{frame}[plain]
+  \LARGE
+  \centering \par
+  {\color{RoyalBlue}{Lab 7 -- $A \times B$ Factorial Designs}} \par
+  \vspace{1cm}
+  \Large
+  October 9 \& 10, 2017
+\end{frame}
+
+
+
+\begin{comment}
+\begin{frame}[fragile]
+  \frametitle{Data}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{makeData} \hlkwb{<-} \hlkwd{data.frame}\hlstd{(}\hlkwc{precip}\hlstd{=}\hlkwd{rep}\hlstd{(}\hlkwd{c}\hlstd{(}\hlstr{"Wet"}\hlstd{,} \hlstr{"Dry"}\hlstd{),} \hlkwc{each}\hlstd{=}\hlnum{24}\hlstd{),}
+                       \hlkwc{temp}\hlstd{=}\hlkwd{rep}\hlstd{(}\hlkwd{c}\hlstd{(}\hlstr{"Cold"}\hlstd{,} \hlstr{"Hot"}\hlstd{),} \hlkwc{times}\hlstd{=}\hlnum{24}\hlstd{))}
+\hlstd{X} \hlkwb{<-} \hlkwd{model.matrix}\hlstd{(}\hlopt{~}\hlstd{precip}\hlopt{*}\hlstd{temp, makeData)} \hlcom{#~forest*season, makeData)}
+\hlstd{E} \hlkwb{<-} \hlstd{X} \hlopt{%*%} \hlkwd{c}\hlstd{(}\hlnum{20}\hlstd{,} \hlnum{3}\hlstd{,} \hlopt{-}\hlnum{3}\hlstd{,} \hlopt{-}\hlnum{10}\hlstd{)}
+\hlkwd{set.seed}\hlstd{(}\hlnum{3440}\hlstd{)}
+\hlstd{species} \hlkwb{<-} \hlkwd{round}\hlstd{(}\hlkwd{rnorm}\hlstd{(}\hlkwd{nrow}\hlstd{(X), E,} \hlkwc{sd}\hlstd{=}\hlnum{2}\hlstd{))}
+\hlstd{species}
+\end{alltt}
+\begin{verbatim}
+##  [1] 27  9 23 10 21 12 28  8 23 11 20 10 24 12 21 12 26  8 22 10 21 11 25
+## [24]  9 17 18 25 15 15 16 21 22 21 17 20 17 19 18 21 17 19 20 21 18 19 15
+## [47] 21 17
+\end{verbatim}
+\begin{alltt}
+\hlstd{richness} \hlkwb{<-} \hlkwd{data.frame}\hlstd{(species, makeData)}
+\hlkwd{summary}\hlstd{(}\hlkwd{aov}\hlstd{(species} \hlopt{~} \hlstd{precip}\hlopt{*}\hlstd{temp, richness))}
+\end{alltt}
+\begin{verbatim}
+##             Df Sum Sq Mean Sq F value   Pr(>F)    
+## precip       1   44.1    44.1   9.303  0.00387 ** 
+## temp         1  736.3   736.3 155.389 4.92e-16 ***
+## precip:temp  1  352.1   352.1  74.301 5.29e-11 ***
+## Residuals   44  208.5     4.7                     
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+\end{verbatim}
+\begin{alltt}
+\hlkwd{summary}\hlstd{(}\hlkwd{aov}\hlstd{(species} \hlopt{~} \hlstd{precip}\hlopt{+}\hlstd{temp, richness))}
+\end{alltt}
+\begin{verbatim}
+##             Df Sum Sq Mean Sq F value   Pr(>F)    
+## precip       1   44.1    44.1   3.539   0.0664 .  
+## temp         1  736.3   736.3  59.108 9.84e-10 ***
+## Residuals   45  560.6    12.5                     
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+\end{verbatim}
+\begin{alltt}
+\hlkwd{write.csv}\hlstd{(richness,} \hlstr{"speciesRichness.csv"}\hlstd{,} \hlkwc{row.names}\hlstd{=}\hlnum{FALSE}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+\end{comment}
+
+
+
+\begin{frame}
+  \frametitle{Situation}
+  \Large
+  \begin{itemize}[<+->]
+    \item There are 2 factors thought to influence the response variable
+    \item The effect of each factor might depend on the other factor
+    \item We have replicates for each \alert{combination} of factors
+  \end{itemize}
+\end{frame}
+
+
+%% \begin{frame}[fragile]
+%%   \frametitle{Example: species richness by precip and temp}
+%%   \scriptsize
+%% <<>>=
+%% richData <- read.csv("speciesRichness.csv")
+%% head(richData, 4)
+%% summary(richData)
+%% @
+%% \end{frame}
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Example: effects of food and predators on voles}
+  \scriptsize
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{voleData} \hlkwb{<-} \hlkwd{read.csv}\hlstd{(}\hlstr{"microtus_data.csv"}\hlstd{)}
+\hlkwd{head}\hlstd{(voleData,} \hlnum{7}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+##   voles food predators
+## 1    10    0   Present
+## 2    12    0   Present
+## 3     8    0   Present
+## 4    14    0   Present
+## 5    18    1   Present
+## 6    20    1   Present
+## 7    21    1   Present
+\end{verbatim}
+\begin{alltt}
+\hlkwd{str}\hlstd{(voleData)}
+\end{alltt}
+\begin{verbatim}
+## 'data.frame':	24 obs. of  3 variables:
+##  $ voles    : int  10 12 8 14 18 20 21 24 20 18 ...
+##  $ food     : int  0 0 0 0 1 1 1 1 2 2 ...
+##  $ predators: Factor w/ 2 levels "Absent","Present": 2 2 2 2 2 2 2 2 2 2 ...
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+%\pause
+%\vfill
+%\centering
+%\LARGE %\normalsize
+%What is wrong with the format of the data? \par
+\end{frame}
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Must convert {\tt food} to a factor}
+  \small
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{voleData}\hlopt{$}\hlstd{food} \hlkwb{<-} \hlkwd{factor}\hlstd{(voleData}\hlopt{$}\hlstd{food)}
+\hlkwd{str}\hlstd{(voleData)}
+\end{alltt}
+\begin{verbatim}
+## 'data.frame':	24 obs. of  3 variables:
+##  $ voles    : int  10 12 8 14 18 20 21 24 20 18 ...
+##  $ food     : Factor w/ 3 levels "0","1","2": 1 1 1 1 2 2 2 2 3 3 ...
+##  $ predators: Factor w/ 2 levels "Absent","Present": 2 2 2 2 2 2 2 2 2 2 ...
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{See how many replicates you have}
+%  The {\tt table} function tabulates the
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{table}\hlstd{(voleData}\hlopt{$}\hlstd{predators, voleData}\hlopt{$}\hlstd{food)}
+\end{alltt}
+\begin{verbatim}
+##          
+##           0 1 2
+##   Absent  4 4 4
+##   Present 4 4 4
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+
+
+%% \begin{frame}[fragile]
+%%   \frametitle{Boxplot with 2 factors}
+%%   \vspace{-0.5cm}
+%% %  \tiny
+%% \begin{center}
+%% <<fig=true,width=9,height=7>>=
+%% boxplot(species ~ precip + temp, data=richData,
+%%         ylab="Species richness", cex.lab=1.5)
+%% @
+%% \end{center}
+%% \end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{Boxplot with 2 factors}
+%  \vspace{-0.5cm}
+  \tiny
+%\begin{center}
+
+%\end{center}
+\centering
+\includegraphics[width=0.9\textwidth]{figure/box1-1} \par
+\end{frame}
+
+
+\section{\tt aov}
+
+
+%% \begin{frame}[fragile]
+%%   \frametitle{$A \times B$ interaction}
+%%   \small
+%% <<>>=
+%% aov1 <- aov(species ~ precip * temp, data=richData)
+%% summary(aov1)
+%% @
+%% \end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{$A \times B$ interaction}
+  \small
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{aov1} \hlkwb{<-} \hlkwd{aov}\hlstd{(voles} \hlopt{~} \hlstd{food} \hlopt{*} \hlstd{predators,} \hlkwc{data}\hlstd{=voleData)}
+\hlkwd{summary}\hlstd{(aov1)}
+\end{alltt}
+\begin{verbatim}
+##                Df Sum Sq Mean Sq F value   Pr(>F)    
+## food            2 1337.3   668.6   40.56 2.15e-07 ***
+## predators       1  975.4   975.4   59.16 4.27e-07 ***
+## food:predators  2  518.2   259.1   15.72 0.000112 ***
+## Residuals      18  296.8    16.5                     
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+
+
+
+%% \begin{frame}[fragile]
+%%   \frametitle{No interaction}
+%%   \small
+%% <<>>=
+%% aov2 <- aov(species ~ precip + temp, data=richData)
+%% summary(aov2)
+%% @
+%% \end{frame}
+
+
+
+\begin{frame}[fragile]
+  \frametitle{No interaction}
+  \small
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{aov2} \hlkwb{<-} \hlkwd{aov}\hlstd{(voles} \hlopt{~} \hlstd{food} \hlopt{+} \hlstd{predators,} \hlkwc{data}\hlstd{=voleData)}
+\hlkwd{summary}\hlstd{(aov2)}
+\end{alltt}
+\begin{verbatim}
+##             Df Sum Sq Mean Sq F value   Pr(>F)    
+## food         2 1337.3   668.6   16.41 6.06e-05 ***
+## predators    1  975.4   975.4   23.94 8.81e-05 ***
+## Residuals   20  815.0    40.8                     
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+
+\section{Follow-up}
+
+
+%% \begin{frame}[fragile]
+%%   \frametitle{Follow-up}
+%%   \footnotesize
+%% <<>>=
+%% summary(aov(species ~ precip, data=richData, subset=temp=="Hot"))
+%% @
+%% \pause
+%% \vfill
+%% <<>>=
+%% summary(aov(species ~ precip, data=richData, subset=temp=="Cold"))
+%% @
+%% \end{frame}
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Follow-up}
+  \footnotesize
+  {\centering \large \bf Assess effect of food for each level of predator
+    factor \\}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{summary}\hlstd{(}\hlkwd{aov}\hlstd{(voles} \hlopt{~} \hlstd{food,} \hlkwc{data}\hlstd{=voleData,} \hlkwc{subset}\hlstd{=predators}\hlopt{==}\hlstr{"Present"}\hlstd{))}
+\end{alltt}
+\begin{verbatim}
+##             Df Sum Sq Mean Sq F value  Pr(>F)   
+## food         2 193.50   96.75   14.82 0.00142 **
+## Residuals    9  58.75    6.53                   
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\pause
+\vfill
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{summary}\hlstd{(}\hlkwd{aov}\hlstd{(voles} \hlopt{~} \hlstd{food,} \hlkwc{data}\hlstd{=voleData,} \hlkwc{subset}\hlstd{=predators}\hlopt{==}\hlstr{"Absent"}\hlstd{))}
+\end{alltt}
+\begin{verbatim}
+##             Df Sum Sq Mean Sq F value   Pr(>F)    
+## food         2   1662   831.0   31.42 8.71e-05 ***
+## Residuals    9    238    26.4                     
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Tukey's HSD}
+  \tiny %\scriptsize
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{TukeyHSD}\hlstd{(aov1)}
+\end{alltt}
+\begin{verbatim}
+##   Tukey multiple comparisons of means
+##     95% family-wise confidence level
+## 
+## Fit: aov(formula = voles ~ food * predators, data = voleData)
+## 
+## $food
+##       diff       lwr       upr     p adj
+## 1-0 13.875  8.693714 19.056286 0.0000061
+## 2-0 17.250 12.068714 22.431286 0.0000003
+## 2-1  3.375 -1.806286  8.556286 0.2464315
+## 
+## $predators
+##                  diff       lwr       upr p adj
+## Present-Absent -12.75 -16.23252 -9.267482 4e-07
+## 
+## $`food:predators`
+##                       diff         lwr        upr     p adj
+## 1:Absent-0:Absent    18.00   8.8756323  27.124368 0.0000827
+## 2:Absent-0:Absent    28.50  19.3756323  37.624368 0.0000001
+## 0:Present-0:Absent   -2.50 -11.6243677   6.624368 0.9487798
+## 1:Present-0:Absent    7.25  -1.8743677  16.374368 0.1684043
+## 2:Present-0:Absent    3.50  -5.6243677  12.624368 0.8221335
+## 2:Absent-1:Absent    10.50   1.3756323  19.624368 0.0189039
+## 0:Present-1:Absent  -20.50 -29.6243677 -11.375632 0.0000154
+## 1:Present-1:Absent  -10.75 -19.8743677  -1.625632 0.0157740
+## 2:Present-1:Absent  -14.50 -23.6243677  -5.375632 0.0010013
+## 0:Present-2:Absent  -31.00 -40.1243677 -21.875632 0.0000000
+## 1:Present-2:Absent  -21.25 -30.3743677 -12.125632 0.0000095
+## 2:Present-2:Absent  -25.00 -34.1243677 -15.875632 0.0000010
+## 1:Present-0:Present   9.75   0.6256323  18.874368 0.0323125
+## 2:Present-0:Present   6.00  -3.1243677  15.124368 0.3351103
+## 2:Present-1:Present  -3.75 -12.8743677   5.374368 0.7780829
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+
+
+\section{Graphics}
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Compute group means and SEs}
+  \tiny
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{ybar_ij.SE} \hlkwb{<-} \hlkwd{model.tables}\hlstd{(aov1,} \hlkwc{type}\hlstd{=}\hlstr{"means"}\hlstd{,} \hlkwc{se}\hlstd{=}\hlnum{TRUE}\hlstd{)}
+\hlstd{ybar_ij.SE}
+\end{alltt}
+\begin{verbatim}
+## Tables of means
+## Grand mean
+##        
+## 22.625 
+## 
+##  food 
+## food
+##      0      1      2 
+## 12.250 26.125 29.500 
+## 
+##  predators 
+## predators
+##  Absent Present 
+##   29.00   16.25 
+## 
+##  food:predators 
+##     predators
+## food Absent Present
+##    0 13.50  11.00  
+##    1 31.50  20.75  
+##    2 42.00  17.00  
+## 
+## Standard errors for differences of means
+##          food predators food:predators
+##         2.030     1.658          2.871
+## replic.     8        12              4
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Extract group means and SEs}
+  {\bf Group means}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{ybar_ij.} \hlkwb{<-} \hlstd{ybar_ij.SE}\hlopt{$}\hlstd{tables}\hlopt{$}\hlstr{"food:predators"}
+\hlstd{ybar_ij.}
+\end{alltt}
+\begin{verbatim}
+##     predators
+## food Absent Present
+##    0 13.50  11.00  
+##    1 31.50  20.75  
+##    2 42.00  17.00
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\pause
+\vfill
+
+{\bf Standard error}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{SE_ij.} \hlkwb{<-} \hlkwd{as.numeric}\hlstd{(ybar_ij.SE}\hlopt{$}\hlstd{se}\hlopt{$}\hlstr{"food:predators"}\hlstd{)}
+\hlstd{SE_ij.}
+\end{alltt}
+\begin{verbatim}
+## [1] 2.871072
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+
+
+
+%% \begin{frame}[fragile]
+%%   \frametitle{Plot group means and SEs}
+%% %  \tiny
+%% <<ybarSE1,fig=TRUE,include=FALSE,width=8,height=6,echo=false>>=
+%% plot(1:6, ybar_ij., xaxt="n", xlim=c(0.5, 6.5), ylim=c(0, 50), cex=1.5, cex.lab=1.5,
+%%      pch=16, col=c("blue","blue","blue","black","black","black"),
+%%      xlab="", ylab="Voles")
+%% axis(1, 1:6, labels=c("Absent-0", "Absent-1", "Absent-2",
+%%                       "Present-0", "Present-1", "Present-2"))
+%% arrows(1:6, ybar_ij.-SE_ij., 1:6, ybar_ij.+SE_ij., code=3, angle=90, length=0.05, lwd=2)
+%% @
+%% %\begin{center}
+%%   \includegraphics[width=0.95\textwidth]{lab07-factorial-ybarSE1}
+%% %\end{center}
+%% \end{frame}
+
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Plot group means and SEs}
+  \tiny
+
+\begin{center}
+  \includegraphics[width=0.7\textwidth]{figure/ybarSE2-1}
+\end{center}
+\end{frame}
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Plot group means and SEs}
+  \tiny
+
+\begin{center}
+  \includegraphics[width=0.8\textwidth]{figure/ybarSE3-1}
+\end{center}
+\end{frame}
+
+
+
+
+
+\begin{frame}
+%  \frametitle{Assignment - Due prior to lab next week}
+  \frametitle{In-class exercise}
+\scriptsize %\tiny
+
+{\bf Fictitious Scenario \par}
+Acid rain has lowered the pH of many
+lakes in the northeastern United States, and as a result, fish
+populations have declined. Managers have resorted to aerial
+applications of lime (powdered calcium carbonate) in hopes of
+increasing pH. To determine if lime applications result in increased
+pH, they applied equal amounts of lime to 15 lakes, and as a control,
+they applied the same amount of inert white powder to an additional 15
+lakes. Researchers suspected that the effect of lime might depend upon
+the buffering effects of the underlying bedrock. To assess this
+hypothesis, the 30 lakes were chosen such that 10 had limestone
+bedrock, 10 had granite bedrock, and 10 had shist bedrock. pH was
+measured before and after each application, and the difference in pH
+is recorded in the file ``acidityData.csv.'' \par
+\pause
+\vfill
+{\bf Questions}
+\begin{enumerate}[{\bf 1}]
+  \item What are the null and alternative hypotheses?
+  \item Test the null hypotheses using an $A \times B$ factorial ANOVA
+    implemented with {\tt aov}. Create an ANOVA table using {\tt summary}.
+  \item Does the effect of lime depend upon the bedrock type? If so,
+    how? Answer this question by plotting the estimates of the effect of lime on
+    pH change. Include 95\% confidence intervals.
+\end{enumerate}
+\pause
+\vfill
+Put all of your answers in an R script. Your script should be
+self-contained, such that we can copy and paste your code into the R
+console. Use comments (\#) to respond to questions and interpret results.
+
+\end{frame}
+
+
+
+
+
+\end{document}

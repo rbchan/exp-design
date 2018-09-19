@@ -1,0 +1,400 @@
+\documentclass[color=usenames,dvipsnames]{beamer}
+%\documentclass[color=usenames,dvipsnames,handout]{beamer}
+
+
+%\usepackage[roman]{../../lab1}
+\usepackage[sans]{../../lab1}
+
+\hypersetup{pdftex,pdfstartview=FitV}
+
+
+
+<<build-fun, include=FALSE, cache=TRUE, eval=FALSE, purl=FALSE>>=
+## A function to compile and open the pdf
+## Usage:
+##
+source("../rnw2pdf.R")
+if(1==2) {
+  rnw2pdf("lab-factorial")
+  rnw2pdf("lab-factorial", tangle=TRUE)
+}
+@
+
+
+<<knitr-theme, include=FALSE, purl=FALSE>>=
+##knit_theme$set("navajo-night")
+knit_theme$set("edit-kwrite")
+@
+
+
+%% New command for inline code that isn't to be evaluated
+\definecolor{inlinecolor}{rgb}{0.878, 0.918, 0.933}
+\newcommand{\inr}[1]{\colorbox{inlinecolor}{\texttt{#1}}}
+
+
+
+
+
+
+
+\begin{document}
+
+
+
+
+
+
+\section{Intro}
+
+\begin{frame}[plain]
+  \LARGE
+  \centering \par
+  {\color{RoyalBlue}{Lab 7 -- $A \times B$ Factorial Designs}} \par
+  \vspace{1cm}
+  \Large
+  October 9 \& 10, 2017
+\end{frame}
+
+
+
+\begin{comment}
+\begin{frame}[fragile]
+  \frametitle{Data}
+<<makeData,purl=FALSE>>=
+makeData <- data.frame(precip=rep(c("Wet", "Dry"), each=24),
+                       temp=rep(c("Cold", "Hot"), times=24))
+X <- model.matrix(~precip*temp, makeData) #~forest*season, makeData)
+E <- X %*% c(20, 3, -3, -10)
+set.seed(3440)
+species <- round(rnorm(nrow(X), E, sd=2))
+species
+richness <- data.frame(species, makeData)
+summary(aov(species ~ precip*temp, richness))
+summary(aov(species ~ precip+temp, richness))
+write.csv(richness, "speciesRichness.csv", row.names=FALSE)
+@
+\end{frame}
+\end{comment}
+
+
+
+\begin{frame}
+  \frametitle{Situation}
+  \Large
+  \begin{itemize}[<+->]
+    \item There are 2 factors thought to influence the response variable
+    \item The effect of each factor might depend on the other factor
+    \item We have replicates for each \alert{combination} of factors
+  \end{itemize}
+\end{frame}
+
+
+%% \begin{frame}[fragile]
+%%   \frametitle{Example: species richness by precip and temp}
+%%   \scriptsize
+%% <<>>=
+%% richData <- read.csv("speciesRichness.csv")
+%% head(richData, 4)
+%% summary(richData)
+%% @
+%% \end{frame}
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Example: effects of food and predators on voles}
+  \scriptsize
+<<voleData>>=
+voleData <- read.csv("microtus_data.csv")
+head(voleData, 7)
+str(voleData)
+@
+%\pause
+%\vfill
+%\centering
+%\LARGE %\normalsize
+%What is wrong with the format of the data? \par
+\end{frame}
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Must convert {\tt food} to a factor}
+  \small
+<<factor>>=
+voleData$food <- factor(voleData$food)
+str(voleData)
+@
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{See how many replicates you have}
+%  The {\tt table} function tabulates the
+<<table>>=
+table(voleData$predators, voleData$food)
+@
+\end{frame}
+
+
+
+%% \begin{frame}[fragile]
+%%   \frametitle{Boxplot with 2 factors}
+%%   \vspace{-0.5cm}
+%% %  \tiny
+%% \begin{center}
+%% <<fig=true,width=9,height=7>>=
+%% boxplot(species ~ precip + temp, data=richData,
+%%         ylab="Species richness", cex.lab=1.5)
+%% @
+%% \end{center}
+%% \end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{Boxplot with 2 factors}
+%  \vspace{-0.5cm}
+  \tiny
+%\begin{center}
+<<box1,include=FALSE,fig.width=8,fig.height=6>>=
+boxplot(voles ~ food + predators, data=voleData, ylab="Voles", cex.lab=1.5)
+@
+%\end{center}
+\centering
+\includegraphics[width=0.9\textwidth]{figure/box1-1} \par
+\end{frame}
+
+
+\section{\tt aov}
+
+
+%% \begin{frame}[fragile]
+%%   \frametitle{$A \times B$ interaction}
+%%   \small
+%% <<>>=
+%% aov1 <- aov(species ~ precip * temp, data=richData)
+%% summary(aov1)
+%% @
+%% \end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{$A \times B$ interaction}
+  \small
+<<aov1>>=
+aov1 <- aov(voles ~ food * predators, data=voleData)
+summary(aov1)
+@
+\end{frame}
+
+
+
+
+%% \begin{frame}[fragile]
+%%   \frametitle{No interaction}
+%%   \small
+%% <<>>=
+%% aov2 <- aov(species ~ precip + temp, data=richData)
+%% summary(aov2)
+%% @
+%% \end{frame}
+
+
+
+\begin{frame}[fragile]
+  \frametitle{No interaction}
+  \small
+<<aov2>>=
+aov2 <- aov(voles ~ food + predators, data=voleData)
+summary(aov2)
+@
+\end{frame}
+
+
+\section{Follow-up}
+
+
+%% \begin{frame}[fragile]
+%%   \frametitle{Follow-up}
+%%   \footnotesize
+%% <<>>=
+%% summary(aov(species ~ precip, data=richData, subset=temp=="Hot"))
+%% @
+%% \pause
+%% \vfill
+%% <<>>=
+%% summary(aov(species ~ precip, data=richData, subset=temp=="Cold"))
+%% @
+%% \end{frame}
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Follow-up}
+  \footnotesize
+  {\centering \large \bf Assess effect of food for each level of predator
+    factor \\}
+<<subset1>>=
+summary(aov(voles ~ food, data=voleData, subset=predators=="Present"))
+@
+\pause
+\vfill
+<<subset2>>=
+summary(aov(voles ~ food, data=voleData, subset=predators=="Absent"))
+@
+\end{frame}
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Tukey's HSD}
+  \tiny %\scriptsize
+<<tuk>>=
+TukeyHSD(aov1)
+@
+\end{frame}
+
+
+
+\section{Graphics}
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Compute group means and SEs}
+  \tiny
+<<mtable>>=
+ybar_ij.SE <- model.tables(aov1, type="means", se=TRUE)
+ybar_ij.SE
+@
+\end{frame}
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Extract group means and SEs}
+  {\bf Group means}
+<<gmeans>>=
+ybar_ij. <- ybar_ij.SE$tables$"food:predators"
+ybar_ij.
+@
+
+\pause
+\vfill
+
+{\bf Standard error}
+<<SE>>=
+SE_ij. <- as.numeric(ybar_ij.SE$se$"food:predators")
+SE_ij.
+@
+\end{frame}
+
+
+
+
+%% \begin{frame}[fragile]
+%%   \frametitle{Plot group means and SEs}
+%% %  \tiny
+%% <<ybarSE1,fig=TRUE,include=FALSE,width=8,height=6,echo=false>>=
+%% plot(1:6, ybar_ij., xaxt="n", xlim=c(0.5, 6.5), ylim=c(0, 50), cex=1.5, cex.lab=1.5,
+%%      pch=16, col=c("blue","blue","blue","black","black","black"),
+%%      xlab="", ylab="Voles")
+%% axis(1, 1:6, labels=c("Absent-0", "Absent-1", "Absent-2",
+%%                       "Present-0", "Present-1", "Present-2"))
+%% arrows(1:6, ybar_ij.-SE_ij., 1:6, ybar_ij.+SE_ij., code=3, angle=90, length=0.05, lwd=2)
+%% @
+%% %\begin{center}
+%%   \includegraphics[width=0.95\textwidth]{lab07-factorial-ybarSE1}
+%% %\end{center}
+%% \end{frame}
+
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Plot group means and SEs}
+  \tiny
+<<ybarSE2,include=FALSE,fig.width=8,fig.height=6>>=
+par(mai=c(0.9,0.9,0.1,0.1))
+plot(1:3, ybar_ij.[,1], xaxt="n", xlim=c(0.5, 3.5), ylim=c(0, 50), type="b",
+     pch=16, col="blue", xlab="Food", ylab="Voles", cex=1.5, cex.lab=1.5, lwd=2)
+lines(1:3, ybar_ij.[,2], pch=16, col="black", type="b", cex=1.5, lty=2, lwd=2)
+axis(1, 1:3, labels=c("0", "1", "2"))
+arrows(1:3, ybar_ij.[,1]-SE_ij., 1:3, ybar_ij.[,1]+SE_ij., code=3, angle=90,
+       length=0.05, lwd=2, col="blue")
+arrows(1:3, ybar_ij.[,2]-SE_ij., 1:3, ybar_ij.[,2]+SE_ij., code=3, angle=90,
+       length=0.05, lwd=2)
+legend(0.5, 50, c("Absent", "Present"), col=c("blue", "black"), lty=c(1,2), title="Predators", pch=16)
+@
+\begin{center}
+  \includegraphics[width=0.7\textwidth]{figure/ybarSE2-1}
+\end{center}
+\end{frame}
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Plot group means and SEs}
+  \tiny
+<<ybarSE3,include=FALSE,fig.width=8,fig.height=6>>=
+bp <- barplot(ybar_ij., xlab="Predators", args.legend=list(title="Food"),
+              cex.lab=1.5, cex.names=1.4, col=c("linen", "lightblue", "turquoise"),
+              ylab="Voles", beside=TRUE, legend=TRUE, ylim=c(0, 50)); box()
+arrows(bp, ybar_ij., bp, ybar_ij.+SE_ij., code=2, angle=90, length=0.05, lwd=1)
+@
+\begin{center}
+  \includegraphics[width=0.8\textwidth]{figure/ybarSE3-1}
+\end{center}
+\end{frame}
+
+
+
+
+
+\begin{frame}
+%  \frametitle{Assignment - Due prior to lab next week}
+  \frametitle{In-class exercise}
+\scriptsize %\tiny
+
+{\bf Fictitious Scenario \par}
+Acid rain has lowered the pH of many
+lakes in the northeastern United States, and as a result, fish
+populations have declined. Managers have resorted to aerial
+applications of lime (powdered calcium carbonate) in hopes of
+increasing pH. To determine if lime applications result in increased
+pH, they applied equal amounts of lime to 15 lakes, and as a control,
+they applied the same amount of inert white powder to an additional 15
+lakes. Researchers suspected that the effect of lime might depend upon
+the buffering effects of the underlying bedrock. To assess this
+hypothesis, the 30 lakes were chosen such that 10 had limestone
+bedrock, 10 had granite bedrock, and 10 had shist bedrock. pH was
+measured before and after each application, and the difference in pH
+is recorded in the file ``acidityData.csv.'' \par
+\pause
+\vfill
+{\bf Questions}
+\begin{enumerate}[{\bf 1}]
+  \item What are the null and alternative hypotheses?
+  \item Test the null hypotheses using an $A \times B$ factorial ANOVA
+    implemented with {\tt aov}. Create an ANOVA table using {\tt summary}.
+  \item Does the effect of lime depend upon the bedrock type? If so,
+    how? Answer this question by plotting the estimates of the effect of lime on
+    pH change. Include 95\% confidence intervals.
+\end{enumerate}
+\pause
+\vfill
+Put all of your answers in an R script. Your script should be
+self-contained, such that we can copy and paste your code into the R
+console. Use comments (\#) to respond to questions and interpret results.
+
+\end{frame}
+
+
+
+
+
+\end{document}
