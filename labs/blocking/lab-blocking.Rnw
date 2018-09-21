@@ -370,7 +370,7 @@ cases where it is important to use random and fixed effects.
                 & 10           & 104         \\
                 & 14           & 106         \\
       \hline
-    \end{tabular} %\\
+    \end{tabular} \\
   }
     Create an \R~script to the address the following:
     \begin{enumerate}[(1)]
