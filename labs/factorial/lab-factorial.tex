@@ -84,7 +84,11 @@
   {\color{RoyalBlue}{Lab 7 -- $A \times B$ Factorial Designs}} \par
   \vspace{1cm}
   \Large
-  October 9 \& 10, 2017
+  October 1 \& 2, 2018
+  FANR 6750 \\
+  \vfill
+  \large
+  Richard Chandler and Bob Cooper
 \end{frame}
 
 
@@ -144,12 +148,19 @@
 
 \begin{frame}
   \frametitle{Situation}
-  \Large
-  \begin{itemize}[<+->]
-    \item There are 2 factors thought to influence the response variable
-    \item The effect of each factor might depend on the other factor
-    \item We have replicates for each \alert{combination} of factors
-  \end{itemize}
+%  \Large
+%  \begin{itemize}[<+->]
+%    \item
+  There are 2 factors thought to influence the response variable \\
+  \pause
+  \vfill
+%    \item
+  The effect of each factor might depend on the other factor \\
+  \pause
+  \vfill
+%    \item
+  We have replicates for each \alert{combination} of factors \\
+%  \end{itemize}
 \end{frame}
 
 
@@ -166,7 +177,7 @@
 
 
 \begin{frame}[fragile]
-  \frametitle{Example: effects of food and predators on voles}
+  \frametitle{\small Example: effects of food and predators on voles}
   \scriptsize
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
@@ -260,12 +271,20 @@
 \begin{frame}[fragile]
   \frametitle{Boxplot with 2 factors}
 %  \vspace{-0.5cm}
-  \tiny
+%  \tiny
 %\begin{center}
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{boxplot}\hlstd{(voles} \hlopt{~} \hlstd{food} \hlopt{+} \hlstd{predators,} \hlkwc{data}\hlstd{=voleData,} \hlkwc{ylab}\hlstd{=}\hlstr{"Voles"}\hlstd{,} \hlkwc{cex.lab}\hlstd{=}\hlnum{1.5}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
 
 %\end{center}
 \centering
-\includegraphics[width=0.9\textwidth]{figure/box1-1} \par
+\includegraphics[width=0.9\textwidth]{figure/box1-1} \\ %\par
 \end{frame}
 
 
@@ -361,9 +380,10 @@
 \begin{frame}[fragile]
   \frametitle{Follow-up}
   \footnotesize
-  {\centering \large \bf Assess effect of food for each level of predator
-    factor \\}
-\begin{knitrout}
+%  {\centering \large \bf Assess effect of food for each level of predator
+%    factor \\}
+  Effect of food when predators are present
+\begin{knitrout}\small
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlkwd{summary}\hlstd{(}\hlkwd{aov}\hlstd{(voles} \hlopt{~} \hlstd{food,} \hlkwc{data}\hlstd{=voleData,} \hlkwc{subset}\hlstd{=predators}\hlopt{==}\hlstr{"Present"}\hlstd{))}
@@ -379,7 +399,8 @@
 \end{knitrout}
 \pause
 \vfill
-\begin{knitrout}
+  Effect of food when predators are absent
+\begin{knitrout}\small
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlkwd{summary}\hlstd{(}\hlkwd{aov}\hlstd{(voles} \hlopt{~} \hlstd{food,} \hlkwc{data}\hlstd{=voleData,} \hlkwc{subset}\hlstd{=predators}\hlopt{==}\hlstr{"Absent"}\hlstd{))}
@@ -400,8 +421,8 @@
 
 \begin{frame}[fragile]
   \frametitle{Tukey's HSD}
-  \tiny %\scriptsize
-\begin{knitrout}
+%  \tiny %\scriptsize
+\begin{knitrout}\tiny
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlkwd{TukeyHSD}\hlstd{(aov1)}
@@ -452,8 +473,8 @@
 
 \begin{frame}[fragile]
   \frametitle{Compute group means and SEs}
-  \tiny
-\begin{knitrout}
+%  \tiny
+\begin{knitrout}\tiny
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlstd{ybar_ij.SE} \hlkwb{<-} \hlkwd{model.tables}\hlstd{(aov1,} \hlkwc{type}\hlstd{=}\hlstr{"means"}\hlstd{,} \hlkwc{se}\hlstd{=}\hlnum{TRUE}\hlstd{)}
@@ -551,12 +572,29 @@
 
 
 
+%% par(mai=c(0.9,0.9,0.1,0.1))
+
+
 
 
 \begin{frame}[fragile]
   \frametitle{Plot group means and SEs}
   \tiny
-
+\begin{knitrout}\tiny
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{plot}\hlstd{(}\hlnum{1}\hlopt{:}\hlnum{3}\hlstd{, ybar_ij.[,}\hlnum{1}\hlstd{],} \hlkwc{xaxt}\hlstd{=}\hlstr{"n"}\hlstd{,} \hlkwc{xlim}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{0.5}\hlstd{,} \hlnum{3.5}\hlstd{),} \hlkwc{ylim}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{0}\hlstd{,} \hlnum{50}\hlstd{),} \hlkwc{type}\hlstd{=}\hlstr{"b"}\hlstd{,}
+     \hlkwc{pch}\hlstd{=}\hlnum{16}\hlstd{,} \hlkwc{col}\hlstd{=}\hlstr{"blue"}\hlstd{,} \hlkwc{xlab}\hlstd{=}\hlstr{"Food"}\hlstd{,} \hlkwc{ylab}\hlstd{=}\hlstr{"Voles"}\hlstd{,} \hlkwc{cex}\hlstd{=}\hlnum{1.5}\hlstd{,} \hlkwc{cex.lab}\hlstd{=}\hlnum{1.5}\hlstd{,} \hlkwc{lwd}\hlstd{=}\hlnum{2}\hlstd{)}
+\hlkwd{lines}\hlstd{(}\hlnum{1}\hlopt{:}\hlnum{3}\hlstd{, ybar_ij.[,}\hlnum{2}\hlstd{],} \hlkwc{pch}\hlstd{=}\hlnum{16}\hlstd{,} \hlkwc{col}\hlstd{=}\hlstr{"black"}\hlstd{,} \hlkwc{type}\hlstd{=}\hlstr{"b"}\hlstd{,} \hlkwc{cex}\hlstd{=}\hlnum{1.5}\hlstd{,} \hlkwc{lty}\hlstd{=}\hlnum{2}\hlstd{,} \hlkwc{lwd}\hlstd{=}\hlnum{2}\hlstd{)}
+\hlkwd{axis}\hlstd{(}\hlnum{1}\hlstd{,} \hlnum{1}\hlopt{:}\hlnum{3}\hlstd{,} \hlkwc{labels}\hlstd{=}\hlkwd{c}\hlstd{(}\hlstr{"0"}\hlstd{,} \hlstr{"1"}\hlstd{,} \hlstr{"2"}\hlstd{))}
+\hlkwd{arrows}\hlstd{(}\hlnum{1}\hlopt{:}\hlnum{3}\hlstd{, ybar_ij.[,}\hlnum{1}\hlstd{]}\hlopt{-}\hlstd{SE_ij.,} \hlnum{1}\hlopt{:}\hlnum{3}\hlstd{, ybar_ij.[,}\hlnum{1}\hlstd{]}\hlopt{+}\hlstd{SE_ij.,} \hlkwc{code}\hlstd{=}\hlnum{3}\hlstd{,} \hlkwc{angle}\hlstd{=}\hlnum{90}\hlstd{,}
+       \hlkwc{length}\hlstd{=}\hlnum{0.05}\hlstd{,} \hlkwc{lwd}\hlstd{=}\hlnum{2}\hlstd{,} \hlkwc{col}\hlstd{=}\hlstr{"blue"}\hlstd{)}
+\hlkwd{arrows}\hlstd{(}\hlnum{1}\hlopt{:}\hlnum{3}\hlstd{, ybar_ij.[,}\hlnum{2}\hlstd{]}\hlopt{-}\hlstd{SE_ij.,} \hlnum{1}\hlopt{:}\hlnum{3}\hlstd{, ybar_ij.[,}\hlnum{2}\hlstd{]}\hlopt{+}\hlstd{SE_ij.,} \hlkwc{code}\hlstd{=}\hlnum{3}\hlstd{,} \hlkwc{angle}\hlstd{=}\hlnum{90}\hlstd{,}
+       \hlkwc{length}\hlstd{=}\hlnum{0.05}\hlstd{,} \hlkwc{lwd}\hlstd{=}\hlnum{2}\hlstd{)}
+\hlkwd{legend}\hlstd{(}\hlnum{0.5}\hlstd{,} \hlnum{50}\hlstd{,} \hlkwd{c}\hlstd{(}\hlstr{"Absent"}\hlstd{,} \hlstr{"Present"}\hlstd{),} \hlkwc{col}\hlstd{=}\hlkwd{c}\hlstd{(}\hlstr{"blue"}\hlstd{,} \hlstr{"black"}\hlstd{),} \hlkwc{lty}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,}\hlnum{2}\hlstd{),} \hlkwc{title}\hlstd{=}\hlstr{"Predators"}\hlstd{,} \hlkwc{pch}\hlstd{=}\hlnum{16}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
 \begin{center}
   \includegraphics[width=0.7\textwidth]{figure/ybarSE2-1}
 \end{center}
@@ -568,7 +606,16 @@
 \begin{frame}[fragile]
   \frametitle{Plot group means and SEs}
   \tiny
-
+\begin{knitrout}\tiny
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{bp} \hlkwb{<-} \hlkwd{barplot}\hlstd{(ybar_ij.,} \hlkwc{xlab}\hlstd{=}\hlstr{"Predators"}\hlstd{,} \hlkwc{args.legend}\hlstd{=}\hlkwd{list}\hlstd{(}\hlkwc{title}\hlstd{=}\hlstr{"Food"}\hlstd{),}
+              \hlkwc{cex.lab}\hlstd{=}\hlnum{1.5}\hlstd{,} \hlkwc{cex.names}\hlstd{=}\hlnum{1.4}\hlstd{,} \hlkwc{col}\hlstd{=}\hlkwd{c}\hlstd{(}\hlstr{"linen"}\hlstd{,} \hlstr{"lightblue"}\hlstd{,} \hlstr{"turquoise"}\hlstd{),}
+              \hlkwc{ylab}\hlstd{=}\hlstr{"Voles"}\hlstd{,} \hlkwc{beside}\hlstd{=}\hlnum{TRUE}\hlstd{,} \hlkwc{legend}\hlstd{=}\hlnum{TRUE}\hlstd{,} \hlkwc{ylim}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{0}\hlstd{,} \hlnum{50}\hlstd{));} \hlkwd{box}\hlstd{()}
+\hlkwd{arrows}\hlstd{(bp, ybar_ij., bp, ybar_ij.}\hlopt{+}\hlstd{SE_ij.,} \hlkwc{code}\hlstd{=}\hlnum{2}\hlstd{,} \hlkwc{angle}\hlstd{=}\hlnum{90}\hlstd{,} \hlkwc{length}\hlstd{=}\hlnum{0.05}\hlstd{,} \hlkwc{lwd}\hlstd{=}\hlnum{1}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
 \begin{center}
   \includegraphics[width=0.8\textwidth]{figure/ybarSE3-1}
 \end{center}
