@@ -169,11 +169,11 @@
   \frametitle{Gypsy Moth Data}
 %  \small
   \footnotesize
-\begin{knitrout}
+\begin{knitrout}\small
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlstd{gypsyData} \hlkwb{<-} \hlkwd{read.csv}\hlstd{(}\hlstr{"gypsyData.csv"}\hlstd{)}
-\hlstd{gypsyData}\hlopt{$}\hlstd{region} \hlkwb{<-} \hlkwd{factor}\hlstd{(gypsyData}\hlopt{$}\hlstd{region)}
+\hlstd{gypsyData}\hlopt{$}\hlstd{region} \hlkwb{<-} \hlkwd{factor}\hlstd{(gypsyData}\hlopt{$}\hlstd{region)} \hlcom{# Convert to factor}
 \hlstd{gypsyData}
 \end{alltt}
 \begin{verbatim}

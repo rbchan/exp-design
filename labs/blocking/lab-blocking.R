@@ -1,6 +1,6 @@
-## ----gypsyData-----------------------------------------------------------
+## ----gypsyData,size='small'----------------------------------------------
 gypsyData <- read.csv("gypsyData.csv")
-gypsyData$region <- factor(gypsyData$region)
+gypsyData$region <- factor(gypsyData$region) # Convert to factor
 gypsyData
 
 ## ----gmean,size='footnotesize'-------------------------------------------
