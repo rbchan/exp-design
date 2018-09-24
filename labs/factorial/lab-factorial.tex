@@ -81,7 +81,7 @@
 \begin{frame}[plain]
   \LARGE
   \centering \par
-  {\color{RoyalBlue}{Lab 7 -- $A \times B$ Factorial Designs}} \par
+  {\color{RoyalBlue}{\huge Lab 7 -- $A \times B$ Factorial Designs}} \par
   \vspace{1cm}
   \Large
   October 1 \& 2, 2018
@@ -274,7 +274,7 @@
 %  \tiny
 %\begin{center}
 
-\begin{knitrout}
+\begin{knitrout}\scriptsize
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlkwd{boxplot}\hlstd{(voles} \hlopt{~} \hlstd{food} \hlopt{+} \hlstd{predators,} \hlkwc{data}\hlstd{=voleData,} \hlkwc{ylab}\hlstd{=}\hlstr{"Voles"}\hlstd{,} \hlkwc{cex.lab}\hlstd{=}\hlnum{1.5}\hlstd{)}
@@ -383,7 +383,7 @@
 %  {\centering \large \bf Assess effect of food for each level of predator
 %    factor \\}
   Effect of food when predators are present
-\begin{knitrout}\small
+\begin{knitrout}\scriptsize
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlkwd{summary}\hlstd{(}\hlkwd{aov}\hlstd{(voles} \hlopt{~} \hlstd{food,} \hlkwc{data}\hlstd{=voleData,} \hlkwc{subset}\hlstd{=predators}\hlopt{==}\hlstr{"Present"}\hlstd{))}
@@ -400,7 +400,7 @@
 \pause
 \vfill
   Effect of food when predators are absent
-\begin{knitrout}\small
+\begin{knitrout}\scriptsize
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlkwd{summary}\hlstd{(}\hlkwd{aov}\hlstd{(voles} \hlopt{~} \hlstd{food,} \hlkwc{data}\hlstd{=voleData,} \hlkwc{subset}\hlstd{=predators}\hlopt{==}\hlstr{"Absent"}\hlstd{))}
@@ -650,17 +650,15 @@ is recorded in the file ``acidityData.csv.'' \par
 \begin{enumerate}[{\bf 1}]
   \item What are the null and alternative hypotheses?
   \item Test the null hypotheses using an $A \times B$ factorial ANOVA
-    implemented with {\tt aov}. Create an ANOVA table using {\tt summary}.
+    implemented with \inr{aov}. Create an ANOVA table using \inr{summary}.
   \item Does the effect of lime depend upon the bedrock type? If so,
     how? Answer this question by plotting the estimates of the effect of lime on
     pH change. Include 95\% confidence intervals.
 \end{enumerate}
 \pause
 \vfill
-Put all of your answers in an R script. Your script should be
-self-contained, such that we can copy and paste your code into the R
-console. Use comments (\#) to respond to questions and interpret results.
-
+Put your answers in a self-contained \R~script, and upload the script
+to ELC at least one day before your next lab.
 \end{frame}
 
 
