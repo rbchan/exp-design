@@ -8,15 +8,15 @@ title: Home
 
 This site holds lecture and lab materials for FANR 6750, a course on experimental design and analysis for new graduate students at UGA. In addition to covering topics on study design and the analysis of data from manipulative experiments, we also cover some basic models used in the analysis of observational data. Topics include:
 
-* One-way ANOVA, completely randomized model
-* Blocking and blocked designs
-* A x B factorial designs
+* [One-way ANOVA, completely randomized model](labs/ANOVA/lab-ANOVA.md)
+* [Blocking and blocked designs](labs/blocking/blocking.md)
+* [A x B factorial designs](labs/factorial/lab-factorial.md)
 * Nested Designs
 * Split plot designs
 * Repeated measures ANOVA
 * Generalized linear models
 
-More details can be found in the [syllabus](syllabus.md). 
+More details can be found in the [syllabus](syllabus.md).
 
 A GitHub repository with the source code is [here](https://github.com/rbchan/exp-design).
 
