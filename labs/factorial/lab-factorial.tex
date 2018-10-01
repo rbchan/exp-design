@@ -84,7 +84,7 @@
   {\color{RoyalBlue}{\huge Lab 7 -- $A \times B$ Factorial Designs}} \par
   \vspace{1cm}
   \Large
-  October 1 \& 2, 2018
+  October 1 \& 2, 2018 \\
   FANR 6750 \\
   \vfill
   \large
@@ -251,6 +251,18 @@
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
+\pause
+\vfill
+%\begin{columns}
+%  \column{\dimexpr\paperwidth-20pt}
+  This is a balanced design with 4 replicates of each level of the two
+  factors:
+  \begin{itemize}
+    \small
+    \item Factor A: Predators (Absent and Present)
+    \item Factor B: Food (0, 1, and 2)
+  \end{itemize}
+%\end{columns}
 \end{frame}
 
 
@@ -270,10 +282,6 @@
 
 \begin{frame}[fragile]
   \frametitle{Boxplot with 2 factors}
-%  \vspace{-0.5cm}
-%  \tiny
-%\begin{center}
-
 \begin{knitrout}\scriptsize
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
@@ -281,8 +289,6 @@
 \end{alltt}
 \end{kframe}
 \end{knitrout}
-
-%\end{center}
 \centering
 \includegraphics[width=0.9\textwidth]{figure/box1-1} \\ %\par
 \end{frame}
@@ -321,6 +327,10 @@
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
+\pause
+\vfill
+The interaction is significant, so the effect of food depends on
+whether predators are present or not. %(and vice versa)
 \end{frame}
 
 
@@ -337,6 +347,7 @@
 
 
 
+\begin{comment}
 \begin{frame}[fragile]
   \frametitle{No interaction}
   \small
@@ -357,6 +368,7 @@
 \end{kframe}
 \end{knitrout}
 \end{frame}
+\end{comment}
 
 
 \section{Follow-up}
@@ -382,7 +394,7 @@
   \footnotesize
 %  {\centering \large \bf Assess effect of food for each level of predator
 %    factor \\}
-  Effect of food when predators are present
+  Test for an effect of food when predators are present
 \begin{knitrout}\scriptsize
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
@@ -399,7 +411,7 @@
 \end{knitrout}
 \pause
 \vfill
-  Effect of food when predators are absent
+  Test for an effect of food when predators are absent
 \begin{knitrout}\scriptsize
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
@@ -422,44 +434,29 @@
 \begin{frame}[fragile]
   \frametitle{Tukey's HSD}
 %  \tiny %\scriptsize
-\begin{knitrout}\tiny
+\begin{knitrout}\scriptsize
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlkwd{TukeyHSD}\hlstd{(aov1)}
+\hlstd{tuk.out} \hlkwb{<-} \hlkwd{TukeyHSD}\hlstd{(aov1)}
+\hlstd{tuk.out}\hlopt{$}\hlstr{'food:predators'}
 \end{alltt}
 \begin{verbatim}
-##   Tukey multiple comparisons of means
-##     95% family-wise confidence level
-## 
-## Fit: aov(formula = voles ~ food * predators, data = voleData)
-## 
-## $food
-##       diff       lwr       upr     p adj
-## 1-0 13.875  8.693714 19.056286 0.0000061
-## 2-0 17.250 12.068714 22.431286 0.0000003
-## 2-1  3.375 -1.806286  8.556286 0.2464315
-## 
-## $predators
-##                  diff       lwr       upr p adj
-## Present-Absent -12.75 -16.23252 -9.267482 4e-07
-## 
-## $`food:predators`
-##                       diff         lwr        upr     p adj
-## 1:Absent-0:Absent    18.00   8.8756323  27.124368 0.0000827
-## 2:Absent-0:Absent    28.50  19.3756323  37.624368 0.0000001
-## 0:Present-0:Absent   -2.50 -11.6243677   6.624368 0.9487798
-## 1:Present-0:Absent    7.25  -1.8743677  16.374368 0.1684043
-## 2:Present-0:Absent    3.50  -5.6243677  12.624368 0.8221335
-## 2:Absent-1:Absent    10.50   1.3756323  19.624368 0.0189039
-## 0:Present-1:Absent  -20.50 -29.6243677 -11.375632 0.0000154
-## 1:Present-1:Absent  -10.75 -19.8743677  -1.625632 0.0157740
-## 2:Present-1:Absent  -14.50 -23.6243677  -5.375632 0.0010013
-## 0:Present-2:Absent  -31.00 -40.1243677 -21.875632 0.0000000
-## 1:Present-2:Absent  -21.25 -30.3743677 -12.125632 0.0000095
-## 2:Present-2:Absent  -25.00 -34.1243677 -15.875632 0.0000010
-## 1:Present-0:Present   9.75   0.6256323  18.874368 0.0323125
-## 2:Present-0:Present   6.00  -3.1243677  15.124368 0.3351103
-## 2:Present-1:Present  -3.75 -12.8743677   5.374368 0.7780829
+##                       diff         lwr        upr        p adj
+## 1:Absent-0:Absent    18.00   8.8756323  27.124368 8.272319e-05
+## 2:Absent-0:Absent    28.50  19.3756323  37.624368 1.343228e-07
+## 0:Present-0:Absent   -2.50 -11.6243677   6.624368 9.487798e-01
+## 1:Present-0:Absent    7.25  -1.8743677  16.374368 1.684043e-01
+## 2:Present-0:Absent    3.50  -5.6243677  12.624368 8.221335e-01
+## 2:Absent-1:Absent    10.50   1.3756323  19.624368 1.890394e-02
+## 0:Present-1:Absent  -20.50 -29.6243677 -11.375632 1.542664e-05
+## 1:Present-1:Absent  -10.75 -19.8743677  -1.625632 1.577400e-02
+## 2:Present-1:Absent  -14.50 -23.6243677  -5.375632 1.001292e-03
+## 0:Present-2:Absent  -31.00 -40.1243677 -21.875632 3.654987e-08
+## 1:Present-2:Absent  -21.25 -30.3743677 -12.125632 9.495014e-06
+## 2:Present-2:Absent  -25.00 -34.1243677 -15.875632 9.539109e-07
+## 1:Present-0:Present   9.75   0.6256323  18.874368 3.231246e-02
+## 2:Present-0:Present   6.00  -3.1243677  15.124368 3.351103e-01
+## 2:Present-1:Present  -3.75 -12.8743677   5.374368 7.780829e-01
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -650,7 +647,7 @@ is recorded in the file ``acidityData.csv.'' \par
 \begin{enumerate}[{\bf 1}]
   \item What are the null and alternative hypotheses?
   \item Test the null hypotheses using an $A \times B$ factorial ANOVA
-    implemented with \inr{aov}. Create an ANOVA table using \inr{summary}.
+    implemented with \inr{aov}. %Create an ANOVA table using \inr{summary}.
   \item Does the effect of lime depend upon the bedrock type? If so,
     how? Answer this question by plotting the estimates of the effect of lime on
     pH change. Include 95\% confidence intervals.

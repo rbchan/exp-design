@@ -27,8 +27,9 @@ summary(aov(voles ~ food, data=voleData, subset=predators=="Present"))
 ## ----subset2,size='scriptsize'-------------------------------------------
 summary(aov(voles ~ food, data=voleData, subset=predators=="Absent"))
 
-## ----tuk,size='tiny'-----------------------------------------------------
-TukeyHSD(aov1)
+## ----tuk,size='scriptsize'-----------------------------------------------
+tuk.out <- TukeyHSD(aov1)
+tuk.out$'food:predators'
 
 ## ----mtable,size='tiny'--------------------------------------------------
 ybar_ij.SE <- model.tables(aov1, type="means", se=TRUE)

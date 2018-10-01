@@ -1,0 +1,13 @@
+Survey results
+
+  o Show them the results summary
+
+  o End of year data-fest
+
+  o Reminder: I have office hours!
+
+  o I will try to explain the code better
+
+  o Don't try to copy and paste as I go
+
+  o The only code you need to know is what is in the slides, not in the script

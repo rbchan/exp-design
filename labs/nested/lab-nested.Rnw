@@ -1,0 +1,424 @@
+\documentclass[color=usenames,dvipsnames]{beamer}
+%\documentclass[color=usenames,dvipsnames,handout]{beamer}
+
+
+
+%\usepackage[roman]{../../lab1}
+\usepackage[sans]{../../lab1}
+
+\hypersetup{pdftex,pdfstartview=FitV}
+
+
+
+<<build-fun, include=FALSE, cache=TRUE, eval=FALSE, purl=FALSE>>=
+## A function to compile and open the pdf
+## Usage:
+##
+source("../rnw2pdf.R")
+if(1==2) {
+  rnw2pdf("lab-nested", clean=FALSE)
+  rnw2pdf("lab-nested", tangle=TRUE)
+}
+@
+
+
+<<knitr-theme, include=FALSE, purl=FALSE>>=
+##knit_theme$set("navajo-night")
+knit_theme$set("edit-kwrite")
+@
+
+
+%% New command for inline code that isn't to be evaluated
+\definecolor{inlinecolor}{rgb}{0.878, 0.918, 0.933}
+\newcommand{\inr}[1]{\colorbox{inlinecolor}{\texttt{#1}}}
+
+
+
+
+
+\begin{document}
+
+
+%\setlength\fboxsep{0pt}
+
+
+
+\begin{frame}[plain]
+  \LARGE
+  \centering \par
+  {\color{RoyalBlue}{\bf Lab 8 -- Nested ANOVA}} \\
+  \vspace{1cm}
+  \Large
+  October 8 \& 9, 2017 \\
+  FANR 6750 \\
+  \vfill
+  \large
+  Richard Chandler and Bob Cooper
+\end{frame}
+
+
+
+
+
+
+
+\section{Overview}
+
+
+
+\begin{frame}
+  \frametitle{Outline}
+  \Large
+  \only<1>{\tableofcontents}%[hideallsubsections]}
+%  \only<2 | handout:0>{\tableofcontents[currentsection]}%,hideallsubsections]}
+\end{frame}
+
+
+
+
+\begin{frame}
+  \frametitle{Scenario}
+  \large
+%  \begin{itemize}[<+->]
+%    \item
+  We subsample each experimental unit \\
+  \pause
+  \vfill
+%    \item
+  For example
+      \begin{itemize}
+        \large
+        \item We count larvae at multiple subplots within a plot
+%        \item We measure Pb levels in multiple blood samples per individual
+        \item We weigh multiple chicks in a brood
+      \end{itemize}
+  \pause
+  \vfill
+%    \item
+  We're interested in treatment effects at the experimental (whole) unit
+  level, not the subunit level
+%  \end{itemize}
+\end{frame}
+
+
+
+
+\begin{frame}
+  \frametitle{The additive model}
+  \large
+\[
+y_{ijk} = \mu + \alpha_i + \beta_{ij} + \varepsilon_{ijk}
+\] \par
+\vspace{1cm}
+\pause
+\large
+Because we want our inferences to apply to all experimental units, not
+just the ones in our sample, $\beta_{ij}$ is random.
+\pause
+\vfill
+Specifically:
+%\Large
+\[
+\beta_{ij} \sim \mbox{Normal}(0, \sigma^2_B)
+\]
+
+\pause
+\large
+And as always,
+%\Large
+\[
+\varepsilon_{ijk} \sim \mbox{Normal}(0, \sigma^2)
+\]
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{Hypotheses}
+{\bf Treatment effects \par}
+$H_0: \alpha_1 = \cdots = \alpha_a = 0$ \\
+$H_a:$ at least one inequality \par
+\pause
+\vspace{0.5cm}
+{\bf Random variation among experimental units \par}
+$H_0: \sigma^2_B = 0$ \\
+$H_a: \sigma^2_B > 0$
+
+\end{frame}
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Example data}
+<<eval=FALSE,echo=FALSE,purl=FALSE>>=
+nBroods <- 15
+nChicks <- 4
+habitat <- factor(rep(c("Burned", "Mowed", "Control"),
+                      each=nBroods/3*nChicks))
+brood <- factor(rep(LETTERS[1:nBroods], each=nChicks))
+alpha <- c(2, 1, -3)
+sigmaSqB <- 1
+sigmaSq <- 0.4
+set.seed(4340)
+beta <- rnorm(nBroods, 0, sigmaSqB)
+epsilon <- rnorm(nBroods*nChicks, 0, sigmaSq)
+alpha.long <- rep(alpha, each=nBroods*nChicks/3)
+beta.long <- rep(beta, each=nChicks)
+weight <- 15 + alpha.long + beta.long + epsilon
+chickData <- data.frame(weight, habitat, brood)
+write.csv(chickData, "chickWeights.csv", row.names=FALSE)
+@
+%\tiny
+%<<>>=
+%chickData <- read.csv("chickWeights.csv")
+%@
+\small
+{\bf Import data}
+<<import>>=
+gypsyData <- read.csv("gypsyData.csv")
+str(gypsyData)
+@
+%\begin{columns}
+%  \begin{column}{0.4\textwidth}
+%<<>>=
+%chickData[1:30,]
+%@
+%  \end{column}
+%  \begin{column}{0.4\textwidth}
+%<<>>=
+%chickData[31:60,]
+%@
+%  \end{column}
+%\end{columns}
+\pause
+\vfill
+{\bf Convert {\tt Plot} to a factor and then cross-tabulate}
+<<to-factor>>=
+gypsyData$Plot <- factor(gypsyData$Plot)
+table(gypsyData$Treatment, gypsyData$Plot)
+@
+\end{frame}
+
+
+
+\section{Using {\tt aov}}
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Incorrect analysis}
+%  \footnotesize
+<<aov-wrong>>=
+aov.wrong <- aov(larvae ~ Treatment + Plot,
+                 data=gypsyData)
+@
+\pause
+<<aov-wrong-out>>=
+summary(aov.wrong)
+@
+\pause
+\vfill
+\centering
+\large
+\bf
+\alert{The denominator degrees-of-freedom are wrong} \par
+\end{frame}
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Correct analysis}
+<<aov-correct,size='scriptsize'>>=
+aov.correct <- aov(larvae ~ Treatment + Error(Plot),
+                   data=gypsyData)
+@
+\pause
+<<aov-correct-out,size='scriptsize'>>=
+summary(aov.correct)
+@
+\end{frame}
+
+
+
+\begin{frame}[fragile]
+  \frametitle{What happens if we analyze plot-level means?}
+  {%\bf
+    The \inr{aggregate} function is similar to \inr{tapply} but it
+    works on entire {\tt data.frame}s. Here we get averages for each whole plot.}
+  \footnotesize
+<<agg>>=
+plotData <- aggregate(formula=larvae ~ Treatment + Plot,
+                      data=gypsyData, FUN=mean)
+@
+\pause
+<<agg-out>>=
+plotData
+@
+\end{frame}
+
+
+
+\begin{frame}[fragile]
+  \frametitle{$F$ and $p$ values are the same as before}
+%  {\bf Re-do the ANOVA on the brood means}
+%\pause
+%\footnotesize
+<<aov-plot,size='scriptsize'>>=
+aov.plot <- aov(larvae ~ Treatment, data=plotData)
+summary(aov.plot)
+@
+\pause
+<<aov-plot-out,size='scriptsize'>>=
+summary(aov.correct)
+@
+\end{frame}
+
+
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Issues}
+%  \large
+  {\bf When using using \inr{aov} with \inr{Error} term:}
+  \begin{itemize}
+    \item<1-> You can't use \inr{TukeyHSD}
+    \item<1-> You don't get a direct estimate of $\sigma^2_B$
+    \item<1-> Doesn't handle unbalanced designs well
+    \item<1-> But, you can use \inr{model.tables} and \inr{se.contrast}
+  \end{itemize}
+%  \pause
+  \vfill
+  \uncover<2->{{\bf An alternative is to use \inr{lme} function in
+      \inr{nlme} package}}
+  \begin{itemize}
+    \item<3-> Possible to get direct estimates of $\sigma^2_B$ and
+      other variance parameters
+    \item<3-> Handles very complex models and unbalanced designs
+    \item<3-> Possible to do multiple comparisons and contrasts using the the
+      \inr{glht} function in the \inr{multcomp} package. %(We will cover
+%      this next time)
+    \item<4-> But\dots
+    \item<4-> Only works if there random effects
+    \item<4-> ANOVA tables aren't as complete as \inr{aov}
+  \end{itemize}
+\end{frame}
+
+
+
+
+
+
+
+
+\section{Using {\tt lme}}% and {\tt glht}}
+
+
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Using the {\tt lme} function}
+<<lme1>>=
+library(nlme)
+library(multcomp)
+lme1 <- lme(larvae ~ Treatment, random=~1|Plot,
+            data=gypsyData)
+@
+\pause
+\vfill
+<<anova-lme1>>=
+anova(lme1, Terms="Treatment")
+@
+\end{frame}
+
+
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Variance parameter estimates}
+  \small
+  {%\bf
+    The first row shows the estimates of $\sigma^2_B$ and
+    $\sigma_B$. The second row shows the estimates of $\sigma^2$ and $\sigma$}
+<<VarCorr>>=
+VarCorr(lme1)
+@
+  \pause
+  \vfill
+  \centering
+  \bf
+%  \large
+%  {\color{PineGreen}{
+  There is more random variation within whole units than among whole
+  units (after accounting for treatment effects)} \\
+%} \\
+\end{frame}
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Extract the plot-level random effects}
+%  \small
+  {%\bf
+    These are the $\beta_{ij}$'s}
+<<ranef>>=
+round(ranef(lme1), 2)
+@
+\end{frame}
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Multiple comparisons}
+%  \scriptsize
+<<tuk,size='scriptsize'>>=
+tuk <- glht(lme1, linfct=mcp(Treatment="Tukey"))
+@
+\pause
+<<tuk-out,size='scriptsize'>>=
+summary(tuk)
+#confint(tuk)
+@
+\end{frame}
+
+
+
+
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Assignment}
+  \small
+  To determine if salinity affects adult fish reproductive
+  performance, a researcher places one pregnant female in a tank with
+  one of three salinity levels: low, medium, and high, or a control
+  tank. A week after birth, two offspring (fry) are measured. \\
+  \vfill
+  Run a nested ANOVA using \inr{aov} and \inr{lme} on the
+  {\tt fishData.csv} dataset. Answer the following questions:
+\begin{enumerate}[\bf (1)]
+  \item What are the null and alternative hypotheses?
+  \item Does salinity affect fry growth?
+  \item If so, which salinity levels differ?
+  \item Is there more random variation among or within experimental units?
+\end{enumerate}
+
+\vfill
+\centering
+Upload your self-contained \R~script to ELC at least one
+day before your next lab \\
+\end{frame}
+
+
+
+
+
+\end{document}
+

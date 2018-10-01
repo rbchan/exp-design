@@ -52,7 +52,7 @@ knit_theme$set("edit-kwrite")
   {\color{RoyalBlue}{\huge Lab 7 -- $A \times B$ Factorial Designs}} \par
   \vspace{1cm}
   \Large
-  October 1 \& 2, 2018
+  October 1 \& 2, 2018 \\
   FANR 6750 \\
   \vfill
   \large
@@ -145,6 +145,18 @@ str(voleData)
 <<table>>=
 table(voleData$predators, voleData$food)
 @
+\pause
+\vfill
+%\begin{columns}
+%  \column{\dimexpr\paperwidth-20pt}
+  This is a balanced design with 4 replicates of each level of the two
+  factors:
+  \begin{itemize}
+    \small
+    \item Factor A: Predators (Absent and Present)
+    \item Factor B: Food (0, 1, and 2)
+  \end{itemize}
+%\end{columns}
 \end{frame}
 
 
@@ -164,15 +176,9 @@ table(voleData$predators, voleData$food)
 
 \begin{frame}[fragile]
   \frametitle{Boxplot with 2 factors}
-%  \vspace{-0.5cm}
-%  \tiny
-%\begin{center}
-
 <<box1,fig.show='hide',fig.width=8,fig.height=6,size='scriptsize'>>=
 boxplot(voles ~ food + predators, data=voleData, ylab="Voles", cex.lab=1.5)
 @
-
-%\end{center}
 \centering
 \includegraphics[width=0.9\textwidth]{figure/box1-1} \\ %\par
 \end{frame}
@@ -198,6 +204,10 @@ boxplot(voles ~ food + predators, data=voleData, ylab="Voles", cex.lab=1.5)
 aov1 <- aov(voles ~ food * predators, data=voleData)
 summary(aov1)
 @
+\pause
+\vfill
+The interaction is significant, so the effect of food depends on
+whether predators are present or not. %(and vice versa)
 \end{frame}
 
 
@@ -214,6 +224,7 @@ summary(aov1)
 
 
 
+\begin{comment}
 \begin{frame}[fragile]
   \frametitle{No interaction}
   \small
@@ -222,6 +233,7 @@ aov2 <- aov(voles ~ food + predators, data=voleData)
 summary(aov2)
 @
 \end{frame}
+\end{comment}
 
 
 \section{Follow-up}
@@ -247,13 +259,13 @@ summary(aov2)
   \footnotesize
 %  {\centering \large \bf Assess effect of food for each level of predator
 %    factor \\}
-  Effect of food when predators are present
+  Test for an effect of food when predators are present
 <<subset1,size='scriptsize'>>=
 summary(aov(voles ~ food, data=voleData, subset=predators=="Present"))
 @
 \pause
 \vfill
-  Effect of food when predators are absent
+  Test for an effect of food when predators are absent
 <<subset2,size='scriptsize'>>=
 summary(aov(voles ~ food, data=voleData, subset=predators=="Absent"))
 @
@@ -265,8 +277,9 @@ summary(aov(voles ~ food, data=voleData, subset=predators=="Absent"))
 \begin{frame}[fragile]
   \frametitle{Tukey's HSD}
 %  \tiny %\scriptsize
-<<tuk,size='tiny'>>=
-TukeyHSD(aov1)
+<<tuk,size='scriptsize'>>=
+tuk.out <- TukeyHSD(aov1)
+tuk.out$'food:predators'
 @
 \end{frame}
 
@@ -397,7 +410,7 @@ is recorded in the file ``acidityData.csv.'' \par
 \begin{enumerate}[{\bf 1}]
   \item What are the null and alternative hypotheses?
   \item Test the null hypotheses using an $A \times B$ factorial ANOVA
-    implemented with \inr{aov}. Create an ANOVA table using \inr{summary}.
+    implemented with \inr{aov}. %Create an ANOVA table using \inr{summary}.
   \item Does the effect of lime depend upon the bedrock type? If so,
     how? Answer this question by plotting the estimates of the effect of lime on
     pH change. Include 95\% confidence intervals.
