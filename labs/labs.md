@@ -50,3 +50,15 @@ course.
 
 #### [Randomized complete block design](blocking/blocking.md)
 
+
+
+### Week 7
+
+#### [AxB Factorial](factorial/factorial.md)
+
+
+
+### Week 8
+
+#### [nested](nested/nested.md)
+

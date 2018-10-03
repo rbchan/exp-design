@@ -11,7 +11,7 @@ This site holds lecture and lab materials for FANR 6750, a course on experimenta
 * [One-way ANOVA, completely randomized model](labs/ANOVA/lab-ANOVA.md)
 * [Blocking and blocked designs](labs/blocking/blocking.md)
 * [A x B factorial designs](labs/factorial/lab-factorial.md)
-* Nested Designs
+* [Nested Designs](labs/nested/lab-nested.md)
 * Split plot designs
 * Repeated measures ANOVA
 * Generalized linear models
