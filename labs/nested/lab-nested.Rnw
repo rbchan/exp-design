@@ -45,8 +45,8 @@ knit_theme$set("edit-kwrite")
 
 \begin{frame}[plain]
   \LARGE
-  \centering \par
-  {\color{RoyalBlue}{\bf Lab 8 -- Nested ANOVA}} \\
+  \centering
+  {\color{RoyalBlue}{\bf Lab 8 -- Nested ANOVA} \\}
   \vspace{1cm}
   \Large
   October 8 \& 9, 2017 \\
@@ -79,25 +79,19 @@ knit_theme$set("edit-kwrite")
 \begin{frame}
   \frametitle{Scenario}
   \large
-%  \begin{itemize}[<+->]
-%    \item
   We subsample each experimental unit \\
   \pause
   \vfill
-%    \item
   For example
       \begin{itemize}
         \large
         \item We count larvae at multiple subplots within a plot
-%        \item We measure Pb levels in multiple blood samples per individual
         \item We weigh multiple chicks in a brood
       \end{itemize}
   \pause
   \vfill
-%    \item
   We're interested in treatment effects at the experimental (whole) unit
   level, not the subunit level
-%  \end{itemize}
 \end{frame}
 
 
@@ -108,7 +102,7 @@ knit_theme$set("edit-kwrite")
   \large
 \[
 y_{ijk} = \mu + \alpha_i + \beta_{ij} + \varepsilon_{ijk}
-\] \par
+\] \\
 \vspace{1cm}
 \pause
 \large
@@ -117,7 +111,6 @@ just the ones in our sample, $\beta_{ij}$ is random.
 \pause
 \vfill
 Specifically:
-%\Large
 \[
 \beta_{ij} \sim \mbox{Normal}(0, \sigma^2_B)
 \]
@@ -125,7 +118,6 @@ Specifically:
 \pause
 \large
 And as always,
-%\Large
 \[
 \varepsilon_{ijk} \sim \mbox{Normal}(0, \sigma^2)
 \]
@@ -134,15 +126,14 @@ And as always,
 
 \begin{frame}[fragile]
   \frametitle{Hypotheses}
-{\bf Treatment effects \par}
+{\bf Treatment effects \\}
 $H_0: \alpha_1 = \cdots = \alpha_a = 0$ \\
-$H_a:$ at least one inequality \par
+$H_a:$ at least one inequality \\
 \pause
 \vspace{0.5cm}
-{\bf Random variation among experimental units \par}
+{\bf Random variation among experimental units \\}
 $H_0: \sigma^2_B = 0$ \\
 $H_a: \sigma^2_B > 0$
-
 \end{frame}
 
 
@@ -167,32 +158,16 @@ weight <- 15 + alpha.long + beta.long + epsilon
 chickData <- data.frame(weight, habitat, brood)
 write.csv(chickData, "chickWeights.csv", row.names=FALSE)
 @
-%\tiny
-%<<>>=
-%chickData <- read.csv("chickWeights.csv")
-%@
 \small
 {\bf Import data}
-<<import>>=
+<<import,size='small'>>=
 gypsyData <- read.csv("gypsyData.csv")
 str(gypsyData)
 @
-%\begin{columns}
-%  \begin{column}{0.4\textwidth}
-%<<>>=
-%chickData[1:30,]
-%@
-%  \end{column}
-%  \begin{column}{0.4\textwidth}
-%<<>>=
-%chickData[31:60,]
-%@
-%  \end{column}
-%\end{columns}
 \pause
 \vfill
 {\bf Convert {\tt Plot} to a factor and then cross-tabulate}
-<<to-factor>>=
+<<to-factor,size='small'>>=
 gypsyData$Plot <- factor(gypsyData$Plot)
 table(gypsyData$Treatment, gypsyData$Plot)
 @
@@ -206,13 +181,12 @@ table(gypsyData$Treatment, gypsyData$Plot)
 
 \begin{frame}[fragile]
   \frametitle{Incorrect analysis}
-%  \footnotesize
-<<aov-wrong>>=
+<<aov-wrong,size='small'>>=
 aov.wrong <- aov(larvae ~ Treatment + Plot,
                  data=gypsyData)
 @
 \pause
-<<aov-wrong-out>>=
+<<aov-wrong-out,size='small'>>=
 summary(aov.wrong)
 @
 \pause
@@ -220,7 +194,7 @@ summary(aov.wrong)
 \centering
 \large
 \bf
-\alert{The denominator degrees-of-freedom are wrong} \par
+\alert{The denominator degrees-of-freedom are wrong} \\
 \end{frame}
 
 
@@ -228,12 +202,12 @@ summary(aov.wrong)
 
 \begin{frame}[fragile]
   \frametitle{Correct analysis}
-<<aov-correct,size='scriptsize'>>=
+<<aov-correct,size='small'>>=
 aov.correct <- aov(larvae ~ Treatment + Error(Plot),
                    data=gypsyData)
 @
 \pause
-<<aov-correct-out,size='scriptsize'>>=
+<<aov-correct-out,size='small'>>=
 summary(aov.correct)
 @
 \end{frame}
@@ -242,9 +216,8 @@ summary(aov.correct)
 
 \begin{frame}[fragile]
   \frametitle{What happens if we analyze plot-level means?}
-  {%\bf
-    The \inr{aggregate} function is similar to \inr{tapply} but it
-    works on entire {\tt data.frame}s. Here we get averages for each whole plot.}
+  The \inr{aggregate} function is similar to \inr{tapply} but it
+  works on entire {\tt data.frame}s. Here we get averages for each whole plot.
   \footnotesize
 <<agg>>=
 plotData <- aggregate(formula=larvae ~ Treatment + Plot,
@@ -260,9 +233,6 @@ plotData
 
 \begin{frame}[fragile]
   \frametitle{$F$ and $p$ values are the same as before}
-%  {\bf Re-do the ANOVA on the brood means}
-%\pause
-%\footnotesize
 <<aov-plot,size='scriptsize'>>=
 aov.plot <- aov(larvae ~ Treatment, data=plotData)
 summary(aov.plot)
@@ -312,7 +282,7 @@ summary(aov.correct)
 
 
 
-\section{Using {\tt lme}}% and {\tt glht}}
+\section{Using {\tt lme}}
 
 
 
@@ -342,30 +312,24 @@ anova(lme1, Terms="Treatment")
 \begin{frame}[fragile]
   \frametitle{Variance parameter estimates}
   \small
-  {%\bf
-    The first row shows the estimates of $\sigma^2_B$ and
-    $\sigma_B$. The second row shows the estimates of $\sigma^2$ and $\sigma$}
+  The first row shows the estimates of $\sigma^2_B$ and
+  $\sigma_B$. The second row shows the estimates of $\sigma^2$ and $\sigma$
 <<VarCorr>>=
 VarCorr(lme1)
 @
-  \pause
-  \vfill
-  \centering
-  \bf
-%  \large
-%  {\color{PineGreen}{
+ \pause
+ \vfill
+ \centering
+ \bf
   There is more random variation within whole units than among whole
-  units (after accounting for treatment effects)} \\
-%} \\
+  units (after accounting for treatment effects) \\
 \end{frame}
 
 
 
 \begin{frame}[fragile]
   \frametitle{Extract the plot-level random effects}
-%  \small
-  {%\bf
-    These are the $\beta_{ij}$'s}
+  These are the $\beta_{ij}$'s
 <<ranef>>=
 round(ranef(lme1), 2)
 @
@@ -375,14 +339,12 @@ round(ranef(lme1), 2)
 
 \begin{frame}[fragile]
   \frametitle{Multiple comparisons}
-%  \scriptsize
 <<tuk,size='scriptsize'>>=
 tuk <- glht(lme1, linfct=mcp(Treatment="Tukey"))
 @
 \pause
 <<tuk-out,size='scriptsize'>>=
 summary(tuk)
-#confint(tuk)
 @
 \end{frame}
 
@@ -412,6 +374,7 @@ summary(tuk)
 
 \vfill
 \centering
+\normalsize
 Upload your self-contained \R~script to ELC at least one
 day before your next lab \\
 \end{frame}

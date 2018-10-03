@@ -79,8 +79,8 @@
 
 \begin{frame}[plain]
   \LARGE
-  \centering \par
-  {\color{RoyalBlue}{\bf Lab 8 -- Nested ANOVA}} \\
+  \centering
+  {\color{RoyalBlue}{\bf Lab 8 -- Nested ANOVA} \\}
   \vspace{1cm}
   \Large
   October 8 \& 9, 2017 \\
@@ -113,25 +113,19 @@
 \begin{frame}
   \frametitle{Scenario}
   \large
-%  \begin{itemize}[<+->]
-%    \item
   We subsample each experimental unit \\
   \pause
   \vfill
-%    \item
   For example
       \begin{itemize}
         \large
         \item We count larvae at multiple subplots within a plot
-%        \item We measure Pb levels in multiple blood samples per individual
         \item We weigh multiple chicks in a brood
       \end{itemize}
   \pause
   \vfill
-%    \item
   We're interested in treatment effects at the experimental (whole) unit
   level, not the subunit level
-%  \end{itemize}
 \end{frame}
 
 
@@ -142,7 +136,7 @@
   \large
 \[
 y_{ijk} = \mu + \alpha_i + \beta_{ij} + \varepsilon_{ijk}
-\] \par
+\] \\
 \vspace{1cm}
 \pause
 \large
@@ -151,7 +145,6 @@ just the ones in our sample, $\beta_{ij}$ is random.
 \pause
 \vfill
 Specifically:
-%\Large
 \[
 \beta_{ij} \sim \mbox{Normal}(0, \sigma^2_B)
 \]
@@ -159,7 +152,6 @@ Specifically:
 \pause
 \large
 And as always,
-%\Large
 \[
 \varepsilon_{ijk} \sim \mbox{Normal}(0, \sigma^2)
 \]
@@ -168,15 +160,14 @@ And as always,
 
 \begin{frame}[fragile]
   \frametitle{Hypotheses}
-{\bf Treatment effects \par}
+{\bf Treatment effects \\}
 $H_0: \alpha_1 = \cdots = \alpha_a = 0$ \\
-$H_a:$ at least one inequality \par
+$H_a:$ at least one inequality \\
 \pause
 \vspace{0.5cm}
-{\bf Random variation among experimental units \par}
+{\bf Random variation among experimental units \\}
 $H_0: \sigma^2_B = 0$ \\
 $H_a: \sigma^2_B > 0$
-
 \end{frame}
 
 
@@ -184,13 +175,9 @@ $H_a: \sigma^2_B > 0$
 \begin{frame}[fragile]
   \frametitle{Example data}
 
-%\tiny
-%<<>>=
-%chickData <- read.csv("chickWeights.csv")
-%@
 \small
 {\bf Import data}
-\begin{knitrout}
+\begin{knitrout}\small
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlstd{gypsyData} \hlkwb{<-} \hlkwd{read.csv}\hlstd{(}\hlstr{"gypsyData.csv"}\hlstd{)}
@@ -204,22 +191,10 @@ $H_a: \sigma^2_B > 0$
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
-%\begin{columns}
-%  \begin{column}{0.4\textwidth}
-%<<>>=
-%chickData[1:30,]
-%@
-%  \end{column}
-%  \begin{column}{0.4\textwidth}
-%<<>>=
-%chickData[31:60,]
-%@
-%  \end{column}
-%\end{columns}
 \pause
 \vfill
 {\bf Convert {\tt Plot} to a factor and then cross-tabulate}
-\begin{knitrout}
+\begin{knitrout}\small
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlstd{gypsyData}\hlopt{$}\hlstd{Plot} \hlkwb{<-} \hlkwd{factor}\hlstd{(gypsyData}\hlopt{$}\hlstd{Plot)}
@@ -244,8 +219,7 @@ $H_a: \sigma^2_B > 0$
 
 \begin{frame}[fragile]
   \frametitle{Incorrect analysis}
-%  \footnotesize
-\begin{knitrout}
+\begin{knitrout}\small
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlstd{aov.wrong} \hlkwb{<-} \hlkwd{aov}\hlstd{(larvae} \hlopt{~} \hlstd{Treatment} \hlopt{+} \hlstd{Plot,}
@@ -254,7 +228,7 @@ $H_a: \sigma^2_B > 0$
 \end{kframe}
 \end{knitrout}
 \pause
-\begin{knitrout}
+\begin{knitrout}\small
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlkwd{summary}\hlstd{(aov.wrong)}
@@ -274,7 +248,7 @@ $H_a: \sigma^2_B > 0$
 \centering
 \large
 \bf
-\alert{The denominator degrees-of-freedom are wrong} \par
+\alert{The denominator degrees-of-freedom are wrong} \\
 \end{frame}
 
 
@@ -282,7 +256,7 @@ $H_a: \sigma^2_B > 0$
 
 \begin{frame}[fragile]
   \frametitle{Correct analysis}
-\begin{knitrout}\scriptsize
+\begin{knitrout}\small
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlstd{aov.correct} \hlkwb{<-} \hlkwd{aov}\hlstd{(larvae} \hlopt{~} \hlstd{Treatment} \hlopt{+} \hlkwd{Error}\hlstd{(Plot),}
@@ -291,7 +265,7 @@ $H_a: \sigma^2_B > 0$
 \end{kframe}
 \end{knitrout}
 \pause
-\begin{knitrout}\scriptsize
+\begin{knitrout}\small
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlkwd{summary}\hlstd{(aov.correct)}
@@ -317,9 +291,8 @@ $H_a: \sigma^2_B > 0$
 
 \begin{frame}[fragile]
   \frametitle{What happens if we analyze plot-level means?}
-  {%\bf
-    The \inr{aggregate} function is similar to \inr{tapply} but it
-    works on entire {\tt data.frame}s. Here we get averages for each whole plot.}
+  The \inr{aggregate} function is similar to \inr{tapply} but it
+  works on entire {\tt data.frame}s. Here we get averages for each whole plot.
   \footnotesize
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
@@ -355,9 +328,6 @@ $H_a: \sigma^2_B > 0$
 
 \begin{frame}[fragile]
   \frametitle{$F$ and $p$ values are the same as before}
-%  {\bf Re-do the ANOVA on the brood means}
-%\pause
-%\footnotesize
 \begin{knitrout}\scriptsize
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
@@ -435,7 +405,7 @@ $H_a: \sigma^2_B > 0$
 
 
 
-\section{Using {\tt lme}}% and {\tt glht}}
+\section{Using {\tt lme}}
 
 
 
@@ -478,9 +448,8 @@ $H_a: \sigma^2_B > 0$
 \begin{frame}[fragile]
   \frametitle{Variance parameter estimates}
   \small
-  {%\bf
-    The first row shows the estimates of $\sigma^2_B$ and
-    $\sigma_B$. The second row shows the estimates of $\sigma^2$ and $\sigma$}
+  The first row shows the estimates of $\sigma^2_B$ and
+  $\sigma_B$. The second row shows the estimates of $\sigma^2$ and $\sigma$
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
@@ -494,24 +463,19 @@ $H_a: \sigma^2_B > 0$
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
-  \pause
-  \vfill
-  \centering
-  \bf
-%  \large
-%  {\color{PineGreen}{
+ \pause
+ \vfill
+ \centering
+ \bf
   There is more random variation within whole units than among whole
-  units (after accounting for treatment effects)} \\
-%} \\
+  units (after accounting for treatment effects) \\
 \end{frame}
 
 
 
 \begin{frame}[fragile]
   \frametitle{Extract the plot-level random effects}
-%  \small
-  {%\bf
-    These are the $\beta_{ij}$'s}
+  These are the $\beta_{ij}$'s
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
@@ -537,7 +501,6 @@ $H_a: \sigma^2_B > 0$
 
 \begin{frame}[fragile]
   \frametitle{Multiple comparisons}
-%  \scriptsize
 \begin{knitrout}\scriptsize
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
@@ -570,9 +533,6 @@ $H_a: \sigma^2_B > 0$
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## (Adjusted p values reported -- single-step method)
 \end{verbatim}
-\begin{alltt}
-\hlcom{#confint(tuk)}
-\end{alltt}
 \end{kframe}
 \end{knitrout}
 \end{frame}
@@ -603,6 +563,7 @@ $H_a: \sigma^2_B > 0$
 
 \vfill
 \centering
+\normalsize
 Upload your self-contained \R~script to ELC at least one
 day before your next lab \\
 \end{frame}
