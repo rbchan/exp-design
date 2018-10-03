@@ -60,5 +60,5 @@ course.
 
 ### Week 8
 
-#### [nested](nested/nested.md)
+#### [Nested Designs](nested/nested.md)
 
