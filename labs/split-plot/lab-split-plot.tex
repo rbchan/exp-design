@@ -1,0 +1,679 @@
+\documentclass[color=usenames,dvipsnames]{beamer}\usepackage[]{graphicx}\usepackage[]{color}
+%% maxwidth is the original width if it is less than linewidth
+%% otherwise use linewidth (to make sure the graphics do not exceed the margin)
+\makeatletter
+\def\maxwidth{ %
+  \ifdim\Gin@nat@width>\linewidth
+    \linewidth
+  \else
+    \Gin@nat@width
+  \fi
+}
+\makeatother
+
+\definecolor{fgcolor}{rgb}{0, 0, 0}
+\newcommand{\hlnum}[1]{\textcolor[rgb]{0.69,0.494,0}{#1}}%
+\newcommand{\hlstr}[1]{\textcolor[rgb]{0.749,0.012,0.012}{#1}}%
+\newcommand{\hlcom}[1]{\textcolor[rgb]{0.514,0.506,0.514}{\textit{#1}}}%
+\newcommand{\hlopt}[1]{\textcolor[rgb]{0,0,0}{#1}}%
+\newcommand{\hlstd}[1]{\textcolor[rgb]{0,0,0}{#1}}%
+\newcommand{\hlkwa}[1]{\textcolor[rgb]{0,0,0}{\textbf{#1}}}%
+\newcommand{\hlkwb}[1]{\textcolor[rgb]{0,0.341,0.682}{#1}}%
+\newcommand{\hlkwc}[1]{\textcolor[rgb]{0,0,0}{\textbf{#1}}}%
+\newcommand{\hlkwd}[1]{\textcolor[rgb]{0.004,0.004,0.506}{#1}}%
+\let\hlipl\hlkwb
+
+\usepackage{framed}
+\makeatletter
+\newenvironment{kframe}{%
+ \def\at@end@of@kframe{}%
+ \ifinner\ifhmode%
+  \def\at@end@of@kframe{\end{minipage}}%
+  \begin{minipage}{\columnwidth}%
+ \fi\fi%
+ \def\FrameCommand##1{\hskip\@totalleftmargin \hskip-\fboxsep
+ \colorbox{shadecolor}{##1}\hskip-\fboxsep
+     % There is no \\@totalrightmargin, so:
+     \hskip-\linewidth \hskip-\@totalleftmargin \hskip\columnwidth}%
+ \MakeFramed {\advance\hsize-\width
+   \@totalleftmargin\z@ \linewidth\hsize
+   \@setminipage}}%
+ {\par\unskip\endMakeFramed%
+ \at@end@of@kframe}
+\makeatother
+
+\definecolor{shadecolor}{rgb}{.97, .97, .97}
+\definecolor{messagecolor}{rgb}{0, 0, 0}
+\definecolor{warningcolor}{rgb}{1, 0, 1}
+\definecolor{errorcolor}{rgb}{1, 0, 0}
+\newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
+
+\usepackage{alltt}
+%\documentclass[color=usenames,dvipsnames,handout]{beamer}
+
+
+%\usepackage[roman]{../../lab1}
+\usepackage[sans]{../../lab1}
+
+\hypersetup{pdftex,pdfstartview=FitV}
+
+
+
+
+
+
+
+
+
+%% New command for inline code that isn't to be evaluated
+\definecolor{inlinecolor}{rgb}{0.878, 0.918, 0.933}
+\newcommand{\inr}[1]{\colorbox{inlinecolor}{\texttt{#1}}}
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\begin{document}
+
+
+\setlength\fboxsep{0pt}
+
+
+
+\begin{frame}[plain]
+%  \LARGE
+  \huge
+  \centering \par
+  {\color{RoyalBlue}{Lab 9 -- Split-plot Designs}} \\
+  \vspace{1cm}
+  \Large
+  October 15 \& 16, 2018 \\
+  FANR 6750 \\
+  \vfill
+  \large
+  Richard Chandler and Bob Cooper
+\end{frame}
+
+
+
+
+
+
+% \begin{frame}[plain]
+%   \frametitle{Today's Topics}
+%   \Large
+%   \only<1>{\tableofcontents}%[hideallsubsections]}
+% %  \only<2 | handout:0>{\tableofcontents[currentsection]}%,hideallsubsections]}
+% \end{frame}
+
+
+
+
+\begin{frame}
+  \frametitle{Scenario}
+  \large
+%  \begin{itemize}[<+->]
+%    \item
+  We apply treatments to two experimental units: whole-units and
+  sub-units
+  \pause
+  \vfill
+%    \item
+  Examples:
+  \begin{itemize}
+    \large
+    \item Ag fields are sprayed with herbicides, and fertilizers
+      are applied to plots within fields.
+    \item Tenderizer is applied to roasts, and cooking times are
+      applied to cores
+  \end{itemize}
+  \pause
+  \vfill
+%  \item
+  We're interested in treatment effects at both levels
+%  \end{itemize}
+\end{frame}
+
+
+
+
+
+
+\begin{frame}
+  \frametitle{The additive model}
+%  \Large
+%\large
+\[
+y_{ijk} = \mu + \alpha_i + \beta_{j} + \alpha\beta_{ij} + \gamma_k +
+\delta_{ik} + \varepsilon_{ijk}
+\] %\par
+The $\alpha$'s and $\beta$'s are fixed treatment effects. Note the interaction.
+%\vspace{0.4cm}
+\pause
+\vfill
+Because we want our inferences to apply to all roasts,
+$\delta_{ik}$ is random. Specifically:
+%\Large
+\[
+\delta_{ik} \sim \mbox{Normal}(0, \sigma^2_D)
+\]
+We might treat block effects as random too:
+\[
+\gamma_k \sim \mbox{Normal}(0, \sigma^2_C)
+\]
+\large
+And as always,
+%\Large
+\[
+\varepsilon_{ijk} \sim \mbox{Normal}(0, \sigma^2)
+\]
+\end{frame}
+
+
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{The meat data}
+%  {\bf
+    It's important that you have variables for the whole unit (roast)
+    and the block (carcass).
+%  }
+\small %\footnotesize
+\begin{knitrout}\small
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{meatData} \hlkwb{<-} \hlkwd{read.csv}\hlstd{(}\hlstr{"meatData.csv"}\hlstd{)}
+\hlkwd{str}\hlstd{(meatData)}
+\end{alltt}
+\begin{verbatim}
+## 'data.frame':	72 obs. of  5 variables:
+##  $ Wbscore   : num  8.25 7.5 4.25 3.5 7.25 6.25 3.5 3.5 6.5 4.5 ...
+##  $ tenderizer: Factor w/ 3 levels "C","P","V": 1 1 1 1 3 3 3 3 2 2 ...
+##  $ time      : int  30 36 42 48 30 36 42 48 30 36 ...
+##  $ carcass   : int  1 1 1 1 1 1 1 1 1 1 ...
+##  $ roast     : int  1 1 1 1 2 2 2 2 3 3 ...
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\pause
+%{\bf
+  Don't forget to convert to factors %}
+\begin{knitrout}\small
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{meatData}\hlopt{$}\hlstd{time} \hlkwb{<-} \hlkwd{factor}\hlstd{(meatData}\hlopt{$}\hlstd{time)}
+\hlstd{meatData}\hlopt{$}\hlstd{carcass} \hlkwb{<-} \hlkwd{factor}\hlstd{(meatData}\hlopt{$}\hlstd{carcass)}
+\hlstd{meatData}\hlopt{$}\hlstd{roast} \hlkwb{<-} \hlkwd{factor}\hlstd{(meatData}\hlopt{$}\hlstd{roast)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+
+
+%% \begin{frame}[fragile]
+%%   \frametitle{The meat data}
+%% %  \pause
+%% %  \vfill
+%% <<>>=
+%% head(meatData, n=10)
+%% @
+%% \end{frame}
+
+
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Carcass (block) effects as fixed}
+\footnotesize
+%{\bf Only 1 \verb+Error()+ term allowed in \verb+aov+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{aov.meat1} \hlkwb{<-} \hlkwd{aov}\hlstd{(Wbscore} \hlopt{~} \hlstd{tenderizer} \hlopt{*} \hlstd{time} \hlopt{+} \hlstd{carcass} \hlopt{+}
+                 \hlkwd{Error}\hlstd{(roast),} \hlkwc{data}\hlstd{=meatData)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\pause
+\begin{knitrout}\scriptsize
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{summary}\hlstd{(aov.meat1)}
+\end{alltt}
+\begin{verbatim}
+## 
+## Error: roast
+##            Df Sum Sq Mean Sq F value   Pr(>F)    
+## tenderizer  2 20.715  10.358  190.00 1.11e-08 ***
+## carcass     5  3.903   0.781   14.32 0.000276 ***
+## Residuals  10  0.545   0.055                     
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Error: Within
+##                 Df Sum Sq Mean Sq F value   Pr(>F)    
+## time             3 170.08   56.69  656.62  < 2e-16 ***
+## tenderizer:time  6   9.56    1.59   18.46 1.11e-10 ***
+## Residuals       45   3.89    0.09                     
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+
+
+
+
+
+
+
+%% \begin{frame}[fragile]
+%%   \frametitle{Carcass (block) effects as random}
+%%   \scriptsize
+%% <<>>=
+%% aov.meat2 <- aov(Wbscore ~ tenderizer * time +
+%%                  Error(carcass/roast), data=meatData)
+%% summary(aov.meat2)
+%% @
+%% \pause
+%%   {\centering \bf Warning suggests that results may not be
+%%     reliable. Better to use \inr{ lme} function, or just treat block
+%%     effects as fixed in this case. \\}
+%% \end{frame}
+
+
+
+
+
+
+%% \begin{frame}[fragile]
+%%   \frametitle{Effect sizes and standard errors}
+%%   \scriptsize %\tiny %\footnotesize
+%% <<>>=
+%% model.tables(aov.meat2, type="effects", se=TRUE)
+%% @
+%% \end{frame}
+
+
+
+
+%% \begin{frame}[fragile]
+%%   \frametitle{The expected values (means)}
+%%   \scriptsize %\tiny %\footnotesize
+%% <<>>=
+%% model.tables(aov.meat2, type="means") # Doesn't allow se=TRUE
+%% @
+%% \end{frame}
+
+
+
+
+%% \begin{frame}[fragile]
+%%   \frametitle{Multiple comparisons}
+%% %  {\bf
+%%   Because the interaction is significant, we need to control one
+%%   factor when doing multiple comparisons of the other %}
+%% %  Do a seperate ANOVA for each level of factor A (tenderizer in
+%% %    this example)}
+%%   \vfill
+%% <<>>=
+%% aov.meatP <- aov(Wbscore ~ time + carcass,
+%%                  data=meatData,
+%%                  subset = tenderizer=="P")
+%% aov.meatV <- aov(Wbscore ~ time + carcass,
+%%                  data=meatData,
+%%                  subset = tenderizer=="V")
+%% @
+%% \pause
+%% \vfill
+%% <<fig=false,eval=false>>=
+%% plot(TukeyHSD(aov.meatP, which="time"))
+%% plot(TukeyHSD(aov.meatP, which="carcass"))
+%% plot(TukeyHSD(aov.meatV, which="time"))
+%% @
+%% \end{frame}
+
+
+
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Using \inr{ lme} instead of \inr{ aov}}
+\small
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{library}\hlstd{(nlme)}
+\hlstd{lme.meat1} \hlkwb{<-} \hlkwd{lme}\hlstd{(Wbscore} \hlopt{~} \hlstd{tenderizer}\hlopt{*}\hlstd{time,}
+    \hlkwc{data}\hlstd{=meatData,}
+    \hlkwc{correlation}\hlstd{=}\hlkwd{corCompSymm}\hlstd{(),} \hlcom{# To make results same as aov()}
+    \hlkwc{random} \hlstd{=} \hlopt{~}\hlnum{1}\hlopt{|}\hlstd{carcass}\hlopt{/}\hlstd{roast)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\pause
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{anova}\hlstd{(lme.meat1)}
+\end{alltt}
+\begin{verbatim}
+##                 numDF denDF   F-value p-value
+## (Intercept)         1    45 2105.6140  <.0001
+## tenderizer          2    10  190.0001  <.0001
+## time                3    45  656.6222  <.0001
+## tenderizer:time     6    45   18.4585  <.0001
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+The interaction is significant. (You can Ignore the {\tt (Intercept)} term)
+\end{frame}
+
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Exploring interaction}
+  \small
+%{\bf
+  Is the time effect significant for each level of tenderizer?
+%  \tiny %scriptsize
+\begin{knitrout}\tiny
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{lme.meatP} \hlkwb{<-} \hlkwd{lme}\hlstd{(Wbscore} \hlopt{~} \hlstd{time,} \hlkwc{data}\hlstd{=meatData,}
+                 \hlkwc{random} \hlstd{=} \hlopt{~}\hlnum{1}\hlopt{|}\hlstd{carcass}\hlopt{/}\hlstd{roast,} \hlkwc{correlation}\hlstd{=}\hlkwd{corCompSymm}\hlstd{(),}
+                 \hlkwc{subset}\hlstd{=tenderizer}\hlopt{==}\hlstr{"P"}\hlstd{)}
+\hlstd{lme.meatV} \hlkwb{<-} \hlkwd{lme}\hlstd{(Wbscore} \hlopt{~} \hlstd{time,} \hlkwc{data}\hlstd{=meatData,}
+                 \hlkwc{random} \hlstd{=} \hlopt{~}\hlnum{1}\hlopt{|}\hlstd{carcass}\hlopt{/}\hlstd{roast,}\hlkwc{correlation}\hlstd{=}\hlkwd{corCompSymm}\hlstd{(),}
+                 \hlkwc{subset}\hlstd{=tenderizer}\hlopt{==}\hlstr{"V"}\hlstd{)}
+\hlstd{lme.meatC} \hlkwb{<-} \hlkwd{lme}\hlstd{(Wbscore} \hlopt{~} \hlstd{time,} \hlkwc{data}\hlstd{=meatData,}
+                 \hlkwc{random} \hlstd{=} \hlopt{~}\hlnum{1}\hlopt{|}\hlstd{carcass}\hlopt{/}\hlstd{roast,} \hlkwc{correlation}\hlstd{=}\hlkwd{corCompSymm}\hlstd{(),}
+                 \hlkwc{subset}\hlstd{=tenderizer}\hlopt{==}\hlstr{"C"}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\pause
+\vfill
+\small %\scriptsize
+Yes, it is
+\begin{knitrout}\tiny
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{anova}\hlstd{(lme.meatP,} \hlkwc{Terms}\hlstd{=}\hlstr{"time"}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## F-test for: time 
+##   numDF denDF  F-value p-value
+## 1     3    15 126.6786  <.0001
+\end{verbatim}
+\begin{alltt}
+\hlkwd{anova}\hlstd{(lme.meatV,} \hlkwc{Terms}\hlstd{=}\hlstr{"time"}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## F-test for: time 
+##   numDF denDF F-value p-value
+## 1     3    15 274.716  <.0001
+\end{verbatim}
+\begin{alltt}
+\hlkwd{anova}\hlstd{(lme.meatC,} \hlkwc{Terms}\hlstd{=}\hlstr{"time"}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## F-test for: time 
+##   numDF denDF  F-value p-value
+## 1     3    15 305.6551  <.0001
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Multiple comparisons using {\tt glht}}
+\scriptsize %\tiny
+%{\bf Tukey's tests using \inr{ glht}}
+\begin{knitrout}\tiny
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# install.packages("multcomp")}
+\hlkwd{library}\hlstd{(multcomp)}
+\hlstd{mcP} \hlkwb{<-} \hlkwd{glht}\hlstd{(lme.meatP,} \hlkwc{linfct}\hlstd{=}\hlkwd{mcp}\hlstd{(}\hlkwc{time}\hlstd{=}\hlstr{"Tukey"}\hlstd{))}
+\hlkwd{summary}\hlstd{(mcP)}
+\end{alltt}
+\begin{verbatim}
+## 
+## 	 Simultaneous Tests for General Linear Hypotheses
+## 
+## Multiple Comparisons of Means: Tukey Contrasts
+## 
+## 
+## Fit: lme.formula(fixed = Wbscore ~ time, data = meatData, random = ~1 | 
+##     carcass/roast, correlation = corCompSymm(), subset = tenderizer == 
+##     "P")
+## 
+## Linear Hypotheses:
+##              Estimate Std. Error z value Pr(>|z|)    
+## 36 - 30 == 0   -1.250      0.180  -6.944   <1e-05 ***
+## 42 - 30 == 0   -2.333      0.180 -12.961   <1e-05 ***
+## 48 - 30 == 0   -3.333      0.180 -18.516   <1e-05 ***
+## 42 - 36 == 0   -1.083      0.180  -6.018   <1e-05 ***
+## 48 - 36 == 0   -2.083      0.180 -11.573   <1e-05 ***
+## 48 - 42 == 0   -1.000      0.180  -5.555   <1e-05 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## (Adjusted p values reported -- single-step method)
+\end{verbatim}
+\begin{alltt}
+\hlcom{# confint(mcP)}
+\hlcom{# plot(mcP)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+
+
+\begin{frame}[fragile]
+  \frametitle{\small Differences between cooking times for ``P'' tenderizer}
+  \centering \footnotesize %\small
+
+\includegraphics[width=0.9\textwidth]{figure/mcp-1} \\
+\end{frame}
+
+
+
+
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Nested and crossed example}
+
+{\centering \large %\bf
+  Nested and crossed is same as split-plot, but without the
+  block \\}
+\pause
+\vfill
+{\bf Design}
+\begin{itemize}%[<+- | visible@+->]
+  \item Sweet potato yield is studied in response to (a=3)
+    types of herbicide.
+  \item Each herbicide is applied to 5 fields
+  \item Each field is divided into 4 plots. Each plot is treated with
+    one of (b=4) fertilizers.
+\end{itemize}
+\pause
+\vfill
+{\bf Exercise}
+\begin{enumerate}[(1)]%[<+- | visible@+->][\bf \color{PineGreen} (1)]
+  \item Import the {\tt yieldData.csv} dataset and conduct
+    the appropriate ANOVA using \inr{ aov} and \inr{ lme}.
+  \item Does the effect of herbicide depend on fertilizer?
+%  \item What are the correct degrees-of-freedom and $F$ value?
+  \item Use Tukey's test to determine which fertilizers differ
+\end{enumerate}
+\end{frame}
+
+
+
+
+
+
+%% \begin{frame}
+%%   \frametitle{Exercise II}
+%%   \begin{itemize}
+%%     \item Use \inr{ lme} to test for interaction between herbicide and
+%%       treatment
+%%     \item What is $\sigma^2_D$ (variance among fields) and $\sigma^2$
+%%       (within field variance)?
+%%     \item Fit model without interaction and use \inr{ glht} to do Tukey
+%%       tests
+%%   \end{itemize}
+%% \end{frame}
+
+
+
+
+\end{document}
+
+
+
+
+
+
+
+
+
+%% \begin{frame}[fragile]
+%%   \frametitle{Yield data}
+%% <<eval=TRUE,echo=FALSE>>=
+%% alpha <- c(-2, 0, 2)
+%% beta <- c(-2, -2, 0, 4)
+%% a <- 3     # number of treatments
+%% b <- 5     # number of fields per treatment
+%% c <- 4     # number of plots per field
+%% alpha.long <- rep(alpha, each=b*c)
+%% beta.long <- rep(beta, times=a*b)
+%% sigmaSqB <- 1
+%% delta <- rnorm(a*b)
+%% delta.long <- rep(delta, each=c)
+%% sigmaSq <- 0.5
+%% epsilon <- rnorm(a*b*c, 0, sigmaSq)
+%% y <- alpha.long + beta.long + delta.long + epsilon
+%% herb <- factor(rep(c("1", "2", "3"), each=b*c))
+%% fert <- factor(rep(c("A","B","C","D"), times=a*b))
+%% field <- factor(rep(paste("field", 1:(a*b), sep=""), each=c))
+%% yieldData <- data.frame(yield=y,
+%%                         herbicide=herb,
+%%                         fertilizer=fert,
+%%                         field=field)
+
+%% aov.yield1 <- aov(yield ~ herbicide * fertilizer +
+%%                   Error(field),
+%%                   data=yieldData)
+%% summary(aov.yield1)
+%% aov.yield2 <- aov(yield ~ herbicide + fertilizer +
+%%                   Error(field),
+%%                   data=yieldData)
+%% summary(aov.yield2)
+%% library(nlme)
+%% lme.yield1 <- lme(yield ~ herbicide * fertilizer,
+%%                   data=yieldData,
+%%                   random=~1|field)
+%% anova(lme.yield1)
+%% lme.yield2 <- lme(yield ~ herbicide + fertilizer,
+%%                   data=yieldData,
+%%                   random=~1|field)
+%% anova(lme.yield2)
+%% library(multcomp)
+%% mc <- glht(lme.yield2,
+%%            linfct=mcp(herbicide="Tukey",
+%%                       fertilizer="Tukey"))
+%% summary(mc)
+%% confint(mc)
+%% plot(mc)
+
+%% #allcomb <- expand.grid(herbicide=levels(yieldData$herbicide),
+%% #                       fertilizer=levels(yieldData$fertilizer))
+%% #X <- model.matrix(~herbicide*fertilizer+carcass, allcomb)
+%% #glht(lme.yield1, linfct=X)
+%% @
+%% \end{frame}
+
+
+
+
+
+
+%% \begin{frame}[fragile]
+%%   \frametitle{Multiple comparisons}
+%% <<>>=
+%% tender <- meatData$tenderizer
+%% tender.PorV <- tender %in% c("P", "V")
+%% tender.C <- tender == "C"
+%% mean(meatData$Wbscore[tender.PorV])
+%% mean(meatData$Wbscore[tender.C])
+%% se.contrast(aov2, list(tender.PorV, tender.C))
+%% @
+%% \end{frame}
+
+
+
+
+
+
+
+
+
+
+%% \begin{frame}[fragile]
+%%   \frametitle{Predict}
+%% <<>>=
+%% comb <- data.frame(tenderizer=factor(rep(c("P","V","C"), each=4)),
+%%                    time=factor(rep(c("30", "36", "42", "48"))),
+%%                    carcass="1")
+%% comb$E <- predict(lme1, newdata=comb, level=0)
+%% comb
+%% @
+%% \end{frame}
+
+
+
+
+
+%% \begin{comment}
+%% \begin{frame}%[fragile]
+%%   \frametitle{Variance estimates}
+%% {\bf Variance within roasts}
+%% \[
+%% \hat{\sigma^2} = 0.09
+%% \]
+%% \pause
+%% {\bf Variance among roasts}
+%% \[
+%% \hat{\sigma^2_D} = ({MS_{WUR}} - \sigma^2)/b
+%% \]
+%% \pause
+%% \[
+%% \hat{\sigma^2_D} = (0.055 - 0.09)/4 = -0.00875
+%% \]
+%% {\bf Variance among carcasses}
+%% \[
+%% \hat{\sigma^2_C} = ({MS}_{C} - \sigma^2 - b\sigma^2_D)/(ab)
+%% \]
+%% \pause
+%% \[
+%% \hat{\sigma^2_C} = (0.781 - 0.09 - 4\times0)/12 = 0.057
+%% \]
+%% \end{frame}
+%% \end{comment}
+

@@ -1,0 +1,561 @@
+\documentclass[color=usenames,dvipsnames]{beamer}
+%\documentclass[color=usenames,dvipsnames,handout]{beamer}
+
+
+%\usepackage[roman]{../../lab1}
+\usepackage[sans]{../../lab1}
+
+\hypersetup{pdftex,pdfstartview=FitV}
+
+
+
+<<build-fun, include=FALSE, cache=TRUE, eval=FALSE, purl=FALSE>>=
+## A function to compile and open the pdf
+## Usage:
+##
+source("../rnw2pdf.R")
+if(1==2) {
+  rnw2pdf("lab-split-plot")
+  rnw2pdf("lab-split-plot", clean=FALSE)
+  rnw2pdf("lab-split-plot", tangle=TRUE)
+}
+@
+
+
+<<knitr-theme, include=FALSE, purl=FALSE>>=
+##knit_theme$set("navajo-night")
+knit_theme$set("edit-kwrite")
+@
+
+
+%% New command for inline code that isn't to be evaluated
+\definecolor{inlinecolor}{rgb}{0.878, 0.918, 0.933}
+\newcommand{\inr}[1]{\colorbox{inlinecolor}{\texttt{#1}}}
+
+
+
+
+
+
+\begin{document}
+
+
+\setlength\fboxsep{0pt}
+
+
+
+\begin{frame}[plain]
+%  \LARGE
+  \huge
+  \centering \par
+  {\color{RoyalBlue}{Lab 9 -- Split-plot Designs}} \\
+  \vspace{1cm}
+  \Large
+  October 15 \& 16, 2018 \\
+  FANR 6750 \\
+  \vfill
+  \large
+  Richard Chandler and Bob Cooper
+\end{frame}
+
+
+
+
+
+
+% \begin{frame}[plain]
+%   \frametitle{Today's Topics}
+%   \Large
+%   \only<1>{\tableofcontents}%[hideallsubsections]}
+% %  \only<2 | handout:0>{\tableofcontents[currentsection]}%,hideallsubsections]}
+% \end{frame}
+
+
+
+
+\begin{frame}
+  \frametitle{Scenario}
+  \large
+%  \begin{itemize}[<+->]
+%    \item
+  We apply treatments to two experimental units: whole-units and
+  sub-units
+  \pause
+  \vfill
+%    \item
+  Examples:
+  \begin{itemize}
+    \large
+    \item Ag fields are sprayed with herbicides, and fertilizers
+      are applied to plots within fields.
+    \item Tenderizer is applied to roasts, and cooking times are
+      applied to cores
+  \end{itemize}
+  \pause
+  \vfill
+%  \item
+  We're interested in treatment effects at both levels
+%  \end{itemize}
+\end{frame}
+
+
+
+
+
+
+\begin{frame}
+  \frametitle{The additive model}
+%  \Large
+%\large
+\[
+y_{ijk} = \mu + \alpha_i + \beta_{j} + \alpha\beta_{ij} + \gamma_k +
+\delta_{ik} + \varepsilon_{ijk}
+\] %\par
+The $\alpha$'s and $\beta$'s are fixed treatment effects. Note the interaction.
+%\vspace{0.4cm}
+\pause
+\vfill
+Because we want our inferences to apply to all roasts,
+$\delta_{ik}$ is random. Specifically:
+%\Large
+\[
+\delta_{ik} \sim \mbox{Normal}(0, \sigma^2_D)
+\]
+We might treat block effects as random too:
+\[
+\gamma_k \sim \mbox{Normal}(0, \sigma^2_C)
+\]
+\large
+And as always,
+%\Large
+\[
+\varepsilon_{ijk} \sim \mbox{Normal}(0, \sigma^2)
+\]
+\end{frame}
+
+
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{The meat data}
+%  {\bf
+    It's important that you have variables for the whole unit (roast)
+    and the block (carcass).
+%  }
+\small %\footnotesize
+<<meatData,size='footnotesize'>>=
+meatData <- read.csv("meatData.csv")
+str(meatData)
+@
+\pause
+%{\bf
+  Don't forget to convert to factors %}
+<<factors,size='small'>>=
+meatData$time <- factor(meatData$time)
+meatData$carcass <- factor(meatData$carcass)
+meatData$roast <- factor(meatData$roast)
+@
+\end{frame}
+
+
+
+%% \begin{frame}[fragile]
+%%   \frametitle{The meat data}
+%% %  \pause
+%% %  \vfill
+%% <<>>=
+%% head(meatData, n=10)
+%% @
+%% \end{frame}
+
+
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Carcass (block) effects as fixed}
+\footnotesize
+%{\bf Only 1 \verb+Error()+ term allowed in \verb+aov+
+<<aov1,size='footnotesize'>>=
+aov.meat1 <- aov(Wbscore ~ tenderizer * time + carcass +
+                 Error(roast), data=meatData)
+@
+\pause
+<<saov1,size='scriptsize'>>=
+summary(aov.meat1)
+@
+\end{frame}
+
+
+
+
+
+
+
+
+%% \begin{frame}[fragile]
+%%   \frametitle{Carcass (block) effects as random}
+%%   \scriptsize
+%% <<>>=
+%% aov.meat2 <- aov(Wbscore ~ tenderizer * time +
+%%                  Error(carcass/roast), data=meatData)
+%% summary(aov.meat2)
+%% @
+%% \pause
+%%   {\centering \bf Warning suggests that results may not be
+%%     reliable. Better to use \inr{ lme} function, or just treat block
+%%     effects as fixed in this case. \\}
+%% \end{frame}
+
+
+
+
+
+
+%% \begin{frame}[fragile]
+%%   \frametitle{Effect sizes and standard errors}
+%%   \scriptsize %\tiny %\footnotesize
+%% <<>>=
+%% model.tables(aov.meat2, type="effects", se=TRUE)
+%% @
+%% \end{frame}
+
+
+
+
+%% \begin{frame}[fragile]
+%%   \frametitle{The expected values (means)}
+%%   \scriptsize %\tiny %\footnotesize
+%% <<>>=
+%% model.tables(aov.meat2, type="means") # Doesn't allow se=TRUE
+%% @
+%% \end{frame}
+
+
+
+
+%% \begin{frame}[fragile]
+%%   \frametitle{Multiple comparisons}
+%% %  {\bf
+%%   Because the interaction is significant, we need to control one
+%%   factor when doing multiple comparisons of the other %}
+%% %  Do a seperate ANOVA for each level of factor A (tenderizer in
+%% %    this example)}
+%%   \vfill
+%% <<>>=
+%% aov.meatP <- aov(Wbscore ~ time + carcass,
+%%                  data=meatData,
+%%                  subset = tenderizer=="P")
+%% aov.meatV <- aov(Wbscore ~ time + carcass,
+%%                  data=meatData,
+%%                  subset = tenderizer=="V")
+%% @
+%% \pause
+%% \vfill
+%% <<fig=false,eval=false>>=
+%% plot(TukeyHSD(aov.meatP, which="time"))
+%% plot(TukeyHSD(aov.meatP, which="carcass"))
+%% plot(TukeyHSD(aov.meatV, which="time"))
+%% @
+%% \end{frame}
+
+
+
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Using \inr{ lme} instead of \inr{ aov}}
+\small
+<<lme1,size='footnotesize'>>=
+library(nlme)
+lme.meat1 <- lme(Wbscore ~ tenderizer*time,
+    data=meatData,
+    correlation=corCompSymm(), # To make results same as aov()
+    random = ~1|carcass/roast)
+
+@
+\pause
+<<alme1,size='footnotesize'>>=
+anova(lme.meat1)
+@
+The interaction is significant. (You can Ignore the {\tt (Intercept)} term)
+\end{frame}
+
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Exploring interaction}
+  \small
+%{\bf
+  Is the time effect significant for each level of tenderizer?
+%  \tiny %scriptsize
+<<lmePVC,size='tiny'>>=
+lme.meatP <- lme(Wbscore ~ time, data=meatData,
+                 random = ~1|carcass/roast, correlation=corCompSymm(),
+                 subset=tenderizer=="P")
+lme.meatV <- lme(Wbscore ~ time, data=meatData,
+                 random = ~1|carcass/roast,correlation=corCompSymm(),
+                 subset=tenderizer=="V")
+lme.meatC <- lme(Wbscore ~ time, data=meatData,
+                 random = ~1|carcass/roast, correlation=corCompSymm(),
+                 subset=tenderizer=="C")
+@
+\pause
+\vfill
+\small %\scriptsize
+Yes, it is
+<<almePVC,size='tiny'>>=
+anova(lme.meatP, Terms="time")
+anova(lme.meatV, Terms="time")
+anova(lme.meatC, Terms="time")
+@
+
+\end{frame}
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Multiple comparisons using {\tt glht}}
+\scriptsize %\tiny
+%{\bf Tukey's tests using \inr{ glht}}
+<<tuk,size='tiny'>>=
+# install.packages("multcomp")
+library(multcomp)
+mcP <- glht(lme.meatP, linfct=mcp(time="Tukey"))
+summary(mcP)
+# confint(mcP)
+# plot(mcP)
+@
+\end{frame}
+
+
+
+\begin{frame}[fragile]
+  \frametitle{\small Differences between cooking times for ``P'' tenderizer}
+  \centering \footnotesize %\small
+<<mcp,include=FALSE,fig.width=8,fig.height=6>>=
+plot(mcP) # Should do this for the other 2 levels of tenderizer too
+@
+\includegraphics[width=0.9\textwidth]{figure/mcp-1} \\
+\end{frame}
+
+
+
+
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Nested and crossed example}
+<<eval=TRUE,echo=FALSE,purl=FALSE>>=
+alpha <- c(-2, 0, 2)
+beta <- c(-2, -2, 0, 4)
+a <- 3     # number of treatments
+b <- 5     # number of fields per treatment
+c <- 4     # number of plots per field
+mu <- 20
+alpha.long <- rep(alpha, each=b*c)
+beta.long <- rep(beta, times=a*b)
+sigmaSqB <- 1
+set.seed(4590)
+delta <- rnorm(a*b)
+delta.long <- rep(delta, each=c)
+sigmaSq <- 0.5
+epsilon <- rnorm(a*b*c, 0, sigmaSq)
+y <- mu + alpha.long + beta.long + delta.long + epsilon
+herb <- factor(rep(c("1", "2", "3"), each=b*c))
+fert <- factor(rep(c("A","B","C","D"), times=a*b))
+field <- factor(rep(paste("field", 1:(a*b), sep=""), each=c))
+yieldData <- data.frame(yield=y,
+                        herbicide=herb,
+                        fertilizer=fert,
+                        field=field)
+write.csv(yieldData, file="yieldData.csv", row.names=FALSE)
+@
+{\centering \large %\bf
+  Nested and crossed is same as split-plot, but without the
+  block \\}
+\pause
+\vfill
+{\bf Design}
+\begin{itemize}%[<+- | visible@+->]
+  \item Sweet potato yield is studied in response to (a=3)
+    types of herbicide.
+  \item Each herbicide is applied to 5 fields
+  \item Each field is divided into 4 plots. Each plot is treated with
+    one of (b=4) fertilizers.
+\end{itemize}
+\pause
+\vfill
+{\bf Exercise}
+\begin{enumerate}[(1)]%[<+- | visible@+->][\bf \color{PineGreen} (1)]
+  \item Import the {\tt yieldData.csv} dataset and conduct
+    the appropriate ANOVA using \inr{ aov} and \inr{ lme}.
+  \item Does the effect of herbicide depend on fertilizer?
+%  \item What are the correct degrees-of-freedom and $F$ value?
+  \item Use Tukey's test to determine which fertilizers differ
+\end{enumerate}
+\end{frame}
+
+
+
+
+
+
+%% \begin{frame}
+%%   \frametitle{Exercise II}
+%%   \begin{itemize}
+%%     \item Use \inr{ lme} to test for interaction between herbicide and
+%%       treatment
+%%     \item What is $\sigma^2_D$ (variance among fields) and $\sigma^2$
+%%       (within field variance)?
+%%     \item Fit model without interaction and use \inr{ glht} to do Tukey
+%%       tests
+%%   \end{itemize}
+%% \end{frame}
+
+
+
+
+\end{document}
+
+
+
+
+
+
+
+
+
+%% \begin{frame}[fragile]
+%%   \frametitle{Yield data}
+%% <<eval=TRUE,echo=FALSE>>=
+%% alpha <- c(-2, 0, 2)
+%% beta <- c(-2, -2, 0, 4)
+%% a <- 3     # number of treatments
+%% b <- 5     # number of fields per treatment
+%% c <- 4     # number of plots per field
+%% alpha.long <- rep(alpha, each=b*c)
+%% beta.long <- rep(beta, times=a*b)
+%% sigmaSqB <- 1
+%% delta <- rnorm(a*b)
+%% delta.long <- rep(delta, each=c)
+%% sigmaSq <- 0.5
+%% epsilon <- rnorm(a*b*c, 0, sigmaSq)
+%% y <- alpha.long + beta.long + delta.long + epsilon
+%% herb <- factor(rep(c("1", "2", "3"), each=b*c))
+%% fert <- factor(rep(c("A","B","C","D"), times=a*b))
+%% field <- factor(rep(paste("field", 1:(a*b), sep=""), each=c))
+%% yieldData <- data.frame(yield=y,
+%%                         herbicide=herb,
+%%                         fertilizer=fert,
+%%                         field=field)
+
+%% aov.yield1 <- aov(yield ~ herbicide * fertilizer +
+%%                   Error(field),
+%%                   data=yieldData)
+%% summary(aov.yield1)
+%% aov.yield2 <- aov(yield ~ herbicide + fertilizer +
+%%                   Error(field),
+%%                   data=yieldData)
+%% summary(aov.yield2)
+%% library(nlme)
+%% lme.yield1 <- lme(yield ~ herbicide * fertilizer,
+%%                   data=yieldData,
+%%                   random=~1|field)
+%% anova(lme.yield1)
+%% lme.yield2 <- lme(yield ~ herbicide + fertilizer,
+%%                   data=yieldData,
+%%                   random=~1|field)
+%% anova(lme.yield2)
+%% library(multcomp)
+%% mc <- glht(lme.yield2,
+%%            linfct=mcp(herbicide="Tukey",
+%%                       fertilizer="Tukey"))
+%% summary(mc)
+%% confint(mc)
+%% plot(mc)
+
+%% #allcomb <- expand.grid(herbicide=levels(yieldData$herbicide),
+%% #                       fertilizer=levels(yieldData$fertilizer))
+%% #X <- model.matrix(~herbicide*fertilizer+carcass, allcomb)
+%% #glht(lme.yield1, linfct=X)
+%% @
+%% \end{frame}
+
+
+
+
+
+
+%% \begin{frame}[fragile]
+%%   \frametitle{Multiple comparisons}
+%% <<>>=
+%% tender <- meatData$tenderizer
+%% tender.PorV <- tender %in% c("P", "V")
+%% tender.C <- tender == "C"
+%% mean(meatData$Wbscore[tender.PorV])
+%% mean(meatData$Wbscore[tender.C])
+%% se.contrast(aov2, list(tender.PorV, tender.C))
+%% @
+%% \end{frame}
+
+
+
+
+
+
+
+
+
+
+%% \begin{frame}[fragile]
+%%   \frametitle{Predict}
+%% <<>>=
+%% comb <- data.frame(tenderizer=factor(rep(c("P","V","C"), each=4)),
+%%                    time=factor(rep(c("30", "36", "42", "48"))),
+%%                    carcass="1")
+%% comb$E <- predict(lme1, newdata=comb, level=0)
+%% comb
+%% @
+%% \end{frame}
+
+
+
+
+
+%% \begin{comment}
+%% \begin{frame}%[fragile]
+%%   \frametitle{Variance estimates}
+%% {\bf Variance within roasts}
+%% \[
+%% \hat{\sigma^2} = 0.09
+%% \]
+%% \pause
+%% {\bf Variance among roasts}
+%% \[
+%% \hat{\sigma^2_D} = ({MS_{WUR}} - \sigma^2)/b
+%% \]
+%% \pause
+%% \[
+%% \hat{\sigma^2_D} = (0.055 - 0.09)/4 = -0.00875
+%% \]
+%% {\bf Variance among carcasses}
+%% \[
+%% \hat{\sigma^2_C} = ({MS}_{C} - \sigma^2 - b\sigma^2_D)/(ab)
+%% \]
+%% \pause
+%% \[
+%% \hat{\sigma^2_C} = (0.781 - 0.09 - 4\times0)/12 = 0.057
+%% \]
+%% \end{frame}
+%% \end{comment}
+
