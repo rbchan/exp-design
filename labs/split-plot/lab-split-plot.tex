@@ -72,7 +72,7 @@
 \begin{document}
 
 
-\setlength\fboxsep{0pt}
+
 
 
 
@@ -177,7 +177,7 @@ And as always,
     and the block (carcass).
 %  }
 \small %\footnotesize
-\begin{knitrout}\small
+\begin{knitrout}\scriptsize
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlstd{meatData} \hlkwb{<-} \hlkwd{read.csv}\hlstd{(}\hlstr{"meatData.csv"}\hlstd{)}
@@ -196,7 +196,7 @@ And as always,
 \pause
 %{\bf
   Don't forget to convert to factors %}
-\begin{knitrout}\small
+\begin{knitrout}\footnotesize
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlstd{meatData}\hlopt{$}\hlstd{time} \hlkwb{<-} \hlkwd{factor}\hlstd{(meatData}\hlopt{$}\hlstd{time)}
@@ -343,14 +343,13 @@ And as always,
 
 
 \begin{frame}[fragile]
-  \frametitle{Using \inr{ lme} instead of \inr{ aov}}
+  \frametitle{Using {\tt lme} instead of {\tt aov}}
 \small
 \begin{knitrout}\footnotesize
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlkwd{library}\hlstd{(nlme)}
-\hlstd{lme.meat1} \hlkwb{<-} \hlkwd{lme}\hlstd{(Wbscore} \hlopt{~} \hlstd{tenderizer}\hlopt{*}\hlstd{time,}
-    \hlkwc{data}\hlstd{=meatData,}
+\hlstd{lme.meat1} \hlkwb{<-} \hlkwd{lme}\hlstd{(Wbscore} \hlopt{~} \hlstd{tenderizer}\hlopt{*}\hlstd{time,} \hlkwc{data}\hlstd{=meatData,}
     \hlkwc{correlation}\hlstd{=}\hlkwd{corCompSymm}\hlstd{(),} \hlcom{# To make results same as aov()}
     \hlkwc{random} \hlstd{=} \hlopt{~}\hlnum{1}\hlopt{|}\hlstd{carcass}\hlopt{/}\hlstd{roast)}
 \end{alltt}
@@ -379,7 +378,7 @@ The interaction is significant. (You can Ignore the {\tt (Intercept)} term)
 
 
 \begin{frame}[fragile]
-  \frametitle{Exploring interaction}
+  \frametitle{Exploring the interaction}
   \small
 %{\bf
   Is the time effect significant for each level of tenderizer?
@@ -387,15 +386,12 @@ The interaction is significant. (You can Ignore the {\tt (Intercept)} term)
 \begin{knitrout}\tiny
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlstd{lme.meatP} \hlkwb{<-} \hlkwd{lme}\hlstd{(Wbscore} \hlopt{~} \hlstd{time,} \hlkwc{data}\hlstd{=meatData,}
-                 \hlkwc{random} \hlstd{=} \hlopt{~}\hlnum{1}\hlopt{|}\hlstd{carcass}\hlopt{/}\hlstd{roast,} \hlkwc{correlation}\hlstd{=}\hlkwd{corCompSymm}\hlstd{(),}
-                 \hlkwc{subset}\hlstd{=tenderizer}\hlopt{==}\hlstr{"P"}\hlstd{)}
-\hlstd{lme.meatV} \hlkwb{<-} \hlkwd{lme}\hlstd{(Wbscore} \hlopt{~} \hlstd{time,} \hlkwc{data}\hlstd{=meatData,}
-                 \hlkwc{random} \hlstd{=} \hlopt{~}\hlnum{1}\hlopt{|}\hlstd{carcass}\hlopt{/}\hlstd{roast,}\hlkwc{correlation}\hlstd{=}\hlkwd{corCompSymm}\hlstd{(),}
-                 \hlkwc{subset}\hlstd{=tenderizer}\hlopt{==}\hlstr{"V"}\hlstd{)}
-\hlstd{lme.meatC} \hlkwb{<-} \hlkwd{lme}\hlstd{(Wbscore} \hlopt{~} \hlstd{time,} \hlkwc{data}\hlstd{=meatData,}
-                 \hlkwc{random} \hlstd{=} \hlopt{~}\hlnum{1}\hlopt{|}\hlstd{carcass}\hlopt{/}\hlstd{roast,} \hlkwc{correlation}\hlstd{=}\hlkwd{corCompSymm}\hlstd{(),}
-                 \hlkwc{subset}\hlstd{=tenderizer}\hlopt{==}\hlstr{"C"}\hlstd{)}
+\hlstd{lme.meatP} \hlkwb{<-} \hlkwd{lme}\hlstd{(Wbscore} \hlopt{~} \hlstd{time,} \hlkwc{data}\hlstd{=meatData,} \hlkwc{random} \hlstd{=} \hlopt{~}\hlnum{1}\hlopt{|}\hlstd{carcass}\hlopt{/}\hlstd{roast,}
+                 \hlkwc{correlation}\hlstd{=}\hlkwd{corCompSymm}\hlstd{(),} \hlkwc{subset}\hlstd{=tenderizer}\hlopt{==}\hlstr{"P"}\hlstd{)}
+\hlstd{lme.meatV} \hlkwb{<-} \hlkwd{lme}\hlstd{(Wbscore} \hlopt{~} \hlstd{time,} \hlkwc{data}\hlstd{=meatData,} \hlkwc{random} \hlstd{=} \hlopt{~}\hlnum{1}\hlopt{|}\hlstd{carcass}\hlopt{/}\hlstd{roast,}
+                 \hlkwc{correlation}\hlstd{=}\hlkwd{corCompSymm}\hlstd{(),} \hlkwc{subset}\hlstd{=tenderizer}\hlopt{==}\hlstr{"V"}\hlstd{)}
+\hlstd{lme.meatC} \hlkwb{<-} \hlkwd{lme}\hlstd{(Wbscore} \hlopt{~} \hlstd{time,} \hlkwc{data}\hlstd{=meatData,} \hlkwc{random} \hlstd{=} \hlopt{~}\hlnum{1}\hlopt{|}\hlstd{carcass}\hlopt{/}\hlstd{roast,}
+                 \hlkwc{correlation}\hlstd{=}\hlkwd{corCompSymm}\hlstd{(),} \hlkwc{subset}\hlstd{=tenderizer}\hlopt{==}\hlstr{"C"}\hlstd{)}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
@@ -498,7 +494,8 @@ Yes, it is
 \begin{frame}[fragile]
   \frametitle{Nested and crossed example}
 
-{\centering \large %\bf
+{%\centering %\large %\bf
+  \large
   Nested and crossed is same as split-plot, but without the
   block \\}
 \pause
@@ -515,12 +512,16 @@ Yes, it is
 \vfill
 {\bf Exercise}
 \begin{enumerate}[(1)]%[<+- | visible@+->][\bf \color{PineGreen} (1)]
-  \item Import the {\tt yieldData.csv} dataset and conduct
-    the appropriate ANOVA using \inr{ aov} and \inr{ lme}.
+  \item Import {\tt yieldData.csv} and conduct
+    the appropriate ANOVA using \inr{aov} and \inr{lme}.
   \item Does the effect of herbicide depend on fertilizer?
-%  \item What are the correct degrees-of-freedom and $F$ value?
   \item Use Tukey's test to determine which fertilizers differ
 \end{enumerate}
+\vfill
+%\centering
+\small
+Upload your self-contained script to ELC the day before your next
+lab. \\
 \end{frame}
 
 
