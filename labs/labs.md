@@ -18,25 +18,25 @@ course.
 
 ### Week 1
 
-#### [Introduction to R](intro-to-R/lab-intro-to-R.md)
+#### [Introduction to R](intro-to-R/intro-to-R.md)
 
 
 
 ### Week 2
 
-#### [*t*-tests](t-tests/lab-t-tests.md)
+#### [*t*-tests](t-tests/t-tests.md)
 
 
 
 ### Week 3
 
-#### [One-way ANOVA](ANOVA/lab-ANOVA.md)
+#### [One-way ANOVA](ANOVA/ANOVA.md)
 
 
 
 ### Week 4
 
-#### [Contrasts, estimation, and power](estimation-power/lab-estimation-power.md)
+#### [Contrasts, estimation, and power](estimation-power/estimation-power.md)
 
 
 
