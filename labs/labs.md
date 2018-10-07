@@ -62,3 +62,9 @@ course.
 
 #### [Nested Designs](nested/nested.md)
 
+
+
+### Week 9
+
+#### [Split-plot Designs](split-plot/split-plot.md)
+

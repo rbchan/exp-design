@@ -43,22 +43,22 @@ The above components of a scientific study need to be considered together rather
 | 5    | Contrasts           | [Contrasts, estimation, and power](labs/estimation-power/lab-estimation-power.md) | |
 |      | Contrasts           |                     |            |
 |      | Assumptions and transformations  |        | Chapter 11 |
-| 6    | Nonparametrics  | Transformations and nonparametrics | |
+| 6    | Nonparametrics  | [Transformations and nonparametrics](labs/assump-nonpar/assump-nonpar.md) | |
 |      | Nonparametrics      |                     |            |
 |      | Random and fixed effects    |             |            |
 | 7    | Blocked designs  | TBA                    | Chapter 12 |
 |      | Blocked designs  |                        |            |
 |      | Blocked designs  |                        |            |
-| 8    | Paper discussion | Blocking          | Hurlbert (1984) |
+| 8    | Paper discussion | [Blocking](labs/blocking/blocking.md)          | Hurlbert (1984) |
 |      | AxB factorial designs |                   |            |
 |      | AxB factorial designs |                   |            |
-| 9    | AxBxC factorial designs | Factorial designs |          |
+| 9    | AxBxC factorial designs | [Factorial designs](labs/factorial/factorial.md) |          |
 |      | Nested designs |                          |            |
 |      | Nested designs |                          |            |
-| 10   | Paper discussion | Nested designs | Resetarits (1991), Williams and Semlitsch (2010) |
+| 10   | Paper discussion | [Nested designs](labs/nested/nested.md) | Resetarits (1991), Williams and Semlitsch (2010) |
 |      | Split-plot designs |                      |            |
 |      | Split-plot designs |                      |            |
-| 11   | Split-plot designs | Split-plot designs   |            |
+| 11   | Split-plot designs | [Split-plot designs](labs/split-plot/split-plot.md)   |            |
 |      | Repeated measures ANOVA |            | von Ende (2002) |
 |      | No class |                                |            |
 | 12   | Repeated measures ANOVA | Repeated measures  |         |
