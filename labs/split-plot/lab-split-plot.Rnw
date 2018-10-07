@@ -62,6 +62,7 @@ knit_theme$set("edit-kwrite")
 
 
 
+\section{Intro}
 
 % \begin{frame}[plain]
 %   \frametitle{Today's Topics}
@@ -136,6 +137,8 @@ And as always,
 
 
 
+
+\section{aov}
 
 
 \begin{frame}[fragile]
@@ -265,6 +268,8 @@ summary(aov.meat1)
 
 
 
+\section{lme}
+
 
 
 
@@ -345,6 +350,7 @@ plot(mcP) # Should do this for the other 2 levels of tenderizer too
 
 
 
+\section{Assignment}
 
 
 

@@ -94,6 +94,7 @@
 
 
 
+\section{Intro}
 
 % \begin{frame}[plain]
 %   \frametitle{Today's Topics}
@@ -168,6 +169,8 @@ And as always,
 
 
 
+
+\section{aov}
 
 
 \begin{frame}[fragile]
@@ -339,6 +342,8 @@ And as always,
 
 
 
+\section{lme}
+
 
 
 
@@ -441,6 +446,20 @@ Yes, it is
 \begin{alltt}
 \hlcom{# install.packages("multcomp")}
 \hlkwd{library}\hlstd{(multcomp)}
+\end{alltt}
+
+
+{\ttfamily\noindent\itshape\color{messagecolor}{\#\# Loading required package: mvtnorm}}
+
+{\ttfamily\noindent\itshape\color{messagecolor}{\#\# Loading required package: survival}}
+
+{\ttfamily\noindent\itshape\color{messagecolor}{\#\# Loading required package: TH.data}}
+
+{\ttfamily\noindent\itshape\color{messagecolor}{\#\# Loading required package: MASS}}
+
+{\ttfamily\noindent\itshape\color{messagecolor}{\#\# \\\#\# Attaching package: 'TH.data'}}
+
+{\ttfamily\noindent\itshape\color{messagecolor}{\#\# The following object is masked from 'package:MASS':\\\#\# \\\#\#\ \ \ \  geyser}}\begin{alltt}
 \hlstd{mcP} \hlkwb{<-} \hlkwd{glht}\hlstd{(lme.meatP,} \hlkwc{linfct}\hlstd{=}\hlkwd{mcp}\hlstd{(}\hlkwc{time}\hlstd{=}\hlstr{"Tukey"}\hlstd{))}
 \hlkwd{summary}\hlstd{(mcP)}
 \end{alltt}
@@ -457,12 +476,12 @@ Yes, it is
 ## 
 ## Linear Hypotheses:
 ##              Estimate Std. Error z value Pr(>|z|)    
-## 36 - 30 == 0   -1.250      0.180  -6.944   <1e-05 ***
-## 42 - 30 == 0   -2.333      0.180 -12.961   <1e-05 ***
-## 48 - 30 == 0   -3.333      0.180 -18.516   <1e-05 ***
-## 42 - 36 == 0   -1.083      0.180  -6.018   <1e-05 ***
-## 48 - 36 == 0   -2.083      0.180 -11.573   <1e-05 ***
-## 48 - 42 == 0   -1.000      0.180  -5.555   <1e-05 ***
+## 36 - 30 == 0   -1.250      0.180  -6.944  < 1e-08 ***
+## 42 - 30 == 0   -2.333      0.180 -12.961  < 1e-08 ***
+## 48 - 30 == 0   -3.333      0.180 -18.516  < 1e-08 ***
+## 42 - 36 == 0   -1.083      0.180  -6.018  < 1e-08 ***
+## 48 - 36 == 0   -2.083      0.180 -11.573  < 1e-08 ***
+## 48 - 42 == 0   -1.000      0.180  -5.555 7.32e-08 ***
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## (Adjusted p values reported -- single-step method)
@@ -487,6 +506,7 @@ Yes, it is
 
 
 
+\section{Assignment}
 
 
 
