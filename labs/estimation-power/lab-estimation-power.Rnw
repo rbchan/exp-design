@@ -351,13 +351,14 @@ se.contrast(aov.out, list(sawData$Brand=="A" |
 
 \begin{frame}[fragile]
   \frametitle{Estimating confidence intervals}
-  In an ANOVA context, confidence intervals can be
+  In a one-way ANOVA context, confidence intervals can be
   constructed using the equation:
   \[
     \text{CI} = \text{Point estimate} \pm t_{\alpha/2,a(n-1)} \times \text{SE}
   \]
   As usual, the hard part is computing the SE\footnote{See page 300 of
-    Dowdy et al. for SE formulas}
+    Dowdy et al. for SE formulas}\footnote{In general, the
+    degrees-of-freedom for the t-value should be taken from error term}  
 %  \pause
 %\footnotesize
 %<<>>=

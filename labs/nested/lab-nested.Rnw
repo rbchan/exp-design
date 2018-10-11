@@ -46,7 +46,7 @@ knit_theme$set("edit-kwrite")
 \begin{frame}[plain]
   \LARGE
   \centering
-  {\color{RoyalBlue}{\bf Lab 8 -- Nested ANOVA} \\}
+  {\color{RoyalBlue}{Lab 8 -- Nested Designs} \\}
   \vspace{1cm}
   \Large
   October 8 \& 9, 2017 \\

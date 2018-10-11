@@ -412,8 +412,9 @@ is recorded in the file ``acidityData.csv.'' \par
   \item Test the null hypotheses using an $A \times B$ factorial ANOVA
     implemented with \inr{aov}. %Create an ANOVA table using \inr{summary}.
   \item Does the effect of lime depend upon the bedrock type? If so,
-    how? Answer this question by plotting the estimates of the effect of lime on
-    pH change. Include 95\% confidence intervals.
+    how? Answer this question using 2-3 sentences, and by plotting the
+    estimates of the mean differences in pH for each combination of
+    the two factors. Include 95\% confidence intervals.
 \end{enumerate}
 \pause
 \vfill
