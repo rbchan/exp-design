@@ -356,7 +356,8 @@ plot(mcP) # Should do this for the other 2 levels of tenderizer too
 
 
 \begin{frame}[fragile]
-  \frametitle{Nested and crossed example}
+  \frametitle{Nested and crossed assignment\footnote{Nested and crossed
+      is same as split-plot, but without the block}}
 <<eval=TRUE,echo=FALSE,purl=FALSE>>=
 alpha <- c(-2, 0, 2)
 beta <- c(-2, -2, 0, 4)
@@ -382,34 +383,43 @@ yieldData <- data.frame(yield=y,
                         field=field)
 write.csv(yieldData, file="yieldData.csv", row.names=FALSE)
 @
-{%\centering %\large %\bf
-  \large
-  Nested and crossed is same as split-plot, but without the
-  block \\}
-\pause
-\vfill
+%{%\centering %\large %\bf
+%  \large
+%  Nested and crossed is same as split-plot, but without the
+%  block \\}
+%\normalsize
+%\pause
+%\vfill
+\small
 {\bf Design}
 \begin{itemize}%[<+- | visible@+->]
+\small
   \item Sweet potato yield is studied in response to (a=3)
     types of herbicide.
   \item Each herbicide is applied to 5 fields
   \item Each field is divided into 4 plots. Each plot is treated with
     one of (b=4) fertilizers.
 \end{itemize}
-\pause
-\vfill
+%\pause
+%\vfill
 {\bf Exercise}
 \begin{enumerate}[(1)]%[<+- | visible@+->][\bf \color{PineGreen} (1)]
+\small
   \item Import {\tt yieldData.csv} and conduct
     the appropriate ANOVA using \inr{aov} and \inr{lme}.
   \item Does the effect of herbicide depend on fertilizer?
   \item Use Tukey's test to determine which fertilizers differ
+  \item State the null and alternative hypotheses, and summarize your
+    results in 2-3 sentences. 
 \end{enumerate}
-\vfill
+%\vfill
 %\centering
-\small
+%\small
+\footnotesize
+\bf
 Upload your self-contained script to ELC the day before your next
 lab. \\
+\vfill
 \end{frame}
 
 

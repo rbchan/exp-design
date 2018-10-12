@@ -446,20 +446,6 @@ Yes, it is
 \begin{alltt}
 \hlcom{# install.packages("multcomp")}
 \hlkwd{library}\hlstd{(multcomp)}
-\end{alltt}
-
-
-{\ttfamily\noindent\itshape\color{messagecolor}{\#\# Loading required package: mvtnorm}}
-
-{\ttfamily\noindent\itshape\color{messagecolor}{\#\# Loading required package: survival}}
-
-{\ttfamily\noindent\itshape\color{messagecolor}{\#\# Loading required package: TH.data}}
-
-{\ttfamily\noindent\itshape\color{messagecolor}{\#\# Loading required package: MASS}}
-
-{\ttfamily\noindent\itshape\color{messagecolor}{\#\# \\\#\# Attaching package: 'TH.data'}}
-
-{\ttfamily\noindent\itshape\color{messagecolor}{\#\# The following object is masked from 'package:MASS':\\\#\# \\\#\#\ \ \ \  geyser}}\begin{alltt}
 \hlstd{mcP} \hlkwb{<-} \hlkwd{glht}\hlstd{(lme.meatP,} \hlkwc{linfct}\hlstd{=}\hlkwd{mcp}\hlstd{(}\hlkwc{time}\hlstd{=}\hlstr{"Tukey"}\hlstd{))}
 \hlkwd{summary}\hlstd{(mcP)}
 \end{alltt}
@@ -476,12 +462,12 @@ Yes, it is
 ## 
 ## Linear Hypotheses:
 ##              Estimate Std. Error z value Pr(>|z|)    
-## 36 - 30 == 0   -1.250      0.180  -6.944  < 1e-08 ***
-## 42 - 30 == 0   -2.333      0.180 -12.961  < 1e-08 ***
-## 48 - 30 == 0   -3.333      0.180 -18.516  < 1e-08 ***
-## 42 - 36 == 0   -1.083      0.180  -6.018  < 1e-08 ***
-## 48 - 36 == 0   -2.083      0.180 -11.573  < 1e-08 ***
-## 48 - 42 == 0   -1.000      0.180  -5.555 7.32e-08 ***
+## 36 - 30 == 0   -1.250      0.180  -6.944   <1e-05 ***
+## 42 - 30 == 0   -2.333      0.180 -12.961   <1e-05 ***
+## 48 - 30 == 0   -3.333      0.180 -18.516   <1e-05 ***
+## 42 - 36 == 0   -1.083      0.180  -6.018   <1e-05 ***
+## 48 - 36 == 0   -2.083      0.180 -11.573   <1e-05 ***
+## 48 - 42 == 0   -1.000      0.180  -5.555   <1e-05 ***
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## (Adjusted p values reported -- single-step method)
@@ -512,36 +498,46 @@ Yes, it is
 
 
 \begin{frame}[fragile]
-  \frametitle{Nested and crossed example}
+  \frametitle{Nested and crossed assignment\footnote{Nested and crossed
+      is same as split-plot, but without the block}}
 
-{%\centering %\large %\bf
-  \large
-  Nested and crossed is same as split-plot, but without the
-  block \\}
-\pause
-\vfill
+%{%\centering %\large %\bf
+%  \large
+%  Nested and crossed is same as split-plot, but without the
+%  block \\}
+%\normalsize
+%\pause
+%\vfill
+\small
 {\bf Design}
 \begin{itemize}%[<+- | visible@+->]
+\small
   \item Sweet potato yield is studied in response to (a=3)
     types of herbicide.
   \item Each herbicide is applied to 5 fields
   \item Each field is divided into 4 plots. Each plot is treated with
     one of (b=4) fertilizers.
 \end{itemize}
-\pause
-\vfill
+%\pause
+%\vfill
 {\bf Exercise}
 \begin{enumerate}[(1)]%[<+- | visible@+->][\bf \color{PineGreen} (1)]
+\small
   \item Import {\tt yieldData.csv} and conduct
     the appropriate ANOVA using \inr{aov} and \inr{lme}.
   \item Does the effect of herbicide depend on fertilizer?
   \item Use Tukey's test to determine which fertilizers differ
+  \item State the null and alternative hypotheses, and summarize your
+    results in 2-3 sentences. 
 \end{enumerate}
-\vfill
+%\vfill
 %\centering
-\small
+%\small
+\footnotesize
+\bf
 Upload your self-contained script to ELC the day before your next
 lab. \\
+\vfill
 \end{frame}
 
 
