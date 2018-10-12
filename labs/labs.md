@@ -27,49 +27,44 @@ Overview of R basics. Topics include:
 
 
 
-### Week 2
+### [Week 2 - *t*-tests](t-tests/t-tests.md)
 
-#### [*t*-tests](t-tests/t-tests.md)
-
-
-
-### Week 3
-
-#### [One-way ANOVA](ANOVA/ANOVA.md)
-
+*t*-tests with and without the `t.test` function. Topics include:
+- Two-sample *t*-test
+- Paired *t*-test
+- Graphics
+  * Histograms
+  * Boxplots
 
 
-### Week 4
+### [Week 3 - One-way ANOVA](ANOVA/ANOVA.md)
 
-#### [Contrasts, estimation, and power](estimation-power/estimation-power.md)
-
-
-
-### Week 5
-
-#### [Assumptions of ANOVA, transformations, and nonparametrics](assump-nonpar/assump-nonpar.md)
+Analysis of data from completely randomized designs. Topics include:
+- `aov` vs `lm`
+- Means, effects, and SEs with `model.tables` 
+- Computing the ANOVA table by hand
+- Multiple comparisons with `TukeyHSD`
 
 
-
-### Week 6
-
-#### [Randomized complete block design](blocking/blocking.md)
+### [Week 4 - Contrasts, estimation, and power](estimation-power/estimation-power.md)
 
 
 
-### Week 7
-
-#### [AxB Factorial](factorial/factorial.md)
+### [Week 5 - Assumptions of ANOVA, transformations, and nonparametrics](assump-nonpar/assump-nonpar.md)
 
 
 
-### Week 8
-
-#### [Nested Designs](nested/nested.md)
+### [Week 6 - Randomized complete block design](blocking/blocking.md)
 
 
 
-### Week 9
+### [Week 7 - AxB Factorial](factorial/factorial.md)
 
-#### [Split-plot Designs](split-plot/split-plot.md)
+
+
+### [Week 8 - Nested Designs](nested/nested.md)
+
+
+
+### [Week 9 - Split-plot Designs](split-plot/split-plot.md)
 
