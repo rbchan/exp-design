@@ -16,9 +16,14 @@ course.
 
 
 
-### Week 1
+### [Week 1 - Introduction to R](intro-to-R/intro-to-R.md)
 
-#### [Introduction to R](intro-to-R/intro-to-R.md)
+Overview of R basics. Topics include: 
+- Installing R
+- Creating and indexing vectors and data.frames
+- Computing summary statistics
+- Importing and exporting data
+- Help pages
 
 
 
