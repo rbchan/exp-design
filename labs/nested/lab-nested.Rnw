@@ -361,13 +361,15 @@ summary(tuk)
   To determine if salinity affects adult fish reproductive
   performance, a researcher places one pregnant female in a tank with
   one of three salinity levels: low, medium, and high, or a control
-  tank. A week after birth, two offspring (fry) are measured. \\
+  tank. A week after birth, two offspring (fry) are measured. Fry
+  growth rate is used as a measure of adult performance.\\
   \vfill
   Run a nested ANOVA using \inr{aov} and \inr{lme} on the
   {\tt fishData.csv} dataset. Answer the following questions:
 \begin{enumerate}[\bf (1)]
   \item What are the null and alternative hypotheses?
-  \item Does salinity affect fry growth?
+  \item Does salinity affect reproductive performance, as measured by
+    fry growth? 
   \item If so, which salinity levels differ?
   \item Is there more random variation among or within experimental units?
 \end{enumerate}

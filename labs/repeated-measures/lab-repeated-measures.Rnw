@@ -1,0 +1,505 @@
+\documentclass[color=usenames,dvipsnames]{beamer}
+%\documentclass[color=usenames,dvipsnames,handout]{beamer}
+
+
+
+%\usepackage[roman]{../../lab1}
+\usepackage[sans]{../../lab1}
+
+\hypersetup{pdftex,pdfstartview=FitV}
+
+
+
+<<build-fun, include=FALSE, cache=TRUE, eval=FALSE, purl=FALSE>>=
+## A function to compile and open the pdf
+## Usage:
+##
+source("../rnw2pdf.R")
+if(1==2) {
+  rnw2pdf("lab-repeated-measures")
+  rnw2pdf("lab-repeated-measures", clean=FALSE)
+  rnw2pdf("lab-repeated-measures", tangle=TRUE)
+}
+@
+
+
+<<knitr-theme, include=FALSE, purl=FALSE>>=
+##knit_theme$set("navajo-night")
+knit_theme$set("edit-kwrite")
+@
+
+
+%% New command for inline code that isn't to be evaluated
+\definecolor{inlinecolor}{rgb}{0.878, 0.918, 0.933}
+\newcommand{\inr}[1]{\colorbox{inlinecolor}{\texttt{#1}}}
+
+
+
+
+
+\begin{document}
+
+
+%\setlength\fboxsep{0pt}
+
+
+
+\begin{frame}[plain]
+  \huge %\LARGE
+  \centering \par
+  {\color{RoyalBlue}{Lab 10 -- Repeated Measures}} \\
+  \vspace{1cm}
+  \Large
+  October 22 \& 23, 2018 \\
+  FANR 6750 \\
+  \vfill
+  \large
+  Richard Chandler and Bob Cooper
+\end{frame}
+
+
+\section{Intro}
+
+
+\begin{frame}%[plain]
+  \frametitle{Overview}
+  \large
+  {\bf Design}
+  \begin{itemize}
+    \item We randomly assign each ``subject'' to a treatment
+    \item We record the response to the treatment over time
+  \end{itemize}
+  \pause
+  \vspace{0.5cm}
+  {\bf Sources of variation}
+  \begin{itemize}
+    \item Treatment
+    \item Time
+    \item Treatment-time interaction
+    \item Random variation among subjects
+    \item Random variation within subjects
+  \end{itemize}
+\end{frame}
+
+
+
+
+\begin{frame}[fragile]
+   \frametitle{Approaches}
+   \Large
+%   \only<1>{\tableofcontents}%[hideallsubsections]}
+ %  \only<2 | handout:0>{\tableofcontents[currentsection]}%,hideallsubsections]}
+%   \begin{itemize}
+%     \item<1-> Univariate
+%    \begin{itemize}
+      \large
+%      \item<1-> Univariate
+      {\bf Univariate}
+        \begin{itemize}
+        \normalsize
+          \item<1-> This is just a split-plot analysis with adjusted $p$-values
+          \item<2-> Adjustments: Greenhouse-Geisser or Huynh-Feldt methods
+          \item<3-> In \R, you must do a MANOVA to obtain these adjusted $P$-values
+        \end{itemize}
+%      \item[]
+%     \item<6-> Multivariate
+%       \begin{itemize}
+%      \large
+%      \item<4-> MANOVA
+      \vfill
+      \uncover<4->{{\bf MANOVA \\}}
+        \begin{itemize}
+          \large
+          \item<5-> Testing based on Wilks' lambda or Pillai's test statistic
+          \item<5-> This is usually followed by a profile analysis
+        \end{itemize}
+%      \item[]
+%      \item<6-> Mixed effects model with (ARMA) correlation structure
+      \vfill
+      \uncover<6->{{\bf Mixed effects model with (ARMA) correlation
+          structure \\}}
+        \begin{itemize}
+%        \large %\normalsize
+        \item<7-> This can be done using \inr{lme}
+        \item<7-> We might cover this later% in the course
+      \end{itemize}
+%    \end{itemize}
+%   \end{itemize}
+\end{frame}
+
+
+
+
+
+
+
+\section{Univariate Split-plot Approach}
+
+
+
+\begin{frame}[fragile]
+  \frametitle{The plant data}
+  \scriptsize
+<<plantData,size='scriptsize'>>=
+plantData <- read.csv("plantData.csv")
+plantData$plant <- factor(plantData$plant)
+plantData$week <- factor(plantData$week)
+str(plantData)
+@
+\pause
+<<headPlantData,size='scriptsize'>>=
+head(plantData, n=8)
+@
+\end{frame}
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Leaf Growth}
+%  \vspace{-0.5cm}
+  \begin{center}
+<<plotDataLines,echo=FALSE,fig.width=7,fig.height=5>>=
+matplot(matrix(plantData$leaves, 5, 10), type="l",
+        col=rep(c(1,4), each=5), lwd=2,
+        lty=rep(c(1,2), each=5),
+        xlab="Week", ylab="Leaves", cex.lab=1.4)
+legend(1,14,c("High fertilizer", "Low fertilizer"),
+       lty=c(2,1), col=c(4,1), lwd=2)
+@
+\end{center}
+\end{frame}
+
+
+%\subsection{Split-plot}
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Univariate split-plot approach}
+  \scriptsize
+<<aov1,size='scriptsize'>>=
+aov1 <- aov(leaves ~ fertilizer*week + Error(plant),
+            data=plantData)
+@
+%{\bf Actually, this is a nested and crossed example because there is no block}
+\pause
+<<aov1summary,size='scriptsize'>>=
+summary(aov1)
+@
+\pause
+\vfill
+\footnotesize
+{%\centering
+  %\bf %\large
+%  In general, and especially if spherecity cannot be assumed,
+  We need to adjust the $p$-values for the time and
+  interaction effects \par
+  \pause
+  \vfill
+  In {\bf R}, this requires reformatting the data and running a MANOVA \par}
+\end{frame}
+
+
+
+
+
+
+
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Format data for MANOVA}
+%  {\bf \small To obtain corrected $P$-values, we must conduct a MANOVA}
+  \footnotesize
+<<plantData2,size='footnotesize'>>=
+plantData2 <- reshape(plantData, idvar="plant",
+                      timevar="week", v.names="leaves",
+                      direction="wide")
+@
+\pause
+<<plantData2print,size='scriptsize'>>=
+plantData2
+@
+\end{frame}
+
+
+
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{MANOVA and adjusted $P$-values}
+  \scriptsize %\small
+<<manova1,size='scriptsize'>>=
+manova1 <- manova(cbind(leaves.1, leaves.2, leaves.3,
+                        leaves.4, leaves.5) ~ fertilizer,
+                  data=plantData2)
+@
+\pause
+<<manova1anova,size='scriptsize'>>=
+anova(manova1, X=~1, test="Spherical")
+@
+\pause
+\footnotesize
+{%\bf
+  The last 3 columns are $p$-values corresponding to the effects of time
+  (Intercept) and interaction (fertilizer).
+%  I suggest using the H-F $p$-values.
+  No adjustment is necessary
+  for the main effect so you can use the $p$-value from \inr{aov}. 
+  \par}
+\end{frame}
+
+
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{An aside -- sphericity}
+  \small
+  {Technically, adjusted $p$-values and MANOVA aren't necessary if the
+    assumption of sphericity holds. \alert{However}, we recommend
+    doing the adjustments (or the MANOVA) anyway because the test of
+    sphericity has low power. \\}
+  \pause
+  \vfill
+  Sphericity is the multivariate analogue of the homogeneity of variance assumption of ANOVA.
+  \pause
+  \vfill
+  Here is how you test the assumption:
+  \footnotesize
+<<mauchly,size='footnotesize'>>=
+mauchly.test(manova1, X=~1)
+@
+\pause
+\vfill
+\small %\normalsize
+{\centering We fail to reject the null hypothesis, so sphericity
+  can be assumed. \\}
+%  This tells us that the adjusted
+%  $p$-values are legitimate. \par }
+\end{frame}
+
+
+
+
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Compare {\tt aov} and {\tt manova} results}
+  \tiny
+<<compare,size='tiny'>>=
+summary(aov1)
+anova(manova1, X=~1, test="Spherical")
+@
+\end{frame}
+
+
+
+
+
+
+
+
+
+
+
+\section{Multivariate}
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Multivariate tests}
+  \small
+  {%\bf
+    An alternative to the adjusted
+    $p$-value approach is to do a multivariate analysis relaxing the
+    assumptions about the structure of the variance-covariance
+    matrix. We're already most of the way there. \par}
+  \pause
+  \vspace{0.5cm}
+  {%\bf
+    Wilks' lambda}
+  \footnotesize
+<<wilks,size='footnotesize'>>=
+anova(manova1, X=~1, test="Wilks")
+@
+\pause
+{%\bf
+  As before, we conclude that the effect of fertilizer changes
+  over time} \\. This test is less
+\\  powerful than ANOVA, as evidenced by the $p$-value $>0.05$.}
+\end{frame}
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Multivariate tests}
+  \small
+  {%\bf
+    Pillai's trace is an alternative to Wilks' lambda. In this
+    case, it returns the same $p$-values as Wilks' test.}
+  \vfill
+  \footnotesize
+<<pillai,size='footnotesize'>>=
+anova(manova1, X=~1, test="Pillai")
+@
+
+\end{frame}
+
+
+
+
+
+
+
+
+%\section{Profile analysis}
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Profile analysis}
+  {%\bf
+    Profile analysis requires calculating the differences (ie, the
+    number of leaves grown each week).}
+  \vspace{1cm}
+  \footnotesize
+<<manova2,size='footnotesize'>>=
+manova2 <- manova(
+    cbind(leaves.2-leaves.1, leaves.3-leaves.2,
+          leaves.4-leaves.3, leaves.5-leaves.4) ~
+    fertilizer, data=plantData2)
+@
+\end{frame}
+
+
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Profile Analysis}
+  \footnotesize
+  {%\bf
+    During which intervals do the growth rates differ?}
+  \pause
+  \scriptsize %\tiny
+<<profile,size='scriptsize'>>=
+summary.aov(manova2)
+@
+\end{frame}
+
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Plot the growth rates}
+  \small
+  {%\bf
+    Calculate mean growth rate for each time interval}%, for each fertilizer}
+  \pause
+<<plotit,size='small'>>=
+leavesMat <- plantData2[,3:7]
+growthMat <- leavesMat[,2:5] - leavesMat[,1:4]
+colnames(growthMat) <- paste("interval", 1:4, sep=".")
+(lowFertilizer <- colMeans(growthMat[1:5,]))
+(highFertilizer <- colMeans(growthMat[6:10,]))
+@
+\pause
+{\bf Calculate the standard errors for these growth rates}
+\footnotesize
+<<SEs,size='footnotesize'>>=
+SE <- sqrt(diag(vcov(manova2)))
+SE <- SE[names(SE)==":(Intercept)"] # Only use "intercept" SEs
+unname(SE) ## Ignore the names
+@
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{Plot the growth rates}
+<<gr,fig.show='hide',fig.width=7,fig.height=5,size='small'>>=
+plot(1:4-0.05, lowFertilizer, type="b", xlim=c(0.9, 4.1),
+     ylim=c(-1, 4), xaxp=c(1,4,3), cex.lab=1.5,
+     xlab="Time interval", ylab="Growth rate (leaves/week)")
+abline(h=0, lty=3)
+arrows(1:4-.05, lowFertilizer-SE, 1:4-.05, lowFertilizer+SE,
+       angle=90, code=3, length=0.05)
+lines(1:4+0.05, highFertilizer, type="b", pch=17, col=4)
+arrows(1:4+0.05, highFertilizer-SE, 1:4+0.05,
+       highFertilizer+SE, angle=90, code=3, length=0.05)
+legend(1, 4, c("Low fertilizer", "High fertilizer"),
+       col=c("black", "blue"), pch=c(1,17))
+@
+\end{frame}
+
+
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Plot the growth rates}
+  \tiny
+  \centering
+    \includegraphics[width=\textwidth]{figure/gr-1} \\
+\end{frame}
+
+
+
+
+
+\begin{frame}
+  \frametitle{Assignment}
+  \footnotesize
+  A researcher wants to assess the effects of density on the growth
+  of the dark toadfish ({\it Neophrynichthys latus}). One fish is
+  placed in each of 15 fish tanks that vary with respect to
+  density. The weight of one ``focal fish'' per tank  is recorded on 6
+  consecutive weeks. Five tanks have low density (1 conspecific), 5
+  tanks have medium density (5 conspecifics), and 5 tanks have high
+  density (10 conspecifics). The data are in the file {\tt fish.csv}.
+  \pause
+  \vfill
+  \begin{enumerate}[\bf (1)]
+    \item Conduct a repeated measures ANOVA using \inr{aov}. Calculate the adjusted $p$-values using the Huynh-Feldt
+      method. Does the effect of density change over time?
+    \item Use the Wilks' lambda statistic to test if the effect of
+      density changes over time. What is your conclusion?
+    \item Conduct a profile analysis. In which time intervals is the
+      effect of density on growth rate significant?
+  \end{enumerate}
+  %% Conduct a repeated measures ANOVA to determine if the difference in
+  %% home range size of male and female hawks changes over time.
+  %% \begin{itemize}
+  %%   \item Conduct the univariate analysis use the adjusted P-values
+  %%   \item Conduct the multivariate analysis and Wilks' statistic
+  %%   \item
+  %% \end{itemize}
+\end{frame}
+
+
+
+
+
+
+\end{document}
+
+
+
+
+
+
+

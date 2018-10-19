@@ -1,0 +1,770 @@
+\documentclass[color=usenames,dvipsnames]{beamer}\usepackage[]{graphicx}\usepackage[]{color}
+%% maxwidth is the original width if it is less than linewidth
+%% otherwise use linewidth (to make sure the graphics do not exceed the margin)
+\makeatletter
+\def\maxwidth{ %
+  \ifdim\Gin@nat@width>\linewidth
+    \linewidth
+  \else
+    \Gin@nat@width
+  \fi
+}
+\makeatother
+
+\definecolor{fgcolor}{rgb}{0, 0, 0}
+\newcommand{\hlnum}[1]{\textcolor[rgb]{0.69,0.494,0}{#1}}%
+\newcommand{\hlstr}[1]{\textcolor[rgb]{0.749,0.012,0.012}{#1}}%
+\newcommand{\hlcom}[1]{\textcolor[rgb]{0.514,0.506,0.514}{\textit{#1}}}%
+\newcommand{\hlopt}[1]{\textcolor[rgb]{0,0,0}{#1}}%
+\newcommand{\hlstd}[1]{\textcolor[rgb]{0,0,0}{#1}}%
+\newcommand{\hlkwa}[1]{\textcolor[rgb]{0,0,0}{\textbf{#1}}}%
+\newcommand{\hlkwb}[1]{\textcolor[rgb]{0,0.341,0.682}{#1}}%
+\newcommand{\hlkwc}[1]{\textcolor[rgb]{0,0,0}{\textbf{#1}}}%
+\newcommand{\hlkwd}[1]{\textcolor[rgb]{0.004,0.004,0.506}{#1}}%
+\let\hlipl\hlkwb
+
+\usepackage{framed}
+\makeatletter
+\newenvironment{kframe}{%
+ \def\at@end@of@kframe{}%
+ \ifinner\ifhmode%
+  \def\at@end@of@kframe{\end{minipage}}%
+  \begin{minipage}{\columnwidth}%
+ \fi\fi%
+ \def\FrameCommand##1{\hskip\@totalleftmargin \hskip-\fboxsep
+ \colorbox{shadecolor}{##1}\hskip-\fboxsep
+     % There is no \\@totalrightmargin, so:
+     \hskip-\linewidth \hskip-\@totalleftmargin \hskip\columnwidth}%
+ \MakeFramed {\advance\hsize-\width
+   \@totalleftmargin\z@ \linewidth\hsize
+   \@setminipage}}%
+ {\par\unskip\endMakeFramed%
+ \at@end@of@kframe}
+\makeatother
+
+\definecolor{shadecolor}{rgb}{.97, .97, .97}
+\definecolor{messagecolor}{rgb}{0, 0, 0}
+\definecolor{warningcolor}{rgb}{1, 0, 1}
+\definecolor{errorcolor}{rgb}{1, 0, 0}
+\newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
+
+\usepackage{alltt}
+%\documentclass[color=usenames,dvipsnames,handout]{beamer}
+
+
+
+%\usepackage[roman]{../../lab1}
+\usepackage[sans]{../../lab1}
+
+\hypersetup{pdftex,pdfstartview=FitV}
+
+
+
+
+
+
+
+
+
+%% New command for inline code that isn't to be evaluated
+\definecolor{inlinecolor}{rgb}{0.878, 0.918, 0.933}
+\newcommand{\inr}[1]{\colorbox{inlinecolor}{\texttt{#1}}}
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\begin{document}
+
+
+%\setlength\fboxsep{0pt}
+
+
+
+\begin{frame}[plain]
+  \huge %\LARGE
+  \centering \par
+  {\color{RoyalBlue}{Lab 10 -- Repeated Measures}} \\
+  \vspace{1cm}
+  \Large
+  October 22 \& 23, 2018 \\
+  FANR 6750 \\
+  \vfill
+  \large
+  Richard Chandler and Bob Cooper
+\end{frame}
+
+
+\section{Intro}
+
+
+\begin{frame}%[plain]
+  \frametitle{Overview}
+  \large
+  {\bf Design}
+  \begin{itemize}
+    \item We randomly assign each ``subject'' to a treatment
+    \item We record the response to the treatment over time
+  \end{itemize}
+  \pause
+  \vspace{0.5cm}
+  {\bf Sources of variation}
+  \begin{itemize}
+    \item Treatment
+    \item Time
+    \item Treatment-time interaction
+    \item Random variation among subjects
+    \item Random variation within subjects
+  \end{itemize}
+\end{frame}
+
+
+
+
+\begin{frame}[fragile]
+   \frametitle{Approaches}
+   \Large
+%   \only<1>{\tableofcontents}%[hideallsubsections]}
+ %  \only<2 | handout:0>{\tableofcontents[currentsection]}%,hideallsubsections]}
+%   \begin{itemize}
+%     \item<1-> Univariate
+%    \begin{itemize}
+      \large
+%      \item<1-> Univariate
+      {\bf Univariate}
+        \begin{itemize}
+        \normalsize
+          \item<1-> This is just a split-plot analysis with adjusted $p$-values
+          \item<2-> Adjustments: Greenhouse-Geisser or Huynh-Feldt methods
+          \item<3-> In \R, you must do a MANOVA to obtain these adjusted $P$-values
+        \end{itemize}
+%      \item[]
+%     \item<6-> Multivariate
+%       \begin{itemize}
+%      \large
+%      \item<4-> MANOVA
+      \vfill
+      \uncover<4->{{\bf MANOVA \\}}
+        \begin{itemize}
+          \large
+          \item<5-> Testing based on Wilks' lambda or Pillai's test statistic
+          \item<5-> This is usually followed by a profile analysis
+        \end{itemize}
+%      \item[]
+%      \item<6-> Mixed effects model with (ARMA) correlation structure
+      \vfill
+      \uncover<6->{{\bf Mixed effects model with (ARMA) correlation
+          structure \\}}
+        \begin{itemize}
+%        \large %\normalsize
+        \item<7-> This can be done using \inr{lme}
+        \item<7-> We might cover this later% in the course
+      \end{itemize}
+%    \end{itemize}
+%   \end{itemize}
+\end{frame}
+
+
+
+
+
+
+
+\section{Univariate Split-plot Approach}
+
+
+
+\begin{frame}[fragile]
+  \frametitle{The plant data}
+  \scriptsize
+\begin{knitrout}\scriptsize
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{plantData} \hlkwb{<-} \hlkwd{read.csv}\hlstd{(}\hlstr{"plantData.csv"}\hlstd{)}
+\hlstd{plantData}\hlopt{$}\hlstd{plant} \hlkwb{<-} \hlkwd{factor}\hlstd{(plantData}\hlopt{$}\hlstd{plant)}
+\hlstd{plantData}\hlopt{$}\hlstd{week} \hlkwb{<-} \hlkwd{factor}\hlstd{(plantData}\hlopt{$}\hlstd{week)}
+\hlkwd{str}\hlstd{(plantData)}
+\end{alltt}
+\begin{verbatim}
+## 'data.frame':	50 obs. of  4 variables:
+##  $ plant     : Factor w/ 10 levels "1","2","3","4",..: 1 1 1 1 1 2 2 2 2 2 ...
+##  $ fertilizer: Factor w/ 2 levels "H","L": 2 2 2 2 2 2 2 2 2 2 ...
+##  $ week      : Factor w/ 5 levels "1","2","3","4",..: 1 2 3 4 5 1 2 3 4 5 ...
+##  $ leaves    : int  4 5 6 8 10 3 4 6 6 9 ...
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\pause
+\begin{knitrout}\scriptsize
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{head}\hlstd{(plantData,} \hlkwc{n}\hlstd{=}\hlnum{8}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+##   plant fertilizer week leaves
+## 1     1          L    1      4
+## 2     1          L    2      5
+## 3     1          L    3      6
+## 4     1          L    4      8
+## 5     1          L    5     10
+## 6     2          L    1      3
+## 7     2          L    2      4
+## 8     2          L    3      6
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Leaf Growth}
+%  \vspace{-0.5cm}
+  \begin{center}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}
+\includegraphics[width=\maxwidth]{figure/plotDataLines-1} 
+
+\end{knitrout}
+\end{center}
+\end{frame}
+
+
+%\subsection{Split-plot}
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Univariate split-plot approach}
+  \scriptsize
+\begin{knitrout}\scriptsize
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{aov1} \hlkwb{<-} \hlkwd{aov}\hlstd{(leaves} \hlopt{~} \hlstd{fertilizer}\hlopt{*}\hlstd{week} \hlopt{+} \hlkwd{Error}\hlstd{(plant),}
+            \hlkwc{data}\hlstd{=plantData)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+%{\bf Actually, this is a nested and crossed example because there is no block}
+\pause
+\begin{knitrout}\scriptsize
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{summary}\hlstd{(aov1)}
+\end{alltt}
+\begin{verbatim}
+## 
+## Error: plant
+##            Df Sum Sq Mean Sq F value Pr(>F)
+## fertilizer  1  16.82   16.82   2.604  0.145
+## Residuals   8  51.68    6.46               
+## 
+## Error: Within
+##                 Df Sum Sq Mean Sq F value Pr(>F)    
+## week             4 267.40   66.85 158.225 <2e-16 ***
+## fertilizer:week  4   5.08    1.27   3.006 0.0326 *  
+## Residuals       32  13.52    0.42                   
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\pause
+\vfill
+\footnotesize
+{%\centering
+  %\bf %\large
+%  In general, and especially if spherecity cannot be assumed,
+  We need to adjust the $p$-values for the time and
+  interaction effects \par
+  \pause
+  \vfill
+  In {\bf R}, this requires reformatting the data and running a MANOVA \par}
+\end{frame}
+
+
+
+
+
+
+
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Format data for MANOVA}
+%  {\bf \small To obtain corrected $P$-values, we must conduct a MANOVA}
+  \footnotesize
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{plantData2} \hlkwb{<-} \hlkwd{reshape}\hlstd{(plantData,} \hlkwc{idvar}\hlstd{=}\hlstr{"plant"}\hlstd{,}
+                      \hlkwc{timevar}\hlstd{=}\hlstr{"week"}\hlstd{,} \hlkwc{v.names}\hlstd{=}\hlstr{"leaves"}\hlstd{,}
+                      \hlkwc{direction}\hlstd{=}\hlstr{"wide"}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\pause
+\begin{knitrout}\scriptsize
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{plantData2}
+\end{alltt}
+\begin{verbatim}
+##    plant fertilizer leaves.1 leaves.2 leaves.3 leaves.4 leaves.5
+## 1      1          L        4        5        6        8       10
+## 6      2          L        3        4        6        6        9
+## 11     3          L        6        7        9       10       12
+## 16     4          L        5        7        8       10       12
+## 21     5          L        5        6        7        8       10
+## 26     6          H        4        6        9        9       11
+## 31     7          H        3        5        7       10       12
+## 36     8          H        6        8       11       10       14
+## 41     9          H        5        7        9       10       12
+## 46    10          H        5        8        9       11       11
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+
+
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{MANOVA and adjusted $P$-values}
+  \scriptsize %\small
+\begin{knitrout}\scriptsize
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{manova1} \hlkwb{<-} \hlkwd{manova}\hlstd{(}\hlkwd{cbind}\hlstd{(leaves.1, leaves.2, leaves.3,}
+                        \hlstd{leaves.4, leaves.5)} \hlopt{~} \hlstd{fertilizer,}
+                  \hlkwc{data}\hlstd{=plantData2)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\pause
+\begin{knitrout}\scriptsize
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{anova}\hlstd{(manova1,} \hlkwc{X}\hlstd{=}\hlopt{~}\hlnum{1}\hlstd{,} \hlkwc{test}\hlstd{=}\hlstr{"Spherical"}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## Analysis of Variance Table
+## 
+## 
+## Contrasts orthogonal to
+## ~1
+## 
+## Greenhouse-Geisser epsilon: 0.5882
+## Huynh-Feldt epsilon:        0.8490
+## 
+##             Df        F num Df den Df   Pr(>F)   G-G Pr  H-F Pr
+## (Intercept)  1 158.2249      4     32 0.000000 0.000000 0.00000
+## fertilizer   1   3.0059      4     32 0.032613 0.066622 0.04224
+## Residuals    8
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\pause
+\footnotesize
+{%\bf
+  The last 3 columns are $p$-values corresponding to the effects of time
+  (Intercept) and interaction (fertilizer).
+%  I suggest using the H-F $p$-values.
+  No adjustment is necessary
+  for the main effect so you can use the $p$-value from \inr{aov}. 
+  \par}
+\end{frame}
+
+
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{An aside -- sphericity}
+  \small
+  {Technically, adjusted $p$-values and MANOVA aren't necessary if the
+    assumption of sphericity holds. \alert{However}, we recommend
+    doing the adjustments (or the MANOVA) anyway because the test of
+    sphericity has low power. \\}
+  \pause
+  \vfill
+  Sphericity is the multivariate analogue of the homogeneity of variance assumption of ANOVA.
+  \pause
+  \vfill
+  Here is how you test the assumption:
+  \footnotesize
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{mauchly.test}\hlstd{(manova1,} \hlkwc{X}\hlstd{=}\hlopt{~}\hlnum{1}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## 
+## 	Mauchly's test of sphericity
+## 	Contrasts orthogonal to
+## 	~1
+## 
+## 
+## data:  SSD matrix from manova(cbind(leaves.1, leaves.2, leaves.3, leaves.4, leaves.5) ~  SSD matrix from     fertilizer, data = plantData2)
+## W = 0.099297, p-value = 0.1062
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\pause
+\vfill
+\small %\normalsize
+{\centering We fail to reject the null hypothesis, so sphericity
+  can be assumed. \\}
+%  This tells us that the adjusted
+%  $p$-values are legitimate. \par }
+\end{frame}
+
+
+
+
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Compare {\tt aov} and {\tt manova} results}
+  \tiny
+\begin{knitrout}\tiny
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{summary}\hlstd{(aov1)}
+\end{alltt}
+\begin{verbatim}
+## 
+## Error: plant
+##            Df Sum Sq Mean Sq F value Pr(>F)
+## fertilizer  1  16.82   16.82   2.604  0.145
+## Residuals   8  51.68    6.46               
+## 
+## Error: Within
+##                 Df Sum Sq Mean Sq F value Pr(>F)    
+## week             4 267.40   66.85 158.225 <2e-16 ***
+## fertilizer:week  4   5.08    1.27   3.006 0.0326 *  
+## Residuals       32  13.52    0.42                   
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+\end{verbatim}
+\begin{alltt}
+\hlkwd{anova}\hlstd{(manova1,} \hlkwc{X}\hlstd{=}\hlopt{~}\hlnum{1}\hlstd{,} \hlkwc{test}\hlstd{=}\hlstr{"Spherical"}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## Analysis of Variance Table
+## 
+## 
+## Contrasts orthogonal to
+## ~1
+## 
+## Greenhouse-Geisser epsilon: 0.5882
+## Huynh-Feldt epsilon:        0.8490
+## 
+##             Df        F num Df den Df   Pr(>F)   G-G Pr  H-F Pr
+## (Intercept)  1 158.2249      4     32 0.000000 0.000000 0.00000
+## fertilizer   1   3.0059      4     32 0.032613 0.066622 0.04224
+## Residuals    8
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+
+
+
+
+
+
+
+
+
+
+\section{Multivariate}
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Multivariate tests}
+  \small
+  {%\bf
+    An alternative to the adjusted
+    $p$-value approach is to do a multivariate analysis relaxing the
+    assumptions about the structure of the variance-covariance
+    matrix. We're already most of the way there. \par}
+  \pause
+  \vspace{0.5cm}
+  {%\bf
+    Wilks' lambda}
+  \footnotesize
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{anova}\hlstd{(manova1,} \hlkwc{X}\hlstd{=}\hlopt{~}\hlnum{1}\hlstd{,} \hlkwc{test}\hlstd{=}\hlstr{"Wilks"}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## Analysis of Variance Table
+## 
+## 
+## Contrasts orthogonal to
+## ~1
+## 
+##             Df    Wilks approx F num Df den Df    Pr(>F)    
+## (Intercept)  1 0.008487  146.042      4      5 2.308e-05 ***
+## fertilizer   1 0.144772    7.384      4      5   0.02503 *  
+## Residuals    8                                              
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\pause
+{%\bf
+  As before, we conclude that the effect of fertilizer changes
+  over time} \\. This test is less
+\\  powerful than ANOVA, as evidenced by the $p$-value $>0.05$.}
+\end{frame}
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Multivariate tests}
+  \small
+  {%\bf
+    Pillai's trace is an alternative to Wilks' lambda. In this
+    case, it returns the same $p$-values as Wilks' test.}
+  \vfill
+  \footnotesize
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{anova}\hlstd{(manova1,} \hlkwc{X}\hlstd{=}\hlopt{~}\hlnum{1}\hlstd{,} \hlkwc{test}\hlstd{=}\hlstr{"Pillai"}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## Analysis of Variance Table
+## 
+## 
+## Contrasts orthogonal to
+## ~1
+## 
+##             Df  Pillai approx F num Df den Df    Pr(>F)    
+## (Intercept)  1 0.99151  146.042      4      5 2.308e-05 ***
+## fertilizer   1 0.85523    7.384      4      5   0.02503 *  
+## Residuals    8                                             
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+
+
+
+
+
+
+
+%\section{Profile analysis}
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Profile analysis}
+  {%\bf
+    Profile analysis requires calculating the differences (ie, the
+    number of leaves grown each week).}
+  \vspace{1cm}
+  \footnotesize
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{manova2} \hlkwb{<-} \hlkwd{manova}\hlstd{(}
+    \hlkwd{cbind}\hlstd{(leaves.2}\hlopt{-}\hlstd{leaves.1, leaves.3}\hlopt{-}\hlstd{leaves.2,}
+          \hlstd{leaves.4}\hlopt{-}\hlstd{leaves.3, leaves.5}\hlopt{-}\hlstd{leaves.4)} \hlopt{~}
+    \hlstd{fertilizer,} \hlkwc{data}\hlstd{=plantData2)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Profile Analysis}
+  \footnotesize
+  {%\bf
+    During which intervals do the growth rates differ?}
+  \pause
+  \scriptsize %\tiny
+\begin{knitrout}\scriptsize
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{summary.aov}\hlstd{(manova2)}
+\end{alltt}
+\begin{verbatim}
+##  Response 1 :
+##             Df Sum Sq Mean Sq F value  Pr(>F)   
+## fertilizer   1    2.5     2.5    12.5 0.00767 **
+## Residuals    8    1.6     0.2                   
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+##  Response 2 :
+##             Df Sum Sq Mean Sq F value Pr(>F)
+## fertilizer   1    1.6     1.6     3.2 0.1114
+## Residuals    8    4.0     0.5               
+## 
+##  Response 3 :
+##             Df Sum Sq Mean Sq F value Pr(>F)
+## fertilizer   1    0.1     0.1  0.0625 0.8089
+## Residuals    8   12.8     1.6               
+## 
+##  Response 4 :
+##             Df Sum Sq Mean Sq F value Pr(>F)
+## fertilizer   1    0.1     0.1  0.0909 0.7707
+## Residuals    8    8.8     1.1
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Plot the growth rates}
+  \small
+  {%\bf
+    Calculate mean growth rate for each time interval}%, for each fertilizer}
+  \pause
+\begin{knitrout}\small
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{leavesMat} \hlkwb{<-} \hlstd{plantData2[,}\hlnum{3}\hlopt{:}\hlnum{7}\hlstd{]}
+\hlstd{growthMat} \hlkwb{<-} \hlstd{leavesMat[,}\hlnum{2}\hlopt{:}\hlnum{5}\hlstd{]} \hlopt{-} \hlstd{leavesMat[,}\hlnum{1}\hlopt{:}\hlnum{4}\hlstd{]}
+\hlkwd{colnames}\hlstd{(growthMat)} \hlkwb{<-} \hlkwd{paste}\hlstd{(}\hlstr{"interval"}\hlstd{,} \hlnum{1}\hlopt{:}\hlnum{4}\hlstd{,} \hlkwc{sep}\hlstd{=}\hlstr{"."}\hlstd{)}
+\hlstd{(lowFertilizer} \hlkwb{<-} \hlkwd{colMeans}\hlstd{(growthMat[}\hlnum{1}\hlopt{:}\hlnum{5}\hlstd{,]))}
+\end{alltt}
+\begin{verbatim}
+## interval.1 interval.2 interval.3 interval.4 
+##        1.2        1.4        1.2        2.2
+\end{verbatim}
+\begin{alltt}
+\hlstd{(highFertilizer} \hlkwb{<-} \hlkwd{colMeans}\hlstd{(growthMat[}\hlnum{6}\hlopt{:}\hlnum{10}\hlstd{,]))}
+\end{alltt}
+\begin{verbatim}
+## interval.1 interval.2 interval.3 interval.4 
+##        2.2        2.2        1.0        2.0
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\pause
+{\bf Calculate the standard errors for these growth rates}
+\footnotesize
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{SE} \hlkwb{<-} \hlkwd{sqrt}\hlstd{(}\hlkwd{diag}\hlstd{(}\hlkwd{vcov}\hlstd{(manova2)))}
+\hlstd{SE} \hlkwb{<-} \hlstd{SE[}\hlkwd{names}\hlstd{(SE)}\hlopt{==}\hlstr{":(Intercept)"}\hlstd{]} \hlcom{# Only use "intercept" SEs}
+\hlkwd{unname}\hlstd{(SE)} \hlcom{## Ignore the names}
+\end{alltt}
+\begin{verbatim}
+## [1] 0.2000000 0.3162278 0.5656854 0.4690416
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{Plot the growth rates}
+\begin{knitrout}\small
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{plot}\hlstd{(}\hlnum{1}\hlopt{:}\hlnum{4}\hlopt{-}\hlnum{0.05}\hlstd{, lowFertilizer,} \hlkwc{type}\hlstd{=}\hlstr{"b"}\hlstd{,} \hlkwc{xlim}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{0.9}\hlstd{,} \hlnum{4.1}\hlstd{),}
+     \hlkwc{ylim}\hlstd{=}\hlkwd{c}\hlstd{(}\hlopt{-}\hlnum{1}\hlstd{,} \hlnum{4}\hlstd{),} \hlkwc{xaxp}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,}\hlnum{4}\hlstd{,}\hlnum{3}\hlstd{),} \hlkwc{cex.lab}\hlstd{=}\hlnum{1.5}\hlstd{,}
+     \hlkwc{xlab}\hlstd{=}\hlstr{"Time interval"}\hlstd{,} \hlkwc{ylab}\hlstd{=}\hlstr{"Growth rate (leaves/week)"}\hlstd{)}
+\hlkwd{abline}\hlstd{(}\hlkwc{h}\hlstd{=}\hlnum{0}\hlstd{,} \hlkwc{lty}\hlstd{=}\hlnum{3}\hlstd{)}
+\hlkwd{arrows}\hlstd{(}\hlnum{1}\hlopt{:}\hlnum{4}\hlopt{-}\hlnum{.05}\hlstd{, lowFertilizer}\hlopt{-}\hlstd{SE,} \hlnum{1}\hlopt{:}\hlnum{4}\hlopt{-}\hlnum{.05}\hlstd{, lowFertilizer}\hlopt{+}\hlstd{SE,}
+       \hlkwc{angle}\hlstd{=}\hlnum{90}\hlstd{,} \hlkwc{code}\hlstd{=}\hlnum{3}\hlstd{,} \hlkwc{length}\hlstd{=}\hlnum{0.05}\hlstd{)}
+\hlkwd{lines}\hlstd{(}\hlnum{1}\hlopt{:}\hlnum{4}\hlopt{+}\hlnum{0.05}\hlstd{, highFertilizer,} \hlkwc{type}\hlstd{=}\hlstr{"b"}\hlstd{,} \hlkwc{pch}\hlstd{=}\hlnum{17}\hlstd{,} \hlkwc{col}\hlstd{=}\hlnum{4}\hlstd{)}
+\hlkwd{arrows}\hlstd{(}\hlnum{1}\hlopt{:}\hlnum{4}\hlopt{+}\hlnum{0.05}\hlstd{, highFertilizer}\hlopt{-}\hlstd{SE,} \hlnum{1}\hlopt{:}\hlnum{4}\hlopt{+}\hlnum{0.05}\hlstd{,}
+       \hlstd{highFertilizer}\hlopt{+}\hlstd{SE,} \hlkwc{angle}\hlstd{=}\hlnum{90}\hlstd{,} \hlkwc{code}\hlstd{=}\hlnum{3}\hlstd{,} \hlkwc{length}\hlstd{=}\hlnum{0.05}\hlstd{)}
+\hlkwd{legend}\hlstd{(}\hlnum{1}\hlstd{,} \hlnum{4}\hlstd{,} \hlkwd{c}\hlstd{(}\hlstr{"Low fertilizer"}\hlstd{,} \hlstr{"High fertilizer"}\hlstd{),}
+       \hlkwc{col}\hlstd{=}\hlkwd{c}\hlstd{(}\hlstr{"black"}\hlstd{,} \hlstr{"blue"}\hlstd{),} \hlkwc{pch}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,}\hlnum{17}\hlstd{))}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Plot the growth rates}
+  \tiny
+  \centering
+    \includegraphics[width=\textwidth]{figure/gr-1} \\
+\end{frame}
+
+
+
+
+
+\begin{frame}
+  \frametitle{Assignment}
+  \footnotesize
+  A researcher wants to assess the effects of density on the growth
+  of the dark toadfish ({\it Neophrynichthys latus}). One fish is
+  placed in each of 15 fish tanks that vary with respect to
+  density. The weight of one ``focal fish'' per tank  is recorded on 6
+  consecutive weeks. Five tanks have low density (1 conspecific), 5
+  tanks have medium density (5 conspecifics), and 5 tanks have high
+  density (10 conspecifics). The data are in the file {\tt fish.csv}.
+  \pause
+  \vfill
+  \begin{enumerate}[\bf (1)]
+    \item Conduct a repeated measures ANOVA using \inr{aov}. Calculate the adjusted $p$-values using the Huynh-Feldt
+      method. Does the effect of density change over time?
+    \item Use the Wilks' lambda statistic to test if the effect of
+      density changes over time. What is your conclusion?
+    \item Conduct a profile analysis. In which time intervals is the
+      effect of density on growth rate significant?
+  \end{enumerate}
+  %% Conduct a repeated measures ANOVA to determine if the difference in
+  %% home range size of male and female hawks changes over time.
+  %% \begin{itemize}
+  %%   \item Conduct the univariate analysis use the adjusted P-values
+  %%   \item Conduct the multivariate analysis and Wilks' statistic
+  %%   \item
+  %% \end{itemize}
+\end{frame}
+
+
+
+
+
+
+\end{document}
+
+
+
+
+
+
+
