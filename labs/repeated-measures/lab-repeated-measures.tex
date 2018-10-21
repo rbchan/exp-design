@@ -119,45 +119,28 @@
 
 \begin{frame}[fragile]
    \frametitle{Approaches}
-   \Large
-%   \only<1>{\tableofcontents}%[hideallsubsections]}
- %  \only<2 | handout:0>{\tableofcontents[currentsection]}%,hideallsubsections]}
-%   \begin{itemize}
-%     \item<1-> Univariate
-%    \begin{itemize}
       \large
-%      \item<1-> Univariate
       {\bf Univariate}
         \begin{itemize}
         \normalsize
           \item<1-> This is just a split-plot analysis with adjusted $p$-values
-          \item<2-> Adjustments: Greenhouse-Geisser or Huynh-Feldt methods
-          \item<3-> In \R, you must do a MANOVA to obtain these adjusted $P$-values
+          \item<1-> Adjustments: Greenhouse-Geisser or Huynh-Feldt methods
+          \item<1-> In \R, you must do a MANOVA to obtain these adjusted $P$-values
         \end{itemize}
-%      \item[]
-%     \item<6-> Multivariate
-%       \begin{itemize}
-%      \large
-%      \item<4-> MANOVA
       \vfill
-      \uncover<4->{{\bf MANOVA \\}}
+      \uncover<2->{{\bf MANOVA \\}}
         \begin{itemize}
           \large
-          \item<5-> Testing based on Wilks' lambda or Pillai's test statistic
-          \item<5-> This is usually followed by a profile analysis
+          \item<2-> Testing based on Wilks' lambda or Pillai's test statistic
+          \item<2-> This is usually followed by a profile analysis
         \end{itemize}
-%      \item[]
-%      \item<6-> Mixed effects model with (ARMA) correlation structure
       \vfill
-      \uncover<6->{{\bf Mixed effects model with (ARMA) correlation
+      \uncover<3->{{\bf Mixed effects model with (ARMA) correlation
           structure \\}}
         \begin{itemize}
-%        \large %\normalsize
-        \item<7-> This can be done using \inr{lme}
-        \item<7-> We might cover this later% in the course
+        \item<3-> This can be done using \inr{lme}
+        \item<3-> We might cover this later% in the course
       \end{itemize}
-%    \end{itemize}
-%   \end{itemize}
 \end{frame}
 
 
@@ -216,14 +199,13 @@
 
 \begin{frame}[fragile]
   \frametitle{Leaf Growth}
-%  \vspace{-0.5cm}
-  \begin{center}
+%  \begin{center}
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}
 \includegraphics[width=\maxwidth]{figure/plotDataLines-1} 
 
 \end{knitrout}
-\end{center}
+%\end{center}
 \end{frame}
 
 
@@ -269,9 +251,7 @@
 \pause
 \vfill
 \footnotesize
-{%\centering
-  %\bf %\large
-%  In general, and especially if spherecity cannot be assumed,
+{
   We need to adjust the $p$-values for the time and
   interaction effects \par
   \pause
@@ -373,7 +353,7 @@
   (Intercept) and interaction (fertilizer).
 %  I suggest using the H-F $p$-values.
   No adjustment is necessary
-  for the main effect so you can use the $p$-value from \inr{aov}. 
+  for the main effect so you can use the $p$-value from \inr{aov}.
   \par}
 \end{frame}
 
@@ -391,12 +371,13 @@
     sphericity has low power. \\}
   \pause
   \vfill
-  Sphericity is the multivariate analogue of the homogeneity of variance assumption of ANOVA.
+  Sphericity is the multivariate analogue of the homogeneity of
+  variance assumption of ANOVA. \\
   \pause
   \vfill
-  Here is how you test the assumption:
+  Here is how you test the assumption: \\
   \footnotesize
-\begin{knitrout}\footnotesize
+\begin{knitrout}\scriptsize
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlkwd{mauchly.test}\hlstd{(manova1,} \hlkwc{X}\hlstd{=}\hlopt{~}\hlnum{1}\hlstd{)}
@@ -452,6 +433,10 @@
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 \end{verbatim}
+\end{kframe}
+\end{knitrout}
+\begin{knitrout}\tiny
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlkwd{anova}\hlstd{(manova1,} \hlkwc{X}\hlstd{=}\hlopt{~}\hlnum{1}\hlstd{,} \hlkwc{test}\hlstd{=}\hlstr{"Spherical"}\hlstd{)}
 \end{alltt}
@@ -490,17 +475,17 @@
 
 
 \begin{frame}[fragile]
-  \frametitle{Multivariate tests}
+  \frametitle{Multivariate tests -- Wilks' lambda}
   \small
   {%\bf
     An alternative to the adjusted
     $p$-value approach is to do a multivariate analysis relaxing the
     assumptions about the structure of the variance-covariance
-    matrix. We're already most of the way there. \par}
+    matrix. We're already most of the way there. \\}
   \pause
-  \vspace{0.5cm}
-  {%\bf
-    Wilks' lambda}
+%  \vspace{0.5cm}
+%  {%\bf
+%    Wilks' lambda}
   \footnotesize
 \begin{knitrout}\footnotesize
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
@@ -526,15 +511,15 @@
 \pause
 {%\bf
   As before, we conclude that the effect of fertilizer changes
-  over time} \\. This test is less
-\\  powerful than ANOVA, as evidenced by the $p$-value $>0.05$.}
+  over time \\}
+%This test is less powerful than ANOVA, as evidenced by the $p$-value $>0.05$.}
 \end{frame}
 
 
 
 
 \begin{frame}[fragile]
-  \frametitle{Multivariate tests}
+  \frametitle{Multivariate tests -- Pillai's trace}
   \small
   {%\bf
     Pillai's trace is an alternative to Wilks' lambda. In this
@@ -650,7 +635,7 @@
   {%\bf
     Calculate mean growth rate for each time interval}%, for each fertilizer}
   \pause
-\begin{knitrout}\small
+\begin{knitrout}\footnotesize
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlstd{leavesMat} \hlkwb{<-} \hlstd{plantData2[,}\hlnum{3}\hlopt{:}\hlnum{7}\hlstd{]}
@@ -672,7 +657,7 @@
 \end{kframe}
 \end{knitrout}
 \pause
-{\bf Calculate the standard errors for these growth rates}
+{Calculate the standard errors for these growth rates}
 \footnotesize
 \begin{knitrout}\footnotesize
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}

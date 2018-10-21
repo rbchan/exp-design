@@ -86,45 +86,28 @@ knit_theme$set("edit-kwrite")
 
 \begin{frame}[fragile]
    \frametitle{Approaches}
-   \Large
-%   \only<1>{\tableofcontents}%[hideallsubsections]}
- %  \only<2 | handout:0>{\tableofcontents[currentsection]}%,hideallsubsections]}
-%   \begin{itemize}
-%     \item<1-> Univariate
-%    \begin{itemize}
       \large
-%      \item<1-> Univariate
       {\bf Univariate}
         \begin{itemize}
         \normalsize
           \item<1-> This is just a split-plot analysis with adjusted $p$-values
-          \item<2-> Adjustments: Greenhouse-Geisser or Huynh-Feldt methods
-          \item<3-> In \R, you must do a MANOVA to obtain these adjusted $P$-values
+          \item<1-> Adjustments: Greenhouse-Geisser or Huynh-Feldt methods
+          \item<1-> In \R, you must do a MANOVA to obtain these adjusted $P$-values
         \end{itemize}
-%      \item[]
-%     \item<6-> Multivariate
-%       \begin{itemize}
-%      \large
-%      \item<4-> MANOVA
       \vfill
-      \uncover<4->{{\bf MANOVA \\}}
+      \uncover<2->{{\bf MANOVA \\}}
         \begin{itemize}
           \large
-          \item<5-> Testing based on Wilks' lambda or Pillai's test statistic
-          \item<5-> This is usually followed by a profile analysis
+          \item<2-> Testing based on Wilks' lambda or Pillai's test statistic
+          \item<2-> This is usually followed by a profile analysis
         \end{itemize}
-%      \item[]
-%      \item<6-> Mixed effects model with (ARMA) correlation structure
       \vfill
-      \uncover<6->{{\bf Mixed effects model with (ARMA) correlation
+      \uncover<3->{{\bf Mixed effects model with (ARMA) correlation
           structure \\}}
         \begin{itemize}
-%        \large %\normalsize
-        \item<7-> This can be done using \inr{lme}
-        \item<7-> We might cover this later% in the course
+        \item<3-> This can be done using \inr{lme}
+        \item<3-> We might cover this later% in the course
       \end{itemize}
-%    \end{itemize}
-%   \end{itemize}
 \end{frame}
 
 
@@ -157,9 +140,8 @@ head(plantData, n=8)
 
 \begin{frame}[fragile]
   \frametitle{Leaf Growth}
-%  \vspace{-0.5cm}
-  \begin{center}
-<<plotDataLines,echo=FALSE,fig.width=7,fig.height=5>>=
+%  \begin{center}
+<<plotDataLines,echo=FALSE,fig.width=7,fig.height=5.5>>=
 matplot(matrix(plantData$leaves, 5, 10), type="l",
         col=rep(c(1,4), each=5), lwd=2,
         lty=rep(c(1,2), each=5),
@@ -167,7 +149,7 @@ matplot(matrix(plantData$leaves, 5, 10), type="l",
 legend(1,14,c("High fertilizer", "Low fertilizer"),
        lty=c(2,1), col=c(4,1), lwd=2)
 @
-\end{center}
+%\end{center}
 \end{frame}
 
 
@@ -190,9 +172,7 @@ summary(aov1)
 \pause
 \vfill
 \footnotesize
-{%\centering
-  %\bf %\large
-%  In general, and especially if spherecity cannot be assumed,
+{
   We need to adjust the $p$-values for the time and
   interaction effects \par
   \pause
@@ -250,7 +230,7 @@ anova(manova1, X=~1, test="Spherical")
   (Intercept) and interaction (fertilizer).
 %  I suggest using the H-F $p$-values.
   No adjustment is necessary
-  for the main effect so you can use the $p$-value from \inr{aov}. 
+  for the main effect so you can use the $p$-value from \inr{aov}.
   \par}
 \end{frame}
 
@@ -268,12 +248,13 @@ anova(manova1, X=~1, test="Spherical")
     sphericity has low power. \\}
   \pause
   \vfill
-  Sphericity is the multivariate analogue of the homogeneity of variance assumption of ANOVA.
+  Sphericity is the multivariate analogue of the homogeneity of
+  variance assumption of ANOVA. \\
   \pause
   \vfill
-  Here is how you test the assumption:
+  Here is how you test the assumption: \\
   \footnotesize
-<<mauchly,size='footnotesize'>>=
+<<mauchly,size='scriptsize'>>=
 mauchly.test(manova1, X=~1)
 @
 \pause
@@ -295,8 +276,10 @@ mauchly.test(manova1, X=~1)
 \begin{frame}[fragile]
   \frametitle{Compare {\tt aov} and {\tt manova} results}
   \tiny
-<<compare,size='tiny'>>=
+<<compare1,size='tiny'>>=
 summary(aov1)
+@
+<<compare2,size='tiny'>>=
 anova(manova1, X=~1, test="Spherical")
 @
 \end{frame}
@@ -317,17 +300,17 @@ anova(manova1, X=~1, test="Spherical")
 
 
 \begin{frame}[fragile]
-  \frametitle{Multivariate tests}
+  \frametitle{Multivariate tests -- Wilks' lambda}
   \small
   {%\bf
     An alternative to the adjusted
     $p$-value approach is to do a multivariate analysis relaxing the
     assumptions about the structure of the variance-covariance
-    matrix. We're already most of the way there. \par}
+    matrix. We're already most of the way there. \\}
   \pause
-  \vspace{0.5cm}
-  {%\bf
-    Wilks' lambda}
+%  \vspace{0.5cm}
+%  {%\bf
+%    Wilks' lambda}
   \footnotesize
 <<wilks,size='footnotesize'>>=
 anova(manova1, X=~1, test="Wilks")
@@ -335,15 +318,15 @@ anova(manova1, X=~1, test="Wilks")
 \pause
 {%\bf
   As before, we conclude that the effect of fertilizer changes
-  over time} \\. This test is less
-\\  powerful than ANOVA, as evidenced by the $p$-value $>0.05$.}
+  over time \\}
+%This test is less powerful than ANOVA, as evidenced by the $p$-value $>0.05$.}
 \end{frame}
 
 
 
 
 \begin{frame}[fragile]
-  \frametitle{Multivariate tests}
+  \frametitle{Multivariate tests -- Pillai's trace}
   \small
   {%\bf
     Pillai's trace is an alternative to Wilks' lambda. In this
@@ -410,7 +393,7 @@ summary.aov(manova2)
   {%\bf
     Calculate mean growth rate for each time interval}%, for each fertilizer}
   \pause
-<<plotit,size='small'>>=
+<<plotit,size='footnotesize'>>=
 leavesMat <- plantData2[,3:7]
 growthMat <- leavesMat[,2:5] - leavesMat[,1:4]
 colnames(growthMat) <- paste("interval", 1:4, sep=".")
@@ -418,7 +401,7 @@ colnames(growthMat) <- paste("interval", 1:4, sep=".")
 (highFertilizer <- colMeans(growthMat[6:10,]))
 @
 \pause
-{\bf Calculate the standard errors for these growth rates}
+{Calculate the standard errors for these growth rates}
 \footnotesize
 <<SEs,size='footnotesize'>>=
 SE <- sqrt(diag(vcov(manova2)))
@@ -430,7 +413,7 @@ unname(SE) ## Ignore the names
 
 \begin{frame}[fragile]
   \frametitle{Plot the growth rates}
-<<gr,fig.show='hide',fig.width=7,fig.height=5,size='small'>>=
+<<gr,fig.show='hide',fig.width=7,fig.height=5.5,size='small'>>=
 plot(1:4-0.05, lowFertilizer, type="b", xlim=c(0.9, 4.1),
      ylim=c(-1, 4), xaxp=c(1,4,3), cex.lab=1.5,
      xlab="Time interval", ylab="Growth rate (leaves/week)")
