@@ -98,7 +98,7 @@ knit_theme$set("edit-kwrite")
       \uncover<2->{{\bf MANOVA \\}}
         \begin{itemize}
           \large
-          \item<2-> Testing based on Wilks' lambda or Pillai's test statistic
+          \item<2-> Testing based on Wilks' lambda or Pillai's trace %statistic
           \item<2-> This is usually followed by a profile analysis
         \end{itemize}
       \vfill
@@ -404,7 +404,7 @@ colnames(growthMat) <- paste("interval", 1:4, sep=".")
 {Calculate the standard errors for these growth rates}
 \footnotesize
 <<SEs,size='footnotesize'>>=
-SE <- sqrt(diag(vcov(manova2)))
+SE <- sqrt(diag(stats:::vcov.mlm(manova2)))
 SE <- SE[names(SE)==":(Intercept)"] # Only use "intercept" SEs
 unname(SE) ## Ignore the names
 @
@@ -447,30 +447,30 @@ legend(1, 4, c("Low fertilizer", "High fertilizer"),
 \begin{frame}
   \frametitle{Assignment}
   \footnotesize
-  A researcher wants to assess the effects of density on the growth
-  of the dark toadfish ({\it Neophrynichthys latus}). One fish is
-  placed in each of 15 fish tanks that vary with respect to
-  density. The weight of one ``focal fish'' per tank  is recorded on 6
-  consecutive weeks. Five tanks have low density (1 conspecific), 5
-  tanks have medium density (5 conspecifics), and 5 tanks have high
-  density (10 conspecifics). The data are in the file {\tt fish.csv}.
+  A researcher wants to assess the effects of crowding on the growth
+  of the dark toadfish ({\it Neophrynichthys latus}). 15 fish tanks
+  are stocked with three densities of conspecifics. Five tanks have
+  low density (1 fish), 5 tanks have medium density (5
+  fish), and 5 tanks have high density (10 fish).
+  In each tank, the weight of one ``focal fish'' is recorded on 6
+  consecutive weeks. The data are in the file {\tt fishData.csv}.
   \pause
   \vfill
   \begin{enumerate}[\bf (1)]
-    \item Conduct a repeated measures ANOVA using \inr{aov}. Calculate the adjusted $p$-values using the Huynh-Feldt
+    \item Conduct the univariate repeated measures ANOVA using
+      \inr{aov}. Calculate  the adjusted $p$-values using the Huynh-Feldt
       method. Does the effect of density change over time?
-    \item Use the Wilks' lambda statistic to test if the effect of
-      density changes over time. What is your conclusion?
+    \item Conduct a multivariate repeated measures ANOVA and use
+      Wilks' lambda to test if the effect of density changes over
+      time. What is your conclusion?
     \item Conduct a profile analysis. In which time intervals is the
       effect of density on growth rate significant?
   \end{enumerate}
-  %% Conduct a repeated measures ANOVA to determine if the difference in
-  %% home range size of male and female hawks changes over time.
-  %% \begin{itemize}
-  %%   \item Conduct the univariate analysis use the adjusted P-values
-  %%   \item Conduct the multivariate analysis and Wilks' statistic
-  %%   \item
-  %% \end{itemize}
+  \pause
+  \vfill
+  \centering
+  Upload your self-contained R-script to ELC at least one day before
+  your next lab \\
 \end{frame}
 
 
