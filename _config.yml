@@ -10,3 +10,4 @@ header_pages:
   - syllabus.md
   - labs/labs.md
   - lectures/lectures.md
+exclude: ["vendor"]
