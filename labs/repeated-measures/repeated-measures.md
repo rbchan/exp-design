@@ -14,7 +14,7 @@ layout: page
 
 ## Handout
 
-[Compressed version of the slides](repeated-measures-handout.pdf) with 4 slides per page
+[Compressed version of the slides](lab-repeated-measures-handout.pdf) with 4 slides per page
 
 
 
