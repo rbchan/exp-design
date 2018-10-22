@@ -108,7 +108,7 @@ and sub-units in a blocked design.
 ### [Week 10 - Repeated Measures Designs](repeated-measures/repeated-measures.md)
 
 Repeated measures designs in which observations are recorded on each
-'subject' on multiple time periods. The interaction of the treatment
+"subject" on multiple time periods. The interaction of the treatment
 variable and time is of interest.
 
 - Univariate approach using `aov` and adjusted p-values
