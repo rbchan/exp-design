@@ -13,7 +13,7 @@ This site holds lecture and lab materials for FANR 6750, a course on experimenta
 * [A x B factorial designs](labs/factorial/lab-factorial.md)
 * [Nested Designs](labs/nested/nested.md)
 * [Split plot designs](labs/split-plot/split-plot.md)
-* Repeated measures ANOVA
+* [Repeated measures ANOVA](labs/repeated-measures/repeated-measures.md)
 * Generalized linear models
 
 More details can be found in the [syllabus](syllabus.md).
