@@ -61,7 +61,7 @@ The above components of a scientific study need to be considered together rather
 | 11   | Split-plot designs | [Split-plot designs](labs/split-plot/split-plot.md)   |            |
 |      | Repeated measures ANOVA |            | von Ende (2002) |
 |      | No class |                                |            |
-| 12   | Repeated measures ANOVA | Repeated measures  |         |
+| 12   | Repeated measures ANOVA | [Repeated measures](labs/repeated-measures/repeated-measures.md)  |         |
 |      | Paper discussion   |                      |            |
 |      | Regression review  |                      |            |
 | 13   | Analysis of covariance  | ANCOVA          | Chapter 13 |
