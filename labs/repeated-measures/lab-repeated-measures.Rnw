@@ -90,8 +90,8 @@ knit_theme$set("edit-kwrite")
       {\bf Univariate}
         \begin{itemize}
         \normalsize
-          \item<1-> This is just a split-plot analysis with adjusted $p$-values
-          \item<1-> Adjustments: Greenhouse-Geisser or Huynh-Feldt methods
+          \item<1-> This is similar to a split-plot analysis, but with adjusted $p$-values
+          \item<1-> Adjustments assuming `near-sphericity': Greenhouse-Geisser or Huynh-Feldt methods
           \item<1-> In \R, you must do a MANOVA to obtain these adjusted $P$-values
         \end{itemize}
       \vfill
@@ -99,6 +99,7 @@ knit_theme$set("edit-kwrite")
         \begin{itemize}
           \large
           \item<2-> Testing based on Wilks' lambda or Pillai's trace %statistic
+          \item<2-> No assumptions about `sphericity' are required
           \item<2-> This is usually followed by a profile analysis
         \end{itemize}
       \vfill
@@ -158,7 +159,7 @@ legend(1,14,c("High fertilizer", "Low fertilizer"),
 
 
 \begin{frame}[fragile]
-  \frametitle{Univariate split-plot approach}
+  \frametitle{Univariate approach}
   \scriptsize
 <<aov1,size='scriptsize'>>=
 aov1 <- aov(leaves ~ fertilizer*week + Error(plant),
@@ -242,10 +243,13 @@ anova(manova1, X=~1, test="Spherical")
 \begin{frame}[fragile]
   \frametitle{An aside -- sphericity}
   \small
-  {Technically, adjusted $p$-values and MANOVA aren't necessary if the
-    assumption of sphericity holds. \alert{However}, we recommend
-    doing the adjustments (or the MANOVA) anyway because the test of
-    sphericity has low power. \\}
+  %% {Technically, adjusted $p$-values and MANOVA aren't necessary if the
+  %%   assumption of sphericity holds. \alert{However}, we recommend
+  %%   doing the adjustments (or the MANOVA) anyway because the test of
+  %%   sphericity has low power. \\}
+  The univariate approach is only valid under the sphericity
+  assumption. %if the variance-covariance
+%  matrix meets the
   \pause
   \vfill
   Sphericity is the multivariate analogue of the homogeneity of
@@ -261,7 +265,7 @@ mauchly.test(manova1, X=~1)
 \vfill
 \small %\normalsize
 {\centering We fail to reject the null hypothesis, so sphericity
-  can be assumed. \\}
+  can be assumed, and the adjusted $p$-values are therefore legitimate. \\}
 %  This tells us that the adjusted
 %  $p$-values are legitimate. \par }
 \end{frame}
