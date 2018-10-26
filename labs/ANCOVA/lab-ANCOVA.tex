@@ -1,0 +1,754 @@
+\documentclass[color=usenames,dvipsnames]{beamer}\usepackage[]{graphicx}\usepackage[]{color}
+%% maxwidth is the original width if it is less than linewidth
+%% otherwise use linewidth (to make sure the graphics do not exceed the margin)
+\makeatletter
+\def\maxwidth{ %
+  \ifdim\Gin@nat@width>\linewidth
+    \linewidth
+  \else
+    \Gin@nat@width
+  \fi
+}
+\makeatother
+
+\definecolor{fgcolor}{rgb}{0, 0, 0}
+\newcommand{\hlnum}[1]{\textcolor[rgb]{0.69,0.494,0}{#1}}%
+\newcommand{\hlstr}[1]{\textcolor[rgb]{0.749,0.012,0.012}{#1}}%
+\newcommand{\hlcom}[1]{\textcolor[rgb]{0.514,0.506,0.514}{\textit{#1}}}%
+\newcommand{\hlopt}[1]{\textcolor[rgb]{0,0,0}{#1}}%
+\newcommand{\hlstd}[1]{\textcolor[rgb]{0,0,0}{#1}}%
+\newcommand{\hlkwa}[1]{\textcolor[rgb]{0,0,0}{\textbf{#1}}}%
+\newcommand{\hlkwb}[1]{\textcolor[rgb]{0,0.341,0.682}{#1}}%
+\newcommand{\hlkwc}[1]{\textcolor[rgb]{0,0,0}{\textbf{#1}}}%
+\newcommand{\hlkwd}[1]{\textcolor[rgb]{0.004,0.004,0.506}{#1}}%
+\let\hlipl\hlkwb
+
+\usepackage{framed}
+\makeatletter
+\newenvironment{kframe}{%
+ \def\at@end@of@kframe{}%
+ \ifinner\ifhmode%
+  \def\at@end@of@kframe{\end{minipage}}%
+  \begin{minipage}{\columnwidth}%
+ \fi\fi%
+ \def\FrameCommand##1{\hskip\@totalleftmargin \hskip-\fboxsep
+ \colorbox{shadecolor}{##1}\hskip-\fboxsep
+     % There is no \\@totalrightmargin, so:
+     \hskip-\linewidth \hskip-\@totalleftmargin \hskip\columnwidth}%
+ \MakeFramed {\advance\hsize-\width
+   \@totalleftmargin\z@ \linewidth\hsize
+   \@setminipage}}%
+ {\par\unskip\endMakeFramed%
+ \at@end@of@kframe}
+\makeatother
+
+\definecolor{shadecolor}{rgb}{.97, .97, .97}
+\definecolor{messagecolor}{rgb}{0, 0, 0}
+\definecolor{warningcolor}{rgb}{1, 0, 1}
+\definecolor{errorcolor}{rgb}{1, 0, 0}
+\newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
+
+\usepackage{alltt}
+%\documentclass[color=usenames,dvipsnames,handout]{beamer}
+
+
+
+%\usepackage[roman]{../../lab1}
+\usepackage[sans]{../../lab1}
+
+\hypersetup{pdftex,pdfstartview=FitV}
+
+
+
+
+
+
+
+
+
+%% New command for inline code that isn't to be evaluated
+\definecolor{inlinecolor}{rgb}{0.878, 0.918, 0.933}
+\newcommand{\inr}[1]{\colorbox{inlinecolor}{\texttt{#1}}}
+
+
+
+
+
+
+
+
+
+
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\begin{document}
+
+
+%\setlength\fboxsep{0pt}
+
+
+
+\begin{frame}[plain]
+  \huge
+  \centering \par
+  {\color{RoyalBlue}{Lab 11 -- ANCOVA}} \\
+  \vspace{1cm}
+  \LARGE
+  October 29 \& 30, 2018 \\
+  FANR 6750 \\
+  \vfill
+  \large
+  Richard Chandler and Bob Cooper
+
+  \note{
+  FIXME for 2016: Change variable ``length'' to something like
+  ``size''. And center the covariate so that mu is the grand mean
+  }
+\end{frame}
+
+
+
+\section{Regression}
+
+
+
+
+\begin{frame}
+  \frametitle{ANCOVA overview}
+  {\bf Scenario}
+  \begin{itemize}
+    \item We are interested in doing a one-way ANOVA
+    \item However, we need to account for variation associated with a
+      continuous predictor variable
+  \end{itemize}
+  \pause
+  \vfill
+  \centering \bf
+  ANCOVA can be thought of as a hybrid between ANOVA and regression \\
+  \pause
+  \vfill
+  \centering \bf
+  ANOVA, regression, and ANCOVA are linear models \\
+\end{frame}
+
+
+
+\begin{frame}[fragile]
+  \frametitle{The Diet Data}
+  \small
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{dietData} \hlkwb{<-} \hlkwd{read.csv}\hlstd{(}\hlstr{"dietData.csv"}\hlstd{)}
+\hlkwd{levels}\hlstd{(dietData}\hlopt{$}\hlstd{diet)}
+\end{alltt}
+\begin{verbatim}
+## [1] "Control" "High"    "Low"     "Med"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\pause
+\vspace{0.5cm}
+{\bf \large Reorder the levels of the factor, just for convenience}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{levels}\hlstd{(dietData}\hlopt{$}\hlstd{diet)} \hlkwb{<-} \hlkwd{list}\hlstd{(}\hlkwc{Control}\hlstd{=}\hlstr{"Control"}\hlstd{,} \hlkwc{Low}\hlstd{=}\hlstr{"Low"}\hlstd{,}
+                              \hlkwc{Med}\hlstd{=}\hlstr{"Med"}\hlstd{,} \hlkwc{High}\hlstd{=}\hlstr{"High"}\hlstd{)}
+\hlkwd{levels}\hlstd{(dietData}\hlopt{$}\hlstd{diet)}
+\end{alltt}
+\begin{verbatim}
+## [1] "Control" "Low"     "Med"     "High"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{The diet data}
+%<<scatter,echo=FALSE,fig.show="hide">>=
+%plot(weight ~ girth, dietData)
+%@
+%<<bp,echo=FALSE,fig.show=FALSE>>=
+%boxplot(weight ~ diet, dietData, ylab="Weight")
+%@
+  \begin{columns}
+    \begin{column}{0.5\textwidth}
+      \tiny %\scriptsize
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{plot}\hlstd{(weight} \hlopt{~} \hlstd{girth, dietData)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+    \includegraphics[width=\textwidth]{figure/plot-wt-1}
+    \end{column}
+    \begin{column}{0.5\textwidth}
+      \tiny %\scriptsize
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{boxplot}\hlstd{(weight} \hlopt{~} \hlstd{diet, dietData,} \hlkwc{ylab}\hlstd{=}\hlstr{"Weight"}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+    \includegraphics[width=\textwidth]{figure/bp-1}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Simple linear regression using {\tt lm}}
+  \scriptsize
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{fm1} \hlkwb{<-} \hlkwd{lm}\hlstd{(weight} \hlopt{~} \hlstd{girth, dietData)}
+\hlkwd{summary}\hlstd{(fm1)}
+\end{alltt}
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = weight ~ girth, data = dietData)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -5.6906 -1.2625  0.0522  1.0233  6.1680 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(>|t|)    
+## (Intercept) 21.32523    0.80685  26.430  < 2e-16 ***
+## girth        0.51807    0.06742   7.685 2.07e-10 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 2.171 on 58 degrees of freedom
+## Multiple R-squared:  0.5045,	Adjusted R-squared:  0.496 
+## F-statistic: 59.05 on 1 and 58 DF,  p-value: 2.072e-10
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\pause
+{The two estimates correspond to the intercept and slope parameters}
+\end{frame}
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Regression line and confidence interval}
+  {%\bf %\footnotesize
+    Regression lines and CIs can be created using the
+    \inr{predict} function. \\}
+  \begin{enumerate}[\bf (1)]
+    \item Create a new {\tt data.frame} containing a sequence of
+        values of the predictor variable {\it girth}
+    \item Predict {\it weight} using these values of {\it girth}
+    \item Put predictions and data together for easy plotting
+  \end{enumerate}
+  \pause
+  \vfill
+  \small
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{girth} \hlkwb{<-} \hlstd{dietData}\hlopt{$}\hlstd{girth}
+\hlstd{nd} \hlkwb{<-} \hlkwd{data.frame}\hlstd{(}\hlkwc{girth}\hlstd{=}\hlkwd{seq}\hlstd{(}\hlkwd{min}\hlstd{(girth),} \hlkwd{max}\hlstd{(girth),} \hlkwc{length}\hlstd{=}\hlnum{50}\hlstd{))}
+\hlstd{E1} \hlkwb{<-} \hlkwd{predict}\hlstd{(fm1,} \hlkwc{newdata}\hlstd{=nd,} \hlkwc{se.fit}\hlstd{=}\hlnum{TRUE}\hlstd{,}
+              \hlkwc{interval}\hlstd{=}\hlstr{"confidence"}\hlstd{)}
+\hlstd{predictionData} \hlkwb{<-} \hlkwd{data.frame}\hlstd{(E1}\hlopt{$}\hlstd{fit, nd)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+%\pause
+%\vfill
+%{\bf Plot raw data and the regression results}
+\end{frame}
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Regression line and confidence interval}
+  \scriptsize
+\begin{knitrout}\scriptsize
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{plot}\hlstd{(weight} \hlopt{~} \hlstd{girth,} \hlkwc{data}\hlstd{=dietData)}                   \hlcom{# raw data}
+\hlkwd{lines}\hlstd{(fit} \hlopt{~} \hlstd{girth,} \hlkwc{data}\hlstd{=predictionData,} \hlkwc{lwd}\hlstd{=}\hlnum{2}\hlstd{)}        \hlcom{# fitted line}
+\hlkwd{lines}\hlstd{(lwr} \hlopt{~} \hlstd{girth,} \hlkwc{data}\hlstd{=predictionData,} \hlkwc{lwd}\hlstd{=}\hlnum{2}\hlstd{,} \hlkwc{lty}\hlstd{=}\hlnum{3}\hlstd{)} \hlcom{# lower CI}
+\hlkwd{lines}\hlstd{(upr} \hlopt{~} \hlstd{girth,} \hlkwc{data}\hlstd{=predictionData,} \hlkwc{lwd}\hlstd{=}\hlnum{2}\hlstd{,} \hlkwc{lty}\hlstd{=}\hlnum{3}\hlstd{)} \hlcom{# upper CI}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+  \vspace{-9mm}
+  \begin{center}
+    \includegraphics[width=0.7\textwidth]{figure/plot-fm1-1}
+  \end{center}
+\end{frame}
+
+
+
+\section{One-way ANOVA}
+
+
+
+\begin{frame}[fragile]
+  \frametitle{One-way ANOVA using {\tt lm}}
+{%\bf
+  Change the \inr{contrasts} option so that the estimates will
+  correspond to the additive model, and then fit the ANOVA}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{options}\hlstd{(}\hlkwc{contrasts}\hlstd{=}\hlkwd{c}\hlstd{(}\hlstr{"contr.sum"}\hlstd{,} \hlstr{"contr.poly"}\hlstd{))}
+\hlstd{fm2} \hlkwb{<-} \hlkwd{lm}\hlstd{(weight} \hlopt{~} \hlstd{diet, dietData)}
+\hlkwd{summary.aov}\hlstd{(fm2)}
+\end{alltt}
+\begin{verbatim}
+##             Df Sum Sq Mean Sq F value Pr(>F)
+## diet         3   54.6  18.216   2.053  0.117
+## Residuals   56  496.9   8.873
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\pause
+\vfill
+{%\bf
+  The \inr{aov} function gives identical results}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{summary}\hlstd{(}\hlkwd{aov}\hlstd{(weight} \hlopt{~} \hlstd{diet, dietData))}
+\end{alltt}
+\begin{verbatim}
+##             Df Sum Sq Mean Sq F value Pr(>F)
+## diet         3   54.6  18.216   2.053  0.117
+## Residuals   56  496.9   8.873
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+
+
+\begin{frame}[fragile]
+  \frametitle{An alternative summary}
+  \scriptsize
+\begin{knitrout}\tiny
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{summary}\hlstd{(fm2)}
+\end{alltt}
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = weight ~ diet, data = dietData)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -7.6371 -1.9253 -0.0366  1.9770  5.4576 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(>|t|)    
+## (Intercept) 27.13962    0.38456  70.573   <2e-16 ***
+## diet1       -1.02179    0.66608  -1.534    0.131    
+## diet2       -0.56593    0.66608  -0.850    0.399    
+## diet3        0.08027    0.66608   0.121    0.905    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 2.979 on 56 degrees of freedom
+## Multiple R-squared:  0.09908,	Adjusted R-squared:  0.05082 
+## F-statistic: 2.053 on 3 and 56 DF,  p-value: 0.1169
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+ \pause
+ {%\bf
+   Because we changed the \inr{contrast} option to {\tt
+     contr.sum}, the intercept is the grand mean ($\mu$) and the other
+   estimates are the effect sizes ($\alpha_i$) \\}
+%     contr.sum}, The intercept is the mean weight for the reference level
+%   (Control) when girth=0. The other estimates indicate the
+%   difference from the reference level. \\}
+\end{frame}
+
+
+
+\begin{comment}
+\begin{frame}[fragile]
+  \frametitle{An alternative summary}
+  \scriptsize
+  {\bf If you want estimates that correspond to the additive model,
+    you need to change the {\tt contrasts} argument \\}
+\tiny
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{options}\hlstd{(}\hlkwc{contrasts}\hlstd{=}\hlkwd{c}\hlstd{(}\hlstr{"contr.sum"}\hlstd{,} \hlstr{"contr.poly"}\hlstd{))}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\pause
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{summary}\hlstd{(}\hlkwd{lm}\hlstd{(weight} \hlopt{~} \hlstd{diet, dietData))}
+\end{alltt}
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = weight ~ diet, data = dietData)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -7.6371 -1.9253 -0.0366  1.9770  5.4576 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(>|t|)    
+## (Intercept) 27.13962    0.38456  70.573   <2e-16 ***
+## diet1       -1.02179    0.66608  -1.534    0.131    
+## diet2       -0.56593    0.66608  -0.850    0.399    
+## diet3        0.08027    0.66608   0.121    0.905    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 2.979 on 56 degrees of freedom
+## Multiple R-squared:  0.09908,	Adjusted R-squared:  0.05082 
+## F-statistic: 2.053 on 3 and 56 DF,  p-value: 0.1169
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\pause
+\vfill
+\scriptsize
+{\centering \bf {\tt (Intercept)} is now the grand mean ($\mu$). The
+  other estimates are the $\alpha_i$'s from the additive model. \\}
+\end{frame}
+\end{comment}
+
+
+
+
+%\begin{comment}
+\begin{frame}[fragile]
+  \frametitle{One-way ANOVA}
+  {%\centering
+    \small %\bf
+    The \inr{predict} function can also be used to obtain
+    group means, SEs, and CIs from a one-way ANOVA \\}
+  \footnotesize %\scriptsize
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{nd2} \hlkwb{<-} \hlkwd{data.frame}\hlstd{(}\hlkwc{diet}\hlstd{=}\hlkwd{levels}\hlstd{(dietData}\hlopt{$}\hlstd{diet))}
+\hlstd{E2} \hlkwb{<-} \hlkwd{predict}\hlstd{(fm2,} \hlkwc{newdata}\hlstd{=nd2,}
+              \hlkwc{se.fit}\hlstd{=}\hlnum{TRUE}\hlstd{,} \hlkwc{interval}\hlstd{=}\hlstr{"confidence"}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\pause
+\vfill
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{predData2} \hlkwb{<-} \hlkwd{data.frame}\hlstd{(E2}\hlopt{$}\hlstd{fit, nd2)}
+\hlstd{predData2}
+\end{alltt}
+\begin{verbatim}
+##        fit      lwr      upr    diet
+## 1 26.11783 24.57710 27.65856 Control
+## 2 26.57368 25.03295 28.11442     Low
+## 3 27.21988 25.67915 28.76062     Med
+## 4 28.64707 27.10634 30.18780    High
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{One-way ANOVA}
+  \vspace{-0.5cm}
+  \begin{center}
+    \includegraphics[width=0.8\textwidth]{figure/barplot1-1}
+  \end{center}
+\end{frame}
+%\end{comment}
+
+
+
+\section{ANCOVA}
+
+
+
+\begin{frame}[fragile]
+  \frametitle{ANCOVA preliminaries}
+  \small
+  { Additive model}
+  \[
+    y_{ij} = \mu + \alpha_i + \beta(x_{ij} - \bar{x}) + \varepsilon_{ij}
+  \]
+  \pause
+  \vfill
+  {Make sure the {\tt contrasts} are set as before}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{options}\hlstd{(}\hlkwc{contrasts}\hlstd{=}\hlkwd{c}\hlstd{(}\hlstr{"contr.sum"}\hlstd{,} \hlstr{"contr.poly"}\hlstd{))}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+  \pause
+  \vfill
+  {Centering the covariate isn't required, but doing so allow the
+    intercept to be interpretted as the grand mean}
+%  \small
+  \footnotesize
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{dietData}\hlopt{$}\hlstd{girthCentered} \hlkwb{<-} \hlstd{dietData}\hlopt{$}\hlstd{girth} \hlopt{-} \hlkwd{mean}\hlstd{(dietData}\hlopt{$}\hlstd{girth)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+
+
+\begin{frame}[fragile]
+  \frametitle{ANCOVA}
+%  \pause
+{\scriptsize %\footnotesize
+  %\bf
+  Put the covariate before the treatment
+  variable in the formula. \\}
+%<<>>=
+%dietData$girthCentered <- dietData$girth - mean(dietData$girth)
+%@
+\scriptsize %\tiny
+\begin{knitrout}\scriptsize
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{fm3} \hlkwb{<-} \hlkwd{lm}\hlstd{(weight} \hlopt{~} \hlstd{girthCentered} \hlopt{+} \hlstd{diet, dietData)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+{
+\pause
+\vfill
+\begin{knitrout}\small
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{summary}\hlstd{(fm3)}
+\end{alltt}
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = weight ~ girthCentered + diet, data = dietData)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -3.8214 -1.2213 -0.2519  1.2161  4.9185 
+## 
+## Coefficients:
+##               Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)    27.1396     0.2406 112.787  < 2e-16 ***
+## girthCentered   0.5573     0.0594   9.382  5.2e-13 ***
+## diet1          -1.7446     0.4238  -4.116  0.00013 ***
+## diet2          -0.3758     0.4173  -0.901  0.37171    
+## diet3           0.7819     0.4234   1.847  0.07020 .  
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 1.864 on 55 degrees of freedom
+## Multiple R-squared:  0.6536,	Adjusted R-squared:  0.6284 
+## F-statistic: 25.94 on 4 and 55 DF,  p-value: 4.147e-12
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+}
+\end{frame}
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{The ANOVA table}
+%  \scriptsize
+  {%\bf
+    Note that the null hypothesis of no diet
+    effect is rejected, even though it was not rejected before.}
+  \small
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{summary.aov}\hlstd{(fm3)}
+\end{alltt}
+\begin{verbatim}
+##               Df Sum Sq Mean Sq F value   Pr(>F)    
+## girthCentered  1 278.25  278.25  80.095 2.54e-12 ***
+## diet           3  82.22   27.41   7.889 0.000182 ***
+## Residuals     55 191.07    3.47                     
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Predict weight}
+  {%\bf
+    Create predictions of {\tt weight} over a sequences of {\tt
+      girths}, for every level of {\tt diet}}
+  \small
+\begin{knitrout}\small
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{girthC} \hlkwb{<-} \hlstd{dietData}\hlopt{$}\hlstd{girthCentered}
+\hlstd{nd3} \hlkwb{<-} \hlkwd{data.frame}\hlstd{(}
+    \hlkwc{diet}\hlstd{=}\hlkwd{rep}\hlstd{(}\hlkwd{c}\hlstd{(}\hlstr{"Control"}\hlstd{,} \hlstr{"Low"}\hlstd{,} \hlstr{"Med"}\hlstd{,} \hlstr{"High"}\hlstd{),} \hlkwc{each}\hlstd{=}\hlnum{20}\hlstd{),}
+    \hlkwc{girthCentered}\hlstd{=}\hlkwd{rep}\hlstd{(}\hlkwd{seq}\hlstd{(}\hlkwd{min}\hlstd{(girthC),} \hlkwd{max}\hlstd{(girthC),}
+                          \hlkwc{length}\hlstd{=}\hlnum{20}\hlstd{),}
+                      \hlkwc{times}\hlstd{=}\hlnum{4}\hlstd{))}
+\hlstd{E3} \hlkwb{<-} \hlkwd{predict}\hlstd{(fm3,} \hlkwc{newdata}\hlstd{=nd3,} \hlkwc{se.fit}\hlstd{=}\hlnum{TRUE}\hlstd{,}
+              \hlkwc{interval}\hlstd{=}\hlstr{"confidence"}\hlstd{)}
+\hlstd{predData3} \hlkwb{<-} \hlkwd{data.frame}\hlstd{(E3}\hlopt{$}\hlstd{fit, nd3)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Plot the regression lines}
+\footnotesize %\small
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{plot}\hlstd{(weight} \hlopt{~} \hlstd{girthCentered, dietData,} \hlkwc{pch}\hlstd{=}\hlnum{16}\hlstd{,} \hlkwc{cex}\hlstd{=}\hlnum{1.5}\hlstd{,}
+     \hlkwc{col}\hlstd{=}\hlkwd{rep}\hlstd{(colrs,} \hlkwc{each}\hlstd{=}\hlnum{15}\hlstd{))}
+\hlkwd{lines}\hlstd{(fit} \hlopt{~} \hlstd{girthCentered, predData3,} \hlkwc{subset}\hlstd{=diet}\hlopt{==}\hlstr{"Control"}\hlstd{,}
+      \hlkwc{col}\hlstd{=colrs[}\hlnum{1}\hlstd{],} \hlkwc{lwd}\hlstd{=}\hlnum{2}\hlstd{)}
+\hlkwd{lines}\hlstd{(fit} \hlopt{~} \hlstd{girthCentered, predData3,} \hlkwc{subset}\hlstd{=diet}\hlopt{==}\hlstr{"Low"}\hlstd{,} \hlkwc{lty}\hlstd{=}\hlnum{1}\hlstd{,}
+      \hlkwc{col}\hlstd{=colrs[}\hlnum{2}\hlstd{],} \hlkwc{lwd}\hlstd{=}\hlnum{2}\hlstd{)}
+\hlkwd{lines}\hlstd{(fit} \hlopt{~} \hlstd{girthCentered, predData3,} \hlkwc{subset}\hlstd{=diet}\hlopt{==}\hlstr{"Med"}\hlstd{,} \hlkwc{lty}\hlstd{=}\hlnum{1}\hlstd{,}
+      \hlkwc{col}\hlstd{=colrs[}\hlnum{3}\hlstd{],} \hlkwc{lwd}\hlstd{=}\hlnum{2}\hlstd{)}
+\hlkwd{lines}\hlstd{(fit} \hlopt{~} \hlstd{girthCentered, predData3,} \hlkwc{subset}\hlstd{=diet}\hlopt{==}\hlstr{"High"}\hlstd{,} \hlkwc{lty}\hlstd{=}\hlnum{1}\hlstd{,}
+      \hlkwc{col}\hlstd{=colrs[}\hlnum{4}\hlstd{],} \hlkwc{lwd}\hlstd{=}\hlnum{2}\hlstd{)}
+\hlkwd{legend}\hlstd{(}\hlnum{4}\hlstd{,} \hlnum{23}\hlstd{,} \hlkwd{c}\hlstd{(}\hlstr{"High"}\hlstd{,} \hlstr{"Med"}\hlstd{,} \hlstr{"Low"}\hlstd{,} \hlstr{"Control"}\hlstd{),}
+       \hlkwc{title}\hlstd{=}\hlstr{"Diet"}\hlstd{,} \hlkwc{lwd}\hlstd{=}\hlnum{2}\hlstd{,} \hlkwc{col}\hlstd{=}\hlkwd{rev}\hlstd{(colrs))}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+
+
+
+
+
+\begin{frame}
+  \frametitle{Plot the regression lines}
+  \vspace{-0.5cm}
+  \begin{center}
+    \only<1 | handout:0>{\includegraphics[width=0.8\textwidth]{figure/scatplot0-1}}
+    \only<2>{\includegraphics[width=0.8\textwidth]{figure/scatplot1-1}}
+  \end{center}
+\end{frame}
+
+
+
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Multiple comparisons}
+%{\bf Use {\tt multcomp} package}
+\scriptsize
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{## install.packages("multcomp")}
+\hlkwd{library}\hlstd{(multcomp)}
+\hlkwd{summary}\hlstd{(}\hlkwd{glht}\hlstd{(fm3,} \hlkwc{linfct}\hlstd{=}\hlkwd{mcp}\hlstd{(}\hlkwc{diet}\hlstd{=}\hlstr{"Tukey"}\hlstd{)))}
+\end{alltt}
+\begin{verbatim}
+## 
+## 	 Simultaneous Tests for General Linear Hypotheses
+## 
+## Multiple Comparisons of Means: Tukey Contrasts
+## 
+## 
+## Fit: lm(formula = weight ~ girthCentered + diet, data = dietData)
+## 
+## Linear Hypotheses:
+##                     Estimate Std. Error t value Pr(>|t|)    
+## Low - Control == 0    1.3688     0.6875   1.991  0.20389    
+## Med - Control == 0    2.5265     0.6973   3.623  0.00336 ** 
+## High - Control == 0   3.0830     0.6832   4.513  < 0.001 ***
+## Med - Low == 0        1.1577     0.6828   1.696  0.33583    
+## High - Low == 0       1.7143     0.6817   2.515  0.06861 .  
+## High - Med == 0       0.5566     0.6869   0.810  0.84931    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## (Adjusted p values reported -- single-step method)
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+
+
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Assignment}
+  {\bf \large Complete the following and upload your \R~script to ELC
+    before lab next week \\}
+%  \pause
+  \vfill
+  \begin{enumerate}[\bf \color{PineGreen} (1)]
+%    \item Run a new analysis using {\tt lm} to test for an interaction
+%      of diet and girth
+%    \item Is the interaction significant? Report the $F$-value and
+%      $P$-value used for this test.
+    \item Fit an ANCOVA model to the data in {\tt treeData.csv}, which
+      represent the height of trees following a fertilizer
+      experiment. The covariate is pH.
+    \item Use: {\tt options(contrasts=c("contr.sum", "contr.poly"))}
+      so that your estimates correspond to the additive model from the
+      lecture notes
+    \item Interpret each of the estimates from {\tt lm}. What is the
+      null hypothesis associated with each $p$-value?
+    \item Plot the data and the regression lines. Use different colors
+      or symbols to distinguish the treatment groups.
+    \item Which fertilizer treatments are significantly different?
+  \end{enumerate}
+
+\end{frame}
+
+
+
+\end{document}
+

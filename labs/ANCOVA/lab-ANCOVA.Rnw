@@ -1,0 +1,553 @@
+\documentclass[color=usenames,dvipsnames]{beamer}
+%\documentclass[color=usenames,dvipsnames,handout]{beamer}
+
+
+
+%\usepackage[roman]{../../lab1}
+\usepackage[sans]{../../lab1}
+
+\hypersetup{pdftex,pdfstartview=FitV}
+
+
+
+<<build-fun, include=FALSE, cache=TRUE, eval=FALSE, purl=FALSE>>=
+## A function to compile and open the pdf
+## Usage:
+##
+source("../rnw2pdf.R")
+if(1==2) {
+  rnw2pdf("lab-ANCOVA")
+  rnw2pdf("lab-ANCOVA", clean=FALSE)
+  rnw2pdf("lab-ANCOVA", tangle=TRUE)
+}
+@
+
+
+<<knitr-theme,include=FALSE,purl=FALSE>>=
+##knit_theme$set("navajo-night")
+knit_theme$set("edit-kwrite")
+@
+
+
+%% New command for inline code that isn't to be evaluated
+\definecolor{inlinecolor}{rgb}{0.878, 0.918, 0.933}
+\newcommand{\inr}[1]{\colorbox{inlinecolor}{\texttt{#1}}}
+
+
+
+
+
+
+
+<<makeData,eval=TRUE,echo=FALSE,include=FALSE>>=
+set.seed(894)
+options(contrasts=c("contr.treatment", "contr.poly"))
+N <- 60
+a <- 4
+n <- N/a
+x <- runif(N, 5, 20)
+g <- gl(a, n, labels=c("Control", "Low", "Med", "High"))
+#contrasts(g) <- c("contr.sum", "contr.poly")
+dat <- data.frame(diet=g, girth=x)
+X <- model.matrix(~diet+girth, dat)
+##X <- model.matrix(~g, dat)
+X
+beta <- c(20, 1, 2, 3, 0.5)
+mu <- X %*% beta
+mu
+sigma <- 2
+set.seed(52)
+y <- rnorm(N, mu, sigma)
+tapply(y, g, mean)
+dat <- cbind(weight=y, dat)
+#plot(weight ~ x, dat, col=rep(1:4, each=n))
+#boxplot(weight ~ diet, dat)
+write.csv(dat, "dietData.csv", row.names=FALSE)
+@
+<<eval=TRUE,echo=FALSE,include=FALSE>>=
+set.seed(894)
+N <- 30
+a <- 3
+n <- N/a
+x <- runif(N, 4, 8)
+g <- gl(a, n, labels=c("Control", "Low", "High"))
+#contrasts(g) <- c("contr.sum", "contr.poly")
+dat <- data.frame(fertilizer=g, pH=round(x,2))
+X <- model.matrix(~fertilizer+pH, dat)
+X
+beta <- c(20, 1, 1.5, 2)
+mu <- X %*% beta
+mu
+sigma <- 1.5
+set.seed(52)
+y <- rnorm(N, mu, sigma)
+tapply(y, g, mean)
+dat <- cbind(height=round(y,2), dat)
+#plot(weight ~ x, dat, col=rep(1:4, each=n))
+#boxplot(weight ~ diet, dat)
+write.csv(dat, "treeData.csv", row.names=FALSE)
+@
+
+
+
+
+
+
+
+\begin{document}
+
+
+%\setlength\fboxsep{0pt}
+
+
+
+\begin{frame}[plain]
+  \huge
+  \centering \par
+  {\color{RoyalBlue}{Lab 11 -- ANCOVA}} \\
+  \vspace{1cm}
+  \LARGE
+  October 29 \& 30, 2018 \\
+  FANR 6750 \\
+  \vfill
+  \large
+  Richard Chandler and Bob Cooper
+
+  \note{
+  FIXME for 2016: Change variable ``length'' to something like
+  ``size''. And center the covariate so that mu is the grand mean
+  }
+\end{frame}
+
+
+
+\section{Regression}
+
+
+
+
+\begin{frame}
+  \frametitle{ANCOVA overview}
+  {\bf Scenario}
+  \begin{itemize}
+    \item We are interested in doing a one-way ANOVA
+    \item However, we need to account for variation associated with a
+      continuous predictor variable
+  \end{itemize}
+  \pause
+  \vfill
+  \centering \bf
+  ANCOVA can be thought of as a hybrid between ANOVA and regression \\
+  \pause
+  \vfill
+  \centering \bf
+  ANOVA, regression, and ANCOVA are linear models \\
+\end{frame}
+
+
+
+\begin{frame}[fragile]
+  \frametitle{The Diet Data}
+  \small
+<<dietData>>=
+dietData <- read.csv("dietData.csv")
+levels(dietData$diet)
+@
+\pause
+\vspace{0.5cm}
+{\bf \large Reorder the levels of the factor, just for convenience}
+<<reorder>>=
+levels(dietData$diet) <- list(Control="Control", Low="Low",
+                              Med="Med", High="High")
+levels(dietData$diet)
+@
+\end{frame}
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{The diet data}
+%<<scatter,echo=FALSE,fig.show="hide">>=
+%plot(weight ~ girth, dietData)
+%@
+%<<bp,echo=FALSE,fig.show=FALSE>>=
+%boxplot(weight ~ diet, dietData, ylab="Weight")
+%@
+  \begin{columns}
+    \begin{column}{0.5\textwidth}
+      \tiny %\scriptsize
+<<plot-wt,echo=TRUE,fig.show="hide">>=
+plot(weight ~ girth, dietData)
+@
+    \includegraphics[width=\textwidth]{figure/plot-wt-1}
+    \end{column}
+    \begin{column}{0.5\textwidth}
+      \tiny %\scriptsize
+<<bp,echo=TRUE,fig.show="hide">>=
+boxplot(weight ~ diet, dietData, ylab="Weight")
+@
+    \includegraphics[width=\textwidth]{figure/bp-1}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Simple linear regression using {\tt lm}}
+  \scriptsize
+<<contr,echo=FALSE>>=
+options(contrasts=c("contr.treatment", "contr.poly"))
+@
+<<fm1>>=
+fm1 <- lm(weight ~ girth, dietData)
+summary(fm1)
+@
+\pause
+{The two estimates correspond to the intercept and slope parameters}
+\end{frame}
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Regression line and confidence interval}
+  {%\bf %\footnotesize
+    Regression lines and CIs can be created using the
+    \inr{predict} function. \\}
+  \begin{enumerate}[\bf (1)]
+    \item Create a new {\tt data.frame} containing a sequence of
+        values of the predictor variable {\it girth}
+    \item Predict {\it weight} using these values of {\it girth}
+    \item Put predictions and data together for easy plotting
+  \end{enumerate}
+  \pause
+  \vfill
+  \small
+<<pred1,size='footnotesize'>>=
+girth <- dietData$girth
+nd <- data.frame(girth=seq(min(girth), max(girth), length=50))
+E1 <- predict(fm1, newdata=nd, se.fit=TRUE,
+              interval="confidence")
+predictionData <- data.frame(E1$fit, nd)
+@
+%\pause
+%\vfill
+%{\bf Plot raw data and the regression results}
+\end{frame}
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Regression line and confidence interval}
+  \scriptsize
+<<plot-fm1,fig.show='hide',size='scriptsize'>>=
+plot(weight ~ girth, data=dietData)                   # raw data
+lines(fit ~ girth, data=predictionData, lwd=2)        # fitted line
+lines(lwr ~ girth, data=predictionData, lwd=2, lty=3) # lower CI
+lines(upr ~ girth, data=predictionData, lwd=2, lty=3) # upper CI
+@
+  \vspace{-9mm}
+  \begin{center}
+    \includegraphics[width=0.7\textwidth]{figure/plot-fm1-1}
+  \end{center}
+\end{frame}
+
+
+
+\section{One-way ANOVA}
+
+
+
+\begin{frame}[fragile]
+  \frametitle{One-way ANOVA using {\tt lm}}
+{%\bf
+  Change the \inr{contrasts} option so that the estimates will
+  correspond to the additive model, and then fit the ANOVA}
+<<contr2>>=
+options(contrasts=c("contr.sum", "contr.poly"))
+fm2 <- lm(weight ~ diet, dietData)
+summary.aov(fm2)
+@
+\pause
+\vfill
+{%\bf
+  The \inr{aov} function gives identical results}
+<<summary-aov>>=
+summary(aov(weight ~ diet, dietData))
+@
+\end{frame}
+
+
+
+\begin{frame}[fragile]
+  \frametitle{An alternative summary}
+  \scriptsize
+<<summary-fm2,size='tiny'>>=
+summary(fm2)
+@
+ \pause
+ {%\bf
+   Because we changed the \inr{contrast} option to {\tt
+     contr.sum}, the intercept is the grand mean ($\mu$) and the other
+   estimates are the effect sizes ($\alpha_i$) \\}
+%     contr.sum}, The intercept is the mean weight for the reference level
+%   (Control) when girth=0. The other estimates indicate the
+%   difference from the reference level. \\}
+\end{frame}
+
+
+
+\begin{comment}
+\begin{frame}[fragile]
+  \frametitle{An alternative summary}
+  \scriptsize
+  {\bf If you want estimates that correspond to the additive model,
+    you need to change the {\tt contrasts} argument \\}
+\tiny
+<<contr2-2>>=
+options(contrasts=c("contr.sum", "contr.poly"))
+@
+\pause
+<<summary-lm>>=
+summary(lm(weight ~ diet, dietData))
+@
+\pause
+\vfill
+\scriptsize
+{\centering \bf {\tt (Intercept)} is now the grand mean ($\mu$). The
+  other estimates are the $\alpha_i$'s from the additive model. \\}
+\end{frame}
+\end{comment}
+
+
+
+
+%\begin{comment}
+\begin{frame}[fragile]
+  \frametitle{One-way ANOVA}
+  {%\centering
+    \small %\bf
+    The \inr{predict} function can also be used to obtain
+    group means, SEs, and CIs from a one-way ANOVA \\}
+  \footnotesize %\scriptsize
+<<pred2>>=
+nd2 <- data.frame(diet=levels(dietData$diet))
+E2 <- predict(fm2, newdata=nd2,
+              se.fit=TRUE, interval="confidence")
+@
+\pause
+\vfill
+<<predDat2>>=
+predData2 <- data.frame(E2$fit, nd2)
+predData2
+@
+<<barplot1,fig.show="hide",echo=FALSE>>=
+bp <- barplot(predData2$fit, xlab="Diet", ylab="Weight",
+              ylim=c(20, 30), xpd=FALSE,
+              names.arg=levels(dietData$diet))
+box()
+arrows(bp, E2$fit[,1], bp, E2$fit[,1]+E2$se.fit, code=3, angle=90)
+@
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{One-way ANOVA}
+  \vspace{-0.5cm}
+  \begin{center}
+    \includegraphics[width=0.8\textwidth]{figure/barplot1-1}
+  \end{center}
+\end{frame}
+%\end{comment}
+
+
+
+\section{ANCOVA}
+
+
+
+\begin{frame}[fragile]
+  \frametitle{ANCOVA preliminaries}
+  \small
+  { Additive model}
+  \[
+    y_{ij} = \mu + \alpha_i + \beta(x_{ij} - \bar{x}) + \varepsilon_{ij}
+  \]
+  \pause
+  \vfill
+  {Make sure the {\tt contrasts} are set as before}
+<<contr3>>=
+options(contrasts=c("contr.sum", "contr.poly"))
+@
+  \pause
+  \vfill
+  {Centering the covariate isn't required, but doing so allow the
+    intercept to be interpretted as the grand mean}
+%  \small
+  \footnotesize
+<<center-girth>>=
+dietData$girthCentered <- dietData$girth - mean(dietData$girth)
+@
+\end{frame}
+
+
+
+\begin{frame}[fragile]
+  \frametitle{ANCOVA}
+%  \pause
+{\scriptsize %\footnotesize
+  %\bf
+  Put the covariate before the treatment
+  variable in the formula. \\}
+%<<>>=
+%dietData$girthCentered <- dietData$girth - mean(dietData$girth)
+%@
+\scriptsize %\tiny
+<<fm3,size='scriptsize'>>=
+fm3 <- lm(weight ~ girthCentered + diet, dietData)
+@
+{
+\pause
+\vfill
+<<summary-fm3,size='small'>>=
+summary(fm3)
+@
+}
+\end{frame}
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{The ANOVA table}
+%  \scriptsize
+  {%\bf
+    Note that the null hypothesis of no diet
+    effect is rejected, even though it was not rejected before.}
+  \small
+<<summary-aov3>>=
+summary.aov(fm3)
+@
+\end{frame}
+
+
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Predict weight}
+  {%\bf
+    Create predictions of {\tt weight} over a sequences of {\tt
+      girths}, for every level of {\tt diet}}
+  \small
+<<predict-girth,size='small'>>=
+girthC <- dietData$girthCentered
+nd3 <- data.frame(
+    diet=rep(c("Control", "Low", "Med", "High"), each=20),
+    girthCentered=rep(seq(min(girthC), max(girthC),
+                          length=20),
+                      times=4))
+E3 <- predict(fm3, newdata=nd3, se.fit=TRUE,
+              interval="confidence")
+predData3 <- data.frame(E3$fit, nd3)
+@
+\end{frame}
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Plot the regression lines}
+\footnotesize %\small
+<<scatplot0,fig.show='hide',echo=FALSE,size='footnotesize'>>=
+colrs <- rainbow(4) #c("black", "blue", "tan2", "cyan3")
+plot(weight ~ girthCentered, dietData, pch=16, cex=1.5,
+     col=rep(colrs, each=15))
+@
+<<scatplot1,fig.show='hide',size='footnotesize'>>=
+plot(weight ~ girthCentered, dietData, pch=16, cex=1.5,
+     col=rep(colrs, each=15))
+lines(fit ~ girthCentered, predData3, subset=diet=="Control",
+      col=colrs[1], lwd=2)
+lines(fit ~ girthCentered, predData3, subset=diet=="Low", lty=1,
+      col=colrs[2], lwd=2)
+lines(fit ~ girthCentered, predData3, subset=diet=="Med", lty=1,
+      col=colrs[3], lwd=2)
+lines(fit ~ girthCentered, predData3, subset=diet=="High", lty=1,
+      col=colrs[4], lwd=2)
+legend(4, 23, c("High", "Med", "Low", "Control"),
+       title="Diet", lwd=2, col=rev(colrs))
+@
+\end{frame}
+
+
+
+
+
+
+\begin{frame}
+  \frametitle{Plot the regression lines}
+  \vspace{-0.5cm}
+  \begin{center}
+    \only<1 | handout:0>{\includegraphics[width=0.8\textwidth]{figure/scatplot0-1}}
+    \only<2>{\includegraphics[width=0.8\textwidth]{figure/scatplot1-1}}
+  \end{center}
+\end{frame}
+
+
+
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Multiple comparisons}
+%{\bf Use {\tt multcomp} package}
+\scriptsize
+<<multcomp,eval=TRUE>>=
+## install.packages("multcomp")
+library(multcomp)
+summary(glht(fm3, linfct=mcp(diet="Tukey")))
+@
+\end{frame}
+
+
+
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Assignment}
+  {\bf \large Complete the following and upload your \R~script to ELC
+    before lab next week \\}
+%  \pause
+  \vfill
+  \begin{enumerate}[\bf \color{PineGreen} (1)]
+%    \item Run a new analysis using {\tt lm} to test for an interaction
+%      of diet and girth
+%    \item Is the interaction significant? Report the $F$-value and
+%      $P$-value used for this test.
+    \item Fit an ANCOVA model to the data in {\tt treeData.csv}, which
+      represent the height of trees following a fertilizer
+      experiment. The covariate is pH.
+    \item Use: {\tt options(contrasts=c("contr.sum", "contr.poly"))}
+      so that your estimates correspond to the additive model from the
+      lecture notes
+    \item Interpret each of the estimates from {\tt lm}. What is the
+      null hypothesis associated with each $p$-value?
+    \item Plot the data and the regression lines. Use different colors
+      or symbols to distinguish the treatment groups.
+    \item Which fertilizer treatments are significantly different?
+  \end{enumerate}
+
+\end{frame}
+
+
+
+\end{document}
+
