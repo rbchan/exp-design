@@ -39,7 +39,7 @@ knit_theme$set("edit-kwrite")
 
 
 
-<<makeData,eval=TRUE,echo=FALSE,include=FALSE>>=
+<<makeData,eval=TRUE,echo=FALSE,include=FALSE,purl=FALSE>>=
 set.seed(894)
 options(contrasts=c("contr.treatment", "contr.poly"))
 N <- 60
@@ -64,7 +64,7 @@ dat <- cbind(weight=y, dat)
 #boxplot(weight ~ diet, dat)
 write.csv(dat, "dietData.csv", row.names=FALSE)
 @
-<<eval=TRUE,echo=FALSE,include=FALSE>>=
+<<eval=TRUE,echo=FALSE,include=FALSE,purl=FALSE>>=
 set.seed(894)
 N <- 30
 a <- 3

@@ -1,0 +1,1074 @@
+\documentclass[color=usenames,dvipsnames]{beamer}
+%\documentclass[color=usenames,dvipsnames,handout]{beamer}
+
+
+\usepackage[sans]{../../lab1}
+
+\hypersetup{pdftex,pdfstartview=FitV}
+
+
+
+<<build-fun, include=FALSE, cache=TRUE, eval=FALSE, purl=FALSE>>=
+## A function to compile and open the pdf
+source("../rnw2pdf.R")
+if(1==2) {
+    ## Usage:
+    rnw2pdf("power_analysis") # Don't include the file extension
+    rnw2pdf("power_analysis", tangle=TRUE) # If you want the .R file
+}
+@
+
+
+<<knitr-theme, include=FALSE, purl=FALSE>>=
+##knit_theme$set("navajo-night")
+knit_theme$set("edit-kwrite")
+@
+
+
+%% New command for inline code that isn't to be evaluated
+\definecolor{inlinecolor}{rgb}{0.878, 0.918, 0.933}
+\newcommand{\inr}[1]{\colorbox{inlinecolor}{\texttt{#1}}}
+
+
+
+
+
+
+\begin{document}
+
+
+\setlength\fboxsep{0pt}
+
+
+
+\begin{frame}[plain]
+  \huge
+  \centering \par
+  Introduction to Statistical Modeling \\
+  \vspace{1cm}
+  \Large
+  November 5 \& 7, 2018 \par
+\end{frame}
+
+
+\section{Motivation}
+
+
+\begin{frame}
+  \frametitle{Outline}
+  \LARGE
+   \only<1>{\tableofcontents[hideallsubsections]}
+%   \only<2>{\tableofcontents[currentsection,hideallsubsections]}
+\end{frame}
+
+
+
+\begin{frame}
+  \frametitle{Looking ahead}
+  \Large
+  \begin{itemize}
+    \item Linear models
+    \item[]
+    \item Linear mixed effects models
+    \item[]
+    \item Generalized linear models
+    \item[]
+    \item Model selection and multi-model inference
+    \item[]
+    \item Goodness-of-fit
+  \end{itemize}
+\end{frame}
+
+
+
+
+\begin{frame}
+  \frametitle{Motivation}
+  \large
+  {\bf Why do we need this part of the course? \par}
+  \pause
+%\begin{enumerate}[<+- | visible@+->][\bf \color{PineGreen} (1)]
+  \begin{itemize}[<+->]
+    \item We have been modeling all along
+    \item Good experimental design + ANOVA is usually the most direct
+      route to causal inference
+    \item Often, however, it isn't possible (or even desirable) to
+      control some aspects of the system being investigated
+    \item When manipulative experiments aren't %causal inference isn't
+      possible, observational studies
+      and predictive models are the next best option
+  \end{itemize}
+%\end{enumerate}
+% Mention BLOGs
+\end{frame}
+
+
+
+
+%% \begin{frame}
+%%   \frametitle{Assignment}
+%% <<eval=true,echo=false,results=hide>>=
+%% set.seed(894)
+%% N <- 100
+%% a <- 4
+%% n <- N/a
+%% x <- runif(N, 5, 20)
+%% g <- gl(a, n, labels=c("Control", "Low", "Med", "High"))
+%% #contrasts(g) <- c("contr.sum", "contr.poly")
+%% dat <- data.frame(diet=g, length=x,
+%%                   moon=sample(1:4, N, replace=TRUE),
+%%                   sun=sample(1:10, N, replace=TRUE))
+%% X <- model.matrix(~diet+length, dat)
+%% X
+%% beta <- c(20, 1, 2, 4, 0.5)
+%% mu <- X %*% beta
+%% mu
+%% sigma <- 2
+%% set.seed(52)
+%% y <- rnorm(N, mu, sigma)
+%% tapply(y, g, mean)
+%% dat <- cbind(weight=y, dat)
+%% #plot(weight ~ x, dat, col=rep(1:4, each=n))
+%% #boxplot(weight ~ diet, dat)
+%% write.csv(dat, "dietData.csv", row.names=FALSE)
+%% @
+%% \end{frame}
+
+
+
+
+%\section{What is a model?}
+
+
+
+\begin{frame}
+  \frametitle{What is a model?}
+%  \begin{block}
+  \large
+    {\bf Definition} \\
+    A model is an abstraction of reality used to describe the
+    relationship between two or more variables \par
+%  \end{block}
+    \pause
+    \vfill %\vspace{0.5cm}
+  {\bf Important point} \\
+  ``All models are wrong but some are useful'' (George Box, 1976) \\
+  \pause
+  \vfill
+  {\bf Types of models}
+  \begin{itemize}
+    \item Conceptual
+    \item Mathematical
+    \item Statistical
+  \end{itemize}
+\end{frame}
+
+
+
+
+\begin{frame}
+  \frametitle{Statistical models}
+  \large
+  {\bf What are they good for?}
+  \begin{itemize}[<+->]
+    \item Formalizing hypotheses using math and probability
+    \item Evaulating hypotheses by confronting models with data
+    \item Predicting future outcomes
+  \end{itemize}
+\end{frame}
+
+
+
+
+\begin{frame}
+  \frametitle{Statistical models}
+  {\bf \large Two important pieces \par}
+  \large
+%  \begin{enumerate}[<+- | visible@+->][\bf \color{PineGreen} (1)]
+  \begin{enumerate}[\bf \color{PineGreen} (1)]
+    \large
+    \item<1-> Deterministic component(s)
+      \begin{itemize}
+        \large
+        \item Equation(s) for the expected value of the response
+          variable, denoted $\mathbb{E}(y)$
+%        \item Often a linear model (LM), but could be a generalized
+%          linear model (GLM), a generalized additive (GAM), or a
+%          genearlized linear mixed effects model (GLMM), etc\dots
+      \end{itemize}
+    \item[]
+    \item<2-> Stochastic component(s)
+      \begin{itemize}
+        \large
+        \item Probability distribution(s) describing the differences
+          between the expected values and the observed values
+        \item In parametric statistics, we assume we know the
+          distribution, but not the parameters of the distribution
+      \end{itemize}
+  \end{enumerate}
+\end{frame}
+
+
+
+
+%% \begin{frame}
+%%   \frametitle{Example}
+%%   {\bf Motivation \\}
+%%   Prey numbers appear to be declining in the core of the Florida panther's range \\
+%%   \pause
+%%   \vfill
+%%   {\bf Questions \\}
+%%   How do predation, changing hydrology and hunting regulations
+%%   influence white-tailed deer population viability?
+%% \end{frame}
+
+
+\begin{frame}
+  \frametitle{Example -- South Florida Deer Study}
+%  \begin{center}
+%  \vspace{-8mm}
+  \begin{columns}
+    \begin{column}{0.6\textwidth}
+%      \large
+        \normalsize
+      {\bf Objectives}
+      \begin{enumerate}
+        \normalsize
+        \item[{\bf (1)}] Understand how deer populations are influenced by:
+        \begin{itemize}
+%          \large
+        \normalsize
+          \item Predation
+          \item Hydrology
+          \item Hunting
+        \end{itemize}
+        \item[{\bf (2)}] Develop a camera-based monitoring program
+      \end{enumerate}
+    \includegraphics[width=0.9\textwidth]{figs/FL-study-area} \\ \vfill
+    \end{column}
+    \begin{column}{0.4\textwidth}
+      \fbox{\includegraphics[width=\textwidth]{figs/puma1}} \\ \vfill
+      \fbox{\includegraphics[width=\textwidth]{figs/2015-05-12-15-32-13_FP39}}
+    \end{column}
+  \end{columns}
+%  \end{center}
+\end{frame}
+
+
+
+
+
+
+
+
+
+\section{Linear models}
+
+
+
+\begin{frame}
+  \frametitle{Outline}
+  \LARGE
+   \tableofcontents[currentsection,hideallsubsections]
+\end{frame}
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Is this a linear model?}
+\[
+y = 20 + 0.5 x
+\]
+<<linmod1,echo=false,fig=true,include=false>>=
+par(mai=c(0.8,0.8,0.1,0.1))
+plot(function(x) 20 + 0.5*x, 0, 10, ylab="y")
+@
+\begin{center}
+  \includegraphics[width=0.6\textwidth]{modeling-intro-linmod1}
+\end{center}
+\end{frame}
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Is this a linear model?}
+\[
+y = 20 + 0.5 x - 0.3 x^2
+\]
+<<linmod2,echo=false,fig=true,include=false>>=
+par(mai=c(0.8,0.8,0.1,0.1))
+plot(function(x) 20 + 0.5*x - 0.3*x^2 , 0, 10, ylab="y")
+@
+\begin{center}
+  \includegraphics[width=0.6\textwidth]{modeling-intro-linmod2}
+\end{center}
+\end{frame}
+
+
+
+
+
+\begin{frame}
+  \frametitle{Linear model}
+{\bf A linear model is an equation of the form:}
+
+\[
+y_i = \beta_0 + \beta_1 x_{i1} + \beta_2 x_{i2} + \ldots + \beta_p x_{ip} + \varepsilon_i
+\]
+
+where the $\beta$'s are coefficients, and the $x$ values are predictor
+variables (or dummy variables for categorical predictors).
+\pause
+
+\vspace{0.5cm}
+
+{\bf This equation is often expressed in matrix notation as:}
+
+\[
+{\bf y} = {\bf X} {\bm{\beta}} + {\bm \varepsilon}
+\]
+
+where $\bf X$ is a \alert{design matrix} and $\bm{\beta}$ is a
+vector of coefficients.
+\end{frame}
+
+
+%\end{document}
+
+
+
+
+\begin{frame}
+  \frametitle{Linear model}
+  {\bf All of the fixed effects models that we have covered can be
+    expressed this way:}
+  \[
+  {\bf y} = {\bf X}{\bm \beta} + {\bm \varepsilon}
+  \]
+  {\bf where}
+  \[
+  {\bm \varepsilon} \sim \mbox{Normal}(0, \sigma^2)
+  \]
+  \pause
+  \vfill
+  {\bf Examples include} \\
+  \begin{itemize}
+    \item Completely randomized ANOVA
+    \item Randomized complete block designs (when block effects are fixed)
+    \item Factorial designs
+    \item ANCOVA
+  \end{itemize}
+\end{frame}
+
+
+
+
+
+
+\begin{frame}
+  \frametitle{Then how do they differ?}
+  \pause
+  \large
+  \begin{itemize}[<+->]
+    \item The design matrices are different
+    \item And so are the number of parameters (coefficients) to be
+      estimated
+    \item Important to understand how to construct design matrix that
+      includes categorical variables
+  \end{itemize}
+\end{frame}
+
+
+
+
+\begin{frame}%[fragile]
+  \frametitle{Design matrix}
+  \large
+  \begin{itemize}[<+->]
+    \item A design matrix usually has $N$ rows and $K$ colums, where $N$ is
+      the total sample size and $K$ is the number of coefficients (parameters)
+      to be estimated.
+    \item The first column contains just 1's. This column corresponds
+      to the intercept ($\beta_0$)
+    \item Continuous predictor variables appear unchanged in the design matrix
+    \item Categorical predictor variables appear as dummy variables
+    \item In {\bf R}, the design matrix is created internally based on
+      the formula that you provide
+    \item The design matrix can be viewed using the {\tt model.matrix} function
+  \end{itemize}
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{Design matrix for linear regression}
+  \begin{columns}
+    \begin{column}{0.5\textwidth}
+    {\bf Data}
+      \scriptsize %\tiny
+<<>>=
+options(digits=2)
+@
+<<>>=
+dietData <- read.csv("dietData.csv")
+head(dietData, n=10)
+@
+    \end{column}
+    \pause
+    \begin{column}{0.5\textwidth}
+      {\bf Design matrix}
+      \scriptsize %\tiny
+<<>>=
+X1 <- model.matrix(~length,
+                   data=dietData)
+head(X1, n=10)
+@
+    \end{column}
+  \end{columns}
+  \pause
+  \vfill
+  {\centering \bf How do we multiply this design matrix ($\bf X$) by
+    the vector of regression coefficients ($\bm \beta$)? \par}
+\end{frame}
+
+
+
+
+
+
+\begin{frame}
+  \frametitle{Matrix multiplication}
+  \Large
+  \begin{center}
+    \[
+      \mathbb{E}(y) = {\bf X}{\bm \beta}
+    \]
+    \[
+    \uncover<3->{
+    \begin{bmatrix}
+      aw + bx + cy + dz \\
+      ew + fx + gy + hz \\
+      iw + jx + ky + lz %\\
+%      mw + nx + oy + pz
+    \end{bmatrix}
+    }
+    \uncover<2->{=}
+    \uncover<2->{
+    \begin{bmatrix}
+      a & b & c & d \\
+      e & f & g & h \\
+      i & j & k & l %\\
+%      m & n & o & p
+    \end{bmatrix}
+    }
+    \uncover<2->{
+    \times
+    \begin{bmatrix}
+      w \\
+      x \\
+      y \\
+      z
+    \end{bmatrix}
+    }
+    \]
+  \end{center}
+  \normalsize
+  \uncover<4->{
+    {\bf In this example}}
+    \begin{itemize}
+      \item<4-> The first matrix corresponds to the expected values of $\bm y$
+      \item<4-> The second matrix corresponds to the design matrix {$\bf X$}
+      \item<4-> The third matrix (a column vector) corresponds to {$\bm \beta$}
+    \end{itemize}
+\end{frame}
+
+
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Matrix multiplication}
+{\bf \centering The vector of coefficients \par}
+\small
+<<>>=
+beta <- coef(lm(weight ~ length, dietData))
+beta
+@
+\pause
+\large
+\begin{center}
+  {$\mathbb{E}({\bf y}) = {\bf X}{\bm \beta}$ or $y_i = \beta_0 + \beta_1 x_i$}
+\end{center}
+\pause
+\small
+<<>>=
+Ey1 <- X1 %*% beta
+head(Ey1, 5)
+@
+\end{frame}
+
+
+
+
+
+%\subsection{Distributions}
+
+
+
+
+%\subsection{Fixed effects models}
+
+
+
+%% \begin{frame}
+%%   \frametitle{Linear regression}
+%% {\bf Deterministic part:}
+%% %\[
+%% %\mu_i = \mathbb{E}(\bf y) = \beta_0 + \beta_1x_i
+%% %\]
+%% %\pause
+%% %{\bf The same thing, using matrix notation:}
+%% \[
+%% {\bm \mu} = \mathbb{E}(\bf y) = {\bf X}{\bm \beta}
+%% \]
+%% \pause
+%% {\bf Stochastic part:}
+%% %\[
+%% %y_i \sim \mbox{Normal}(\mu_i, \sigma^2)
+%% %\]
+%% %\pause
+%% %\centering or \par
+%% \[
+%% \varepsilon_i \sim \mbox{Normal}(0, \sigma^2)
+%% \]
+%% \end{frame}
+
+
+
+
+%% \begin{frame}
+%%   \frametitle{One-way ANOVA}
+%% {\bf Deterministic part:}
+%% \[
+%% {\bm \mu} = \mathbb{E}(\bf y) = {\bf X}{\bm \beta}
+%% \]
+%% {\bf Stochastic part:}
+%% %\[
+%% %y_i \sim \mbox{Normal}(\mu_i, \sigma^2)
+%% %\]
+%% \[
+%% \varepsilon_i \sim \mbox{Normal}(0, \sigma^2)
+%% \]
+%% \end{frame}
+
+
+
+
+%% \begin{frame}
+%%   \frametitle{A$\times$B Factorial ANOVA}
+%% {\bf Deterministic part:}
+%% \[
+%% {\bm \mu} = \mathbb{E}(\bf y) = {\bf X}{\bm \beta}
+%% \]
+%% {\bf Stochastic part:}
+%% %\[
+%% %y_i \sim \mbox{Normal}(\mu_i, \sigma^2)
+%% %\]
+%% \[
+%% \varepsilon_i \sim \mbox{Normal}(0, \sigma^2)
+%% \]
+%% \end{frame}
+
+
+
+%% \begin{frame}
+%%   \frametitle{A$\times$B$\times$C Factorial ANOVA}
+%% {\bf Deterministic part:}
+%% \[
+%% {\bm \mu} = \mathbb{E}(\bf y) = {\bf X}{\bm \beta}
+%% \]
+%% {\bf Stochastic part:}
+%% %\[
+%% %y_i \sim \mbox{Normal}(\mu_i, \sigma^2)
+%% %\]
+%% \[
+%% \varepsilon_i \sim \mbox{Normal}(0, \sigma^2)
+%% \]
+%% \end{frame}
+
+
+
+%% \begin{frame}
+%%   \frametitle{ANCOVA}
+%% {\bf Deterministic part:}
+%% \[
+%% {\bm \mu} = \mathbb{E}(\bf y) = {\bf X}{\bm \beta}
+%% \]
+%% {\bf Stochastic part:}
+%% %\[
+%% %y_i \sim \mbox{Normal}(\mu_i, \sigma^2)
+%% %\]
+%% \[
+%% \varepsilon_i \sim \mbox{Normal}(0, \sigma^2)
+%% \]
+%% \end{frame}
+
+
+
+%% \begin{frame}
+%%   \frametitle{Another equivalent expression}
+%%   {\bf General linear model}
+%%   \[
+%%   {\bf y} = {\bf X}{\bm \beta} + {\bm \epsilon}
+%%   \]
+%%   {\bf where}
+%%   \[
+%%   {\bm \epsilon} \sim \mbox{Normal}(0, {\bf I}\sigma^2)
+%%   \]
+%% \end{frame}
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{One-way ANOVA}
+  \scriptsize %\tiny
+<<>>=
+lm2 <- lm(weight ~ diet, data=dietData)
+summary(lm2)
+@
+\end{frame}
+
+
+
+\begin{frame}[fragile]
+  \frametitle{One-way ANOVA: Design matrix}
+<<>>=
+X2 <- model.matrix(~diet, data=dietData)
+X2[20:30,]
+@
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{One-way ANOVA: Expected values of $y$}
+  \footnotesize %\scriptsize
+<<>>=
+betas2 <- coef(lm2)
+betas2
+@
+\pause
+<<>>=
+Ey2 <- X2 %*% betas2
+head(Ey2)
+@
+\end{frame}
+
+
+
+\begin{frame}[fragile]
+  \frametitle{ANCOVA}
+  \scriptsize %\tiny
+<<>>=
+lm3 <- lm(weight ~ length + diet, data=dietData)
+summary(lm3)
+@
+\end{frame}
+
+
+
+\begin{frame}[fragile]
+  \frametitle{ANCOVA: Design matrix}
+<<>>=
+X3 <- model.matrix(~length+diet, data=dietData)
+X3[20:30,]
+@
+\end{frame}
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{ANCOVA: Expected values of $y$}
+  \footnotesize
+<<>>=
+betas3 <- coef(lm3)
+betas3
+@
+<<>>=
+Ey3 <- X3 %*% betas3
+head(Ey3)
+@
+\end{frame}
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Beyond ANCOVA}
+  {\bf Now the slopes differ for each treatment}
+  \tiny
+<<>>=
+lm4 <- lm(weight ~ diet * length, data=dietData)
+summary(lm4)
+@
+\end{frame}
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{The associated design matrix}
+  \tiny
+<<>>=
+X4 <- model.matrix(~ diet * length, data=dietData)
+X4[20:30,]
+@
+\pause
+<<>>=
+betas4 <- coef(lm4)
+Ey4 <- X4 %*% betas4
+@
+\end{frame}
+
+
+
+
+
+%% \begin{frame}[fragile]
+%%   \frametitle{Beyond ANCOVA}
+%%   {\bf ... and we test for a moon effect}
+%%   \tiny
+%% <<>>=
+%% lm3 <- lm(weight ~ diet * length + moon, data=dietData)
+%% summary(lm3)
+%% @
+%% \end{frame}
+
+
+%% \begin{frame}
+%%   \frametitle{Mixed effects models}
+%% {\bf The notation is only slightly more complex}
+%% \end{frame}
+
+
+
+%\subsection{Mixed effects models}
+
+
+
+
+\section{Example}
+
+
+
+\begin{frame}[plain]
+  \frametitle{Example}
+  \Huge
+  \begin{center}
+    \includegraphics[width=0.5\textwidth]{figs/issj}
+    The Island Scrub-Jay
+  \end{center}
+\end{frame}
+
+
+
+\begin{frame}[plain]
+  \frametitle{Example}
+  \Huge
+  \begin{center}
+    \includegraphics[width=0.8\textwidth]{figs/Santa-Cruz} \\
+    Santa Cruz Island
+  \end{center}
+\end{frame}
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Santa Cruz Data}
+  \footnotesize
+<<echo=false,results=hide>>=
+library(unmarked)
+head(cruz)
+@
+<<echo=false,results=hide>>=
+cruz2 <- cruz
+set.seed(43893)
+cruz2$habitat <- factor(sample(c("Pine","Oak","Bare"),
+                               size=nrow(cruz2), replace=TRUE,
+                               prob=c(0.3, 0.6, 0.1)))
+cruz2$seeds <- factor(sample(c("Low","Med","High"),
+                               size=nrow(cruz2), replace=TRUE,
+                               prob=c(0.3, 0.6, 0.1)))
+plots <- sample(1:nrow(cruz2), size=100)
+jayData <- cruz2[plots,]
+jayX <- model.matrix(~elevation+I(elevation^2)+chaparral+habitat, jayData)
+jayBeta <- c(30, 0.01, -0.000001, 1, 2.5, 1.5)
+summary(jaymu <- jayX %*% jayBeta)
+sigmaSq <- 5
+set.seed(4530)
+summary(jayData$jays <- round(rnorm(nrow(jayData), jaymu, sqrt(sigmaSq))))
+# hist(jayData$jays)
+summary(lm(jays ~ elevation + I(elevation^2) + chaparral + habitat + forest + seeds,
+           jayData))
+@
+{\bf Habitat data for all 2787 grid cells covering the island}
+<<>>=
+head(cruz2)
+@
+\end{frame}
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Maps of predictor variables}
+%  {\bf Elevation}
+  \scriptsize
+<<elev,fig=true,include=false,width=6,height=4,echo=false>>=
+library(lattice)
+levelplot(elevation ~ x + y, data=cruz2, aspect="iso",
+          scales=list(draw=FALSE),
+          xlab="Easting", ylab="Northing", main="Elevation")
+@
+\includegraphics[width=\textwidth]{modeling-intro-elev}
+\end{frame}
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Maps of predictor variables}
+%  {\bf Forest cover}
+  \scriptsize
+<<forest,fig=true,include=false,width=6,height=4,echo=false>>=
+levelplot(forest ~ x + y, data=cruz, aspect="iso",
+          xlab="",ylab="",main="Forest Cover",
+          scales=list(draw=FALSE))
+@
+\includegraphics[width=\textwidth]{modeling-intro-forest}
+\end{frame}
+
+
+
+
+
+
+\begin{frame}
+  \frametitle{Questions}
+  \large
+  \begin{enumerate}[<+- | visible@+->][\bf \color{PineGreen} (1)]
+    \item How many jays are on the island?
+    \item What environmental variables influence abundance?
+    \item Can we predict consequences of environmental change?
+  \end{enumerate}
+\end{frame}
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Maps of predictor variables}
+%  {\bf Chaparral cover}
+<<plots,echo=false,fig=true,include=false,width=6,height=4>>=
+levelplot(chaparral ~ x + y, data=cruz2, aspect="iso",
+          xlab="", ylab="", main="Chaparral and survey plots",
+          scales=list(draw=FALSE),
+          panel = function(...) {
+              panel.levelplot(...)
+#                  grid.points(jayData$x, jayData$y, pch=0,
+#                              size=unit(0.01, "npc"))
+              lpoints(jayData$x, jayData$y, pch=0, col=1, cex=0.5)
+              }
+          )
+@
+\includegraphics[width=\textwidth]{modeling-intro-plots}
+\end{frame}
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{The (fake) jay data}
+  \footnotesize
+<<>>=
+head(jayData)
+@
+\end{frame}
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Fit a models}
+  \tiny
+<<>>=
+fm6 <- lm(jays ~ habitat * seeds + elevation +
+          I(elevation^2) +  chaparral, data=jayData)
+summary(fm6)
+@
+\end{frame}
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Predict jay abundance at each grid cell}
+<<>>=
+E6 <- predict(fm6, type="response", newdata=cruz2,
+              interval="confidence")
+@
+\pause
+<<>>=
+E6 <- cbind(cruz2[,c("x","y")], E6)
+head(E6)
+@
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{Map the predictions}
+  \scriptsize
+<<Ejay,fig=true,include=false,width=6,height=4,echo=false>>=
+levelplot(fit ~ x + y, data=E6, aspect="iso",
+          xlab="", ylab="", main="Expected number of jays per grid cell",
+          at=25:55, colorkey=list(space="bottom"),
+          scales=list(draw=FALSE))
+@
+\includegraphics[width=\textwidth]{modeling-intro-Ejay}
+\end{frame}
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Map the predictions}
+  \scriptsize
+<<Ljay,fig=true,include=false,width=6,height=4,echo=false>>=
+levelplot(lwr ~ x + y, data=E6, aspect="iso",
+          xlab="", ylab="", main="Lower CI",
+          at=25:55, colorkey=list(space="bottom"),
+          scales=list(draw=FALSE))
+@
+\includegraphics[width=\textwidth]{modeling-intro-Ljay}
+\end{frame}
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Map the predictions}
+  \scriptsize
+<<Ujay,fig=true,include=false,width=6,height=4,echo=false>>=
+levelplot(upr ~ x + y, data=E6, aspect="iso",
+          xlab="", ylab="", main="Upper CI",
+          at=25:55, colorkey=list(space="bottom"),
+          scales=list(draw=FALSE))
+@
+\includegraphics[width=\textwidth]{modeling-intro-Ujay}
+\end{frame}
+
+
+
+
+%% \begin{frame}[fragile]
+%%   \frametitle{Future scenarios}
+%%   {\bf What if the pine and oak disappear? \par}
+%%   \pause
+%%   \vspace{0.3cm}
+%%   {\bf \dots assuming {\tt fm5} is the {\it correct} model}
+%%   \pause
+%%   \vspace{0.3cm}
+%%   \footnotesize
+%% <<>>=
+%% future1 <- cruz2
+%% future1$habitat[] <- "Bare"
+%% future.pred1 <- predict(fm5, type="response", newdata=future1,
+%%                         interval="confidence")
+%% future.pred1 <- cbind(cruz2[,c("x","y")], future.pred1)
+%% @
+%% \end{frame}
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Future scenarios}
+  {\bf What if pine and oak disapper? \par}
+  \scriptsize
+<<echo=false>>=
+future1 <- cruz2
+future1$habitat[] <- "Bare"
+future.pred1 <- predict(fm6, type="response", newdata=future1,
+                        interval="confidence")
+future.pred1 <- cbind(cruz2[,c("x","y")], future.pred1)
+@
+<<future1,fig=true,include=false,width=6,height=4,echo=false>>=
+levelplot(fit ~ x + y, data=future.pred1, aspect="iso",
+          xlab="", ylab="", main="Expected values",
+          at=25:55, colorkey=list(space="bottom"),
+          scales=list(draw=FALSE))
+@
+\includegraphics[width=\textwidth]{modeling-intro-future1}
+\end{frame}
+
+
+
+
+
+%% \begin{frame}[fragile]
+%%   \frametitle{Future scenarios}
+%%   {\bf What if the island sinks 1000 m? \par}
+%%   \vspace{0.3cm}
+%% %  \pause
+%% %  {\bf \dots assuming {\tt fm5} is the {\it correct} model}
+%%   \pause
+%%   \footnotesize
+%% <<>>=
+%% future2 <- cruz2
+%% future2$elevation <- future2$elevation - 1000
+%% future2$elevation[future2$elevation < 0] <- NA
+%% future.pred2 <- predict(fm5, type="response", newdata=future2,
+%%                         interval="confidence")
+%% future.pred2 <- cbind(cruz2[,c("x","y")], future.pred2)
+%% @
+%% \end{frame}
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Future scenarios}
+  {\bf What if sea level rises? \par}
+  \scriptsize
+  \pause
+<<echo=false>>=
+future2 <- cruz2
+future2$elevation <- future2$elevation - 1000
+future2$elevation[future2$elevation < 0] <- NA
+future.pred2 <- predict(fm6, type="response", newdata=future2,
+                        interval="confidence")
+future.pred2 <- cbind(cruz2[,c("x","y")], future.pred2)
+@
+<<future2,echo=false,fig=true,include=false,width=6,height=4>>=
+levelplot(fit ~ x + y, data=future.pred2, aspect="iso",
+          panel = function(...) {
+              panel.fill(col="skyblue1")
+              panel.levelplot(...)
+          },
+          xlab="", ylab="", main="Expected values",
+          at=25:55, colorkey=list(space="bottom"),
+          scales=list(draw=FALSE))
+@
+\includegraphics[width=\textwidth]{modeling-intro-future2}
+\end{frame}
+
+
+
+%% \begin{frame}
+%%   \frametitle{Worse yet \dots}
+%%   \pause
+%%   \huge
+%%   What if our model is wrong?
+%% \end{frame}
+
+
+
+\end{document}
+
