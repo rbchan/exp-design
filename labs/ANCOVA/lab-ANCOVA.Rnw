@@ -136,6 +136,12 @@ write.csv(dat, "treeData.csv", row.names=FALSE)
   \end{itemize}
   \pause
   \vfill
+  {\bf  Additive model}
+  \[
+    y_{ij} = \mu + \alpha_i + \beta(x_{ij} - \bar{x}) + \varepsilon_{ij}
+  \]
+  \pause
+  \vfill
 %  \centering
   \bf
   ANCOVA can be thought of as a hybrid between ANOVA and regression \\
@@ -231,10 +237,10 @@ summary(fm1)
   \small
 <<pred1,size='footnotesize'>>=
 age <- dietData$age
-nd <- data.frame(age=seq(min(age), max(age), length=50))
-E1 <- predict(fm1, newdata=nd, se.fit=TRUE,
+predData1 <- data.frame(age=seq(min(age), max(age), length=50))
+pred1 <- predict(fm1, newdata=predData1, se.fit=TRUE,
               interval="confidence")
-predictionData <- data.frame(E1$fit, nd)
+predictions1 <- data.frame(pred1$fit, predData1)
 @
 %\pause
 %\vfill
@@ -249,9 +255,9 @@ predictionData <- data.frame(E1$fit, nd)
   \scriptsize
 <<plot-fm1,fig.show='hide',size='scriptsize'>>=
 plot(weight ~ age, data=dietData)                   # raw data
-lines(fit ~ age, data=predictionData, lwd=2)        # fitted line
-lines(lwr ~ age, data=predictionData, lwd=2, lty=3) # lower CI
-lines(upr ~ age, data=predictionData, lwd=2, lty=3) # upper CI
+lines(fit ~ age, data=predictions1, lwd=2)        # fitted line
+lines(lwr ~ age, data=predictions1, lwd=2, lty=3) # lower CI
+lines(upr ~ age, data=predictions1, lwd=2, lty=3) # upper CI
 @
   \vspace{-9mm}
   \begin{center}
@@ -314,22 +320,23 @@ summary(fm2)
     group means, SEs, and CIs from a one-way ANOVA \\}
   \footnotesize %\scriptsize
 <<pred2>>=
-nd2 <- data.frame(diet=levels(dietData$diet))
-E2 <- predict(fm2, newdata=nd2,
-              se.fit=TRUE, interval="confidence")
+predData2 <- data.frame(diet=levels(dietData$diet))
+pred2 <- predict(fm2, newdata=predData2,
+                 se.fit=TRUE, interval="confidence")
 @
 \pause
 \vfill
 <<predDat2>>=
-predData2 <- data.frame(E2$fit, nd2)
-predData2
+predictions2 <- data.frame(pred2$fit, SE=pred2$se, predData2)
+predictions2
 @
 <<barplot1,fig.show="hide",echo=FALSE>>=
-bp <- barplot(predData2$fit, xlab="Diet", ylab="Weight",
+bp <- barplot(predictions2$fit, xlab="Diet", ylab="Weight",
               ylim=c(20, 30), xpd=FALSE,
               names.arg=levels(dietData$diet))
 box()
-arrows(bp, E2$fit[,1], bp, E2$fit[,1]+E2$se.fit, code=3, angle=90)
+arrows(bp, predictions2$fit, bp,
+       predictions2$fit+predictions2$SE, code=3, angle=90)
 @
 \end{frame}
 
@@ -421,14 +428,14 @@ summary.aov(fm3)
   \small
 <<predict-age,size='small'>>=
 ageC <- dietData$ageCentered
-nd3 <- data.frame(
+predData3 <- data.frame(
     diet=rep(c("Control", "Low", "Med", "High"), each=20),
     ageCentered=rep(seq(min(ageC), max(ageC),
                           length=20),
                       times=4))
-E3 <- predict(fm3, newdata=nd3, se.fit=TRUE,
-              interval="confidence")
-predData3 <- data.frame(E3$fit, nd3)
+pred3 <- predict(fm3, newdata=predData3, se.fit=TRUE,
+                 interval="confidence")
+predictions3 <- data.frame(pred3$fit, predData3)
 @
 \end{frame}
 
@@ -440,19 +447,20 @@ predData3 <- data.frame(E3$fit, nd3)
 \footnotesize %\small
 <<scatplot0,fig.show='hide',echo=FALSE,size='footnotesize'>>=
 colrs <- c("black", "royalblue", "orange", "darkcyan")
-plot(weight ~ ageCentered, dietData, pch=16, cex=1.5,
+plot(weight ~ ageCentered, dietData, pch=16, cex=1.2,
      col=rep(colrs, each=15))
 @
 <<scatplot1,fig.show='hide',size='footnotesize'>>=
-plot(weight ~ ageCentered, dietData, pch=16, cex=1.5,
+colrs <- c("black", "royalblue", "orange", "darkcyan")
+plot(weight ~ ageCentered, dietData, pch=16, cex=1.2,
      col=rep(colrs, each=15))
-lines(fit ~ ageCentered, predData3, subset=diet=="Control",
+lines(fit ~ ageCentered, predictions3, subset=diet=="Control",
       col=colrs[1], lwd=2)
-lines(fit ~ ageCentered, predData3, subset=diet=="Low", lty=1,
+lines(fit ~ ageCentered, predictions3, subset=diet=="Low", lty=1,
       col=colrs[2], lwd=2)
-lines(fit ~ ageCentered, predData3, subset=diet=="Med", lty=1,
+lines(fit ~ ageCentered, predictions3, subset=diet=="Med", lty=1,
       col=colrs[3], lwd=2)
-lines(fit ~ ageCentered, predData3, subset=diet=="High", lty=1,
+lines(fit ~ ageCentered, predictions3, subset=diet=="High", lty=1,
       col=colrs[4], lwd=2)
 legend(4, 23, c("High", "Med", "Low", "Control"), pch=16,
        title="Diet", lwd=2, col=rev(colrs))

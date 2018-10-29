@@ -122,6 +122,12 @@
   \end{itemize}
   \pause
   \vfill
+  {\bf  Additive model}
+  \[
+    y_{ij} = \mu + \alpha_i + \beta(x_{ij} - \bar{x}) + \varepsilon_{ij}
+  \]
+  \pause
+  \vfill
 %  \centering
   \bf
   ANCOVA can be thought of as a hybrid between ANOVA and regression \\
@@ -263,10 +269,10 @@
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlstd{age} \hlkwb{<-} \hlstd{dietData}\hlopt{$}\hlstd{age}
-\hlstd{nd} \hlkwb{<-} \hlkwd{data.frame}\hlstd{(}\hlkwc{age}\hlstd{=}\hlkwd{seq}\hlstd{(}\hlkwd{min}\hlstd{(age),} \hlkwd{max}\hlstd{(age),} \hlkwc{length}\hlstd{=}\hlnum{50}\hlstd{))}
-\hlstd{E1} \hlkwb{<-} \hlkwd{predict}\hlstd{(fm1,} \hlkwc{newdata}\hlstd{=nd,} \hlkwc{se.fit}\hlstd{=}\hlnum{TRUE}\hlstd{,}
+\hlstd{predData1} \hlkwb{<-} \hlkwd{data.frame}\hlstd{(}\hlkwc{age}\hlstd{=}\hlkwd{seq}\hlstd{(}\hlkwd{min}\hlstd{(age),} \hlkwd{max}\hlstd{(age),} \hlkwc{length}\hlstd{=}\hlnum{50}\hlstd{))}
+\hlstd{pred1} \hlkwb{<-} \hlkwd{predict}\hlstd{(fm1,} \hlkwc{newdata}\hlstd{=predData1,} \hlkwc{se.fit}\hlstd{=}\hlnum{TRUE}\hlstd{,}
               \hlkwc{interval}\hlstd{=}\hlstr{"confidence"}\hlstd{)}
-\hlstd{predictionData} \hlkwb{<-} \hlkwd{data.frame}\hlstd{(E1}\hlopt{$}\hlstd{fit, nd)}
+\hlstd{predictions1} \hlkwb{<-} \hlkwd{data.frame}\hlstd{(pred1}\hlopt{$}\hlstd{fit, predData1)}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
@@ -285,9 +291,9 @@
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlkwd{plot}\hlstd{(weight} \hlopt{~} \hlstd{age,} \hlkwc{data}\hlstd{=dietData)}                   \hlcom{# raw data}
-\hlkwd{lines}\hlstd{(fit} \hlopt{~} \hlstd{age,} \hlkwc{data}\hlstd{=predictionData,} \hlkwc{lwd}\hlstd{=}\hlnum{2}\hlstd{)}        \hlcom{# fitted line}
-\hlkwd{lines}\hlstd{(lwr} \hlopt{~} \hlstd{age,} \hlkwc{data}\hlstd{=predictionData,} \hlkwc{lwd}\hlstd{=}\hlnum{2}\hlstd{,} \hlkwc{lty}\hlstd{=}\hlnum{3}\hlstd{)} \hlcom{# lower CI}
-\hlkwd{lines}\hlstd{(upr} \hlopt{~} \hlstd{age,} \hlkwc{data}\hlstd{=predictionData,} \hlkwc{lwd}\hlstd{=}\hlnum{2}\hlstd{,} \hlkwc{lty}\hlstd{=}\hlnum{3}\hlstd{)} \hlcom{# upper CI}
+\hlkwd{lines}\hlstd{(fit} \hlopt{~} \hlstd{age,} \hlkwc{data}\hlstd{=predictions1,} \hlkwc{lwd}\hlstd{=}\hlnum{2}\hlstd{)}        \hlcom{# fitted line}
+\hlkwd{lines}\hlstd{(lwr} \hlopt{~} \hlstd{age,} \hlkwc{data}\hlstd{=predictions1,} \hlkwc{lwd}\hlstd{=}\hlnum{2}\hlstd{,} \hlkwc{lty}\hlstd{=}\hlnum{3}\hlstd{)} \hlcom{# lower CI}
+\hlkwd{lines}\hlstd{(upr} \hlopt{~} \hlstd{age,} \hlkwc{data}\hlstd{=predictions1,} \hlkwc{lwd}\hlstd{=}\hlnum{2}\hlstd{,} \hlkwc{lty}\hlstd{=}\hlnum{3}\hlstd{)} \hlcom{# upper CI}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
@@ -398,9 +404,9 @@
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlstd{nd2} \hlkwb{<-} \hlkwd{data.frame}\hlstd{(}\hlkwc{diet}\hlstd{=}\hlkwd{levels}\hlstd{(dietData}\hlopt{$}\hlstd{diet))}
-\hlstd{E2} \hlkwb{<-} \hlkwd{predict}\hlstd{(fm2,} \hlkwc{newdata}\hlstd{=nd2,}
-              \hlkwc{se.fit}\hlstd{=}\hlnum{TRUE}\hlstd{,} \hlkwc{interval}\hlstd{=}\hlstr{"confidence"}\hlstd{)}
+\hlstd{predData2} \hlkwb{<-} \hlkwd{data.frame}\hlstd{(}\hlkwc{diet}\hlstd{=}\hlkwd{levels}\hlstd{(dietData}\hlopt{$}\hlstd{diet))}
+\hlstd{pred2} \hlkwb{<-} \hlkwd{predict}\hlstd{(fm2,} \hlkwc{newdata}\hlstd{=predData2,}
+                 \hlkwc{se.fit}\hlstd{=}\hlnum{TRUE}\hlstd{,} \hlkwc{interval}\hlstd{=}\hlstr{"confidence"}\hlstd{)}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
@@ -409,15 +415,15 @@
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlstd{predData2} \hlkwb{<-} \hlkwd{data.frame}\hlstd{(E2}\hlopt{$}\hlstd{fit, nd2)}
-\hlstd{predData2}
+\hlstd{predictions2} \hlkwb{<-} \hlkwd{data.frame}\hlstd{(pred2}\hlopt{$}\hlstd{fit,} \hlkwc{SE}\hlstd{=pred2}\hlopt{$}\hlstd{se, predData2)}
+\hlstd{predictions2}
 \end{alltt}
 \begin{verbatim}
-##        fit      lwr      upr    diet
-## 1 26.11783 24.57710 27.65856 Control
-## 2 26.57368 25.03295 28.11442     Low
-## 3 27.21988 25.67915 28.76062     Med
-## 4 28.64707 27.10634 30.18780    High
+##        fit      lwr      upr        SE    diet
+## 1 26.11783 24.57710 27.65856 0.7691199 Control
+## 2 26.57368 25.03295 28.11442 0.7691199     Low
+## 3 27.21988 25.67915 28.76062 0.7691199     Med
+## 4 28.64707 27.10634 30.18780 0.7691199    High
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -565,14 +571,14 @@
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlstd{ageC} \hlkwb{<-} \hlstd{dietData}\hlopt{$}\hlstd{ageCentered}
-\hlstd{nd3} \hlkwb{<-} \hlkwd{data.frame}\hlstd{(}
+\hlstd{predData3} \hlkwb{<-} \hlkwd{data.frame}\hlstd{(}
     \hlkwc{diet}\hlstd{=}\hlkwd{rep}\hlstd{(}\hlkwd{c}\hlstd{(}\hlstr{"Control"}\hlstd{,} \hlstr{"Low"}\hlstd{,} \hlstr{"Med"}\hlstd{,} \hlstr{"High"}\hlstd{),} \hlkwc{each}\hlstd{=}\hlnum{20}\hlstd{),}
     \hlkwc{ageCentered}\hlstd{=}\hlkwd{rep}\hlstd{(}\hlkwd{seq}\hlstd{(}\hlkwd{min}\hlstd{(ageC),} \hlkwd{max}\hlstd{(ageC),}
                           \hlkwc{length}\hlstd{=}\hlnum{20}\hlstd{),}
                       \hlkwc{times}\hlstd{=}\hlnum{4}\hlstd{))}
-\hlstd{E3} \hlkwb{<-} \hlkwd{predict}\hlstd{(fm3,} \hlkwc{newdata}\hlstd{=nd3,} \hlkwc{se.fit}\hlstd{=}\hlnum{TRUE}\hlstd{,}
-              \hlkwc{interval}\hlstd{=}\hlstr{"confidence"}\hlstd{)}
-\hlstd{predData3} \hlkwb{<-} \hlkwd{data.frame}\hlstd{(E3}\hlopt{$}\hlstd{fit, nd3)}
+\hlstd{pred3} \hlkwb{<-} \hlkwd{predict}\hlstd{(fm3,} \hlkwc{newdata}\hlstd{=predData3,} \hlkwc{se.fit}\hlstd{=}\hlnum{TRUE}\hlstd{,}
+                 \hlkwc{interval}\hlstd{=}\hlstr{"confidence"}\hlstd{)}
+\hlstd{predictions3} \hlkwb{<-} \hlkwd{data.frame}\hlstd{(pred3}\hlopt{$}\hlstd{fit, predData3)}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
@@ -588,15 +594,16 @@
 \begin{knitrout}\footnotesize
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlkwd{plot}\hlstd{(weight} \hlopt{~} \hlstd{ageCentered, dietData,} \hlkwc{pch}\hlstd{=}\hlnum{16}\hlstd{,} \hlkwc{cex}\hlstd{=}\hlnum{1.5}\hlstd{,}
+\hlstd{colrs} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlstr{"black"}\hlstd{,} \hlstr{"royalblue"}\hlstd{,} \hlstr{"orange"}\hlstd{,} \hlstr{"darkcyan"}\hlstd{)}
+\hlkwd{plot}\hlstd{(weight} \hlopt{~} \hlstd{ageCentered, dietData,} \hlkwc{pch}\hlstd{=}\hlnum{16}\hlstd{,} \hlkwc{cex}\hlstd{=}\hlnum{1.2}\hlstd{,}
      \hlkwc{col}\hlstd{=}\hlkwd{rep}\hlstd{(colrs,} \hlkwc{each}\hlstd{=}\hlnum{15}\hlstd{))}
-\hlkwd{lines}\hlstd{(fit} \hlopt{~} \hlstd{ageCentered, predData3,} \hlkwc{subset}\hlstd{=diet}\hlopt{==}\hlstr{"Control"}\hlstd{,}
+\hlkwd{lines}\hlstd{(fit} \hlopt{~} \hlstd{ageCentered, predictions3,} \hlkwc{subset}\hlstd{=diet}\hlopt{==}\hlstr{"Control"}\hlstd{,}
       \hlkwc{col}\hlstd{=colrs[}\hlnum{1}\hlstd{],} \hlkwc{lwd}\hlstd{=}\hlnum{2}\hlstd{)}
-\hlkwd{lines}\hlstd{(fit} \hlopt{~} \hlstd{ageCentered, predData3,} \hlkwc{subset}\hlstd{=diet}\hlopt{==}\hlstr{"Low"}\hlstd{,} \hlkwc{lty}\hlstd{=}\hlnum{1}\hlstd{,}
+\hlkwd{lines}\hlstd{(fit} \hlopt{~} \hlstd{ageCentered, predictions3,} \hlkwc{subset}\hlstd{=diet}\hlopt{==}\hlstr{"Low"}\hlstd{,} \hlkwc{lty}\hlstd{=}\hlnum{1}\hlstd{,}
       \hlkwc{col}\hlstd{=colrs[}\hlnum{2}\hlstd{],} \hlkwc{lwd}\hlstd{=}\hlnum{2}\hlstd{)}
-\hlkwd{lines}\hlstd{(fit} \hlopt{~} \hlstd{ageCentered, predData3,} \hlkwc{subset}\hlstd{=diet}\hlopt{==}\hlstr{"Med"}\hlstd{,} \hlkwc{lty}\hlstd{=}\hlnum{1}\hlstd{,}
+\hlkwd{lines}\hlstd{(fit} \hlopt{~} \hlstd{ageCentered, predictions3,} \hlkwc{subset}\hlstd{=diet}\hlopt{==}\hlstr{"Med"}\hlstd{,} \hlkwc{lty}\hlstd{=}\hlnum{1}\hlstd{,}
       \hlkwc{col}\hlstd{=colrs[}\hlnum{3}\hlstd{],} \hlkwc{lwd}\hlstd{=}\hlnum{2}\hlstd{)}
-\hlkwd{lines}\hlstd{(fit} \hlopt{~} \hlstd{ageCentered, predData3,} \hlkwc{subset}\hlstd{=diet}\hlopt{==}\hlstr{"High"}\hlstd{,} \hlkwc{lty}\hlstd{=}\hlnum{1}\hlstd{,}
+\hlkwd{lines}\hlstd{(fit} \hlopt{~} \hlstd{ageCentered, predictions3,} \hlkwc{subset}\hlstd{=diet}\hlopt{==}\hlstr{"High"}\hlstd{,} \hlkwc{lty}\hlstd{=}\hlnum{1}\hlstd{,}
       \hlkwc{col}\hlstd{=colrs[}\hlnum{4}\hlstd{],} \hlkwc{lwd}\hlstd{=}\hlnum{2}\hlstd{)}
 \hlkwd{legend}\hlstd{(}\hlnum{4}\hlstd{,} \hlnum{23}\hlstd{,} \hlkwd{c}\hlstd{(}\hlstr{"High"}\hlstd{,} \hlstr{"Med"}\hlstd{,} \hlstr{"Low"}\hlstd{,} \hlstr{"Control"}\hlstd{),} \hlkwc{pch}\hlstd{=}\hlnum{16}\hlstd{,}
        \hlkwc{title}\hlstd{=}\hlstr{"Diet"}\hlstd{,} \hlkwc{lwd}\hlstd{=}\hlnum{2}\hlstd{,} \hlkwc{col}\hlstd{=}\hlkwd{rev}\hlstd{(colrs))}
