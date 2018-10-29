@@ -64,7 +64,7 @@ The above components of a scientific study need to be considered together rather
 | 12   | Repeated measures ANOVA | [Repeated measures](labs/repeated-measures/repeated-measures.md)  |         |
 |      | Paper discussion   |                      |            |
 |      | Regression review  |                      |            |
-| 13   | Analysis of covariance  | ANCOVA          | Chapter 13 |
+| 13   | Analysis of covariance  | [ANCOVA](labs/ANCOVA/ANCOVA.md)          | Chapter 13 |
 |      | Review of linear models |                 |            |
 |      | Generalized linear models |               |            |
 | 14   | Logistic regression     | GLMs            |            |

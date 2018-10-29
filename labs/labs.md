@@ -113,3 +113,14 @@ variable and time is of interest.
 
 - Univariate approach using `aov` and adjusted p-values
 - Multivariate approach using `manova` with Wilks' lambda or Pillai's trace
+
+
+
+
+### [Week 11 - ANCOVA](ANCOVA/ANCOVA.md)
+
+Analysis of covariance in which one explantory variable is a factor,
+and the other is a continuous variable.
+
+- Model fitting with `lm` 
+- Predictions with `predict`
