@@ -112,11 +112,6 @@ write.csv(dat, "treeData.csv", row.names=FALSE)
   \vfill
   \large
   Richard Chandler and Bob Cooper
-
-  \note{
-  FIXME for 2016: Change variable ``length'' to something like
-  ``size''. And center the covariate so that mu is the grand mean
-  }
 \end{frame}
 
 
@@ -290,6 +285,16 @@ summary.aov(fm2)
 summary(aov(weight ~ diet, dietData))
 @
 \end{frame}
+
+
+% See Venables and Ripley (2002, pg 145)
+<<alpha.star,include=FALSE,purl=FALSE>>=
+contrasts(dietData$diet) %*% coef(fm2)[-1]
+@
+
+<<Ey,include=FALSE,purl=FALSE>>=
+cbind(1,contrasts(dietData$diet)) %*% coef(fm2)
+@
 
 
 

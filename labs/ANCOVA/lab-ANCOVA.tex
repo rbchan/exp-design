@@ -641,6 +641,20 @@
 \begin{alltt}
 \hlcom{## install.packages("multcomp")}
 \hlkwd{library}\hlstd{(multcomp)}
+\end{alltt}
+
+
+{\ttfamily\noindent\itshape\color{messagecolor}{\#\# Loading required package: mvtnorm}}
+
+{\ttfamily\noindent\itshape\color{messagecolor}{\#\# Loading required package: survival}}
+
+{\ttfamily\noindent\itshape\color{messagecolor}{\#\# Loading required package: TH.data}}
+
+{\ttfamily\noindent\itshape\color{messagecolor}{\#\# Loading required package: MASS}}
+
+{\ttfamily\noindent\itshape\color{messagecolor}{\#\# \\\#\# Attaching package: 'TH.data'}}
+
+{\ttfamily\noindent\itshape\color{messagecolor}{\#\# The following object is masked from 'package:MASS':\\\#\# \\\#\#\ \ \ \  geyser}}\begin{alltt}
 \hlkwd{summary}\hlstd{(}\hlkwd{glht}\hlstd{(fm3,} \hlkwc{linfct}\hlstd{=}\hlkwd{mcp}\hlstd{(}\hlkwc{diet}\hlstd{=}\hlstr{"Tukey"}\hlstd{)))}
 \end{alltt}
 \begin{verbatim}
