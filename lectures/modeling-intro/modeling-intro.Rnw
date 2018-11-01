@@ -69,17 +69,22 @@ knit_theme$set("edit-kwrite")
 \begin{frame}
   \frametitle{Looking ahead}
   \Large
-  \begin{itemize}
-    \item Linear models
-    \item[]
+%  \begin{itemize}
+%    \item 
+  Linear models
+%    \item[]
 %    \item Linear mixed effects models
 %    \item[]
-    \item Generalized linear models
-    \item[]
-    \item Model selection and multi-model inference
+%    \item 
+  \vfill
+  Generalized linear models
+%    \item[]
+%    \item 
+  \vfill
+  Model selection and multi-model inference
 %    \item[]
 %    \item Goodness-of-fit
-  \end{itemize}
+%  \end{itemize}
 \end{frame}
 
 
@@ -91,15 +96,18 @@ knit_theme$set("edit-kwrite")
   {\bf Why do we need this part of the course? \par}
   \pause
 %\begin{enumerate}[<+- | visible@+->][\bf \color{PineGreen} (1)]
-  \begin{itemize}[<+->]
-    \item We have been modeling all along
-    \item Good experimental design + ANOVA is usually the most direct
+  \begin{itemize}%[<+->]
+    \item<2-> We have been modeling all along
+    \item[]
+    \item<3-> Good experimental design + ANOVA is usually the most direct
       route to causal inference
-    \item Often, however, it isn't possible (or even desirable) to
+    \item[]
+    \item<4-> Often, however, it isn't possible (or even desirable) to
       control some aspects of the system being investigated
-    \item When manipulative experiments aren't %causal inference isn't
+    \item[]
+    \item<5-> When manipulative experiments aren't %causal inference isn't
       possible, observational studies
-      and predictive models are the next best option
+      and predictive models can be the next best option
   \end{itemize}
 %\end{enumerate}
 % Mention BLOGs
@@ -147,23 +155,42 @@ knit_theme$set("edit-kwrite")
 \begin{frame}
   \frametitle{What is a model?}
 %  \begin{block}
-  \large
+%  \large
     {\bf Definition} \\
     A model is an abstraction of reality used to describe the
     relationship between two or more variables \par
 %  \end{block}
-    \pause
+%    \pause
     \vfill %\vspace{0.5cm}
+    \uncover<2->{
+    {\bf Types of models}
+    \begin{itemize}
+      \item Conceptual
+      \item Mathematical
+      \item Statistical
+    \end{itemize}
+  }
+  \uncover<3->{  
   {\bf Important point} \\
   ``All models are wrong but some are useful'' (George Box, 1976) \\
-  \pause
+  }
+%  \pause
   \vfill
-  {\bf Types of models}
-  \begin{itemize}
-    \item Conceptual
-    \item Mathematical
-    \item Statistical
-  \end{itemize}
+  \begin{columns}%[c]
+    \begin{column}{0.65\textwidth}
+      %% \uncover<3->{
+      %% {\bf Types of models}
+      %% \begin{itemize}
+      %%   \item Conceptual
+      %%   \item Mathematical
+      %%   \item Statistical
+      %% \end{itemize}
+      %% }
+    \end{column}
+    \begin{column}{0.15\textwidth}
+      \uncover<3->{\includegraphics[width=\textwidth]{figs/Box}} \\
+    \end{column}
+  \end{columns}
 \end{frame}
 
 
@@ -172,11 +199,13 @@ knit_theme$set("edit-kwrite")
 \begin{frame}
   \frametitle{Statistical models}
   \large
-  {\bf What are they good for?}
-  \begin{itemize}[<+->]
-    \item Formalizing hypotheses using math and probability
-    \item Evaulating hypotheses by confronting models with data
-    \item Predicting future outcomes
+  {\bf What are they \alert{useful} for?}
+  \begin{itemize}%[<+->]
+    \item<2-> Formalizing hypotheses using math and probability
+    \item[]
+    \item<3-> Evaulating hypotheses by confronting models with data
+    \item[]
+    \item<4-> Predicting future outcomes
   \end{itemize}
 \end{frame}
 
@@ -188,22 +217,23 @@ knit_theme$set("edit-kwrite")
   {\bf \large Two important pieces \par}
   \large
 %  \begin{enumerate}[<+- | visible@+->][\bf \color{PineGreen} (1)]
-  \begin{enumerate}[\bf \color{PineGreen} (1)]
+  \begin{enumerate}[\bf \color{gb} (1)]
     \large
-    \item<1-> Deterministic component(s)
+    \item<1-> Deterministic component%(s)
       \begin{itemize}
         \large
-        \item Equation(s) for the expected value of the response
-          variable, denoted $\mathbb{E}(y)$
+        \item Equation for the expected value of the response
+          variable %, denoted $\mathbb{E}(y)$
 %        \item Often a linear model (LM), but could be a generalized
 %          linear model (GLM), a generalized additive (GAM), or a
 %          genearlized linear mixed effects model (GLMM), etc\dots
       \end{itemize}
     \item[]
-    \item<2-> Stochastic component(s)
+    \item<2-> Stochastic component %(s)
       \begin{itemize}
         \large
-        \item Probability distribution(s) describing the differences
+        \item Probability distribution %(s) 
+          describing the differences
           between the expected values and the observed values
         \item In parametric statistics, we assume we know the
           distribution, but not the parameters of the distribution
@@ -333,7 +363,7 @@ variables (or dummy variables for categorical predictors).
 \]
 
 where $\bf X$ is a \alert{design matrix} and $\bm{\beta}$ is a
-vector of coefficients.
+vector of coefficients. \pause More on matrix notation later\dots
 \end{frame}
 
 
@@ -343,294 +373,55 @@ vector of coefficients.
 
 
 \begin{frame}
-  \frametitle{Linear model}
-  {\bf All of the fixed effects models that we have covered can be
-    expressed this way:}
-  \[
-  {\bf y} = {\bf X}{\bm \beta} + {\bm \varepsilon}
-  \]
-  {\bf where}
-  \[
-  {\bm \varepsilon} \sim \mbox{Normal}(0, \sigma^2)
-  \]
-  \pause
-  \vfill
-  {\bf Examples include} \\
-  \begin{itemize}
-    \item Completely randomized ANOVA
-    \item Randomized complete block designs (when block effects are fixed)
-    \item Factorial designs
-    \item ANCOVA
-  \end{itemize}
-\end{frame}
-
-
-
-
-
-
-\begin{frame}
-  \frametitle{Then how do they differ?}
-  \pause
-  \large
-  \begin{itemize}[<+->]
-    \item The design matrices are different
-    \item And so are the number of parameters (coefficients) to be
-      estimated
-    \item Important to understand how to construct design matrix that
-      includes categorical variables
-  \end{itemize}
-\end{frame}
-
-
-
-
-\begin{frame}%[fragile]
-  \frametitle{Design matrix}
-  \large
-  \begin{itemize}[<+->]
-    \item A design matrix usually has $N$ rows and $K$ colums, where $N$ is
-      the total sample size and $K$ is the number of coefficients (parameters)
-      to be estimated.
-    \item The first column contains just 1's. This column corresponds
-      to the intercept ($\beta_0$)
-    \item Continuous predictor variables appear unchanged in the design matrix
-    \item Categorical predictor variables appear as dummy variables
-    \item In {\bf R}, the design matrix is created internally based on
-      the formula that you provide
-    \item The design matrix can be viewed using the {\tt model.matrix} function
-  \end{itemize}
-\end{frame}
-
-
-\begin{frame}[fragile]
-  \frametitle{Design matrix for linear regression}
-  \begin{columns}
-    \begin{column}{0.5\textwidth}
-    {\bf Data}
-      \scriptsize %\tiny
-%<<>>=
-%options(digits=2)
-%@
-<<dietData,size='scriptsize'>>=
-dietData <- read.csv("dietData.csv")
-head(dietData, n=10)
-@
-    \end{column}
-    \pause
-    \begin{column}{0.5\textwidth}
-      {\bf Design matrix}
-      \scriptsize %\tiny
-<<X1,size='scriptsize'>>=
-X1 <- model.matrix(~age,
-                   data=dietData)
-head(X1, n=10)
-@
-    \end{column}
-  \end{columns}
-  \pause
-  \vfill
-  {\centering \bf How do we multiply this design matrix ($\bf X$) by
-    the vector of regression coefficients ($\bm \beta$)? \par}
-\end{frame}
-
-
-
-
-
-
-\begin{frame}
-  \frametitle{Matrix multiplication}
-  \Large
-  \begin{center}
-    \[
-      \mathbb{E}(y) = {\bf X}{\bm \beta}
-    \]
-    \[
-    \uncover<3->{
-    \begin{bmatrix}
-      aw + bx + cy + dz \\
-      ew + fx + gy + hz \\
-      iw + jx + ky + lz %\\
-%      mw + nx + oy + pz
-    \end{bmatrix}
-    }
-    \uncover<2->{=}
-    \uncover<2->{
-    \begin{bmatrix}
-      a & b & c & d \\
-      e & f & g & h \\
-      i & j & k & l %\\
-%      m & n & o & p
-    \end{bmatrix}
-    }
-    \uncover<2->{
-    \times
-    \begin{bmatrix}
-      w \\
-      x \\
-      y \\
-      z
-    \end{bmatrix}
-    }
-    \]
-  \end{center}
-  \normalsize
-  \uncover<4->{
-    {\bf In this example}}
-    \begin{itemize}
-      \item<4-> The first matrix corresponds to the expected values of $\bm y$
-      \item<4-> The second matrix corresponds to the design matrix {$\bf X$}
-      \item<4-> The third matrix (a column vector) corresponds to {$\bm \beta$}
-    \end{itemize}
-\end{frame}
-
-
-
-
-
-
-\begin{frame}[fragile]
-  \frametitle{Matrix multiplication}
-{\bf \centering The vector of coefficients \par}
-\small
-<<beta,size='small'>>=
-beta <- coef(lm(weight ~ age, dietData))
-beta
-@
+  \frametitle{Interpretting the $\beta$'s}
+You must be able to interpret the $\beta$
+coefficients {\it for any model that you fit to your data}. 
 \pause
-\large
-\begin{center}
-  {$\mathbb{E}({\bf y}) = {\bf X}{\bm \beta}$ or $y_i = \beta_0 + \beta_1 x_i$}
-\end{center}
-\pause
-\small
-<<Ey1,size='small'>>=
-Ey1 <- X1 %*% beta
-head(Ey1, 5)
-@
-\end{frame}
-
-
-
-
-
-%\subsection{Distributions}
-
-
-
-
-%\subsection{Fixed effects models}
-
-
-
-%% \begin{frame}
-%%   \frametitle{Linear regression}
-%% {\bf Deterministic part:}
-%% %\[
-%% %\mu_i = \mathbb{E}(\bf y) = \beta_0 + \beta_1x_i
-%% %\]
-%% %\pause
-%% %{\bf The same thing, using matrix notation:}
-%% \[
-%% {\bm \mu} = \mathbb{E}(\bf y) = {\bf X}{\bm \beta}
-%% \]
+\vfill
+There may be dozens of, continuous and categorical, predictors variables
+in a linear model, in which case you would need to be able to
+interpret dozens of $\beta$'s. 
 %% \pause
-%% {\bf Stochastic part:}
-%% %\[
-%% %y_i \sim \mbox{Normal}(\mu_i, \sigma^2)
-%% %\]
-%% %\pause
-%% %\centering or \par
-%% \[
-%% \varepsilon_i \sim \mbox{Normal}(0, \sigma^2)
-%% \]
-%% \end{frame}
+%% \vfill
+%% Key points for interpretting $\beta$'s:
+%% \begin{itemize}
+%%   \item For continuous explano
+%% \end{itemize}
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Key points for interpretting $\beta$'s}
+  The intercept $\beta_0$ is expected value of $y$, when all $x$'s are 0
+  \pause
+  \vfill
+  If $x$ is {\bf continuous} explanatory variable %, $\beta$ is
+  \begin{itemize}
+    \item $\beta$ can usually be interpretted as a \textit{slope}
+      parameter. 
+    \item In this case, $\beta$ is the
+      change in $y$ resulting from a 1 unit change in $x$.
+  \end{itemize}
+%  \pause
+%  \vfill
+\end{frame}
 
 
 
 
-%% \begin{frame}
-%%   \frametitle{One-way ANOVA}
-%% {\bf Deterministic part:}
-%% \[
-%% {\bm \mu} = \mathbb{E}(\bf y) = {\bf X}{\bm \beta}
-%% \]
-%% {\bf Stochastic part:}
-%% %\[
-%% %y_i \sim \mbox{Normal}(\mu_i, \sigma^2)
-%% %\]
-%% \[
-%% \varepsilon_i \sim \mbox{Normal}(0, \sigma^2)
-%% \]
-%% \end{frame}
-
-
-
-
-%% \begin{frame}
-%%   \frametitle{A$\times$B Factorial ANOVA}
-%% {\bf Deterministic part:}
-%% \[
-%% {\bm \mu} = \mathbb{E}(\bf y) = {\bf X}{\bm \beta}
-%% \]
-%% {\bf Stochastic part:}
-%% %\[
-%% %y_i \sim \mbox{Normal}(\mu_i, \sigma^2)
-%% %\]
-%% \[
-%% \varepsilon_i \sim \mbox{Normal}(0, \sigma^2)
-%% \]
-%% \end{frame}
-
-
-
-%% \begin{frame}
-%%   \frametitle{A$\times$B$\times$C Factorial ANOVA}
-%% {\bf Deterministic part:}
-%% \[
-%% {\bm \mu} = \mathbb{E}(\bf y) = {\bf X}{\bm \beta}
-%% \]
-%% {\bf Stochastic part:}
-%% %\[
-%% %y_i \sim \mbox{Normal}(\mu_i, \sigma^2)
-%% %\]
-%% \[
-%% \varepsilon_i \sim \mbox{Normal}(0, \sigma^2)
-%% \]
-%% \end{frame}
-
-
-
-%% \begin{frame}
-%%   \frametitle{ANCOVA}
-%% {\bf Deterministic part:}
-%% \[
-%% {\bm \mu} = \mathbb{E}(\bf y) = {\bf X}{\bm \beta}
-%% \]
-%% {\bf Stochastic part:}
-%% %\[
-%% %y_i \sim \mbox{Normal}(\mu_i, \sigma^2)
-%% %\]
-%% \[
-%% \varepsilon_i \sim \mbox{Normal}(0, \sigma^2)
-%% \]
-%% \end{frame}
-
-
-
-%% \begin{frame}
-%%   \frametitle{Another equivalent expression}
-%%   {\bf General linear model}
-%%   \[
-%%   {\bf y} = {\bf X}{\bm \beta} + {\bm \epsilon}
-%%   \]
-%%   {\bf where}
-%%   \[
-%%   {\bm \epsilon} \sim \mbox{Normal}(0, {\bf I}\sigma^2)
-%%   \]
-%% \end{frame}
-
+\begin{frame}
+  \frametitle{Interpretting $\beta$'s for categorical explantory
+    variables}
+  Things are more complicated for {\bf categorical} explantory
+  variables (i.e., factors) because they must be converted to dummy
+  variables, and there are many ways of creating dummy variables!
+  \pause
+  \vfill
+  For a {\bf categorical} explanatory variable %, $\beta$ is
+  \begin{itemize}
+    \item 
+  \end{itemize}
+\end{frame}
 
 
 
@@ -1070,6 +861,319 @@ levelplot(fit ~ x + y, data=future.pred2, aspect="iso",
 %%   \huge
 %%   What if our model is wrong?
 %% \end{frame}
+
+
+
+
+
+
+
+
+
+
+
+
+\section{Matrix notation}
+
+
+
+
+
+\begin{frame}
+  \frametitle{Linear model}
+  {\bf All of the fixed effects models that we have covered can be
+    expressed this way:}
+  \[
+  {\bf y} = {\bf X}{\bm \beta} + {\bm \varepsilon}
+  \]
+  {\bf where}
+  \[
+  {\bm \varepsilon} \sim \mbox{Normal}(0, \sigma^2)
+  \]
+  \pause
+  \vfill
+  {\bf Examples include} \\
+  \begin{itemize}
+    \item Completely randomized ANOVA
+    \item Randomized complete block designs (when block effects are fixed)
+    \item Factorial designs
+    \item ANCOVA
+  \end{itemize}
+\end{frame}
+
+
+
+
+
+
+\begin{frame}
+  \frametitle{Then how do they differ?}
+  \pause
+  \large
+  \begin{itemize}[<+->]
+    \item The design matrices are different
+    \item And so are the number of parameters (coefficients) to be
+      estimated
+    \item Important to understand how to construct design matrix that
+      includes categorical variables
+  \end{itemize}
+\end{frame}
+
+
+
+
+\begin{frame}%[fragile]
+  \frametitle{Design matrix}
+  \large
+  \begin{itemize}[<+->]
+    \item A design matrix usually has $N$ rows and $K$ colums, where $N$ is
+      the total sample size and $K$ is the number of coefficients (parameters)
+      to be estimated.
+    \item The first column contains just 1's. This column corresponds
+      to the intercept ($\beta_0$)
+    \item Continuous predictor variables appear unchanged in the design matrix
+    \item Categorical predictor variables appear as dummy variables
+    \item In {\bf R}, the design matrix is created internally based on
+      the formula that you provide
+    \item The design matrix can be viewed using the {\tt model.matrix} function
+  \end{itemize}
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{Design matrix for linear regression}
+  \begin{columns}
+    \begin{column}{0.5\textwidth}
+    {\bf Data}
+      \scriptsize %\tiny
+%<<>>=
+%options(digits=2)
+%@
+<<dietData,size='scriptsize'>>=
+dietData <- read.csv("dietData.csv")
+head(dietData, n=10)
+@
+    \end{column}
+    \pause
+    \begin{column}{0.5\textwidth}
+      {\bf Design matrix}
+      \scriptsize %\tiny
+<<X1,size='scriptsize'>>=
+X1 <- model.matrix(~age,
+                   data=dietData)
+head(X1, n=10)
+@
+    \end{column}
+  \end{columns}
+  \pause
+  \vfill
+  {\centering \bf How do we multiply this design matrix ($\bf X$) by
+    the vector of regression coefficients ($\bm \beta$)? \par}
+\end{frame}
+
+
+
+
+
+
+\begin{frame}
+  \frametitle{Matrix multiplication}
+  \Large
+  \begin{center}
+    \[
+      \mathbb{E}(y) = {\bf X}{\bm \beta}
+    \]
+    \[
+    \uncover<3->{
+    \begin{bmatrix}
+      aw + bx + cy + dz \\
+      ew + fx + gy + hz \\
+      iw + jx + ky + lz %\\
+%      mw + nx + oy + pz
+    \end{bmatrix}
+    }
+    \uncover<2->{=}
+    \uncover<2->{
+    \begin{bmatrix}
+      a & b & c & d \\
+      e & f & g & h \\
+      i & j & k & l %\\
+%      m & n & o & p
+    \end{bmatrix}
+    }
+    \uncover<2->{
+    \times
+    \begin{bmatrix}
+      w \\
+      x \\
+      y \\
+      z
+    \end{bmatrix}
+    }
+    \]
+  \end{center}
+  \normalsize
+  \uncover<4->{
+    {\bf In this example}}
+    \begin{itemize}
+      \item<4-> The first matrix corresponds to the expected values of $\bm y$
+      \item<4-> The second matrix corresponds to the design matrix {$\bf X$}
+      \item<4-> The third matrix (a column vector) corresponds to {$\bm \beta$}
+    \end{itemize}
+\end{frame}
+
+
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Matrix multiplication}
+{\bf \centering The vector of coefficients \par}
+\small
+<<beta,size='small'>>=
+beta <- coef(lm(weight ~ age, dietData))
+beta
+@
+\pause
+\large
+\begin{center}
+  {$\mathbb{E}({\bf y}) = {\bf X}{\bm \beta}$ or $y_i = \beta_0 + \beta_1 x_i$}
+\end{center}
+\pause
+\small
+<<Ey1,size='small'>>=
+Ey1 <- X1 %*% beta
+head(Ey1, 5)
+@
+\end{frame}
+
+
+
+
+
+%\subsection{Distributions}
+
+
+
+
+%\subsection{Fixed effects models}
+
+
+
+%% \begin{frame}
+%%   \frametitle{Linear regression}
+%% {\bf Deterministic part:}
+%% %\[
+%% %\mu_i = \mathbb{E}(\bf y) = \beta_0 + \beta_1x_i
+%% %\]
+%% %\pause
+%% %{\bf The same thing, using matrix notation:}
+%% \[
+%% {\bm \mu} = \mathbb{E}(\bf y) = {\bf X}{\bm \beta}
+%% \]
+%% \pause
+%% {\bf Stochastic part:}
+%% %\[
+%% %y_i \sim \mbox{Normal}(\mu_i, \sigma^2)
+%% %\]
+%% %\pause
+%% %\centering or \par
+%% \[
+%% \varepsilon_i \sim \mbox{Normal}(0, \sigma^2)
+%% \]
+%% \end{frame}
+
+
+
+
+%% \begin{frame}
+%%   \frametitle{One-way ANOVA}
+%% {\bf Deterministic part:}
+%% \[
+%% {\bm \mu} = \mathbb{E}(\bf y) = {\bf X}{\bm \beta}
+%% \]
+%% {\bf Stochastic part:}
+%% %\[
+%% %y_i \sim \mbox{Normal}(\mu_i, \sigma^2)
+%% %\]
+%% \[
+%% \varepsilon_i \sim \mbox{Normal}(0, \sigma^2)
+%% \]
+%% \end{frame}
+
+
+
+
+%% \begin{frame}
+%%   \frametitle{A$\times$B Factorial ANOVA}
+%% {\bf Deterministic part:}
+%% \[
+%% {\bm \mu} = \mathbb{E}(\bf y) = {\bf X}{\bm \beta}
+%% \]
+%% {\bf Stochastic part:}
+%% %\[
+%% %y_i \sim \mbox{Normal}(\mu_i, \sigma^2)
+%% %\]
+%% \[
+%% \varepsilon_i \sim \mbox{Normal}(0, \sigma^2)
+%% \]
+%% \end{frame}
+
+
+
+%% \begin{frame}
+%%   \frametitle{A$\times$B$\times$C Factorial ANOVA}
+%% {\bf Deterministic part:}
+%% \[
+%% {\bm \mu} = \mathbb{E}(\bf y) = {\bf X}{\bm \beta}
+%% \]
+%% {\bf Stochastic part:}
+%% %\[
+%% %y_i \sim \mbox{Normal}(\mu_i, \sigma^2)
+%% %\]
+%% \[
+%% \varepsilon_i \sim \mbox{Normal}(0, \sigma^2)
+%% \]
+%% \end{frame}
+
+
+
+%% \begin{frame}
+%%   \frametitle{ANCOVA}
+%% {\bf Deterministic part:}
+%% \[
+%% {\bm \mu} = \mathbb{E}(\bf y) = {\bf X}{\bm \beta}
+%% \]
+%% {\bf Stochastic part:}
+%% %\[
+%% %y_i \sim \mbox{Normal}(\mu_i, \sigma^2)
+%% %\]
+%% \[
+%% \varepsilon_i \sim \mbox{Normal}(0, \sigma^2)
+%% \]
+%% \end{frame}
+
+
+
+%% \begin{frame}
+%%   \frametitle{Another equivalent expression}
+%%   {\bf General linear model}
+%%   \[
+%%   {\bf y} = {\bf X}{\bm \beta} + {\bm \epsilon}
+%%   \]
+%%   {\bf where}
+%%   \[
+%%   {\bm \epsilon} \sim \mbox{Normal}(0, {\bf I}\sigma^2)
+%%   \]
+%% \end{frame}
+
+
+
+
+
+
+
 
 
 
