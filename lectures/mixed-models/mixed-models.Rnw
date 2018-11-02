@@ -1,0 +1,548 @@
+
+\documentclass[color=usenames,dvipsnames]{beamer}
+%\documentclass[color=usenames,dvipsnames,handout]{beamer}
+
+%\usepackage[roman]{../../../pres1}
+\usepackage[sans]{../../../pres1}
+\usepackage{Sweave}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{verbatim}
+\usepackage{pgfpages}
+\usepackage{bm}
+
+
+%\hypersetup{pdftex,pdfpagemode=UseNone,pdfstartview=FitV}
+\hypersetup{pdftex,pdfstartview=FitV}
+
+
+
+\mode<handout>{
+  \usetheme{default}
+%  \setbeamercolor{background canvas}{bg=black!5}
+  \pgfpagesuselayout{4 on 1}[letterpaper,landscape,border shrink=2.5mm]
+%  \pgfpagesuselayout{2 on 1}[letterpaper,border shrink=10mm]
+}
+
+
+
+
+\DefineVerbatimEnvironment{Sinput}{Verbatim}{fontshape=sl,formatcom=\color{red}}
+\DefineVerbatimEnvironment{Soutput}{Verbatim}{formatcom=\color{MidnightBlue}}
+\DefineVerbatimEnvironment{Scode}{Verbatim}{fontshape=sl}
+
+
+
+
+\begin{document}
+
+
+
+
+\begin{frame}[plain]
+  \centering \huge
+  Linear mixed-effects models \\
+  \vspace{1cm}
+  \Large
+  November 18, 2016
+\end{frame}
+
+
+\section{Introduction}
+
+
+
+\begin{frame}
+  \frametitle{Fixed vs random effects, revisited}
+  \large
+  {\bf In the context of mixed-effects models\dots \par}
+  \vspace{0.5cm}
+{\bf Fixed effect \par}
+A parameter that would not change if you repeated your study
+
+\pause
+\vspace{1cm}
+
+{\bf Random effect \par}
+A parameter that would change if you repeated your study
+
+\pause
+\vfill
+{\centering \bf
+\alert{Random effects will always be associated with a probability
+distribution} \par}
+\end{frame}
+
+
+
+\begin{frame}
+  \frametitle{Previous examples}
+  \Large
+  \begin{itemize}
+    \item ANOVA with random block effects
+    \item[]
+    \item Nested ANOVA
+    \item[]
+    \item Split-plot ANOVA
+%    \item[]
+%    \item Repeated measures ANOVA
+  \end{itemize}
+\end{frame}
+
+
+
+
+\begin{frame}
+  \frametitle{A simple example}
+  \large
+  \[
+    y_{ij} = \beta_0 + \beta_1 x_{i1} + \gamma_j + \varepsilon_{ij}
+  \]
+  where
+  \[
+    \gamma_j \sim \mbox{Normal}(0, \sigma^2_d)
+  \]
+  and
+  \[
+    \varepsilon_{ij} \sim \mbox{Normal}(0, \sigma^2)
+  \]
+  \pause
+  \vfill
+  \centering
+  This amounts to a linear regression with a random intercept \\
+\end{frame}
+
+
+
+
+
+
+\section{Repeated measures with serial correlation}
+
+
+
+%% \begin{frame}
+%%   \frametitle{Split-plot model}
+%%   The expanded additive model:
+%%   \[
+%%     y_{ijk} = \beta0 + \beta_1 + \beta_{ij} + \gamma_k +
+%%     \alpha\gamma_{ik} + \varphi y_{ijk-1} + \varepsilon_{ijk}
+%%   \]
+%% \end{frame}
+
+
+
+\begin{frame}
+  \centering \Huge
+  \color{PineGreen}{Mixed effects approach to repeated measures} \par
+\end{frame}
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Repeated measures revisited}
+  {\bf Recall the plant data}
+  \small
+<<>>=
+plantData <- read.csv("plantData.csv")
+plantData$week <- factor(plantData$week)
+head(plantData)
+@
+\pause
+  {\bf \normalsize Standard split-plot approach}
+<<>>=
+library(nlme)
+lme1 <- lme(leaves ~ fertilizer*week, plantData,
+            random=~1|plant)
+@
+\end{frame}
+
+
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{View the parameter estimates}
+  \small
+%%<<>>=
+%%summary(lme1)
+%%@
+\begin{Schunk}
+\begin{Sinput}
+> summary(lme1)
+\end{Sinput}
+\begin{Soutput}
+Random effects:
+ Formula: ~1 | plant
+        (Intercept) Residual
+StdDev:    1.098863     0.65
+
+Fixed effects: leaves ~ fertilizer * week
+                  Value Std.Error DF   t-value p-value
+(Intercept)         4.6 0.5709641 32  8.056549  0.0000
+fertilizerL         0.0 0.8074652  8  0.000000  1.0000
+week2               2.2 0.4110961 32  5.351547  0.0000
+week3               4.4 0.4110961 32 10.703094  0.0000
+week4               5.4 0.4110961 32 13.135615  0.0000
+week5               7.4 0.4110961 32 18.000657  0.0000
+fertilizerL:week2  -1.0 0.5813777 32 -1.720052  0.0951
+fertilizerL:week3  -1.8 0.5813777 32 -3.096094  0.0041
+fertilizerL:week4  -1.6 0.5813777 32 -2.752084  0.0097
+fertilizerL:week5  -1.4 0.5813777 32 -2.408073  0.0220
+\end{Soutput}
+\end{Schunk}
+\end{frame}
+
+
+
+
+
+
+
+
+\begin{frame}
+  \frametitle{Matrix representation}
+  \Large
+  \[
+    {\bf y} = {\bf X}{\bm \beta} + {\bm \gamma} + {\bm \varepsilon}
+  \]
+  \pause
+  \[
+    {\bm \gamma} \sim \mbox{Normal}(0, \sigma^2_d)
+  \]
+  \[
+    {\bm \varepsilon} \sim \mbox{Normal}(0, \sigma^2)
+  \]
+\end{frame}
+
+
+
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Extract the estimates}
+  {\bf Fixed effects (the $\bm \beta$ estimates)}
+  \scriptsize
+<<>>=
+round(beta <- fixef(lme1), 2)
+@
+\pause
+\vfill
+  {\bf \normalsize Random effects (the $\bm \gamma$ estimates)}
+  \scriptsize
+<<>>=
+round(gamma <- ranef(lme1, which=1), 2)
+@
+\end{frame}
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Computing the expected values}
+  {\bf Ignoring the random effects}
+<<>>=
+X <- model.matrix(~ fertilizer*week, plantData)
+E1 <- X %*% beta
+@
+\pause
+  {\bf Including the random effects}
+<<>>=
+nWeeks <- 5
+gamma.long <- rep(gamma[[1]], each=nWeeks)
+E2 <- E1 + gamma.long
+@
+\pause
+\small
+<<>>=
+head(cbind(plantData, E1=E1, E2=E2))
+@
+\end{frame}
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{The ANOVA table}
+<<>>=
+anova(lme1)
+@
+\pause
+\vfill
+\Large
+{\centering \bf \color{PineGreen}{Are these $P$-values valid?} \par}
+\pause
+\vfill
+{\centering \bf Not if there is serial correlation \par}
+\end{frame}
+
+
+
+
+
+\begin{frame}
+  \frametitle{Auto-regressive models}
+  \bf
+  An AR($p$) model allows for lag effects of order $p$ \par
+  \vfill
+  If $p=1$, we say the value of $y$ at time $k$ depends on the value
+  of $y$ at time $k-1$. \par
+  \pause
+  \vfill
+  \Large
+  \[
+    y_{ijk} = \beta_0 + \varphi_1 y_{ijk-1} + \gamma_j + \varepsilon_{ijk}
+  \]
+\end{frame}
+
+
+
+
+\begin{frame}
+  \frametitle{Auto-regressive models}
+  \bf
+  An AR($p$) model allows for lag effects of order $p$ \par
+  \vfill
+  If $p=2$, we say the value of $y$ at time $k$ depends on the value
+  of $y$ at time $k-1$ and at time $k-2$. \par
+  \vfill
+  \pause
+  \Large
+  \[
+    y_{ijk} = \beta_0 + \varphi_1 y_{ijk-1} + \varphi_2 y_{ijk-2} + \gamma_j + \varepsilon_{ijk}
+  \]
+\end{frame}
+
+
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Auto-regressive models}
+\vspace{0.5cm}
+{\bf Assume an AR(1) correlation structure}
+\pause
+<<>>=
+lme2 <- lme(leaves ~ fertilizer*week, plantData,
+            random=~1|plant,
+            correlation=corARMA(p=1))
+@
+\vspace{1cm}
+{\bf Assume an AR(3) correlation structure}
+\pause
+<<>>=
+lme3 <- lme(leaves ~ fertilizer*week, plantData,
+            random=~1|plant,
+            correlation=corARMA(p=3))
+@
+\end{frame}
+
+
+
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Autocorrelation function}
+<<plant2-acf,fig=true,include=false>>=
+plot(ACF(lme2), alpha=0.05)
+@
+\begin{center}
+  \includegraphics[width=0.7\textwidth]{mixed-models-plant2-acf}
+\end{center}
+\end{frame}
+
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Autocorrelation function}
+<<plant3-acf,fig=true,include=false>>=
+plot(ACF(lme3), alpha=0.05)
+@
+\begin{center}
+  \includegraphics[width=0.7\textwidth]{mixed-models-plant3-acf}
+\end{center}
+\end{frame}
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Parameter estimates}
+%<<>>=
+%summary(lme3)
+%@
+  \scriptsize %\small
+\begin{Schunk}
+\begin{Sinput}
+> summary(lme3)
+\end{Sinput}
+\begin{Soutput}
+Random effects:
+ Formula: ~1 | plant
+        (Intercept)  Residual
+StdDev:    0.955924 0.8227638
+
+Correlation Structure: ARMA(3,0)
+ Formula: ~1 | plant
+ Parameter estimate(s):
+      Phi1       Phi2       Phi3
+ 0.3339878  0.5086039 -0.2573006
+Fixed effects: leaves ~ fertilizer * week
+                  Value Std.Error DF   t-value p-value
+(Intercept)         4.6 0.5640445 32  8.155385  0.0000
+fertilizerL         0.0 0.7976794  8  0.000000  1.0000
+week2               2.2 0.4039417 32  5.446331  0.0000
+week3               4.4 0.3532792 32 12.454737  0.0000
+week4               5.4 0.4867909 32 11.093060  0.0000
+week5               7.4 0.4614437 32 16.036626  0.0000
+fertilizerL:week2  -1.0 0.5712598 32 -1.750517  0.0896
+fertilizerL:week3  -1.8 0.4996123 32 -3.602794  0.0011
+fertilizerL:week4  -1.6 0.6884262 32 -2.324142  0.0266
+fertilizerL:week5  -1.4 0.6525799 32 -2.145331  0.0396
+\end{Soutput}
+\end{Schunk}
+\end{frame}
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{ANOVA tables}
+  {\bf Model that ignores serial correlation}
+<<>>=
+anova(lme1)
+@
+  {\bf Model that accounts for serial correlation}
+<<>>=
+anova(lme3)
+@
+\end{frame}
+
+
+
+\section{Summary}
+
+
+\begin{frame}
+  \frametitle{Summary}
+  \large
+  \begin{itemize}[<+->]
+    \item Linear mixed-effects models are useful anytime you have
+      fixed effects and normally-distriubted random effects
+    \item They allow for (serial, spatial, etc\dots) correlation among
+      observations within a level of the grouping variable
+    \item These models can be used for repeated measures data as an
+      alternative to MANOVA or the split-plot method with adjusted
+      $P$-values
+    \item We do not want you to use this approach for the repeated
+      measures questions in the exam.
+    \item But we will expect you to know how to fit linear
+      mixed-effects models using {\tt lme}, as we have already done
+  \end{itemize}
+\end{frame}
+
+
+
+
+
+
+
+
+
+
+\end{document}
+
+
+
+
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Hawk home range size example}
+  \scriptsize
+<<>>=
+hawkData <- read.csv("hawkData.csv")
+hawkData$hawk <- factor(hawkData$hawk)
+hawkData$season <- factor(hawkData$season)
+head(hawkData, 15)
+@
+\end{frame}
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Mixed-effects models}
+<<>>=
+lme.hawk1 <- lme(homerange ~ sex*season, data=hawkData,
+                 random=~1|hawk)
+@
+\pause
+<<>>=
+lme.hawk2 <- lme(homerange ~ sex*season, data=hawkData,
+                 random=~1|hawk,
+                 correlation=corARMA(p=1))
+@
+\end{frame}
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Compare ANOVA tables}
+<<>>=
+anova(lme.hawk1)
+@
+\pause
+<<>>=
+anova(lme.hawk2)
+@
+\end{frame}
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Autocorrelation function (ACF)}
+  \tiny
+<<lme-hawk1,fig=TRUE,include=false>>=
+plot(ACF(lme.hawk1), alpha=0.05)
+@
+\begin{center}
+  \includegraphics[width=7cm]{mixed-models-lme-hawk1}
+\end{center}
+\end{frame}
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Autocorrelation function (ACF)}
+  \tiny
+<<lme-hawk2,fig=TRUE,include=false>>=
+plot(ACF(lme.hawk2), alpha=0.05)
+@
+\begin{center}
+  \includegraphics[width=7cm]{mixed-models-lme-hawk2}
+\end{center}
+\end{frame}
+
+
+
+
+
+
+
+
+
+
+
+\end{document}
+
+
