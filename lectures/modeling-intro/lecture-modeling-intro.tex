@@ -103,16 +103,16 @@
   \frametitle{Looking ahead}
   \Large
 %  \begin{itemize}
-%    \item 
+%    \item
   Linear models
 %    \item[]
 %    \item Linear mixed effects models
 %    \item[]
-%    \item 
+%    \item
   \vfill
   Generalized linear models
 %    \item[]
-%    \item 
+%    \item
   \vfill
   Model selection and multi-model inference
 %    \item[]
@@ -203,7 +203,7 @@
       \item Statistical
     \end{itemize}
   }
-  \uncover<3->{  
+  \uncover<3->{
   {\bf Important point} \\
   ``All models are wrong but some are useful'' (George Box, 1976) \\
   }
@@ -265,7 +265,7 @@
     \item<2-> Stochastic component %(s)
       \begin{itemize}
         \large
-        \item Probability distribution %(s) 
+        \item Probability distribution %(s)
           describing the differences
           between the expected values and the observed values
         \item In parametric statistics, we assume we know the
@@ -402,12 +402,11 @@ vector of coefficients. \pause More on matrix notation later\dots
 \begin{frame}
   \frametitle{Interpretting the $\beta$'s}
 You must be able to interpret the $\beta$
-coefficients {\it for any model that you fit to your data}. 
+coefficients {\it for any model that you fit to your data}.
 \pause
 \vfill
-There may be dozens of, continuous and discrete, predictors variables
-in a linear model, in which case you would need to be able to
-interpret dozens of $\beta$'s. 
+A linear model might have dozens of continuous and categorical
+predictors variables, with dozens of associated $\beta$ coefficients.
 %% \pause
 %% \vfill
 %% Key points for interpretting $\beta$'s:
@@ -418,329 +417,147 @@ interpret dozens of $\beta$'s.
 
 
 \begin{frame}
-  \frametitle{Key points for interpretting $\beta$'s}
-  The intercept $\beta_0$ is expected value of $y$, when all $x$'s are 0
+  \frametitle{Interpretting the $\beta$'s}% for continuous explanatory variables}
+  The intercept $\beta_0$ is the expected value of $y$, when all $x$'s are 0
   \pause
   \vfill
-  If $x$ is {\bf continuous} explanatory variable %, $\beta$ is
+  If $x$ is a {\bf continuous} explanatory variable: %, $\beta$ is
   \begin{itemize}
     \item $\beta$ can usually be interpretted as a \textit{slope}
-      parameter. 
+      parameter.
     \item In this case, $\beta$ is the
       change in $y$ resulting from a 1 unit change in $x$.
   \end{itemize}
-  \pause
-  \vfill
+%  \pause
+%  \vfill
+\end{frame}
+
+
+
+
+\begin{frame}
+  \frametitle{\small Interpretting $\beta$'s for categorical explantory
+    variables}
   Things are more complicated for {\bf categorical} explantory
   variables (i.e., factors) because they must be converted to dummy
-  variables, and there are many ways of creating dummy variables!
+  variables
   \pause
   \vfill
-  For a {\bf discrete} explanatory variable %, $\beta$ is
+  There are many ways of creating dummy variables
+  \pause
+  \vfill
+%  For a {\bf categorical} explanatory variable %, $\beta$ is
+  The default method for unordered factors is called \inr{"contr.treatment"}
   \begin{itemize}
-    \item 
+    \item One level of a factor is treated as a reference level
+    \item The reference level is associated with the intercept
+    \item The $\beta$ coefficients for the other levels
+      are differences from the reference level.
   \end{itemize}
 \end{frame}
 
 
 
-
-
-\begin{frame}[fragile]
-  \frametitle{One-way ANOVA}
-  \scriptsize %\tiny
-\begin{knitrout}\scriptsize
-\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlstd{lm2} \hlkwb{<-} \hlkwd{lm}\hlstd{(weight} \hlopt{~} \hlstd{diet,} \hlkwc{data}\hlstd{=dietData)}
-\hlkwd{summary}\hlstd{(lm2)}
-\end{alltt}
-\begin{verbatim}
-## 
-## Call:
-## lm(formula = weight ~ diet, data = dietData)
-## 
-## Residuals:
-##     Min      1Q  Median      3Q     Max 
-## -7.6371 -1.9253 -0.0366  1.9770  5.4576 
-## 
-## Coefficients:
-##             Estimate Std. Error t value Pr(>|t|)    
-## (Intercept)  26.1178     0.7691  33.958   <2e-16 ***
-## dietHigh      2.5292     1.0877   2.325   0.0237 *  
-## dietLow       0.4559     1.0877   0.419   0.6767    
-## dietMed       1.1021     1.0877   1.013   0.3153    
-## ---
-## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-## 
-## Residual standard error: 2.979 on 56 degrees of freedom
-## Multiple R-squared:  0.09908,	Adjusted R-squared:  0.05082 
-## F-statistic: 2.053 on 3 and 56 DF,  p-value: 0.1169
-\end{verbatim}
-\end{kframe}
-\end{knitrout}
-\end{frame}
+% \begin{frame}[fragile]
+%   \frametitle{One-way ANOVA}
+%   \scriptsize %\tiny
+% <<lm2,size='scriptsize'>>=
+% lm2 <- lm(weight ~ diet, data=dietData)
+% summary(lm2)
+% @
+% \end{frame}
 
 
 
-\begin{frame}[fragile]
-  \frametitle{One-way ANOVA: Design matrix}
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlstd{X2} \hlkwb{<-} \hlkwd{model.matrix}\hlstd{(}\hlopt{~}\hlstd{diet,} \hlkwc{data}\hlstd{=dietData)}
-\hlstd{X2[}\hlnum{20}\hlopt{:}\hlnum{30}\hlstd{,]}
-\end{alltt}
-\begin{verbatim}
-##    (Intercept) dietHigh dietLow dietMed
-## 20           1        0       1       0
-## 21           1        0       1       0
-## 22           1        0       1       0
-## 23           1        0       1       0
-## 24           1        0       1       0
-## 25           1        0       1       0
-## 26           1        0       1       0
-## 27           1        0       1       0
-## 28           1        0       1       0
-## 29           1        0       1       0
-## 30           1        0       1       0
-\end{verbatim}
-\end{kframe}
-\end{knitrout}
-\end{frame}
+% \begin{frame}[fragile]
+%   \frametitle{One-way ANOVA: Design matrix}
+% <<X2>>=
+% X2 <- model.matrix(~diet, data=dietData)
+% X2[20:30,]
+% @
+% \end{frame}
 
 
-\begin{frame}[fragile]
-  \frametitle{One-way ANOVA: Expected values of $y$}
-  \footnotesize %\scriptsize
-\begin{knitrout}\footnotesize
-\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlstd{betas2} \hlkwb{<-} \hlkwd{coef}\hlstd{(lm2)}
-\hlstd{betas2}
-\end{alltt}
-\begin{verbatim}
-## (Intercept)    dietHigh     dietLow     dietMed 
-##  26.1178280   2.5292436   0.4558565   1.1020553
-\end{verbatim}
-\end{kframe}
-\end{knitrout}
-\pause
-\begin{knitrout}\footnotesize
-\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlstd{Ey2} \hlkwb{<-} \hlstd{X2} \hlopt{%*%} \hlstd{betas2}
-\hlkwd{head}\hlstd{(Ey2)}
-\end{alltt}
-\begin{verbatim}
-##       [,1]
-## 1 26.11783
-## 2 26.11783
-## 3 26.11783
-## 4 26.11783
-## 5 26.11783
-## 6 26.11783
-\end{verbatim}
-\end{kframe}
-\end{knitrout}
-\end{frame}
+% \begin{frame}[fragile]
+%   \frametitle{One-way ANOVA: Expected values of $y$}
+%   \footnotesize %\scriptsize
+% <<betas2,size='footnotesize'>>=
+% betas2 <- coef(lm2)
+% betas2
+% @
+% \pause
+% <<Ey2,size='footnotesize'>>=
+% Ey2 <- X2 %*% betas2
+% head(Ey2)
+% @
+% \end{frame}
 
 
 
-\begin{frame}[fragile]
-  \frametitle{ANCOVA}
-  \vspace{-2mm}
-  \scriptsize %\tiny
-\begin{knitrout}\scriptsize
-\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlstd{lm3} \hlkwb{<-} \hlkwd{lm}\hlstd{(weight} \hlopt{~} \hlstd{age} \hlopt{+} \hlstd{diet,} \hlkwc{data}\hlstd{=dietData)}
-\hlkwd{summary}\hlstd{(lm3)}
-\end{alltt}
-\begin{verbatim}
-## 
-## Call:
-## lm(formula = weight ~ age + diet, data = dietData)
-## 
-## Residuals:
-##     Min      1Q  Median      3Q     Max 
-## -3.8214 -1.2213 -0.2519  1.2161  4.9185 
-## 
-## Coefficients:
-##             Estimate Std. Error t value Pr(>|t|)    
-## (Intercept)  19.1402     0.8858  21.607  < 2e-16 ***
-## age           0.5573     0.0594   9.382 5.20e-13 ***
-## dietHigh      3.0830     0.6832   4.513 3.41e-05 ***
-## dietLow       1.3688     0.6875   1.991 0.051472 .  
-## dietMed       2.5265     0.6973   3.623 0.000636 ***
-## ---
-## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-## 
-## Residual standard error: 1.864 on 55 degrees of freedom
-## Multiple R-squared:  0.6536,	Adjusted R-squared:  0.6284 
-## F-statistic: 25.94 on 4 and 55 DF,  p-value: 4.147e-12
-\end{verbatim}
-\end{kframe}
-\end{knitrout}
-\end{frame}
+% \begin{frame}[fragile]
+%   \frametitle{ANCOVA}
+%   \vspace{-2mm}
+%   \scriptsize %\tiny
+% <<lm3,size='scriptsize'>>=
+% lm3 <- lm(weight ~ age + diet, data=dietData)
+% summary(lm3)
+% @
+% \end{frame}
 
 
 
-\begin{frame}[fragile]
-  \frametitle{ANCOVA: Design matrix}
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlstd{X3} \hlkwb{<-} \hlkwd{model.matrix}\hlstd{(}\hlopt{~}\hlstd{age}\hlopt{+}\hlstd{diet,} \hlkwc{data}\hlstd{=dietData)}
-\hlstd{X3[}\hlnum{20}\hlopt{:}\hlnum{30}\hlstd{,]}
-\end{alltt}
-\begin{verbatim}
-##    (Intercept)       age dietHigh dietLow dietMed
-## 20           1  8.624227        0       1       0
-## 21           1 10.259516        0       1       0
-## 22           1 10.536797        0       1       0
-## 23           1 15.114452        0       1       0
-## 24           1 15.057981        0       1       0
-## 25           1  9.515444        0       1       0
-## 26           1  8.968441        0       1       0
-## 27           1  5.010545        0       1       0
-## 28           1  5.714703        0       1       0
-## 29           1 11.964920        0       1       0
-## 30           1 14.035229        0       1       0
-\end{verbatim}
-\end{kframe}
-\end{knitrout}
-\end{frame}
+% \begin{frame}[fragile]
+%   \frametitle{ANCOVA: Design matrix}
+% <<X3>>=
+% X3 <- model.matrix(~age+diet, data=dietData)
+% X3[20:30,]
+% @
+% \end{frame}
 
 
 
 
-\begin{frame}[fragile]
-  \frametitle{ANCOVA: Expected values of $y$}
-  \footnotesize
-\begin{knitrout}\footnotesize
-\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlstd{betas3} \hlkwb{<-} \hlkwd{coef}\hlstd{(lm3)}
-\hlstd{betas3}
-\end{alltt}
-\begin{verbatim}
-## (Intercept)         age    dietHigh     dietLow     dietMed 
-##  19.1401563   0.5573171   3.0830412   1.3687607   2.5264570
-\end{verbatim}
-\end{kframe}
-\end{knitrout}
-\begin{knitrout}\footnotesize
-\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlstd{Ey3} \hlkwb{<-} \hlstd{X3} \hlopt{%*%} \hlstd{betas3}
-\hlkwd{head}\hlstd{(Ey3)}
-\end{alltt}
-\begin{verbatim}
-##       [,1]
-## 1 25.61744
-## 2 26.69481
-## 3 27.69908
-## 4 23.57095
-## 5 22.20198
-## 6 29.65950
-\end{verbatim}
-\end{kframe}
-\end{knitrout}
-\end{frame}
+% \begin{frame}[fragile]
+%   \frametitle{ANCOVA: Expected values of $y$}
+%   \footnotesize
+% <<betas3,size='footnotesize'>>=
+% betas3 <- coef(lm3)
+% betas3
+% @
+% <<Ey3,size='footnotesize'>>=
+% Ey3 <- X3 %*% betas3
+% head(Ey3)
+% @
+% \end{frame}
 
 
 
-\begin{frame}[fragile]
-  \frametitle{Beyond ANCOVA}
-  {\bf Now the slopes differ for each treatment}
-  \tiny
-\begin{knitrout}\tiny
-\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlstd{lm4} \hlkwb{<-} \hlkwd{lm}\hlstd{(weight} \hlopt{~} \hlstd{diet} \hlopt{*} \hlstd{age,} \hlkwc{data}\hlstd{=dietData)}
-\hlkwd{summary}\hlstd{(lm4)}
-\end{alltt}
-\begin{verbatim}
-## 
-## Call:
-## lm(formula = weight ~ diet * age, data = dietData)
-## 
-## Residuals:
-##     Min      1Q  Median      3Q     Max 
-## -3.7370 -1.2585  0.1167  1.1039  4.9604 
-## 
-## Coefficients:
-##              Estimate Std. Error t value Pr(>|t|)    
-## (Intercept)  17.90749    1.39518  12.835  < 2e-16 ***
-## dietHigh      4.12823    1.95637   2.110  0.03968 *  
-## dietLow       2.82133    2.12190   1.330  0.18944    
-## dietMed       5.37507    1.97816   2.717  0.00892 ** 
-## age           0.65577    0.10452   6.274 7.09e-08 ***
-## dietHigh:age -0.08219    0.15271  -0.538  0.59273    
-## dietLow:age  -0.11866    0.17474  -0.679  0.50009    
-## dietMed:age  -0.26063    0.16845  -1.547  0.12788    
-## ---
-## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-## 
-## Residual standard error: 1.874 on 52 degrees of freedom
-## Multiple R-squared:  0.6691,	Adjusted R-squared:  0.6245 
-## F-statistic: 15.02 on 7 and 52 DF,  p-value: 1.524e-10
-\end{verbatim}
-\end{kframe}
-\end{knitrout}
-\end{frame}
+% \begin{frame}[fragile]
+%   \frametitle{Beyond ANCOVA}
+%   {\bf Now the slopes differ for each treatment}
+%   \tiny
+% <<lm4,size='tiny'>>=
+% lm4 <- lm(weight ~ diet * age, data=dietData)
+% summary(lm4)
+% @
+% \end{frame}
 
 
 
 
-\begin{frame}[fragile]
-  \frametitle{The associated design matrix}
-  \tiny
-\begin{knitrout}\tiny
-\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlstd{X4} \hlkwb{<-} \hlkwd{model.matrix}\hlstd{(}\hlopt{~} \hlstd{diet} \hlopt{*} \hlstd{age,} \hlkwc{data}\hlstd{=dietData)}
-\hlstd{X4[}\hlnum{20}\hlopt{:}\hlnum{30}\hlstd{,]}
-\end{alltt}
-\begin{verbatim}
-##    (Intercept) dietHigh dietLow dietMed       age dietHigh:age dietLow:age
-## 20           1        0       1       0  8.624227            0    8.624227
-## 21           1        0       1       0 10.259516            0   10.259516
-## 22           1        0       1       0 10.536797            0   10.536797
-## 23           1        0       1       0 15.114452            0   15.114452
-## 24           1        0       1       0 15.057981            0   15.057981
-## 25           1        0       1       0  9.515444            0    9.515444
-## 26           1        0       1       0  8.968441            0    8.968441
-## 27           1        0       1       0  5.010545            0    5.010545
-## 28           1        0       1       0  5.714703            0    5.714703
-## 29           1        0       1       0 11.964920            0   11.964920
-## 30           1        0       1       0 14.035229            0   14.035229
-##    dietMed:age
-## 20           0
-## 21           0
-## 22           0
-## 23           0
-## 24           0
-## 25           0
-## 26           0
-## 27           0
-## 28           0
-## 29           0
-## 30           0
-\end{verbatim}
-\end{kframe}
-\end{knitrout}
-\pause
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlstd{betas4} \hlkwb{<-} \hlkwd{coef}\hlstd{(lm4)}
-\hlstd{Ey4} \hlkwb{<-} \hlstd{X4} \hlopt{%*%} \hlstd{betas4}
-\end{alltt}
-\end{kframe}
-\end{knitrout}
-\end{frame}
+% \begin{frame}[fragile]
+%   \frametitle{The associated design matrix}
+%   \tiny
+% <<X4,size='tiny'>>=
+% X4 <- model.matrix(~ diet * age, data=dietData)
+% X4[20:30,]
+% @
+% \pause
+% <<betas4>>=
+% betas4 <- coef(lm4)
+% Ey4 <- X4 %*% betas4
+% @
+% \end{frame}
 
 
 
@@ -772,6 +589,13 @@ interpret dozens of $\beta$'s.
 \section{Example}
 
 
+\begin{frame}
+  \frametitle{Outline}
+  \LARGE
+   \tableofcontents[currentsection,hideallsubsections]
+\end{frame}
+
+
 
 \begin{frame}[plain]
   \frametitle{Example}
@@ -787,10 +611,14 @@ interpret dozens of $\beta$'s.
 \begin{frame}[plain]
   \frametitle{Example}
   \Huge
-  \begin{center}
-    \includegraphics[width=0.8\textwidth]{figs/Santa-Cruz} \\
-    Santa Cruz Island
-  \end{center}
+%  \begin{center}
+  \centering
+    Santa Cruz Island \\
+  \begin{columns}
+    \column{\dimexpr\paperwidth-20pt}
+    \includegraphics[width=\textwidth]{figs/Santa-Cruz} \\
+  \end{columns}
+%  \end{center}
 \end{frame}
 
 
@@ -827,7 +655,10 @@ interpret dozens of $\beta$'s.
 %  {\bf Elevation}
   \scriptsize
 
-\includegraphics[width=\textwidth]{figure/elev-1}
+\begin{columns}
+  \column{\dimexpr\paperwidth-10pt}
+  \includegraphics[width=\textwidth]{figure/elev-1}
+\end{columns}
 \end{frame}
 
 
@@ -838,7 +669,10 @@ interpret dozens of $\beta$'s.
 %  {\bf Forest cover}
   \scriptsize
 
-\includegraphics[width=\textwidth]{figure/forest-1}
+\begin{columns}
+  \column{\dimexpr\paperwidth-10pt}
+  \includegraphics[width=\textwidth]{figure/forest-1}
+\end{columns}
 \end{frame}
 
 
@@ -849,9 +683,12 @@ interpret dozens of $\beta$'s.
 \begin{frame}
   \frametitle{Questions}
   \large
-  \begin{enumerate}[<+- | visible@+->][\bf \color{PineGreen} (1)]
+%  \begin{enumerate}[<+- | visible@+->][\bf \color{PineGreen} (1)]
+  \begin{enumerate}[\bf \color{PineGreen} (1)]
     \item How many jays are on the island?
+    \item[]
     \item What environmental variables influence abundance?
+    \item[]
     \item Can we predict consequences of environmental change?
   \end{enumerate}
 \end{frame}
@@ -862,7 +699,10 @@ interpret dozens of $\beta$'s.
   \frametitle{Maps of predictor variables}
 %  {\bf Chaparral cover}
 
-\includegraphics[width=\textwidth]{figure/plots-1}
+\begin{columns}
+  \column{\dimexpr\paperwidth-10pt}
+  \includegraphics[width=\textwidth]{figure/plots-1}
+\end{columns}
 \end{frame}
 
 
@@ -890,46 +730,255 @@ interpret dozens of $\beta$'s.
 
 
 
+
 \begin{frame}[fragile]
-  \frametitle{Fit a model}
-  \vspace{-2mm}
-\begin{knitrout}\tiny
+  \frametitle{Simple linear regression}
+\begin{knitrout}\scriptsize
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlstd{fm6} \hlkwb{<-} \hlkwd{lm}\hlstd{(jays} \hlopt{~} \hlstd{habitat} \hlopt{*} \hlstd{seeds} \hlopt{+} \hlstd{elevation} \hlopt{+}
-          \hlkwd{I}\hlstd{(elevation}\hlopt{^}\hlnum{2}\hlstd{)} \hlopt{+}  \hlstd{chaparral,} \hlkwc{data}\hlstd{=jayData)}
+\hlstd{fm1} \hlkwb{<-} \hlkwd{lm}\hlstd{(jays} \hlopt{~} \hlstd{elevation,} \hlkwc{data}\hlstd{=jayData)}
+\hlkwd{summary}\hlstd{(fm1)}
+\end{alltt}
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = jays ~ elevation, data = jayData)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -5.4874 -1.7539  0.1566  1.6159  4.6155 
+## 
+## Coefficients:
+##              Estimate Std. Error t value Pr(>|t|)    
+## (Intercept) 33.082808   0.453997   72.87   <2e-16 ***
+## elevation    0.008337   0.000595   14.01   <2e-16 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 2.285 on 98 degrees of freedom
+## Multiple R-squared:  0.667,	Adjusted R-squared:  0.6636 
+## F-statistic: 196.3 on 1 and 98 DF,  p-value: < 2.2e-16
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Multiple linear regression}
+\begin{knitrout}\scriptsize
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{fm2} \hlkwb{<-} \hlkwd{lm}\hlstd{(jays} \hlopt{~} \hlstd{elevation}\hlopt{+}\hlstd{forest,} \hlkwc{data}\hlstd{=jayData)}
+\hlkwd{summary}\hlstd{(fm2)}
+\end{alltt}
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = jays ~ elevation + forest, data = jayData)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -5.4717 -1.7384  0.1552  1.5993  4.6319 
+## 
+## Coefficients:
+##              Estimate Std. Error t value Pr(>|t|)    
+## (Intercept) 33.065994   0.467624  70.711   <2e-16 ***
+## elevation    0.008337   0.000598  13.943   <2e-16 ***
+## forest       0.294350   1.793079   0.164     0.87    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 2.296 on 97 degrees of freedom
+## Multiple R-squared:  0.6671,	Adjusted R-squared:  0.6603 
+## F-statistic: 97.21 on 2 and 97 DF,  p-value: < 2.2e-16
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{One-way ANOVA}
+\begin{knitrout}\scriptsize
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{fm3} \hlkwb{<-} \hlkwd{lm}\hlstd{(jays} \hlopt{~} \hlstd{habitat,} \hlkwc{data}\hlstd{=jayData)}
+\hlkwd{summary}\hlstd{(fm3)}
+\end{alltt}
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = jays ~ habitat, data = jayData)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -7.9143 -2.3684 -0.3684  3.0857  8.6316 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)   35.875      1.356  26.456   <2e-16 ***
+## habitatOak     3.493      1.448   2.413   0.0177 *  
+## habitatPine    2.039      1.503   1.357   0.1780    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 3.835 on 97 degrees of freedom
+## Multiple R-squared:  0.07126,	Adjusted R-squared:  0.05211 
+## F-statistic: 3.721 on 2 and 97 DF,  p-value: 0.02773
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{ANCOVA}
+\begin{knitrout}\scriptsize
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{fm4} \hlkwb{<-} \hlkwd{lm}\hlstd{(jays} \hlopt{~} \hlstd{elevation}\hlopt{+}\hlstd{habitat,} \hlkwc{data}\hlstd{=jayData)}
+\hlkwd{summary}\hlstd{(fm4)}
+\end{alltt}
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = jays ~ elevation + habitat, data = jayData)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -5.0327 -1.5356  0.0091  1.4686  4.2391 
+## 
+## Coefficients:
+##              Estimate Std. Error t value Pr(>|t|)    
+## (Intercept) 3.072e+01  8.084e-01  37.997  < 2e-16 ***
+## elevation   8.289e-03  5.414e-04  15.308  < 2e-16 ***
+## habitatOak  3.166e+00  7.850e-01   4.034  0.00011 ***
+## habitatPine 1.695e+00  8.148e-01   2.081  0.04010 *  
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 2.078 on 96 degrees of freedom
+## Multiple R-squared:  0.7301,	Adjusted R-squared:  0.7217 
+## F-statistic: 86.56 on 3 and 96 DF,  p-value: < 2.2e-16
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{Continuous-categorical interaction}
+\begin{knitrout}\scriptsize
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{fm5} \hlkwb{<-} \hlkwd{lm}\hlstd{(jays} \hlopt{~} \hlstd{elevation}\hlopt{*}\hlstd{habitat,} \hlkwc{data}\hlstd{=jayData)}
+\hlkwd{summary}\hlstd{(fm5)}
+\end{alltt}
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = jays ~ elevation * habitat, data = jayData)
+## 
+## Residuals:
+##    Min     1Q Median     3Q    Max 
+## -5.008 -1.581 -0.103  1.420  4.184 
+## 
+## Coefficients:
+##                        Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)           31.654383   1.446322  21.886  < 2e-16 ***
+## elevation              0.006781   0.001999   3.393  0.00101 ** 
+## habitatOak             2.428682   1.565227   1.552  0.12411    
+## habitatPine            0.399953   1.579874   0.253  0.80070    
+## elevation:habitatOak   0.001204   0.002153   0.559  0.57737    
+## elevation:habitatPine  0.002046   0.002151   0.951  0.34414    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 2.087 on 94 degrees of freedom
+## Multiple R-squared:  0.7334,	Adjusted R-squared:  0.7192 
+## F-statistic: 51.72 on 5 and 94 DF,  p-value: < 2.2e-16
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{Quadratic effect of elevation}
+\begin{knitrout}\scriptsize
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{fm6} \hlkwb{<-} \hlkwd{lm}\hlstd{(jays} \hlopt{~} \hlstd{elevation}\hlopt{+}\hlkwd{I}\hlstd{(elevation}\hlopt{^}\hlnum{2}\hlstd{),} \hlkwc{data}\hlstd{=jayData)}
 \hlkwd{summary}\hlstd{(fm6)}
 \end{alltt}
 \begin{verbatim}
 ## 
 ## Call:
-## lm(formula = jays ~ habitat * seeds + elevation + I(elevation^2) + 
-##     chaparral, data = jayData)
+## lm(formula = jays ~ elevation + I(elevation^2), data = jayData)
 ## 
 ## Residuals:
 ##     Min      1Q  Median      3Q     Max 
-## -4.9796 -1.3642  0.0165  1.2872  4.0242 
+## -4.8429 -1.4608  0.1304  1.5908  4.7854 
 ## 
 ## Coefficients:
-##                        Estimate Std. Error t value Pr(>|t|)    
-## (Intercept)           2.796e+01  1.643e+00  17.018  < 2e-16 ***
-## habitatOak            5.799e+00  1.640e+00   3.536 0.000651 ***
-## habitatPine           3.858e+00  1.791e+00   2.155 0.033922 *  
-## seedsLow              2.401e+00  2.081e+00   1.154 0.251667    
-## seedsMed              1.784e+00  1.785e+00   0.999 0.320385    
-## elevation             1.216e-02  2.240e-03   5.428 4.98e-07 ***
-## I(elevation^2)       -2.551e-06  1.436e-06  -1.777 0.079105 .  
-## chaparral             9.341e-01  1.053e+00   0.887 0.377579    
-## habitatOak:seedsLow  -3.263e+00  2.276e+00  -1.434 0.155248    
-## habitatPine:seedsLow -2.105e+00  2.450e+00  -0.859 0.392557    
-## habitatOak:seedsMed  -3.384e+00  1.964e+00  -1.723 0.088337 .  
-## habitatPine:seedsMed -2.749e+00  2.119e+00  -1.297 0.197860    
+##                  Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)     3.162e+01  7.631e-01  41.434  < 2e-16 ***
+## elevation       1.368e-02  2.342e-03   5.843 6.86e-08 ***
+## I(elevation^2) -3.542e-06  1.503e-06  -2.357   0.0204 *  
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
-## Residual standard error: 2.033 on 88 degrees of freedom
-## Multiple R-squared:  0.7634,	Adjusted R-squared:  0.7338 
-## F-statistic: 25.81 on 11 and 88 DF,  p-value: < 2.2e-16
+## Residual standard error: 2.233 on 97 degrees of freedom
+## Multiple R-squared:  0.6851,	Adjusted R-squared:  0.6786 
+## F-statistic: 105.5 on 2 and 97 DF,  p-value: < 2.2e-16
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Interaction and quadratic effects}
+  \vspace{-2mm}
+\begin{knitrout}\tiny
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{fm7} \hlkwb{<-} \hlkwd{lm}\hlstd{(jays} \hlopt{~} \hlstd{habitat} \hlopt{*} \hlstd{forest} \hlopt{+} \hlstd{elevation} \hlopt{+}
+          \hlkwd{I}\hlstd{(elevation}\hlopt{^}\hlnum{2}\hlstd{),} \hlkwc{data}\hlstd{=jayData)}
+\hlkwd{summary}\hlstd{(fm7)}
+\end{alltt}
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = jays ~ habitat * forest + elevation + I(elevation^2), 
+##     data = jayData)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -5.2574 -1.4400  0.0487  1.4055  3.7924 
+## 
+## Coefficients:
+##                      Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)         2.920e+01  1.030e+00  28.338  < 2e-16 ***
+## habitatOak          3.705e+00  8.433e-01   4.394 2.98e-05 ***
+## habitatPine         2.216e+00  8.757e-01   2.531   0.0131 *  
+## forest              4.007e+01  2.780e+01   1.441   0.1529    
+## elevation           1.215e-02  2.300e-03   5.285 8.41e-07 ***
+## I(elevation^2)     -2.554e-06  1.484e-06  -1.721   0.0886 .  
+## habitatOak:forest  -4.292e+01  2.785e+01  -1.541   0.1267    
+## habitatPine:forest -3.918e+01  2.784e+01  -1.407   0.1627    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 2.044 on 92 degrees of freedom
+## Multiple R-squared:  0.7497,	Adjusted R-squared:  0.7307 
+## F-statistic: 39.37 on 7 and 92 DF,  p-value: < 2.2e-16
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -942,7 +991,7 @@ interpret dozens of $\beta$'s.
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlstd{E6} \hlkwb{<-} \hlkwd{predict}\hlstd{(fm6,} \hlkwc{type}\hlstd{=}\hlstr{"response"}\hlstd{,} \hlkwc{newdata}\hlstd{=cruz2,}
+\hlstd{E7} \hlkwb{<-} \hlkwd{predict}\hlstd{(fm7,} \hlkwc{type}\hlstd{=}\hlstr{"response"}\hlstd{,} \hlkwc{newdata}\hlstd{=cruz2,}
               \hlkwc{interval}\hlstd{=}\hlstr{"confidence"}\hlstd{)}
 \end{alltt}
 \end{kframe}
@@ -951,17 +1000,17 @@ interpret dozens of $\beta$'s.
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlstd{E6} \hlkwb{<-} \hlkwd{cbind}\hlstd{(cruz2[,}\hlkwd{c}\hlstd{(}\hlstr{"x"}\hlstd{,}\hlstr{"y"}\hlstd{)], E6)}
-\hlkwd{head}\hlstd{(E6)}
+\hlstd{E7} \hlkwb{<-} \hlkwd{cbind}\hlstd{(cruz2[,}\hlkwd{c}\hlstd{(}\hlstr{"x"}\hlstd{,}\hlstr{"y"}\hlstd{)], E7)}
+\hlkwd{head}\hlstd{(E7)}
 \end{alltt}
 \begin{verbatim}
 ##          x       y      fit      lwr      upr
-## 1 230736.7 3774324 35.67687 34.34196 37.01177
-## 2 231036.7 3774324 34.51169 33.45977 35.56361
-## 3 231336.7 3774324 34.98846 32.93921 37.03770
-## 4 230436.7 3774024 32.31463 30.76906 33.86021
-## 5 230736.7 3774024 40.04266 38.27753 41.80780
-## 6 231036.7 3774024 38.65059 37.41373 39.88745
+## 1 230736.7 3774324 35.68349 34.86313 36.50386
+## 2 231036.7 3774324 35.07284 34.22917 35.91652
+## 3 231336.7 3774324 34.58427 33.72668 35.44186
+## 4 230436.7 3774024 33.06042 31.55907 34.56177
+## 5 230736.7 3774024 39.18440 38.49766 39.87113
+## 6 231036.7 3774024 38.65512 37.98859 39.32165
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -972,7 +1021,10 @@ interpret dozens of $\beta$'s.
   \frametitle{Map the predictions}
   \scriptsize
 
-\includegraphics[width=\textwidth]{figure/Ejay-1}
+\begin{columns}
+  \column{\dimexpr\paperwidth-10pt}
+  \includegraphics[width=\textwidth]{figure/Ejay-1}
+\end{columns}
 \end{frame}
 
 
@@ -982,7 +1034,10 @@ interpret dozens of $\beta$'s.
   \frametitle{Map the predictions}
   \scriptsize
 
-\includegraphics[width=\textwidth]{figure/Ljay-1}
+\begin{columns}
+  \column{\dimexpr\paperwidth-10pt}
+  \includegraphics[width=\textwidth]{figure/Ljay-1}
+\end{columns}
 \end{frame}
 
 
@@ -992,7 +1047,10 @@ interpret dozens of $\beta$'s.
   \frametitle{Map the predictions}
   \scriptsize
 
-\includegraphics[width=\textwidth]{figure/Ujay-1}
+\begin{columns}
+  \column{\dimexpr\paperwidth-10pt}
+  \includegraphics[width=\textwidth]{figure/Ujay-1}
+\end{columns}
 \end{frame}
 
 
@@ -1024,7 +1082,11 @@ interpret dozens of $\beta$'s.
   \scriptsize
 
 
-\includegraphics[width=\textwidth]{figure/future1fig-1}
+\begin{columns}
+  \column{\dimexpr\paperwidth-10pt}
+  \only<1>{\includegraphics[width=\textwidth]{figure/Ejay-1} \\}
+  \only<2>{\includegraphics[width=\textwidth]{figure/future1fig-1} \\}
+\end{columns}
 \end{frame}
 
 
@@ -1059,7 +1121,10 @@ interpret dozens of $\beta$'s.
   \pause
 
 
-\includegraphics[width=\textwidth]{figure/future2fig-1}
+\begin{columns}
+  \column{\dimexpr\paperwidth-10pt}
+  \includegraphics[width=\textwidth]{figure/future2fig-1}
+\end{columns}
 \end{frame}
 
 
@@ -1085,6 +1150,13 @@ interpret dozens of $\beta$'s.
 \section{Matrix notation}
 
 
+\begin{frame}
+  \frametitle{Outline}
+  \LARGE
+   \tableofcontents[currentsection,hideallsubsections]
+\end{frame}
+
+
 
 
 
@@ -1104,7 +1176,7 @@ interpret dozens of $\beta$'s.
   {\bf Examples include} \\
   \begin{itemize}
     \item Completely randomized ANOVA
-    \item Randomized complete block designs (when block effects are fixed)
+    \item Randomized complete block designs with fixed block effects
     \item Factorial designs
     \item ANCOVA
   \end{itemize}
@@ -1117,12 +1189,14 @@ interpret dozens of $\beta$'s.
 
 \begin{frame}
   \frametitle{Then how do they differ?}
-  \pause
+%  \pause
+  \begin{itemize}%[<+->]
   \large
-  \begin{itemize}[<+->]
     \item The design matrices are different
+    \item[]
     \item And so are the number of parameters (coefficients) to be
       estimated
+    \item[]
     \item Important to understand how to construct design matrix that
       includes categorical variables
   \end{itemize}
@@ -1133,19 +1207,36 @@ interpret dozens of $\beta$'s.
 
 \begin{frame}%[fragile]
   \frametitle{Design matrix}
-  \large
-  \begin{itemize}[<+->]
-    \item A design matrix usually has $N$ rows and $K$ colums, where $N$ is
+%  \large
+%  \begin{itemize}[<+->]
+%    \item
+  A design matrix has $N$ rows and $K$ columns, where $N$ is
       the total sample size and $K$ is the number of coefficients (parameters)
-      to be estimated.
-    \item The first column contains just 1's. This column corresponds
-      to the intercept ($\beta_0$)
-    \item Continuous predictor variables appear unchanged in the design matrix
-    \item Categorical predictor variables appear as dummy variables
-    \item In {\bf R}, the design matrix is created internally based on
-      the formula that you provide
-    \item The design matrix can be viewed using the {\tt model.matrix} function
-  \end{itemize}
+      to be estimated. \\
+ \pause
+ \vfill
+%    \item
+      The first column contains just 1's. This column corresponds
+      to the intercept ($\beta_0$) \\
+ \pause
+ \vfill
+%    \item
+      Continuous predictor variables appear unchanged in the design
+      matrix \\
+ \pause
+ \vfill
+%    \item
+      Categorical predictor variables appear as dummy variables \\
+ \pause
+ \vfill
+%    \item
+      In {\bf R}, the design matrix is created internally based on
+      the formula that you provide \\
+ \pause
+ \vfill
+%    \item
+      The design matrix can be viewed using the \inr{model.matrix} function
+%  \end{itemize}
 \end{frame}
 
 

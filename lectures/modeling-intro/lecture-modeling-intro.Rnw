@@ -15,9 +15,9 @@
 source("../rnw2pdf.R")
 if(1==2) {
     ## Usage:
-    rnw2pdf("modeling-intro") # Don't include the file extension
-    rnw2pdf("modeling-intro", clean=FALSE) # Don't clean intermediate files
-    rnw2pdf("modeling-intro", tangle=TRUE) # If you want the .R file
+    rnw2pdf("lecture-modeling-intro") # Don't include the file extension
+    rnw2pdf("lecture-modeling-intro", clean=FALSE) # Don't clean intermediate files
+    rnw2pdf("lecture-modeling-intro", tangle=TRUE) # If you want the .R file
 }
 @
 
@@ -70,16 +70,16 @@ knit_theme$set("edit-kwrite")
   \frametitle{Looking ahead}
   \Large
 %  \begin{itemize}
-%    \item 
+%    \item
   Linear models
 %    \item[]
 %    \item Linear mixed effects models
 %    \item[]
-%    \item 
+%    \item
   \vfill
   Generalized linear models
 %    \item[]
-%    \item 
+%    \item
   \vfill
   Model selection and multi-model inference
 %    \item[]
@@ -170,7 +170,7 @@ knit_theme$set("edit-kwrite")
       \item Statistical
     \end{itemize}
   }
-  \uncover<3->{  
+  \uncover<3->{
   {\bf Important point} \\
   ``All models are wrong but some are useful'' (George Box, 1976) \\
   }
@@ -232,7 +232,7 @@ knit_theme$set("edit-kwrite")
     \item<2-> Stochastic component %(s)
       \begin{itemize}
         \large
-        \item Probability distribution %(s) 
+        \item Probability distribution %(s)
           describing the differences
           between the expected values and the observed values
         \item In parametric statistics, we assume we know the
@@ -375,12 +375,11 @@ vector of coefficients. \pause More on matrix notation later\dots
 \begin{frame}
   \frametitle{Interpretting the $\beta$'s}
 You must be able to interpret the $\beta$
-coefficients {\it for any model that you fit to your data}. 
+coefficients {\it for any model that you fit to your data}.
 \pause
 \vfill
-There may be dozens of, continuous and categorical, predictors variables
-in a linear model, in which case you would need to be able to
-interpret dozens of $\beta$'s. 
+A linear model might have dozens of continuous and categorical
+predictors variables, with dozens of associated $\beta$ coefficients.
 %% \pause
 %% \vfill
 %% Key points for interpretting $\beta$'s:
@@ -391,14 +390,14 @@ interpret dozens of $\beta$'s.
 
 
 \begin{frame}
-  \frametitle{Key points for interpretting $\beta$'s}
-  The intercept $\beta_0$ is expected value of $y$, when all $x$'s are 0
+  \frametitle{Interpretting the $\beta$'s}% for continuous explanatory variables}
+  The intercept $\beta_0$ is the expected value of $y$, when all $x$'s are 0
   \pause
   \vfill
-  If $x$ is {\bf continuous} explanatory variable %, $\beta$ is
+  If $x$ is a {\bf continuous} explanatory variable: %, $\beta$ is
   \begin{itemize}
     \item $\beta$ can usually be interpretted as a \textit{slope}
-      parameter. 
+      parameter.
     \item In this case, $\beta$ is the
       change in $y$ resulting from a 1 unit change in $x$.
   \end{itemize}
@@ -410,121 +409,128 @@ interpret dozens of $\beta$'s.
 
 
 \begin{frame}
-  \frametitle{Interpretting $\beta$'s for categorical explantory
+  \frametitle{\small Interpretting $\beta$'s for categorical explantory
     variables}
   Things are more complicated for {\bf categorical} explantory
   variables (i.e., factors) because they must be converted to dummy
-  variables, and there are many ways of creating dummy variables!
+  variables
   \pause
   \vfill
-  For a {\bf categorical} explanatory variable %, $\beta$ is
+  There are many ways of creating dummy variables
+  \pause
+  \vfill
+%  For a {\bf categorical} explanatory variable %, $\beta$ is
+  The default method for unordered factors is called \inr{"contr.treatment"}
   \begin{itemize}
-    \item 
+    \item One level of a factor is treated as a reference level
+    \item The reference level is associated with the intercept
+    \item The $\beta$ coefficients for the other levels
+      are differences from the reference level.
   \end{itemize}
 \end{frame}
 
 
 
-\begin{frame}[fragile]
-  \frametitle{One-way ANOVA}
-  \scriptsize %\tiny
-<<lm2,size='scriptsize'>>=
-lm2 <- lm(weight ~ diet, data=dietData)
-summary(lm2)
-@
-\end{frame}
+% \begin{frame}[fragile]
+%   \frametitle{One-way ANOVA}
+%   \scriptsize %\tiny
+% <<lm2,size='scriptsize'>>=
+% lm2 <- lm(weight ~ diet, data=dietData)
+% summary(lm2)
+% @
+% \end{frame}
 
 
 
-\begin{frame}[fragile]
-  \frametitle{One-way ANOVA: Design matrix}
-<<X2>>=
-X2 <- model.matrix(~diet, data=dietData)
-X2[20:30,]
-@
-\end{frame}
+% \begin{frame}[fragile]
+%   \frametitle{One-way ANOVA: Design matrix}
+% <<X2>>=
+% X2 <- model.matrix(~diet, data=dietData)
+% X2[20:30,]
+% @
+% \end{frame}
 
 
-\begin{frame}[fragile]
-  \frametitle{One-way ANOVA: Expected values of $y$}
-  \footnotesize %\scriptsize
-<<betas2,size='footnotesize'>>=
-betas2 <- coef(lm2)
-betas2
-@
-\pause
-<<Ey2,size='footnotesize'>>=
-Ey2 <- X2 %*% betas2
-head(Ey2)
-@
-\end{frame}
-
-
-
-\begin{frame}[fragile]
-  \frametitle{ANCOVA}
-  \vspace{-2mm}
-  \scriptsize %\tiny
-<<lm3,size='scriptsize'>>=
-lm3 <- lm(weight ~ age + diet, data=dietData)
-summary(lm3)
-@
-\end{frame}
+% \begin{frame}[fragile]
+%   \frametitle{One-way ANOVA: Expected values of $y$}
+%   \footnotesize %\scriptsize
+% <<betas2,size='footnotesize'>>=
+% betas2 <- coef(lm2)
+% betas2
+% @
+% \pause
+% <<Ey2,size='footnotesize'>>=
+% Ey2 <- X2 %*% betas2
+% head(Ey2)
+% @
+% \end{frame}
 
 
 
-\begin{frame}[fragile]
-  \frametitle{ANCOVA: Design matrix}
-<<X3>>=
-X3 <- model.matrix(~age+diet, data=dietData)
-X3[20:30,]
-@
-\end{frame}
+% \begin{frame}[fragile]
+%   \frametitle{ANCOVA}
+%   \vspace{-2mm}
+%   \scriptsize %\tiny
+% <<lm3,size='scriptsize'>>=
+% lm3 <- lm(weight ~ age + diet, data=dietData)
+% summary(lm3)
+% @
+% \end{frame}
 
 
 
-
-\begin{frame}[fragile]
-  \frametitle{ANCOVA: Expected values of $y$}
-  \footnotesize
-<<betas3,size='footnotesize'>>=
-betas3 <- coef(lm3)
-betas3
-@
-<<Ey3,size='footnotesize'>>=
-Ey3 <- X3 %*% betas3
-head(Ey3)
-@
-\end{frame}
-
-
-
-\begin{frame}[fragile]
-  \frametitle{Beyond ANCOVA}
-  {\bf Now the slopes differ for each treatment}
-  \tiny
-<<lm4,size='tiny'>>=
-lm4 <- lm(weight ~ diet * age, data=dietData)
-summary(lm4)
-@
-\end{frame}
+% \begin{frame}[fragile]
+%   \frametitle{ANCOVA: Design matrix}
+% <<X3>>=
+% X3 <- model.matrix(~age+diet, data=dietData)
+% X3[20:30,]
+% @
+% \end{frame}
 
 
 
 
-\begin{frame}[fragile]
-  \frametitle{The associated design matrix}
-  \tiny
-<<X4,size='tiny'>>=
-X4 <- model.matrix(~ diet * age, data=dietData)
-X4[20:30,]
-@
-\pause
-<<betas4>>=
-betas4 <- coef(lm4)
-Ey4 <- X4 %*% betas4
-@
-\end{frame}
+% \begin{frame}[fragile]
+%   \frametitle{ANCOVA: Expected values of $y$}
+%   \footnotesize
+% <<betas3,size='footnotesize'>>=
+% betas3 <- coef(lm3)
+% betas3
+% @
+% <<Ey3,size='footnotesize'>>=
+% Ey3 <- X3 %*% betas3
+% head(Ey3)
+% @
+% \end{frame}
+
+
+
+% \begin{frame}[fragile]
+%   \frametitle{Beyond ANCOVA}
+%   {\bf Now the slopes differ for each treatment}
+%   \tiny
+% <<lm4,size='tiny'>>=
+% lm4 <- lm(weight ~ diet * age, data=dietData)
+% summary(lm4)
+% @
+% \end{frame}
+
+
+
+
+% \begin{frame}[fragile]
+%   \frametitle{The associated design matrix}
+%   \tiny
+% <<X4,size='tiny'>>=
+% X4 <- model.matrix(~ diet * age, data=dietData)
+% X4[20:30,]
+% @
+% \pause
+% <<betas4>>=
+% betas4 <- coef(lm4)
+% Ey4 <- X4 %*% betas4
+% @
+% \end{frame}
 
 
 
@@ -556,6 +562,13 @@ Ey4 <- X4 %*% betas4
 \section{Example}
 
 
+\begin{frame}
+  \frametitle{Outline}
+  \LARGE
+   \tableofcontents[currentsection,hideallsubsections]
+\end{frame}
+
+
 
 \begin{frame}[plain]
   \frametitle{Example}
@@ -571,10 +584,14 @@ Ey4 <- X4 %*% betas4
 \begin{frame}[plain]
   \frametitle{Example}
   \Huge
-  \begin{center}
-    \includegraphics[width=0.8\textwidth]{figs/Santa-Cruz} \\
-    Santa Cruz Island
-  \end{center}
+%  \begin{center}
+  \centering
+    Santa Cruz Island \\
+  \begin{columns}
+    \column{\dimexpr\paperwidth-20pt}
+    \includegraphics[width=\textwidth]{figs/Santa-Cruz} \\
+  \end{columns}
+%  \end{center}
 \end{frame}
 
 
@@ -624,9 +641,14 @@ head(cruz2)
 library(lattice)
 levelplot(elevation ~ x + y, data=cruz2, aspect="iso",
           scales=list(draw=FALSE),
+##          col.regions=rev(topo.colors(101)),
+          at=seq(12, 1538, length=100),
           xlab="Easting", ylab="Northing", main="Elevation")
 @
-\includegraphics[width=\textwidth]{figure/elev-1}
+\begin{columns}
+  \column{\dimexpr\paperwidth-10pt}
+  \includegraphics[width=\textwidth]{figure/elev-1}
+\end{columns}
 \end{frame}
 
 
@@ -639,9 +661,14 @@ levelplot(elevation ~ x + y, data=cruz2, aspect="iso",
 <<forest,fig.show='hide',fig.width=6,fig.height=4,echo=FALSE>>=
 levelplot(forest ~ x + y, data=cruz, aspect="iso",
           xlab="",ylab="",main="Forest Cover",
+          col.regions=terrain.colors(100),
+          at=seq(0, 0.71, length=100),
           scales=list(draw=FALSE))
 @
-\includegraphics[width=\textwidth]{figure/forest-1}
+\begin{columns}
+  \column{\dimexpr\paperwidth-10pt}
+  \includegraphics[width=\textwidth]{figure/forest-1}
+\end{columns}
 \end{frame}
 
 
@@ -652,9 +679,12 @@ levelplot(forest ~ x + y, data=cruz, aspect="iso",
 \begin{frame}
   \frametitle{Questions}
   \large
-  \begin{enumerate}[<+- | visible@+->][\bf \color{PineGreen} (1)]
+%  \begin{enumerate}[<+- | visible@+->][\bf \color{PineGreen} (1)]
+  \begin{enumerate}[\bf \color{PineGreen} (1)]
     \item How many jays are on the island?
+    \item[]
     \item What environmental variables influence abundance?
+    \item[]
     \item Can we predict consequences of environmental change?
   \end{enumerate}
 \end{frame}
@@ -676,7 +706,10 @@ levelplot(chaparral ~ x + y, data=cruz2, aspect="iso",
               }
           )
 @
-\includegraphics[width=\textwidth]{figure/plots-1}
+\begin{columns}
+  \column{\dimexpr\paperwidth-10pt}
+  \includegraphics[width=\textwidth]{figure/plots-1}
+\end{columns}
 \end{frame}
 
 
@@ -691,12 +724,60 @@ head(jayData)
 
 
 
+
 \begin{frame}[fragile]
-  \frametitle{Fit a model}
-  \vspace{-2mm}
-<<fm6,size='tiny'>>=
-fm6 <- lm(jays ~ habitat * seeds + elevation +
-          I(elevation^2) +  chaparral, data=jayData)
+  \frametitle{Simple linear regression}
+<<fm1,size='scriptsize'>>=
+fm1 <- lm(jays ~ elevation, data=jayData)
+summary(fm1)
+@
+\end{frame}
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Multiple linear regression}
+<<fm2,size='scriptsize'>>=
+fm2 <- lm(jays ~ elevation+forest, data=jayData)
+summary(fm2)
+@
+\end{frame}
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{One-way ANOVA}
+<<fm3,size='scriptsize'>>=
+fm3 <- lm(jays ~ habitat, data=jayData)
+summary(fm3)
+@
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{ANCOVA}
+<<fm4,size='scriptsize'>>=
+fm4 <- lm(jays ~ elevation+habitat, data=jayData)
+summary(fm4)
+@
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{Continuous-categorical interaction}
+<<fm5,size='scriptsize'>>=
+fm5 <- lm(jays ~ elevation*habitat, data=jayData)
+summary(fm5)
+@
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{Quadratic effect of elevation}
+<<fm6,size='scriptsize'>>=
+fm6 <- lm(jays ~ elevation+I(elevation^2), data=jayData)
 summary(fm6)
 @
 \end{frame}
@@ -704,15 +785,27 @@ summary(fm6)
 
 
 \begin{frame}[fragile]
+  \frametitle{Interaction and quadratic effects}
+  \vspace{-2mm}
+<<fm7,size='tiny'>>=
+fm7 <- lm(jays ~ habitat * forest + elevation +
+          I(elevation^2), data=jayData)
+summary(fm7)
+@
+\end{frame}
+
+
+
+\begin{frame}[fragile]
   \frametitle{Predict jay abundance at each grid cell}
-<<E6>>=
-E6 <- predict(fm6, type="response", newdata=cruz2,
+<<E7>>=
+E7 <- predict(fm7, type="response", newdata=cruz2,
               interval="confidence")
 @
 \pause
-<<E62>>=
-E6 <- cbind(cruz2[,c("x","y")], E6)
-head(E6)
+<<E72>>=
+E7 <- cbind(cruz2[,c("x","y")], E7)
+head(E7)
 @
 \end{frame}
 
@@ -726,7 +819,10 @@ levelplot(fit ~ x + y, data=E6, aspect="iso",
           at=25:55, colorkey=list(space="bottom"),
           scales=list(draw=FALSE))
 @
-\includegraphics[width=\textwidth]{figure/Ejay-1}
+\begin{columns}
+  \column{\dimexpr\paperwidth-10pt}
+  \includegraphics[width=\textwidth]{figure/Ejay-1}
+\end{columns}
 \end{frame}
 
 
@@ -741,7 +837,10 @@ levelplot(lwr ~ x + y, data=E6, aspect="iso",
           at=25:55, colorkey=list(space="bottom"),
           scales=list(draw=FALSE))
 @
-\includegraphics[width=\textwidth]{figure/Ljay-1}
+\begin{columns}
+  \column{\dimexpr\paperwidth-10pt}
+  \includegraphics[width=\textwidth]{figure/Ljay-1}
+\end{columns}
 \end{frame}
 
 
@@ -756,7 +855,10 @@ levelplot(upr ~ x + y, data=E6, aspect="iso",
           at=25:55, colorkey=list(space="bottom"),
           scales=list(draw=FALSE))
 @
-\includegraphics[width=\textwidth]{figure/Ujay-1}
+\begin{columns}
+  \column{\dimexpr\paperwidth-10pt}
+  \includegraphics[width=\textwidth]{figure/Ujay-1}
+\end{columns}
 \end{frame}
 
 
@@ -799,7 +901,11 @@ levelplot(fit ~ x + y, data=future.pred1, aspect="iso",
           at=25:55, colorkey=list(space="bottom"),
           scales=list(draw=FALSE))
 @
-\includegraphics[width=\textwidth]{figure/future1fig-1}
+\begin{columns}
+  \column{\dimexpr\paperwidth-10pt}
+  \only<1>{\includegraphics[width=\textwidth]{figure/Ejay-1} \\}
+  \only<2>{\includegraphics[width=\textwidth]{figure/future1fig-1} \\}
+\end{columns}
 \end{frame}
 
 
@@ -850,7 +956,10 @@ levelplot(fit ~ x + y, data=future.pred2, aspect="iso",
           at=25:55, colorkey=list(space="bottom"),
           scales=list(draw=FALSE))
 @
-\includegraphics[width=\textwidth]{figure/future2fig-1}
+\begin{columns}
+  \column{\dimexpr\paperwidth-10pt}
+  \includegraphics[width=\textwidth]{figure/future2fig-1}
+\end{columns}
 \end{frame}
 
 
@@ -876,6 +985,13 @@ levelplot(fit ~ x + y, data=future.pred2, aspect="iso",
 \section{Matrix notation}
 
 
+\begin{frame}
+  \frametitle{Outline}
+  \LARGE
+   \tableofcontents[currentsection,hideallsubsections]
+\end{frame}
+
+
 
 
 
@@ -895,7 +1011,7 @@ levelplot(fit ~ x + y, data=future.pred2, aspect="iso",
   {\bf Examples include} \\
   \begin{itemize}
     \item Completely randomized ANOVA
-    \item Randomized complete block designs (when block effects are fixed)
+    \item Randomized complete block designs with fixed block effects
     \item Factorial designs
     \item ANCOVA
   \end{itemize}
@@ -908,12 +1024,14 @@ levelplot(fit ~ x + y, data=future.pred2, aspect="iso",
 
 \begin{frame}
   \frametitle{Then how do they differ?}
-  \pause
+%  \pause
+  \begin{itemize}%[<+->]
   \large
-  \begin{itemize}[<+->]
     \item The design matrices are different
+    \item[]
     \item And so are the number of parameters (coefficients) to be
       estimated
+    \item[]
     \item Important to understand how to construct design matrix that
       includes categorical variables
   \end{itemize}
@@ -924,19 +1042,36 @@ levelplot(fit ~ x + y, data=future.pred2, aspect="iso",
 
 \begin{frame}%[fragile]
   \frametitle{Design matrix}
-  \large
-  \begin{itemize}[<+->]
-    \item A design matrix usually has $N$ rows and $K$ colums, where $N$ is
+%  \large
+%  \begin{itemize}[<+->]
+%    \item
+  A design matrix has $N$ rows and $K$ columns, where $N$ is
       the total sample size and $K$ is the number of coefficients (parameters)
-      to be estimated.
-    \item The first column contains just 1's. This column corresponds
-      to the intercept ($\beta_0$)
-    \item Continuous predictor variables appear unchanged in the design matrix
-    \item Categorical predictor variables appear as dummy variables
-    \item In {\bf R}, the design matrix is created internally based on
-      the formula that you provide
-    \item The design matrix can be viewed using the {\tt model.matrix} function
-  \end{itemize}
+      to be estimated. \\
+ \pause
+ \vfill
+%    \item
+      The first column contains just 1's. This column corresponds
+      to the intercept ($\beta_0$) \\
+ \pause
+ \vfill
+%    \item
+      Continuous predictor variables appear unchanged in the design
+      matrix \\
+ \pause
+ \vfill
+%    \item
+      Categorical predictor variables appear as dummy variables \\
+ \pause
+ \vfill
+%    \item
+      In {\bf R}, the design matrix is created internally based on
+      the formula that you provide \\
+ \pause
+ \vfill
+%    \item
+      The design matrix can be viewed using the \inr{model.matrix} function
+%  \end{itemize}
 \end{frame}
 
 
