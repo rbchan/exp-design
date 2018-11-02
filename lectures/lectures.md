@@ -44,7 +44,7 @@ which students learn how to use [R](https://www.r-project.org/).
 ### Week 11 - ANCOVA
 
 
-### [Week 12 - Linear models](modeling-intro/)
+### [Week 12 - Linear models](modeling-intro/modeling-intro.md)
 
 
 

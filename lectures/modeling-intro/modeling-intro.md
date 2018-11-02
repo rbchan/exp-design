@@ -9,7 +9,7 @@ layout: page
 
 ## Handout
 
-[Compressed version of the slides](lecture-modeling-intro.pdf) with 4 slides per page
+[Compressed version of the slides](lecture-modeling-intro-handout.pdf) with 4 slides per page
 
 
 
