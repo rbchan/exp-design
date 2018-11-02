@@ -50,19 +50,15 @@ knit_theme$set("edit-kwrite")
   \textcolor{NavyBlue}{Introduction to Statistical Modeling} \\
   \vspace{1cm}
   \Large
-  November 2 \& 5, 2018 \par
+  November 2 \& 5, 2018 \\
+  FANR 6750 \\
+  \vfill
+  \large
+  Richard Chandler and Bob Cooper
 \end{frame}
 
 
 \section{Motivation}
-
-
-\begin{frame}
-  \frametitle{Outline}
-  \LARGE
-   \only<1>{\tableofcontents[hideallsubsections]}
-%   \only<2>{\tableofcontents[currentsection,hideallsubsections]}
-\end{frame}
 
 
 
@@ -85,6 +81,18 @@ knit_theme$set("edit-kwrite")
 %    \item[]
 %    \item Goodness-of-fit
 %  \end{itemize}
+\end{frame}
+
+
+
+
+
+
+\begin{frame}
+  \frametitle{Outline}
+  \LARGE
+   \only<1>{\tableofcontents[hideallsubsections]}
+%   \only<2>{\tableofcontents[currentsection,hideallsubsections]}
 \end{frame}
 
 
@@ -380,12 +388,14 @@ coefficients {\it for any model that you fit to your data}.
 \vfill
 A linear model might have dozens of continuous and categorical
 predictors variables, with dozens of associated $\beta$ coefficients.
-%% \pause
-%% \vfill
+\pause
+\vfill
 %% Key points for interpretting $\beta$'s:
 %% \begin{itemize}
 %%   \item For continuous explano
 %% \end{itemize}
+Linear models can also include polynomial terms and interactions
+between continuous and categorical predictors
 \end{frame}
 
 
@@ -399,7 +409,8 @@ predictors variables, with dozens of associated $\beta$ coefficients.
     \item $\beta$ can usually be interpretted as a \textit{slope}
       parameter.
     \item In this case, $\beta$ is the
-      change in $y$ resulting from a 1 unit change in $x$.
+      change in $y$ resulting from a 1 unit change in $x$ (while
+      holding the other predictors constant).
   \end{itemize}
 %  \pause
 %  \vfill
@@ -408,7 +419,7 @@ predictors variables, with dozens of associated $\beta$ coefficients.
 
 
 
-\begin{frame}
+\begin{frame}[fragile]
   \frametitle{\small Interpretting $\beta$'s for categorical explantory
     variables}
   Things are more complicated for {\bf categorical} explantory
@@ -420,142 +431,50 @@ predictors variables, with dozens of associated $\beta$ coefficients.
   \pause
   \vfill
 %  For a {\bf categorical} explanatory variable %, $\beta$ is
-  The default method for unordered factors is called \inr{"contr.treatment"}
+  In \R, the default method for creating dummy variables from
+  unordered factors works like
+  this: %unordered factors is called \inr{"contr.treatment"}
   \begin{itemize}
-    \item One level of a factor is treated as a reference level
+    \item One level of the factor is treated as a \alert{reference level}
     \item The reference level is associated with the intercept
-    \item The $\beta$ coefficients for the other levels
+    \item The $\beta$ coefficients for the other levels of the factor
       are differences from the reference level.
   \end{itemize}
+  \pause
+  \vfill
+  The default method corresponds to:
+<<contr-trt,size='small'>>=
+options(contrasts=c("contr.treatment","contr.poly"))
+@
 \end{frame}
 
 
 
-% \begin{frame}[fragile]
-%   \frametitle{One-way ANOVA}
-%   \scriptsize %\tiny
-% <<lm2,size='scriptsize'>>=
-% lm2 <- lm(weight ~ diet, data=dietData)
-% summary(lm2)
-% @
-% \end{frame}
 
-
-
-% \begin{frame}[fragile]
-%   \frametitle{One-way ANOVA: Design matrix}
-% <<X2>>=
-% X2 <- model.matrix(~diet, data=dietData)
-% X2[20:30,]
-% @
-% \end{frame}
-
-
-% \begin{frame}[fragile]
-%   \frametitle{One-way ANOVA: Expected values of $y$}
-%   \footnotesize %\scriptsize
-% <<betas2,size='footnotesize'>>=
-% betas2 <- coef(lm2)
-% betas2
-% @
-% \pause
-% <<Ey2,size='footnotesize'>>=
-% Ey2 <- X2 %*% betas2
-% head(Ey2)
-% @
-% \end{frame}
-
-
-
-% \begin{frame}[fragile]
-%   \frametitle{ANCOVA}
-%   \vspace{-2mm}
-%   \scriptsize %\tiny
-% <<lm3,size='scriptsize'>>=
-% lm3 <- lm(weight ~ age + diet, data=dietData)
-% summary(lm3)
-% @
-% \end{frame}
-
-
-
-% \begin{frame}[fragile]
-%   \frametitle{ANCOVA: Design matrix}
-% <<X3>>=
-% X3 <- model.matrix(~age+diet, data=dietData)
-% X3[20:30,]
-% @
-% \end{frame}
-
-
-
-
-% \begin{frame}[fragile]
-%   \frametitle{ANCOVA: Expected values of $y$}
-%   \footnotesize
-% <<betas3,size='footnotesize'>>=
-% betas3 <- coef(lm3)
-% betas3
-% @
-% <<Ey3,size='footnotesize'>>=
-% Ey3 <- X3 %*% betas3
-% head(Ey3)
-% @
-% \end{frame}
-
-
-
-% \begin{frame}[fragile]
-%   \frametitle{Beyond ANCOVA}
-%   {\bf Now the slopes differ for each treatment}
-%   \tiny
-% <<lm4,size='tiny'>>=
-% lm4 <- lm(weight ~ diet * age, data=dietData)
-% summary(lm4)
-% @
-% \end{frame}
-
-
-
-
-% \begin{frame}[fragile]
-%   \frametitle{The associated design matrix}
-%   \tiny
-% <<X4,size='tiny'>>=
-% X4 <- model.matrix(~ diet * age, data=dietData)
-% X4[20:30,]
-% @
-% \pause
-% <<betas4>>=
-% betas4 <- coef(lm4)
-% Ey4 <- X4 %*% betas4
-% @
-% \end{frame}
-
-
-
-
-
-%% \begin{frame}[fragile]
-%%   \frametitle{Beyond ANCOVA}
-%%   {\bf ... and we test for a moon effect}
-%%   \tiny
-%% <<>>=
-%% lm3 <- lm(weight ~ diet * age + moon, data=dietData)
-%% summary(lm3)
-%% @
-%% \end{frame}
-
-
-%% \begin{frame}
-%%   \frametitle{Mixed effects models}
-%% {\bf The notation is only slightly more complex}
-%% \end{frame}
-
-
-
-%\subsection{Mixed effects models}
-
+\begin{frame}[fragile]
+  \frametitle{\small Interpretting $\beta$'s for categorical explantory
+    variables}
+  Another common method for creating dummy variables results in
+  $\beta$s that can be interpretted as the $\alpha$'s from the
+  additive models that we saw earlier in the class.
+  \pause
+  \vfill
+  With this method:
+  \begin{itemize}
+    \item The $\beta$ associated with each level of the factor is the
+      difference from the intercept
+    \item The intercept can be interpetted as the grand mean if the
+      continuous variables have been centered
+    \item One of the levels of the factor will not be displayed
+      because it is redundant when the intercept is estimated
+  \end{itemize}
+  \pause
+  \vfill
+  This method corresponds to:
+<<contr-sum,size='small',eval=FALSE>>=
+options(contrasts=c("contr.sum","contr.poly"))
+@
+\end{frame}
 
 
 
@@ -642,7 +561,7 @@ library(lattice)
 levelplot(elevation ~ x + y, data=cruz2, aspect="iso",
           scales=list(draw=FALSE),
 ##          col.regions=rev(topo.colors(101)),
-          at=seq(12, 1538, length=100),
+          at=seq(10, 2300, length=100),
           xlab="Easting", ylab="Northing", main="Elevation")
 @
 \begin{columns}
@@ -661,8 +580,8 @@ levelplot(elevation ~ x + y, data=cruz2, aspect="iso",
 <<forest,fig.show='hide',fig.width=6,fig.height=4,echo=FALSE>>=
 levelplot(forest ~ x + y, data=cruz, aspect="iso",
           xlab="",ylab="",main="Forest Cover",
-          col.regions=terrain.colors(100),
-          at=seq(0, 0.71, length=100),
+          col.regions=rev(terrain.colors(100)),
+          at=seq(0, 1, length=100),
           scales=list(draw=FALSE))
 @
 \begin{columns}
@@ -698,6 +617,7 @@ levelplot(forest ~ x + y, data=cruz, aspect="iso",
 levelplot(chaparral ~ x + y, data=cruz2, aspect="iso",
           xlab="", ylab="", main="Chaparral and survey plots",
           scales=list(draw=FALSE),
+          col.regions=heat.colors(100),
           panel = function(...) {
               panel.levelplot(...)
 #                  grid.points(jayData$x, jayData$y, pch=0,
@@ -734,6 +654,20 @@ summary(fm1)
 \end{frame}
 
 
+\begin{frame}[fragile]
+  \frametitle{Simple linear regression}
+<<pred1,echo=FALSE,fig.width=7,fig.height=5.5>>=
+nseq <- 20
+elev.seq <- seq(0, 2300, length=nseq)
+predData1 <- data.frame(elevation=elev.seq)
+pred1 <- predict(fm1, newdata=predData1, interval="confidence", se.fit=TRUE)
+plot(jays ~ elevation, jayData, xlab="Elevation (m)", ylab="Jays", cex.lab=1.3)
+lines(predData1$elevation, pred1$fit[,1])
+lines(predData1$elevation, pred1$fit[,2], lty=3)
+lines(predData1$elevation, pred1$fit[,3], lty=3)
+@
+\end{frame}
+
 
 
 \begin{frame}[fragile]
@@ -748,12 +682,53 @@ summary(fm2)
 
 
 \begin{frame}[fragile]
+  \frametitle{Multiple linear regression}
+<<pred2,echo=FALSE,fig.width=7,fig.height=6>>=
+forest.seq <- seq(0,1,length=nseq)
+predData2 <- data.frame(elevation=rep(elev.seq, each=nseq),
+                        forest=rep(forest.seq, times=nseq))
+pred2 <- predict(fm2, newdata=predData2, interval="confidence", se.fit=TRUE)
+res <- persp(forest.seq, elev.seq, matrix(pred2$fit[,1],nseq),
+             theta=40, phi=20, col=rgb(0,0,1,0.5), zlab="Expected number of jays",
+             ylab="Elevation", xlab="Forest cover", zlim=c(30, 55),
+             ticktype="detailed")
+#points(trans3d(jayData$forest, jayData$elev, jayData$jays, pmat=res),
+#       col="red", cex=1.5, pch=16)
+@
+\end{frame}
+
+
+
+
+
+\begin{frame}[fragile]
   \frametitle{One-way ANOVA}
 <<fm3,size='scriptsize'>>=
 fm3 <- lm(jays ~ habitat, data=jayData)
 summary(fm3)
 @
 \end{frame}
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{One-way ANOVA}
+<<pred3,echo=FALSE,fig.width=6,fig.height=6,fig.show='hide'>>=
+predData3 <- data.frame(habitat=levels(jayData$habitat))
+pred3 <- predict(fm3, newdata=predData3, interval="confidence", se.fit=TRUE)
+xmid <- barplot(pred3$fit[,1], xlab="Habitat", names=predData3$habitat,
+                cex.lab=1.5,
+                ylim=c(0, 45), col="darkcyan", ylab="Expected number of jays")
+arrows(xmid, pred3$fit[,1], xmid, pred3$fit[,1]+pred3$se, angle=90, length=0.05, code=3)
+box()
+@
+\centering
+\includegraphics[width=0.8\textwidth]{figure/pred3-1} \\
+\end{frame}
+
+
+
 
 
 \begin{frame}[fragile]
@@ -765,6 +740,26 @@ summary(fm4)
 \end{frame}
 
 
+
+\begin{frame}[fragile]
+  \frametitle{ANCOVA}
+<<pred4,echo=FALSE,fig.width=7,fig.height=5.5>>=
+predData4 <- data.frame(elevation=rep(elev.seq, 3),
+                        habitat=rep(levels(jayData$habitat), each=nseq))
+pred4 <- predict(fm4, newdata=predData4, interval="confidence", se.fit=TRUE)
+pred4dat <- data.frame(pred4$fit, predData4)
+plot(jays ~ elevation, jayData, xlab="Elevation (m)", ylab="Jays", cex.lab=1.3)
+lines(fit~elevation, data=pred4dat, subset=habitat=="Bare", col="tan", lwd=3)
+lines(fit~elevation, data=pred4dat, subset=habitat=="Oak", col="brown", lwd=3)
+lines(fit~elevation, data=pred4dat, subset=habitat=="Pine", col="darkseagreen", lwd=3)
+legend(0, 47, c("Oak", "Pine", "Bare"), col=c("brown","darkseagreen", "tan"), lwd=3)
+@
+\end{frame}
+
+
+
+
+
 \begin{frame}[fragile]
   \frametitle{Continuous-categorical interaction}
 <<fm5,size='scriptsize'>>=
@@ -774,6 +769,26 @@ summary(fm5)
 \end{frame}
 
 
+
+
+\begin{frame}[fragile]
+  \frametitle{ANCOVA}
+<<pred5,echo=FALSE,fig.width=7,fig.height=5.5>>=
+pred5 <- predict(fm5, newdata=predData4, interval="confidence", se.fit=TRUE)
+pred5dat <- data.frame(pred5$fit, predData4)
+plot(jays ~ elevation, jayData, xlab="Elevation (m)", ylab="Jays", cex.lab=1.3)
+lines(fit~elevation, data=pred5dat, subset=habitat=="Bare", col="tan", lwd=3)
+lines(fit~elevation, data=pred5dat, subset=habitat=="Oak", col="brown", lwd=3)
+lines(fit~elevation, data=pred5dat, subset=habitat=="Pine", col="darkseagreen", lwd=3)
+legend(0, 47, c("Oak", "Pine", "Bare"), col=c("brown","darkseagreen", "tan"), lwd=3)
+@
+\end{frame}
+
+
+
+
+
+
 \begin{frame}[fragile]
   \frametitle{Quadratic effect of elevation}
 <<fm6,size='scriptsize'>>=
@@ -781,6 +796,26 @@ fm6 <- lm(jays ~ elevation+I(elevation^2), data=jayData)
 summary(fm6)
 @
 \end{frame}
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Quadratic effect of elevation}
+<<pred6,echo=FALSE,fig.width=7,fig.height=5.5>>=
+nseq <- 20
+elev.seq <- seq(0, 2300, length=nseq)
+predData6 <- data.frame(elevation=elev.seq)
+pred6 <- predict(fm6, newdata=predData6, interval="confidence", se.fit=TRUE)
+plot(jays ~ elevation, jayData, xlab="Elevation (m)", ylab="Jays", cex.lab=1.3)
+lines(predData6$elevation, pred6$fit[,1])
+lines(predData6$elevation, pred6$fit[,2], lty=3)
+lines(predData6$elevation, pred6$fit[,3], lty=3)
+@
+\end{frame}
+
+
+
 
 
 
@@ -816,7 +851,8 @@ head(E7)
 <<Ejay,fig.show='hide',fig.width=6,fig.height=4,echo=FALSE>>=
 levelplot(fit ~ x + y, data=E6, aspect="iso",
           xlab="", ylab="", main="Expected number of jays per grid cell",
-          at=25:55, colorkey=list(space="bottom"),
+##          col.regions=heat.colors(101),
+          at=22:55, colorkey=list(space="bottom"),
           scales=list(draw=FALSE))
 @
 \begin{columns}
@@ -1164,8 +1200,8 @@ head(X1, n=10)
 
 \begin{frame}[fragile]
   \frametitle{Matrix multiplication}
-{\bf \centering The vector of coefficients \par}
-\small
+{\bf \centering The vector of coefficients \\}
+%\small
 <<beta,size='small'>>=
 beta <- coef(lm(weight ~ age, dietData))
 beta
@@ -1181,6 +1217,23 @@ beta
 Ey1 <- X1 %*% beta
 head(Ey1, 5)
 @
+\end{frame}
+
+
+
+\begin{frame}
+  \frametitle{Summary}
+  Linear models are the foundation of modern statistical modeling
+  techniques \\
+  \pause
+  \vfill
+  They can be used to model a wide array of biological processes, and
+  they can be easily extended when their assumptions do not hold \\
+  \pause
+  \vfill
+  One of the most important extensions is to cases where the residuals
+  are not normally distributed. Generalized linear models address this
+  issue.
 \end{frame}
 
 
@@ -1303,6 +1356,134 @@ head(Ey1, 5)
 %%   \]
 %% \end{frame}
 
+
+
+
+
+% \begin{frame}[fragile]
+%   \frametitle{One-way ANOVA}
+%   \scriptsize %\tiny
+% <<lm2,size='scriptsize'>>=
+% lm2 <- lm(weight ~ diet, data=dietData)
+% summary(lm2)
+% @
+% \end{frame}
+
+
+
+% \begin{frame}[fragile]
+%   \frametitle{One-way ANOVA: Design matrix}
+% <<X2>>=
+% X2 <- model.matrix(~diet, data=dietData)
+% X2[20:30,]
+% @
+% \end{frame}
+
+
+% \begin{frame}[fragile]
+%   \frametitle{One-way ANOVA: Expected values of $y$}
+%   \footnotesize %\scriptsize
+% <<betas2,size='footnotesize'>>=
+% betas2 <- coef(lm2)
+% betas2
+% @
+% \pause
+% <<Ey2,size='footnotesize'>>=
+% Ey2 <- X2 %*% betas2
+% head(Ey2)
+% @
+% \end{frame}
+
+
+
+% \begin{frame}[fragile]
+%   \frametitle{ANCOVA}
+%   \vspace{-2mm}
+%   \scriptsize %\tiny
+% <<lm3,size='scriptsize'>>=
+% lm3 <- lm(weight ~ age + diet, data=dietData)
+% summary(lm3)
+% @
+% \end{frame}
+
+
+
+% \begin{frame}[fragile]
+%   \frametitle{ANCOVA: Design matrix}
+% <<X3>>=
+% X3 <- model.matrix(~age+diet, data=dietData)
+% X3[20:30,]
+% @
+% \end{frame}
+
+
+
+
+% \begin{frame}[fragile]
+%   \frametitle{ANCOVA: Expected values of $y$}
+%   \footnotesize
+% <<betas3,size='footnotesize'>>=
+% betas3 <- coef(lm3)
+% betas3
+% @
+% <<Ey3,size='footnotesize'>>=
+% Ey3 <- X3 %*% betas3
+% head(Ey3)
+% @
+% \end{frame}
+
+
+
+% \begin{frame}[fragile]
+%   \frametitle{Beyond ANCOVA}
+%   {\bf Now the slopes differ for each treatment}
+%   \tiny
+% <<lm4,size='tiny'>>=
+% lm4 <- lm(weight ~ diet * age, data=dietData)
+% summary(lm4)
+% @
+% \end{frame}
+
+
+
+
+% \begin{frame}[fragile]
+%   \frametitle{The associated design matrix}
+%   \tiny
+% <<X4,size='tiny'>>=
+% X4 <- model.matrix(~ diet * age, data=dietData)
+% X4[20:30,]
+% @
+% \pause
+% <<betas4>>=
+% betas4 <- coef(lm4)
+% Ey4 <- X4 %*% betas4
+% @
+% \end{frame}
+
+
+
+
+
+%% \begin{frame}[fragile]
+%%   \frametitle{Beyond ANCOVA}
+%%   {\bf ... and we test for a moon effect}
+%%   \tiny
+%% <<>>=
+%% lm3 <- lm(weight ~ diet * age + moon, data=dietData)
+%% summary(lm3)
+%% @
+%% \end{frame}
+
+
+%% \begin{frame}
+%%   \frametitle{Mixed effects models}
+%% {\bf The notation is only slightly more complex}
+%% \end{frame}
+
+
+
+%\subsection{Mixed effects models}
 
 
 

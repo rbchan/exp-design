@@ -1,0 +1,54 @@
+\message{ !name(lecture-modeling-intro.Rnw)}\documentclass[color=usenames,dvipsnames]{beamer}
+%\documentclass[color=usenames,dvipsnames,handout]{beamer}
+
+
+\usepackage[sans]{../../lab1}
+\usepackage{bm}
+
+
+\hypersetup{pdftex,pdfstartview=FitV}
+
+
+
+<<build-fun, include=FALSE, cache=TRUE, eval=FALSE, purl=FALSE>>=
+## A function to compile and open the pdf
+source("../rnw2pdf.R")
+if(1==2) {
+    ## Usage:
+    rnw2pdf("lecture-modeling-intro") # Don't include the file extension
+    rnw2pdf("lecture-modeling-intro", clean=FALSE) # Don't clean intermediate files
+    rnw2pdf("lecture-modeling-intro", tangle=TRUE) # If you want the .R file
+}
+@
+
+
+<<knitr-theme, include=FALSE, purl=FALSE>>=
+##knit_theme$set("navajo-night")
+knit_theme$set("edit-kwrite")
+@
+
+
+%% New command for inline code that isn't to be evaluated
+\definecolor{inlinecolor}{rgb}{0.878, 0.918, 0.933}
+\newcommand{\inr}[1]{\colorbox{inlinecolor}{\texttt{#1}}}
+
+
+
+
+
+
+\begin{document}
+
+\message{ !name(lecture-modeling-intro.Rnw) !offset(647) }
+res <- persp(forest.seq, elev.seq, matrix(pred2$fit[,1],nseq),
+             theta=270, phi=20, col=rgb(0,0,1,0.5), zlab="Expected number of jays",
+             ylab="Elevation", xlab="Forest cover", zlim=c(30, 55),
+             ticktype="detailed")
+points(trans3d(jayData$forest, jayData$elev, jayData$jays, pmat=res),
+       col="red", cex=1.5, pch=16)
+
+
+\message{ !name(lecture-modeling-intro.Rnw) !offset(1344) }
+
+\end{document}
+
