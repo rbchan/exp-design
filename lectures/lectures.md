@@ -5,7 +5,7 @@ title: Lectures
 
 ## Overview
 
-These lectures are paired with [computed labs](../labs/labs.md) in
+These lectures are paired with [computer labs](../labs/labs.md) in
 which students learn how to use [R](https://www.r-project.org/).
 
 
