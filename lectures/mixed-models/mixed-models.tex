@@ -1,0 +1,798 @@
+\documentclass[color=usenames,dvipsnames]{beamer}\usepackage[]{graphicx}\usepackage[]{color}
+%% maxwidth is the original width if it is less than linewidth
+%% otherwise use linewidth (to make sure the graphics do not exceed the margin)
+\makeatletter
+\def\maxwidth{ %
+  \ifdim\Gin@nat@width>\linewidth
+    \linewidth
+  \else
+    \Gin@nat@width
+  \fi
+}
+\makeatother
+
+\definecolor{fgcolor}{rgb}{0, 0, 0}
+\newcommand{\hlnum}[1]{\textcolor[rgb]{0.69,0.494,0}{#1}}%
+\newcommand{\hlstr}[1]{\textcolor[rgb]{0.749,0.012,0.012}{#1}}%
+\newcommand{\hlcom}[1]{\textcolor[rgb]{0.514,0.506,0.514}{\textit{#1}}}%
+\newcommand{\hlopt}[1]{\textcolor[rgb]{0,0,0}{#1}}%
+\newcommand{\hlstd}[1]{\textcolor[rgb]{0,0,0}{#1}}%
+\newcommand{\hlkwa}[1]{\textcolor[rgb]{0,0,0}{\textbf{#1}}}%
+\newcommand{\hlkwb}[1]{\textcolor[rgb]{0,0.341,0.682}{#1}}%
+\newcommand{\hlkwc}[1]{\textcolor[rgb]{0,0,0}{\textbf{#1}}}%
+\newcommand{\hlkwd}[1]{\textcolor[rgb]{0.004,0.004,0.506}{#1}}%
+\let\hlipl\hlkwb
+
+\usepackage{framed}
+\makeatletter
+\newenvironment{kframe}{%
+ \def\at@end@of@kframe{}%
+ \ifinner\ifhmode%
+  \def\at@end@of@kframe{\end{minipage}}%
+  \begin{minipage}{\columnwidth}%
+ \fi\fi%
+ \def\FrameCommand##1{\hskip\@totalleftmargin \hskip-\fboxsep
+ \colorbox{shadecolor}{##1}\hskip-\fboxsep
+     % There is no \\@totalrightmargin, so:
+     \hskip-\linewidth \hskip-\@totalleftmargin \hskip\columnwidth}%
+ \MakeFramed {\advance\hsize-\width
+   \@totalleftmargin\z@ \linewidth\hsize
+   \@setminipage}}%
+ {\par\unskip\endMakeFramed%
+ \at@end@of@kframe}
+\makeatother
+
+\definecolor{shadecolor}{rgb}{.97, .97, .97}
+\definecolor{messagecolor}{rgb}{0, 0, 0}
+\definecolor{warningcolor}{rgb}{1, 0, 1}
+\definecolor{errorcolor}{rgb}{1, 0, 0}
+\newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
+
+\usepackage{alltt}
+%\documentclass[color=usenames,dvipsnames,handout]{beamer}
+
+
+
+
+\usepackage[sans]{../../lab1}
+\usepackage{bm}
+
+
+\hypersetup{pdftex,pdfstartview=FitV}
+
+
+
+
+
+
+
+
+
+%% New command for inline code that isn't to be evaluated
+\definecolor{inlinecolor}{rgb}{0.878, 0.918, 0.933}
+\newcommand{\inr}[1]{\colorbox{inlinecolor}{\texttt{#1}}}
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\begin{document}
+
+
+
+
+\begin{frame}[plain]
+  \centering \huge
+  Linear mixed-effects models \\
+  \vspace{1cm}
+  \Large
+  November 7, 2018 \\
+  FANR 6750 \\
+  \vfill
+  \large
+  Richard Chandler and Bob Cooper
+\end{frame}
+
+
+\section{Introduction}
+
+
+
+\begin{frame}
+  \frametitle{Fixed vs random effects, revisited}
+%  \large
+  {\bf In the context of mixed-effects models\dots \par}
+  \vspace{0.5cm}
+{\bf Fixed effect \par}
+A parameter that would not change if you repeated your study
+
+\pause
+\vspace{1cm}
+
+{\bf Random effect \par}
+A parameter that would change if you repeated your study
+
+\pause
+\vfill
+{\centering \bf
+\alert{Random effects will always be associated with a probability
+distribution} \par}
+\end{frame}
+
+
+
+\begin{frame}
+  \frametitle{Previous examples}
+  \Large
+%  \begin{itemize}
+%    \item
+  ANOVA with random block effects
+  \pause
+  \vfill
+%    \item[]
+%    \item
+  Nested ANOVA
+  \pause
+  \vfill
+%    \item[]
+%    \item
+  Split-plot ANOVA
+%    \item[]
+%    \item Repeated measures ANOVA
+%  \end{itemize}
+\end{frame}
+
+
+
+
+\begin{frame}
+  \frametitle{A simple example}
+  \large
+  \[
+    y_{ij} = \beta_0 + \beta_1 x_{i1} + \gamma_j + \varepsilon_{ij}
+  \]
+  where
+  \[
+    \gamma_j \sim \mbox{Normal}(0, \sigma^2_d)
+  \]
+  and
+  \[
+    \varepsilon_{ij} \sim \mbox{Normal}(0, \sigma^2)
+  \]
+  \pause
+  \vfill
+  \centering
+  This amounts to a linear regression with a random intercept \\
+\end{frame}
+
+
+
+
+
+
+\section{Repeated measures with serial correlation}
+
+
+
+%% \begin{frame}
+%%   \frametitle{Split-plot model}
+%%   The expanded additive model:
+%%   \[
+%%     y_{ijk} = \beta0 + \beta_1 + \beta_{ij} + \gamma_k +
+%%     \alpha\gamma_{ik} + \varphi y_{ijk-1} + \varepsilon_{ijk}
+%%   \]
+%% \end{frame}
+
+
+
+\begin{frame}
+  \centering \Huge
+  \color{PineGreen}{Mixed effects approach to repeated measures} \par
+\end{frame}
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Repeated measures revisited}
+  {\bf Recall the plant data}
+  \small
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{plantData} \hlkwb{<-} \hlkwd{read.csv}\hlstd{(}\hlstr{"plantData.csv"}\hlstd{)}
+\hlstd{plantData}\hlopt{$}\hlstd{week} \hlkwb{<-} \hlkwd{factor}\hlstd{(plantData}\hlopt{$}\hlstd{week)}
+\hlkwd{head}\hlstd{(plantData)}
+\end{alltt}
+\begin{verbatim}
+##   plant fertilizer week leaves
+## 1     1          L    1      4
+## 2     1          L    2      5
+## 3     1          L    3      6
+## 4     1          L    4      8
+## 5     1          L    5     10
+## 6     2          L    1      3
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\pause
+  {\bf \normalsize Standard split-plot approach}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{library}\hlstd{(nlme)}
+\hlstd{lme1} \hlkwb{<-} \hlkwd{lme}\hlstd{(leaves} \hlopt{~} \hlstd{fertilizer}\hlopt{*}\hlstd{week, plantData,}
+            \hlkwc{random}\hlstd{=}\hlopt{~}\hlnum{1}\hlopt{|}\hlstd{plant)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{View the parameter estimates}
+
+\small
+\begin{knitrout}\scriptsize
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{summary}\hlstd{(lme1)}
+\end{alltt}
+\begin{verbatim}
+## Linear mixed-effects model fit by REML
+##  Data: plantData
+##        AIC      BIC    logLik
+##   140.9644 161.2309 -58.48219
+##
+## Random effects:
+##  Formula: ~1 | plant
+##         (Intercept) Residual
+## StdDev:    1.098863     0.65
+##
+## Fixed effects: leaves ~ fertilizer * week
+##                   Value Std.Error DF   t-value p-value
+## (Intercept)         4.6 0.5709641 32  8.056549  0.0000
+## fertilizerL         0.0 0.8074652  8  0.000000  1.0000
+## week2               2.2 0.4110961 32  5.351547  0.0000
+## week3               4.4 0.4110961 32 10.703094  0.0000
+## week4               5.4 0.4110961 32 13.135615  0.0000
+## week5               7.4 0.4110961 32 18.000657  0.0000
+## fertilizerL:week2  -1.0 0.5813777 32 -1.720052  0.0951
+## fertilizerL:week3  -1.8 0.5813777 32 -3.096094  0.0041
+## fertilizerL:week4  -1.6 0.5813777 32 -2.752084  0.0097
+## fertilizerL:week5  -1.4 0.5813777 32 -2.408073  0.0220
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+
+
+
+
+
+
+
+\begin{frame}
+  \frametitle{Matrix representation}
+  \Large
+  \[
+    {\bf y} = {\bf X}{\bm \beta} + {\bm \gamma} + {\bm \varepsilon}
+  \]
+  \pause
+  \[
+    {\bm \gamma} \sim \mbox{Normal}(0, \sigma^2_d)
+  \]
+  \[
+    {\bm \varepsilon} \sim \mbox{Normal}(0, \sigma^2)
+  \]
+\end{frame}
+
+
+
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Extract the estimates}
+  {\bf Fixed effects (the $\bm \beta$ estimates)}
+\begin{knitrout}\tiny
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{round}\hlstd{(beta} \hlkwb{<-} \hlkwd{fixef}\hlstd{(lme1),} \hlnum{2}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+##       (Intercept)       fertilizerL             week2             week3 
+##               4.6               0.0               2.2               4.4 
+##             week4             week5 fertilizerL:week2 fertilizerL:week3 
+##               5.4               7.4              -1.0              -1.8 
+## fertilizerL:week4 fertilizerL:week5 
+##              -1.6              -1.4
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\pause
+\vfill
+  {\bf \normalsize Random effects (the $\bm \gamma$ estimates)}
+\begin{knitrout}\tiny
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{round}\hlstd{(gamma} \hlkwb{<-} \hlkwd{ranef}\hlstd{(lme1,} \hlkwc{which}\hlstd{=}\hlnum{1}\hlstd{),} \hlnum{2}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+##    (Intercept)
+## 1        -0.67
+## 2        -1.61
+## 3         1.38
+## 4         1.01
+## 5        -0.11
+## 6        -0.64
+## 7        -1.01
+## 8         1.23
+## 9         0.11
+## 10        0.30
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Computing the expected values}
+  {\bf Ignoring the random effects}
+\begin{knitrout}\scriptsize
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{X} \hlkwb{<-} \hlkwd{model.matrix}\hlstd{(}\hlopt{~} \hlstd{fertilizer}\hlopt{*}\hlstd{week, plantData)}
+\hlstd{E1} \hlkwb{<-} \hlstd{X} \hlopt{%*%} \hlstd{beta}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\pause
+  {\bf Including the random effects}
+\begin{knitrout}\scriptsize
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{nWeeks} \hlkwb{<-} \hlnum{5}
+\hlstd{gamma.long} \hlkwb{<-} \hlkwd{rep}\hlstd{(gamma[[}\hlnum{1}\hlstd{]],} \hlkwc{each}\hlstd{=nWeeks)}
+\hlstd{E2} \hlkwb{<-} \hlstd{E1} \hlopt{+} \hlstd{gamma.long}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\pause
+\small
+\begin{knitrout}\scriptsize
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{head}\hlstd{(}\hlkwd{cbind}\hlstd{(plantData,} \hlkwc{E1}\hlstd{=E1,} \hlkwc{E2}\hlstd{=E2))}
+\end{alltt}
+\begin{verbatim}
+##   plant fertilizer week leaves   E1       E2
+## 1     1          L    1      4  4.6 3.927090
+## 2     1          L    2      5  5.8 5.127090
+## 3     1          L    3      6  7.2 6.527090
+## 4     1          L    4      8  8.4 7.727090
+## 5     1          L    5     10 10.6 9.927090
+## 6     2          L    1      3  4.6 2.992492
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{The ANOVA table}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{anova}\hlstd{(lme1)}
+\end{alltt}
+\begin{verbatim}
+##                 numDF denDF  F-value p-value
+## (Intercept)         1    32 483.0495  <.0001
+## fertilizer          1     8   2.6037  0.1453
+## week                4    32 158.2249  <.0001
+## fertilizer:week     4    32   3.0059  0.0326
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\pause
+\vfill
+\Large
+{\centering \bf \color{PineGreen}{Are these $P$-values valid?} \par}
+\pause
+\vfill
+{\centering \bf Not if there is serial correlation \par}
+\end{frame}
+
+
+
+
+
+\begin{frame}
+  \frametitle{Auto-regressive models}
+  \bf
+  An AR($p$) model allows for lag effects of order $p$ \par
+  \vfill
+  If $p=1$, we say the value of $y$ at time $k$ depends on the value
+  of $y$ at time $k-1$. \par
+  \pause
+  \vfill
+  \Large
+  \[
+    y_{ijk} = \beta_0 + \varphi_1 y_{ijk-1} + \gamma_j + \varepsilon_{ijk}
+  \]
+\end{frame}
+
+
+
+
+\begin{frame}
+  \frametitle{Auto-regressive models}
+  \bf
+  An AR($p$) model allows for lag effects of order $p$ \par
+  \vfill
+  If $p=2$, we say the value of $y$ at time $k$ depends on the value
+  of $y$ at time $k-1$ and at time $k-2$. \par
+  \vfill
+  \pause
+  \Large
+  \[
+    y_{ijk} = \beta_0 + \varphi_1 y_{ijk-1} + \varphi_2 y_{ijk-2} + \gamma_j + \varepsilon_{ijk}
+  \]
+\end{frame}
+
+
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Auto-regressive models}
+\vspace{0.5cm}
+{\bf Assume an AR(1) correlation structure}
+\pause
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{lme2} \hlkwb{<-} \hlkwd{lme}\hlstd{(leaves} \hlopt{~} \hlstd{fertilizer}\hlopt{*}\hlstd{week, plantData,}
+            \hlkwc{random}\hlstd{=}\hlopt{~}\hlnum{1}\hlopt{|}\hlstd{plant,}
+            \hlkwc{correlation}\hlstd{=}\hlkwd{corARMA}\hlstd{(}\hlkwc{p}\hlstd{=}\hlnum{1}\hlstd{))}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\vspace{1cm}
+{\bf Assume an AR(3) correlation structure}
+\pause
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{lme3} \hlkwb{<-} \hlkwd{lme}\hlstd{(leaves} \hlopt{~} \hlstd{fertilizer}\hlopt{*}\hlstd{week, plantData,}
+            \hlkwc{random}\hlstd{=}\hlopt{~}\hlnum{1}\hlopt{|}\hlstd{plant,}
+            \hlkwc{correlation}\hlstd{=}\hlkwd{corARMA}\hlstd{(}\hlkwc{p}\hlstd{=}\hlnum{3}\hlstd{))}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+
+
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Autocorrelation function}
+\begin{knitrout}\small
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{plot}\hlstd{(}\hlkwd{ACF}\hlstd{(lme2),} \hlkwc{alpha}\hlstd{=}\hlnum{0.05}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+%\begin{center}
+\centering
+  \includegraphics[width=0.9\textwidth]{figure/plant2-acf-1} \\
+%\end{center}
+\end{frame}
+
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Autocorrelation function}
+\begin{knitrout}\small
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{plot}\hlstd{(}\hlkwd{ACF}\hlstd{(lme3),} \hlkwc{alpha}\hlstd{=}\hlnum{0.05}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+%\begin{center}
+\centering
+  \includegraphics[width=0.9\textwidth]{figure/plant3-acf-1} \\
+%\end{center}
+\end{frame}
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Parameter estimates}
+%<<summary-lme3,size='tiny'>>=
+%summary(lme3)
+%@
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{summary}\hlstd{(lme3)}
+\end{alltt}
+\tiny
+\begin{verbatim}
+## Linear mixed-effects model fit by REML
+##  Data: plantData
+##        AIC      BIC    logLik
+##   142.7793 168.1125 -56.38965
+##
+## Random effects:
+##  Formula: ~1 | plant
+##         (Intercept)  Residual
+## StdDev:    0.955924 0.8227638
+##
+## Correlation Structure: ARMA(3,0)
+##  Formula: ~1 | plant
+##  Parameter estimate(s):
+##       Phi1       Phi2       Phi3
+##  0.3339878  0.5086039 -0.2573006
+## Fixed effects: leaves ~ fertilizer * week
+##                   Value Std.Error DF   t-value p-value
+## (Intercept)         4.6 0.5640445 32  8.155385  0.0000
+## fertilizerL         0.0 0.7976794  8  0.000000  1.0000
+## week2               2.2 0.4039417 32  5.446331  0.0000
+## week3               4.4 0.3532792 32 12.454737  0.0000
+## week4               5.4 0.4867909 32 11.093060  0.0000
+## week5               7.4 0.4614437 32 16.036626  0.0000
+## fertilizerL:week2  -1.0 0.5712598 32 -1.750517  0.0896
+## fertilizerL:week3  -1.8 0.4996123 32 -3.602794  0.0011
+## fertilizerL:week4  -1.6 0.6884262 32 -2.324142  0.0266
+## fertilizerL:week5  -1.4 0.6525799 32 -2.145331  0.0396
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{ANOVA tables}
+  {\bf Model that ignores serial correlation}
+\begin{knitrout}\scriptsize
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{anova}\hlstd{(lme1)}
+\end{alltt}
+\begin{verbatim}
+##                 numDF denDF  F-value p-value
+## (Intercept)         1    32 483.0495  <.0001
+## fertilizer          1     8   2.6037  0.1453
+## week                4    32 158.2249  <.0001
+## fertilizer:week     4    32   3.0059  0.0326
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+  {\bf Model that accounts for serial correlation}
+\begin{knitrout}\scriptsize
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{anova}\hlstd{(lme3)}
+\end{alltt}
+\begin{verbatim}
+##                 numDF denDF  F-value p-value
+## (Intercept)         1    32 502.8341  <.0001
+## fertilizer          1     8   1.6959  0.2291
+## week                4    32 107.5671  <.0001
+## fertilizer:week     4    32   3.3171  0.0221
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+
+
+\section{Summary}
+
+
+\begin{frame}
+  \frametitle{Summary}
+  \large
+%  \begin{itemize}[<+->]
+%    \item
+  Linear mixed-effects models are useful anytime you have
+  fixed effects and normally-distriubted random effects \\
+  \pause
+  \vfill
+%    \item
+  They allow for (serial, spatial, etc\dots) correlation among
+  observations within a level of the grouping variable \\
+  \pause
+  \vfill
+%    \item
+  These models can be used for repeated measures data as an
+  alternative to MANOVA or the split-plot method with adjusted
+  $P$-values \\
+  \pause
+  \vfill
+%    \item
+  We do not want you to use this approach for the repeated
+  measures questions in the exam. \\
+  \pause
+  \vfill
+%    \item
+  But we will expect you to know how to fit linear
+      mixed-effects models using {\tt lme}, as we have already done
+%  \end{itemize}
+\end{frame}
+
+
+
+
+
+
+
+
+
+
+\end{document}
+
+
+
+
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Hawk home range size example}
+  \scriptsize
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{hawkData} \hlkwb{<-} \hlkwd{read.csv}\hlstd{(}\hlstr{"hawkData.csv"}\hlstd{)}
+\hlstd{hawkData}\hlopt{$}\hlstd{hawk} \hlkwb{<-} \hlkwd{factor}\hlstd{(hawkData}\hlopt{$}\hlstd{hawk)}
+\hlstd{hawkData}\hlopt{$}\hlstd{season} \hlkwb{<-} \hlkwd{factor}\hlstd{(hawkData}\hlopt{$}\hlstd{season)}
+\hlkwd{head}\hlstd{(hawkData,} \hlnum{15}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+##    hawk season sex homerange
+## 1     4      1   F     127.1
+## 2     4      2   F      86.6
+## 3     4      3   F     116.0
+## 4     4      4   F      78.4
+## 5     5      1   F     178.4
+## 6     5      2   F      84.7
+## 7     5      3   F      48.2
+## 8     5      4   F      47.9
+## 9     8      1   M     158.8
+## 10    8      2   M     173.6
+## 11    8      3   M      62.1
+## 12    8      4   M      54.7
+## 13   12      1   F     241.5
+## 14   12      2   F     250.4
+## 15   12      3   F     162.9
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Mixed-effects models}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{lme.hawk1} \hlkwb{<-} \hlkwd{lme}\hlstd{(homerange} \hlopt{~} \hlstd{sex}\hlopt{*}\hlstd{season,} \hlkwc{data}\hlstd{=hawkData,}
+                 \hlkwc{random}\hlstd{=}\hlopt{~}\hlnum{1}\hlopt{|}\hlstd{hawk)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\pause
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{lme.hawk2} \hlkwb{<-} \hlkwd{lme}\hlstd{(homerange} \hlopt{~} \hlstd{sex}\hlopt{*}\hlstd{season,} \hlkwc{data}\hlstd{=hawkData,}
+                 \hlkwc{random}\hlstd{=}\hlopt{~}\hlnum{1}\hlopt{|}\hlstd{hawk,}
+                 \hlkwc{correlation}\hlstd{=}\hlkwd{corARMA}\hlstd{(}\hlkwc{p}\hlstd{=}\hlnum{1}\hlstd{))}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Compare ANOVA tables}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{anova}\hlstd{(lme.hawk1)}
+\end{alltt}
+\begin{verbatim}
+##             numDF denDF  F-value p-value
+## (Intercept)     1    14 74.37777  <.0001
+## sex             1     9  2.37407  0.1578
+## season          3    14  7.28236  0.0035
+## sex:season      3    14  0.05892  0.9805
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\pause
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{anova}\hlstd{(lme.hawk2)}
+\end{alltt}
+\begin{verbatim}
+##             numDF denDF  F-value p-value
+## (Intercept)     1    14 76.66605  <.0001
+## sex             1     9  2.66784  0.1368
+## season          3    14  4.92350  0.0154
+## sex:season      3    14  0.14536  0.9309
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Autocorrelation function (ACF)}
+  \tiny
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{plot}\hlstd{(}\hlkwd{ACF}\hlstd{(lme.hawk1),} \hlkwc{alpha}\hlstd{=}\hlnum{0.05}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\begin{center}
+  \includegraphics[width=7cm]{figure/lme-hawk1-1}
+\end{center}
+\end{frame}
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Autocorrelation function (ACF)}
+  \tiny
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{plot}\hlstd{(}\hlkwd{ACF}\hlstd{(lme.hawk2),} \hlkwc{alpha}\hlstd{=}\hlnum{0.05}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\begin{center}
+  \includegraphics[width=7cm]{figure/lme-hawk2-1}
+\end{center}
+\end{frame}
+
+
+
+
+
+
+
+
+
+
+
+\end{document}
+
+

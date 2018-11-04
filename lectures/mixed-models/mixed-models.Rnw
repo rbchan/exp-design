@@ -1,35 +1,40 @@
-
 \documentclass[color=usenames,dvipsnames]{beamer}
 %\documentclass[color=usenames,dvipsnames,handout]{beamer}
 
-%\usepackage[roman]{../../../pres1}
-\usepackage[sans]{../../../pres1}
-\usepackage{Sweave}
-\usepackage{hyperref}
-\usepackage{graphicx}
-\usepackage{verbatim}
-\usepackage{pgfpages}
+
+
+
+\usepackage[sans]{../../lab1}
 \usepackage{bm}
 
 
-%\hypersetup{pdftex,pdfpagemode=UseNone,pdfstartview=FitV}
 \hypersetup{pdftex,pdfstartview=FitV}
 
 
 
-\mode<handout>{
-  \usetheme{default}
-%  \setbeamercolor{background canvas}{bg=black!5}
-  \pgfpagesuselayout{4 on 1}[letterpaper,landscape,border shrink=2.5mm]
-%  \pgfpagesuselayout{2 on 1}[letterpaper,border shrink=10mm]
+<<build-fun, include=FALSE, cache=TRUE, eval=FALSE, purl=FALSE>>=
+## A function to compile and open the pdf
+source("../rnw2pdf.R")
+if(1==2) {
+    ## Usage:
+    rnw2pdf("mixed-models") # Don't include the file extension
+    rnw2pdf("mixed-models", clean=FALSE) # Don't clean intermediate files
+    rnw2pdf("mixed-models", tangle=TRUE) # If you want the .R file
 }
+@
 
 
+<<knitr-theme, include=FALSE, purl=FALSE>>=
+##knit_theme$set("navajo-night")
+knit_theme$set("edit-kwrite")
+@
 
 
-\DefineVerbatimEnvironment{Sinput}{Verbatim}{fontshape=sl,formatcom=\color{red}}
-\DefineVerbatimEnvironment{Soutput}{Verbatim}{formatcom=\color{MidnightBlue}}
-\DefineVerbatimEnvironment{Scode}{Verbatim}{fontshape=sl}
+%% New command for inline code that isn't to be evaluated
+\definecolor{inlinecolor}{rgb}{0.878, 0.918, 0.933}
+\newcommand{\inr}[1]{\colorbox{inlinecolor}{\texttt{#1}}}
+
+
 
 
 
@@ -44,7 +49,11 @@
   Linear mixed-effects models \\
   \vspace{1cm}
   \Large
-  November 18, 2016
+  November 7, 2018 \\
+  FANR 6750 \\
+  \vfill
+  \large
+  Richard Chandler and Bob Cooper
 \end{frame}
 
 
@@ -54,7 +63,7 @@
 
 \begin{frame}
   \frametitle{Fixed vs random effects, revisited}
-  \large
+%  \large
   {\bf In the context of mixed-effects models\dots \par}
   \vspace{0.5cm}
 {\bf Fixed effect \par}
@@ -78,15 +87,22 @@ distribution} \par}
 \begin{frame}
   \frametitle{Previous examples}
   \Large
-  \begin{itemize}
-    \item ANOVA with random block effects
-    \item[]
-    \item Nested ANOVA
-    \item[]
-    \item Split-plot ANOVA
+%  \begin{itemize}
+%    \item
+  ANOVA with random block effects
+  \pause
+  \vfill
+%    \item[]
+%    \item
+  Nested ANOVA
+  \pause
+  \vfill
+%    \item[]
+%    \item
+  Split-plot ANOVA
 %    \item[]
 %    \item Repeated measures ANOVA
-  \end{itemize}
+%  \end{itemize}
 \end{frame}
 
 
@@ -144,14 +160,14 @@ distribution} \par}
   \frametitle{Repeated measures revisited}
   {\bf Recall the plant data}
   \small
-<<>>=
+<<plantData>>=
 plantData <- read.csv("plantData.csv")
 plantData$week <- factor(plantData$week)
 head(plantData)
 @
 \pause
   {\bf \normalsize Standard split-plot approach}
-<<>>=
+<<lme1>>=
 library(nlme)
 lme1 <- lme(leaves ~ fertilizer*week, plantData,
             random=~1|plant)
@@ -165,34 +181,41 @@ lme1 <- lme(leaves ~ fertilizer*week, plantData,
 
 \begin{frame}[fragile]
   \frametitle{View the parameter estimates}
-  \small
-%%<<>>=
-%%summary(lme1)
-%%@
-\begin{Schunk}
-\begin{Sinput}
-> summary(lme1)
-\end{Sinput}
-\begin{Soutput}
-Random effects:
- Formula: ~1 | plant
-        (Intercept) Residual
-StdDev:    1.098863     0.65
-
-Fixed effects: leaves ~ fertilizer * week
-                  Value Std.Error DF   t-value p-value
-(Intercept)         4.6 0.5709641 32  8.056549  0.0000
-fertilizerL         0.0 0.8074652  8  0.000000  1.0000
-week2               2.2 0.4110961 32  5.351547  0.0000
-week3               4.4 0.4110961 32 10.703094  0.0000
-week4               5.4 0.4110961 32 13.135615  0.0000
-week5               7.4 0.4110961 32 18.000657  0.0000
-fertilizerL:week2  -1.0 0.5813777 32 -1.720052  0.0951
-fertilizerL:week3  -1.8 0.5813777 32 -3.096094  0.0041
-fertilizerL:week4  -1.6 0.5813777 32 -2.752084  0.0097
-fertilizerL:week5  -1.4 0.5813777 32 -2.408073  0.0220
-\end{Soutput}
-\end{Schunk}
+<<summary-lme1,size='tiny',echo=FALSE,eval=FALSE>>=
+summary(lme1)
+@
+\small
+\begin{knitrout}\scriptsize
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{summary}\hlstd{(lme1)}
+\end{alltt}
+\begin{verbatim}
+## Linear mixed-effects model fit by REML
+##  Data: plantData
+##        AIC      BIC    logLik
+##   140.9644 161.2309 -58.48219
+##
+## Random effects:
+##  Formula: ~1 | plant
+##         (Intercept) Residual
+## StdDev:    1.098863     0.65
+##
+## Fixed effects: leaves ~ fertilizer * week
+##                   Value Std.Error DF   t-value p-value
+## (Intercept)         4.6 0.5709641 32  8.056549  0.0000
+## fertilizerL         0.0 0.8074652  8  0.000000  1.0000
+## week2               2.2 0.4110961 32  5.351547  0.0000
+## week3               4.4 0.4110961 32 10.703094  0.0000
+## week4               5.4 0.4110961 32 13.135615  0.0000
+## week5               7.4 0.4110961 32 18.000657  0.0000
+## fertilizerL:week2  -1.0 0.5813777 32 -1.720052  0.0951
+## fertilizerL:week3  -1.8 0.5813777 32 -3.096094  0.0041
+## fertilizerL:week4  -1.6 0.5813777 32 -2.752084  0.0097
+## fertilizerL:week5  -1.4 0.5813777 32 -2.408073  0.0220
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
 \end{frame}
 
 
@@ -226,15 +249,13 @@ fertilizerL:week5  -1.4 0.5813777 32 -2.408073  0.0220
 \begin{frame}[fragile]
   \frametitle{Extract the estimates}
   {\bf Fixed effects (the $\bm \beta$ estimates)}
-  \scriptsize
-<<>>=
+<<round-beta1,size='tiny'>>=
 round(beta <- fixef(lme1), 2)
 @
 \pause
 \vfill
   {\bf \normalsize Random effects (the $\bm \gamma$ estimates)}
-  \scriptsize
-<<>>=
+<<round-gamma1,size='tiny'>>=
 round(gamma <- ranef(lme1, which=1), 2)
 @
 \end{frame}
@@ -244,20 +265,20 @@ round(gamma <- ranef(lme1, which=1), 2)
 \begin{frame}[fragile]
   \frametitle{Computing the expected values}
   {\bf Ignoring the random effects}
-<<>>=
+<<X1,size='scriptsize'>>=
 X <- model.matrix(~ fertilizer*week, plantData)
 E1 <- X %*% beta
 @
 \pause
   {\bf Including the random effects}
-<<>>=
+<<E2,size='scriptsize'>>=
 nWeeks <- 5
 gamma.long <- rep(gamma[[1]], each=nWeeks)
 E2 <- E1 + gamma.long
 @
 \pause
 \small
-<<>>=
+<<E1-E2,size='scriptsize'>>=
 head(cbind(plantData, E1=E1, E2=E2))
 @
 \end{frame}
@@ -267,7 +288,7 @@ head(cbind(plantData, E1=E1, E2=E2))
 
 \begin{frame}[fragile]
   \frametitle{The ANOVA table}
-<<>>=
+<<anova-lme1>>=
 anova(lme1)
 @
 \pause
@@ -326,7 +347,7 @@ anova(lme1)
 \vspace{0.5cm}
 {\bf Assume an AR(1) correlation structure}
 \pause
-<<>>=
+<<lme2>>=
 lme2 <- lme(leaves ~ fertilizer*week, plantData,
             random=~1|plant,
             correlation=corARMA(p=1))
@@ -334,7 +355,7 @@ lme2 <- lme(leaves ~ fertilizer*week, plantData,
 \vspace{1cm}
 {\bf Assume an AR(3) correlation structure}
 \pause
-<<>>=
+<<lme3>>=
 lme3 <- lme(leaves ~ fertilizer*week, plantData,
             random=~1|plant,
             correlation=corARMA(p=3))
@@ -349,12 +370,13 @@ lme3 <- lme(leaves ~ fertilizer*week, plantData,
 
 \begin{frame}[fragile]
   \frametitle{Autocorrelation function}
-<<plant2-acf,fig=true,include=false>>=
+<<plant2-acf,fig.show='hide',fig.width=7,fig.height=5,size='small'>>=
 plot(ACF(lme2), alpha=0.05)
 @
-\begin{center}
-  \includegraphics[width=0.7\textwidth]{mixed-models-plant2-acf}
-\end{center}
+%\begin{center}
+\centering
+  \includegraphics[width=0.9\textwidth]{figure/plant2-acf-1} \\
+%\end{center}
 \end{frame}
 
 
@@ -363,12 +385,13 @@ plot(ACF(lme2), alpha=0.05)
 
 \begin{frame}[fragile]
   \frametitle{Autocorrelation function}
-<<plant3-acf,fig=true,include=false>>=
+<<plant3-acf,fig.show='hide',fig.width=7,fig.height=5,size='small'>>=
 plot(ACF(lme3), alpha=0.05)
 @
-\begin{center}
-  \includegraphics[width=0.7\textwidth]{mixed-models-plant3-acf}
-\end{center}
+%\begin{center}
+\centering
+  \includegraphics[width=0.9\textwidth]{figure/plant3-acf-1} \\
+%\end{center}
 \end{frame}
 
 
@@ -376,39 +399,46 @@ plot(ACF(lme3), alpha=0.05)
 
 \begin{frame}[fragile]
   \frametitle{Parameter estimates}
-%<<>>=
+%<<summary-lme3,size='tiny'>>=
 %summary(lme3)
 %@
-  \scriptsize %\small
-\begin{Schunk}
-\begin{Sinput}
-> summary(lme3)
-\end{Sinput}
-\begin{Soutput}
-Random effects:
- Formula: ~1 | plant
-        (Intercept)  Residual
-StdDev:    0.955924 0.8227638
-
-Correlation Structure: ARMA(3,0)
- Formula: ~1 | plant
- Parameter estimate(s):
-      Phi1       Phi2       Phi3
- 0.3339878  0.5086039 -0.2573006
-Fixed effects: leaves ~ fertilizer * week
-                  Value Std.Error DF   t-value p-value
-(Intercept)         4.6 0.5640445 32  8.155385  0.0000
-fertilizerL         0.0 0.7976794  8  0.000000  1.0000
-week2               2.2 0.4039417 32  5.446331  0.0000
-week3               4.4 0.3532792 32 12.454737  0.0000
-week4               5.4 0.4867909 32 11.093060  0.0000
-week5               7.4 0.4614437 32 16.036626  0.0000
-fertilizerL:week2  -1.0 0.5712598 32 -1.750517  0.0896
-fertilizerL:week3  -1.8 0.4996123 32 -3.602794  0.0011
-fertilizerL:week4  -1.6 0.6884262 32 -2.324142  0.0266
-fertilizerL:week5  -1.4 0.6525799 32 -2.145331  0.0396
-\end{Soutput}
-\end{Schunk}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{summary}\hlstd{(lme3)}
+\end{alltt}
+\tiny
+\begin{verbatim}
+## Linear mixed-effects model fit by REML
+##  Data: plantData
+##        AIC      BIC    logLik
+##   142.7793 168.1125 -56.38965
+##
+## Random effects:
+##  Formula: ~1 | plant
+##         (Intercept)  Residual
+## StdDev:    0.955924 0.8227638
+##
+## Correlation Structure: ARMA(3,0)
+##  Formula: ~1 | plant
+##  Parameter estimate(s):
+##       Phi1       Phi2       Phi3
+##  0.3339878  0.5086039 -0.2573006
+## Fixed effects: leaves ~ fertilizer * week
+##                   Value Std.Error DF   t-value p-value
+## (Intercept)         4.6 0.5640445 32  8.155385  0.0000
+## fertilizerL         0.0 0.7976794  8  0.000000  1.0000
+## week2               2.2 0.4039417 32  5.446331  0.0000
+## week3               4.4 0.3532792 32 12.454737  0.0000
+## week4               5.4 0.4867909 32 11.093060  0.0000
+## week5               7.4 0.4614437 32 16.036626  0.0000
+## fertilizerL:week2  -1.0 0.5712598 32 -1.750517  0.0896
+## fertilizerL:week3  -1.8 0.4996123 32 -3.602794  0.0011
+## fertilizerL:week4  -1.6 0.6884262 32 -2.324142  0.0266
+## fertilizerL:week5  -1.4 0.6525799 32 -2.145331  0.0396
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
 \end{frame}
 
 
@@ -417,11 +447,11 @@ fertilizerL:week5  -1.4 0.6525799 32 -2.145331  0.0396
 \begin{frame}[fragile]
   \frametitle{ANOVA tables}
   {\bf Model that ignores serial correlation}
-<<>>=
+<<anova1,size='scriptsize'>>=
 anova(lme1)
 @
   {\bf Model that accounts for serial correlation}
-<<>>=
+<<anova3,size='scriptsize'>>=
 anova(lme3)
 @
 \end{frame}
@@ -434,19 +464,32 @@ anova(lme3)
 \begin{frame}
   \frametitle{Summary}
   \large
-  \begin{itemize}[<+->]
-    \item Linear mixed-effects models are useful anytime you have
-      fixed effects and normally-distriubted random effects
-    \item They allow for (serial, spatial, etc\dots) correlation among
-      observations within a level of the grouping variable
-    \item These models can be used for repeated measures data as an
-      alternative to MANOVA or the split-plot method with adjusted
-      $P$-values
-    \item We do not want you to use this approach for the repeated
-      measures questions in the exam.
-    \item But we will expect you to know how to fit linear
+%  \begin{itemize}[<+->]
+%    \item
+  Linear mixed-effects models are useful anytime you have
+  fixed effects and normally-distriubted random effects \\
+  \pause
+  \vfill
+%    \item
+  They allow for (serial, spatial, etc\dots) correlation among
+  observations within a level of the grouping variable \\
+  \pause
+  \vfill
+%    \item
+  These models can be used for repeated measures data as an
+  alternative to MANOVA or the split-plot method with adjusted
+  $P$-values \\
+  \pause
+  \vfill
+%    \item
+  We do not want you to use this approach for the repeated
+  measures questions in the exam. \\
+  \pause
+  \vfill
+%    \item
+  But we will expect you to know how to fit linear
       mixed-effects models using {\tt lme}, as we have already done
-  \end{itemize}
+%  \end{itemize}
 \end{frame}
 
 
@@ -512,11 +555,11 @@ anova(lme.hawk2)
 \begin{frame}[fragile]
   \frametitle{Autocorrelation function (ACF)}
   \tiny
-<<lme-hawk1,fig=TRUE,include=false>>=
+<<lme-hawk1,fig.show='hide'>>=
 plot(ACF(lme.hawk1), alpha=0.05)
 @
 \begin{center}
-  \includegraphics[width=7cm]{mixed-models-lme-hawk1}
+  \includegraphics[width=7cm]{figure/lme-hawk1-1}
 \end{center}
 \end{frame}
 
@@ -525,11 +568,11 @@ plot(ACF(lme.hawk1), alpha=0.05)
 \begin{frame}[fragile]
   \frametitle{Autocorrelation function (ACF)}
   \tiny
-<<lme-hawk2,fig=TRUE,include=false>>=
+<<lme-hawk2,fig.show='hide'>>=
 plot(ACF(lme.hawk2), alpha=0.05)
 @
 \begin{center}
-  \includegraphics[width=7cm]{mixed-models-lme-hawk2}
+  \includegraphics[width=7cm]{figure/lme-hawk2-1}
 \end{center}
 \end{frame}
 
