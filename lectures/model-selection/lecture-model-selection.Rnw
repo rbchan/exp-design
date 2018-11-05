@@ -1,0 +1,1004 @@
+\documentclass[color=usenames,dvipsnames]{beamer}
+%\documentclass[color=usenames,dvipsnames,handout]{beamer}
+
+
+
+
+\usepackage[sans]{../../lab1}
+\usepackage{bm}
+
+
+\hypersetup{pdftex,pdfstartview=FitV}
+
+
+
+<<build-fun, include=FALSE, cache=TRUE, eval=FALSE, purl=FALSE>>=
+## A function to compile and open the pdf
+source("../rnw2pdf.R")
+if(1==2) {
+    ## Usage:
+    rnw2pdf("lecture-model-selection") # Don't include the file extension
+}
+@
+
+
+<<knitr-theme, include=FALSE, purl=FALSE>>=
+##knit_theme$set("navajo-night")
+knit_theme$set("edit-kwrite")
+@
+
+
+%% New command for inline code that isn't to be evaluated
+\definecolor{inlinecolor}{rgb}{0.878, 0.918, 0.933}
+\newcommand{\inr}[1]{\colorbox{inlinecolor}{\texttt{#1}}}
+
+
+
+
+\begin{document}
+
+
+\setlength\fboxsep{0pt}
+
+
+
+\begin{frame}[plain]
+%  \maketitle
+%  \huge
+  \LARGE
+  \centering \par
+  {\color{PineGreen}{Model Selection and %\\
+  Multimodel Inference \par}}
+  \vspace{1cm}
+%  \LARGE
+  \large
+  November 29 \& 31, 2017
+\end{frame}
+
+
+\section{Introduction}
+
+
+
+\begin{frame}
+  \frametitle{References}
+  {\bf Well known book:} \\
+  Burnham, K.P. and D.R. Anderson. 2002. Model Selection and
+  Multimodel Inference. Springer.\\
+  \vspace{0.5cm}
+  {\bf Great overview:} \\
+  \url{http://www.stats.ox.ac.uk/~ripley/ModelChoice.pdf} \\
+%  \pause
+%  \vspace{0.5cm}
+%  {\bf ... but see:} \\ {\tiny
+%  \url{http://warnercnr.colostate.edu/~anderson/PDF_files/AIC\%20Myths\%20and\%20Misunderstandings.pdf}} \\
+%  \pause
+%  \vspace{0.5cm}
+%  {\bf ... and this:} \\
+%  \url{http://tolstoy.newcastle.edu.au/R/help/06/02/21794.html}
+\end{frame}
+
+
+
+\begin{frame}
+  \frametitle{Questions}
+  \Large
+{How do we know which model is best? \par}
+  \pause
+  \vspace{0.9cm}
+{ Are any of them any good? \par}
+  \pause
+  \vspace{0.9cm}
+{What is a good model? \par}
+%\begin{enumerate}[<+- | visible@+->][\bf \color{PineGreen} (1)]
+%\end{enumerate}
+% Mention BLOGs
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{What is a good model?}
+  \Large
+  {\bf Explanation \par}
+  A good model should be a good approximation of reality \\
+  \pause
+  \vspace{0.5cm}
+  {\bf Prediction \par}
+  A good model should have good predictive abilities
+\end{frame}
+
+
+
+
+
+\begin{frame}
+  \frametitle{Explanation}
+  \Large
+As scientists, we want
+\begin{quote}
+  ``an explanation that is as simple as possible, but no simpler''
+\end{quote}
+{\small \flushright Einstein (paraphrased by Reader's Digest!) \par}
+\pause
+\vspace{1cm}
+Why do we want simplicity?
+\pause
+\begin{quote}
+  ``All models are wrong but some are useful''
+\end{quote}
+{\small \flushright G.E.P. Box, 1976 \par}
+\end{frame}
+
+
+
+\begin{frame}
+  \frametitle{Prediction}
+  \Large
+  All that matters is that it works \par
+  \pause
+  \vspace{1cm}
+  This may be perfectly fine in non-scientific fields like
+  engineering, pattern recognition, etc\dots
+  \pause
+  \vfill
+  Excellent paper: \\
+  \normalsize
+  Breiman, L. (2001). Statistical modeling: The two cultures (with
+  comments and a rejoinder by the author). Statistical Science, 16(3),
+  199-231. \\
+\end{frame}
+
+
+
+
+\begin{frame}
+  \frametitle{Model Selection Approaches}
+%  \Large
+%  \begin{itemize}
+%    \item<1-> Comparison of 2 models
+    Comparison of 2 models
+      \begin{itemize}
+        \item $F$-test
+        \item Likelihood-ratio ($\chi^2$) test
+      \end{itemize}
+%    \item<2-> Stepwise procedures
+      \pause
+    Stepwise procedures
+      \begin{itemize}
+        \item Forward-selection
+        \item Backward selection
+        \item Stepwise selection
+      \end{itemize}
+%    \item<3-> Information-theortic approaches
+      \pause
+    Information-theortic approaches
+      \begin{itemize}
+        \item Akaike's Information Criterion (AIC)
+        \item Bayesian Information Criterio (BIC)
+      \end{itemize}
+%    \item<4-> Cross-validation
+      \pause
+    Cross-validation
+      \begin{itemize}
+        \item Leave-one-out
+        \item $K$-fold %cross-validation
+      \end{itemize}
+%    \item<5-> Out-of-sample validation
+      \pause
+    Out-of-sample validation
+      \begin{itemize}
+        \item Compare predictions to new data
+      \end{itemize}
+%  \end{itemize}
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Perils of $P$-values}
+  \Large
+%  \begin{itemize}[<+->]
+%    \item Null hypotheses are rarely true
+    Null hypotheses are rarely true
+    \pause
+    \vfill
+%    \item $P$-value tells us nothing about the alternative hypothesis
+    $P$-value tells us nothing about the alternative hypothesis
+    \pause
+    \vfill
+%    \item Specification of $\alpha$ is arbitrary
+    Specification of $\alpha$ is arbitrary
+    \pause
+    \vfill
+%    \item Significance is a function of sample size
+    Significance is a function of sample size
+    \pause
+    \vfill
+%    \item Statistical significance does not equal biological significance
+    Statistical significance does not equal biological significance
+%    \item Many statistical tests are only valid as sample size tends
+%      toward infinity! (in asymptopia)
+%  \end{itemize}
+  \pause
+  \vfill
+  \centering \bf
+  The use of AIC avoids some of these issues \\
+\end{frame}
+
+
+
+\section{AIC}
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{AIC}
+  \large
+  Minus twice the (maximized) log-likelihood plus two times the number of
+  parameters
+\[
+ \mathrm{AIC} = -2\mathcal{L}(\hat{\theta} | {\bf y}) + 2K
+\]
+  \pause
+  Or, when ordinary least squares (OLS) is used for estimation, AIC is
+  based on the residual sums-of-squares (RSS):
+\[
+ \mathrm{AIC} = n\log(\mathrm{RSS}/n) + 2K
+\]
+ \pause
+ The key is to recognize that
+\[
+ \mathrm{AIC} = \text{measure of fit} + \text{complexity penalty}
+\]
+%  \begin{align*}
+%  \mathrm{AIC} &=& -2\mathcal{L}(\theta|{\bf y}) &+ 2K \\
+%               &=& \text{measure of fit} &+ \text{complexity penalty}
+%  \end{align*}
+\end{frame}
+
+
+
+\begin{frame}
+  \frametitle{Fit and over-fit}
+  \large
+%  {\bf $r^2$ is a measure of model fit \par}
+  {$r^2$ is a measure of model fit \par}
+  \vspace{1cm}
+  \pause
+%  {\bf Questions}
+  {Questions}
+  \begin{itemize}[<+->]
+    \item Does the addition of a new predictor variable always
+      increase $r^2$?
+    \item Do we want the model with the highest $r^2$?
+    \item What is the harm in adding ``extra'' predictor variables?
+  \end{itemize}
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{AIC in practice}
+  \large
+%  {\bf The process}
+\begin{enumerate}[<+- | visible@+->][\bf \color{PineGreen} (1)]
+  \item Select a set of candidate models
+  \item Fit the models to the data (maximize the likelihood or
+    minimize the RSS)
+  \item Compute the AIC of each model
+  \item Rank the models by AIC (lower AIC is better)
+  \item Compute the difference in AIC scores between the
+    best model, and every other model.
+    \[
+    \Delta_i = \text{AIC}_i - \text{AIC}_{min}
+    \]
+  \item Compute the so-called Akaike weight of each model:
+    \[
+    w_i = \frac{\exp(-1/2\Delta_i)}{\sum_i \exp(-1/2\Delta_i)}
+    \]
+  \item A model with $w=0.6$ is twice as likely to be the best model
+    in the set as a model with $w=0.3$
+\end{enumerate}
+\end{frame}
+
+
+
+\begin{frame}
+  \frametitle{Presentation of results}
+  \begin{center}
+    \begin{tabular}{lrrrrr}
+      \hline
+      Model  & RSS$^1$ & K$^2$ & AIC & $\Delta$AIC & weight \\
+      \hline
+      1 & 300 & 2 & 113.8 & 0.0    & 0.98 \\
+      2 & 320 & 3 & 122.3 & 8.4    & 0.02 \\
+      3 & 330 & 3 & 125.4 & 11.5   & 0.00 \\
+      4 & 330 & 5 & 129.4 & 15.5   & 0.00 \\
+      \hline
+    \end{tabular} \par
+    \scriptsize
+    $^1$Residual sum-of-squares (replace with log-likelihood if using
+    maximum likelihood) \\
+    $^2$Number of parameters in model (including $\sigma^2$) \par
+  \end{center}
+\end{frame}
+
+
+
+\begin{frame}
+  \frametitle{Small sample size adjustment}
+  The last term is the ``bias adjustment term''
+  \[
+  \mathrm{AIC}_c = n\log(\mathrm{RSS}/n) + 2K + \frac{2K(K+1)}{n-K-1}
+  \]
+\end{frame}
+
+
+
+%% \begin{frame}
+%%   \frametitle{Dealing with overdispersion}
+%%   \large
+%%   {\centering \bf \Large \color{PineGreen} If data are more variable than
+%%     allowed by the model, the data are said to be overdispersed \par}
+%%   \vspace{0.2cm}
+%%   \pause
+%%   {\bf One way to deal with this problem is to modify AIC and the SEs}
+%%   \pause
+%%   \Large
+%%   \[
+%%      \mathrm{QAIC} = -2\mathcal{L}(\hat{\theta} | {\bf y})/\alert{\hat{c}} + 2K
+%%   \]
+%%   \pause
+%%   \vspace{0.5cm}
+%%   where
+%%   \vspace{0.5cm}
+%%   \[
+%%     \alert{\hat{c}} = \chi^2/df
+%%   \]
+%% \end{frame}
+
+
+
+%% \begin{frame}[fragile]
+%%   \frametitle{Dealing with overdispersion in \R}
+%%   {\bf Overdispersed data}
+%% <<>>=
+%% y <- rnbinom(100, mu=3, size=0.5)
+%% fm <- glm(y ~ 1, poisson)
+%% @
+%% \pause
+%%   {\bf Calculating $\hat{c}$}
+%% <<>>=
+%% chiSq <- sum((y - fitted(fm))^2 / fitted(fm))
+%% df <- anova(fm)$"Resid. Df"
+%% c.hat <- chiSq / df
+%% c.hat
+%% @
+%% \pause
+%%   {\bf Calculating QAIC}
+%% <<>>=
+%% K <- length(coef(fm)) + 1 # Must add 1 for c.hat
+%% QAIC <- as.numeric(-2*logLik(fm)/c.hat + 2*K)
+%% QAIC
+%% @
+%% \end{frame}
+
+
+
+
+%% \begin{frame}[fragile]
+%%   \frametitle{Dealing with overdispersion in \R}
+%%   {\bf \R~will adjust SEs and report c.hat, but not QAIC}
+%%   \footnotesize
+%% <<>>=
+%% summary(glm(y ~ 1, quasipoisson))
+%% @
+%% \end{frame}
+
+
+%% \begin{frame}
+%%   \frametitle{Dealing with overdispersion}
+%%   {\bf This approach simply adjusts the SEs and AIC: \par}
+%%   \pause
+%%   \vspace{0.5cm}
+%%   {\bf A better approach would be to fit a different model:}
+%%   \begin{itemize}
+%%     \item Negative binomial
+%%     \item Zero-inflated Poisson
+%%     \item Random effects model
+%%   \end{itemize}
+%%   \pause
+%%   \vspace{0.5cm}
+%%   {\bf Or use the non-parametric bootstrap}
+%% \end{frame}
+
+
+
+
+
+\begin{frame}
+  \frametitle{Notes about AIC}
+%  \Large
+%  \begin{itemize}[<+->]
+%    \item AIC is not a test
+    AIC is not a test
+    \pause
+    \vfill
+%    \item AIC is a relative measure. You can't compare the AICs of
+%      models fit to different datasets.
+    AIC is a relative measure. You can't compare the AICs of
+      models fit to different datasets.
+%    \item In other words, all models must be fit to the {\it
+%        exact} same data
+    \pause
+    \vfill
+    In other words, all models must be fit to the {\it
+        exact} same data
+%    \item There will always be a model with the lowest AIC. But all of
+%      the models in the set could be terrible.
+    \pause
+    \vfill
+    There will always be a model with the lowest AIC. But all of
+      the models in the set could be terrible.
+    \pause
+    \vfill
+    Always assess the fit of your best model.
+%  \end{itemize}
+\end{frame}
+
+
+
+
+
+%% \section{Model Selection in {\bf R}}
+
+
+
+
+%% \begin{frame}[plain]
+%%   \frametitle{Today's Topics}
+%%   \LARGE
+%%   \only<1>{\tableofcontents}%[hideallsubsections]}
+%%   \only<2 | handout:0>{\tableofcontents[currentsection]}%,hideallsubsections]}
+%% \end{frame}
+
+
+
+
+%% \begin{frame}[fragile]
+%%   \frametitle{Swiss Data}
+%%   \small
+%% <<>>=
+%% swissData <- read.csv("swissData.csv")
+%% head(swissData, n=11)
+%% @
+%% \end{frame}
+
+
+%% \begin{frame}[fragile]
+%%   \frametitle{Four linear models}
+%% <<>>=
+%% fm1 <- lm(sppRichness ~ forest, data=swissData)
+%% fm2 <- lm(sppRichness ~ elevation, data=swissData)
+%% fm3 <- lm(sppRichness ~ forest + elevation +
+%%           water, data=swissData)
+%% fm4 <- lm(sppRichness ~ forest + I(forest^2) +
+%%           elevation * water, data=swissData)
+%% @
+%% \end{frame}
+
+
+
+%% \begin{frame}[fragile]
+%%   \frametitle{Model 4}
+%%   \scriptsize
+%% <<>>=
+%% summary(fm4)
+%% @
+%% \end{frame}
+
+
+
+
+
+
+
+
+
+%% \begin{frame}[fragile]
+%%   \frametitle{Compute AIC for each model}
+%%   {\bf Sample size}
+%% <<>>=
+%% n <- nrow(swissData)
+%% @
+%% \pause
+%% \vfill
+%% {\bf Residual sums-of-squares (from ANOVA table)}
+%% <<>>=
+%% RSS <- c(17735, 17089, 30910, 6129)
+%% @
+%% \pause
+%% \vfill
+%% {\bf Number of parameters}
+%% <<>>=
+%% K <- c(3, 3, 3, 7)
+%% @
+%% \pause
+%% \vfill
+%% {\bf AIC}
+%% <<>>=
+%% AIC <- n*log(RSS/n) + 2*K
+%% @
+%% \pause
+%% \vfill
+%%   {\bf $\Delta$AIC}
+%% <<>>=
+%% delta <- AIC - min(AIC)
+%% @
+%% \pause
+%% \vfill
+%%   {\bf AIC Weights}
+%% <<>>=
+%% w <- exp(-0.5*delta)/sum(exp(-0.5*delta))
+%% @
+%% \end{frame}
+
+
+
+
+%% \begin{frame}[fragile]
+%%   \frametitle{AIC table}
+%%   \small
+%%   {\bf Put vectors in data.frame}
+%% <<>>=
+%% ms <- data.frame(RSS, K, AIC, delta, w)
+%% rownames(ms) <- c("fm1", "fm2", "fm3", "fm4")
+%% round(ms)
+%% @
+%% \pause
+%%   {\bf Sort data.frame based on AIC values}
+%% <<>>=
+%% ms <- ms[order(ms$AIC),]
+%% round(ms)
+%% @
+
+%% \end{frame}
+
+
+
+
+
+%% \begin{frame}[fragile]
+%%   \frametitle{Similar process using R's {\tt AIC} function}
+%% <<>>=
+%% AIC(fm1, fm2, fm3, fm4)
+%% @
+%% \pause
+%% \vfill
+%% {\bf Notes}
+%% \begin{itemize}[<+->]
+%%   \item {\bf R} uses {\tt logLik(fm)} instead of {\tt n*log(RSS/n)}
+%%   \item AIC values are different but $\Delta$AIC values are the same
+%%   \item Either approach is fine with linear models, but log-likelihood
+%%     must be used with GLMs, and other models fit using maximum likelihood
+%% \end{itemize}
+%% \end{frame}
+
+
+
+
+
+
+
+\section{Multi-model Inference}
+
+
+\begin{frame}
+  \frametitle{Multi-model Inference}
+  \large
+%  {\bf What if several models have similar weights? \par}
+  What if several models have similar weights? \par
+%  \begin{itemize}
+%    \item Reliance on a single model ignores model selection uncertainty
+%    \item It also ignore the fact that your alternative hypotheses
+%      have support
+%  \end{itemize}
+  \pause
+  \vspace{1cm}
+%  {\bf Multi-model inference involves using {\it all} of the models in
+%    the set of models}
+  Multi-model inference involves using {\it all} of the models in
+    the set of models
+%  \begin{itemize}
+%    \item Parameters (or predictions) are weighted by $w$
+%  \end{itemize}
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Multi-model Inference}
+  \large
+%  {\bf The key is to do a \alert{weighted average} of parameters or
+%    predictions \par}
+  The key is to do a \alert{weighted average} of parameters or
+    predictions \par
+  \pause
+%  {\bf Weighted average:}
+  \[
+    \bar{\hat{\theta}} = \sum_{i=1}^R \hat{\theta_i}w_i
+  \]
+  \pause
+%  {\bf where $\theta_i$ is a parameter or a predicted value from model $i$
+%    in the set of $R$ models.}
+  where $\theta_i$ is a parameter or a predicted value from model $i$
+    in the set of $R$ models.
+\end{frame}
+
+
+
+\begin{frame}
+  \frametitle{Averaging parameters}
+  \large
+%  {\bf In the case of linear models, we might want to average the
+%    $\beta$ parameters \par}
+  {In the case of linear models, we might want to average the
+    $\beta$ parameters \par}
+  \pause
+  \vspace{0.3cm}
+%  {\bf But not all parameters are in every model. What do we do? \par}
+  {But not all parameters are in every model. What do we do? \par}
+  \pause
+  \vspace{0.3cm}
+%  {\bf Two options:}
+  {Two options:}
+  \begin{enumerate}[<+- | visible@+->][\bf \color{PineGreen} (1)]
+    \item Average estimates over models {\it in which the parameter
+        occurs} (bad idea)
+    \item Average estimates over all models, and set the estimate to 0
+      when the parameter is not in the model
+  \end{enumerate}
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Example}
+  \begin{center}
+    \begin{tabular}{lccccc}
+      \hline
+      Model & Intercept & Elevation & Elevation$^2$ & Chaparral & Weight \\
+      \hline
+      {\tt fm7} & 30.7 & 0.0083 & ---         & ---      & 0.80 \\
+      {\tt fm8} & 28.0 & 0.012  & -0.0000026  & 0.093 & 0.19 \\
+      \hline
+      Average   & 29.9 & 0.0089 &  ???        & ???     &   \\
+      \hline
+    \end{tabular}
+  \end{center}
+\end{frame}
+
+
+
+
+\begin{frame}
+  \frametitle{Example}
+  \begin{center}
+    \begin{tabular}{lccccc}
+      \hline
+      Model & Intercept & Elevation & Elevation$^2$ & Chaparral & Weight \\
+      \hline
+      {\tt fm7} & 30.7 & 0.0083 & \alert{0}    & \alert{0}      & 0.80 \\
+      {\tt fm8} & 28.0 & 0.012  & -0.0000026   & 0.093 & 0.19 \\
+      \hline
+      Average   & 29.9 & 0.0089 &  -0.0000005  & 0.018     &   \\
+      \hline
+    \end{tabular}
+  \end{center}
+  \pause
+  \vfill
+  Be aware that some people recommend that you never model average
+  regression coefficients. However, it's always fine to model average
+  predictions.
+\end{frame}
+
+
+
+\begin{frame}
+  \frametitle{Model-averaged Predictions}
+%  {\bf Same concept, applied to predicted values instead of parameter
+%    estimates \par}
+  {Same concept, applied to predicted values instead of parameter
+    estimates \par}
+  \pause
+  \vspace{0.3cm}
+%  {\bf Example: predict jay abundance when in Oak habitat at 1000 m
+%    elevation, low seeds, and 10\% chaparral \par}
+  {Example: predict jay abundance when in Oak habitat at 1000 m
+    elevation, low seeds, and 10\% chaparral \par}
+  \pause
+  \begin{center}
+    \begin{tabular}{lcc}
+      \hline
+      Model     & Predicted value ($\mathbb{E}(y)$) & Weight \\
+      \hline
+      {\tt fm7} & 42.17 & 0.80 \\
+      {\tt fm8} & 45.95 & 0.19 \\
+      \hline
+      Average   & 42.47 & \\
+      \hline
+    \end{tabular}
+  \end{center}
+\end{frame}
+
+
+
+\begin{frame}
+  \frametitle{Model-averaged SEs and CIs}
+  \large
+%  {\bf We now know how to use model averaging to compute $\bar{\hat{\theta}}$}
+  {We now know how to use model averaging to compute $\bar{\hat{\theta}}$}
+  \pause
+  \vfill
+%  {\bf But, how do we calculate the SE or CI?}
+  {But, how do we calculate the SE or CI?}
+\end{frame}
+
+
+
+\begin{frame}
+  \frametitle{Unconditional SE}
+  \Large
+  \[
+    \mbox{SE}(\bar{\hat{\theta}}) = \sum_{i=1}^R w_i \sqrt{\mbox{var}(\hat{\theta}_i) +
+      (\hat{\theta}_i - \bar{\hat{\theta}})^2}
+  \]
+%  \pause
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Example}
+  \Large
+  \begin{center}
+    \begin{tabular}{lrrr}
+      \hline
+      Model & $\hat{\beta_1}$ & SE & $w$ \\
+      \hline
+      1 & 1.2 & 0.30 & 0.5 \\
+      2 & 1.1 & 0.25 & 0.3 \\
+      3 & 1.4 & 0.26 & 0.2 \\
+      \hline
+    \end{tabular}
+  \end{center}
+  \pause
+  \large
+  $\bar{\hat{\beta_1}} = 1.2\times0.5 + 1.1\times0.3 + 1.4\times0.2 = 1.21$
+  \pause
+  \begin{align*}
+    \mbox{SE} = &0.5\sqrt{0.30^2 + (1.2-1.21)^2} + \\
+                &0.3\sqrt{0.25^2 + (1.1-1.21)^2} + \\
+                &0.2\sqrt{0.26^2 + (1.2-1.21)^2}   \\
+              = &0.29
+  \end{align*}
+\end{frame}
+
+
+
+%% \begin{frame}
+%%   \frametitle{Unconditional CI}
+%% %  {\bf 95\% CI}
+%%   \Large
+%%   \[
+%%     \mbox{CI}(\bar{\hat{\theta}}) = \bar{\hat{\theta}} \pm z_{1-\alpha/2} \times \mbox{ASE}(\bar{\hat{\theta}})
+%%   \] \par
+%%   \pause
+%%   \vspace{.5cm}
+%%   where $\mbox{ASE}(\bar{\hat{\theta}})$ is the adjusted standard error:
+%%   \vspace{.5cm}
+%%   \[
+%%     \mbox{ASE}(\bar{\hat{\theta}}) = \sum_{i=1}^R w_i
+%%     \sqrt{\frac{t_{df_i, 1-\alpha/2}}{z_{1-\alpha/2}}\mbox{var}(\hat{\theta}_i) +
+%%       (\hat{\theta}_i - \bar{\hat{\theta}})^2}
+%%   \]
+%% \end{frame}
+
+
+
+\begin{frame}
+  \frametitle{Relative variable importance}
+%  {\bf Which of the predictor variables is most important? \par}
+  {Which of the predictor variables is most important? \par}
+  \vspace{0.5cm}
+  \pause
+%  {\bf Burnham and Anderson recommend using $w_+(\beta_j)$, the sum of
+%    the AIC weights over all models that include $\beta_j$}
+  {Burnham and Anderson recommend using $w_+(\beta_j)$, the sum of
+    the AIC weights over all models that include $\beta_j$}
+\end{frame}
+
+
+
+\begin{frame}
+  \frametitle{Example}
+  \begin{center}
+    \begin{tabular}{lrrrr}
+      \hline
+      Model & $\hat{\beta_1}$ & $\hat{\beta_2}$ & $\hat{\beta_3}$ & $w$ \\
+      \hline
+      1 & 1.2 & 2.0 & --  & 0.4 \\
+      2 & 1.1 & --  & 0.6 & 0.3 \\
+      3 & 1.4 & --  & 0.8 & 0.3 \\
+      \hline
+    \end{tabular}
+  \end{center}
+  \pause
+  Variable importance values:
+  \begin{align*}
+    w_+(\hat{\beta_1}) &= 0.4 + 0.3 + 0.3 &= 1.0 \\
+    w_+(\hat{\beta_2}) &= 0.4             &= 0.4 \\
+    w_+(\hat{\beta_3}) &= 0.3 + 0.3       &= 0.6
+  \end{align*}
+\end{frame}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+%% \section{In {\bf R}}
+
+
+
+
+
+
+
+
+%% \begin{frame}[fragile]
+%%   \frametitle{Prediction}
+%%   \footnotesize
+%%   {\bf Predict number of species at site 1000m high with 25\% forest
+%%     cover, and no water, for \alert{each} model}
+%% <<>>=
+%% nd <- data.frame(elevation=1000, forest=25, water="No")
+%% @
+%% \pause
+%% \vfill
+%% <<>>=
+%% E1 <- predict(fm1, newdata=nd, type="response")
+%% as.numeric(E1) # as.numeric() removes names (optional)
+%% @
+%% \pause
+%% \vfill
+%% <<>>=
+%% E2 <- predict(fm2, newdata=nd, type="response")
+%% as.numeric(E2)
+%% @
+%% \pause
+%% \vfill
+%% <<>>=
+%% E3 <- predict(fm3, newdata=nd, type="response")
+%% as.numeric(E3)
+%% @
+%% \pause
+%% \vfill
+%% <<>>=
+%% E4 <- predict(fm4, newdata=nd, type="response")
+%% as.numeric(E4)
+%% @
+%% \end{frame}
+
+
+
+
+%% \begin{frame}[fragile]
+%%   \frametitle{Model-averaged prediction}
+%%   {\bf Expected number of species at 1000m, 25\% forest cover, and no
+%%     water, averaged over \alert{all} 4 models}
+%%   \pause
+%% <<>>=
+%% sum(E1*w[1] + E2*w[2] + E3*w[3] + E4*w[4])
+%% @
+%% \end{frame}
+
+
+
+
+
+%% \begin{frame}[fragile]
+%%   \frametitle{Model-averaged regression lines}
+%%   {\bf Predict species richness over range of forest cover, for each model}
+%% <<>>=
+%% nd <- data.frame(forest=seq(0, 100, length=50),
+%%                  elevation=1000, water="No")
+%% E1 <- predict(fm1, newdata=nd)
+%% E2 <- predict(fm2, newdata=nd)
+%% E3 <- predict(fm3, newdata=nd)
+%% E4 <- predict(fm4, newdata=nd)
+%% Emat <- cbind(E1, E2, E3, E4)
+%% @
+%% \pause
+%% {\bf How do we model-average these vectors?}
+%% \pause
+%% <<>>=
+%% Evec <- Emat %*% w
+%% @
+%% \end{frame}
+
+
+
+
+%% \begin{frame}[fragile]
+%%   \frametitle{Model-averaged regression lines}
+%%   \tiny
+%% <<reglines,fig=true,include=false>>=
+%% plot(sppRichness ~ forest, data=swissData)
+%% lines(E1 ~ forest, nd, col="grey")
+%% lines(E2 ~ forest, nd, col="grey")
+%% lines(E3 ~ forest, nd, col="grey")
+%% lines(E4 ~ forest, nd, col="grey")
+%% lines(Evec ~ forest, nd, col="blue", lwd=3)
+%% @
+%% \begin{center}
+%%   \includegraphics[width=0.6\textwidth]{model-selection-reglines}
+%% \end{center}
+%% \end{frame}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\begin{frame}
+  \frametitle{Summary}
+  \large
+%  \begin{itemize}%[<+->]
+%    \item Information-theoretic approaches avoid many of the problems
+%      associated with null hypothesis testing
+    Information-theoretic approaches avoid many of the problems
+      associated with null hypothesis testing
+    \pause
+    \vfill
+%    \item Focus is on:
+    Focus is on:
+      \begin{itemize}
+        \large
+        \item Model comparision
+        \item Strength of evidence for each model
+        \item Estimates of effect sizes
+      \end{itemize}
+    \pause
+    \vfill
+%    \item Requires much more thought than accept/reject approach
+    Requires much more thought than accept/reject approach
+%    \item But, just like any method, it is easy to abuse
+    \pause
+    \vfill
+    But, just like any method, it is easy to abuse
+%  \end{itemize}
+\end{frame}
+
+
+\end{document}
