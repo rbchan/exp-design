@@ -65,7 +65,7 @@ The above components of a scientific study need to be considered together rather
 |      | Paper discussion   |                      |            |
 |      | Regression review  |                      |            |
 | 13   | Analysis of covariance  | [ANCOVA](labs/ANCOVA/ANCOVA.md)          | Chapter 13 |
-|      | Review of linear models |                 |            |
+|      | [Review of linear models](lectures/modeling-intro/modeling-intro.md) |                 |            |
 |      | Generalized linear models |               |            |
 | 14   | Logistic regression     | GLMs            |            |
 |      | Poisson regression      |                 |            |
