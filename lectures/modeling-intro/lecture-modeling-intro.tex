@@ -83,7 +83,7 @@
   \textcolor{NavyBlue}{Introduction to Statistical Modeling} \\
   \vspace{1cm}
   \Large
-  November 2 \& 5, 2018 \\
+  November 2, 5, \& 7, 2018 \\
   FANR 6750 \\
   \vfill
   \large
@@ -849,7 +849,7 @@ between continuous and categorical predictors
 
 \begin{frame}[fragile]
   \frametitle{Continuous-categorical interaction}
-\begin{knitrout}\scriptsize
+\begin{knitrout}\tiny
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlstd{fm5} \hlkwb{<-} \hlkwd{lm}\hlstd{(jays} \hlopt{~} \hlstd{elevation}\hlopt{*}\hlstd{habitat,} \hlkwc{data}\hlstd{=jayData)}
@@ -1258,70 +1258,105 @@ between continuous and categorical predictors
 \end{frame}
 
 
+
+
+
+%% \begin{frame}[fragile]
+%%   \frametitle{Design matrix for linear regression}
+%%   \begin{columns}
+%%     \begin{column}{0.5\textwidth}
+%%     {\bf Data}
+%%       \scriptsize %\tiny
+%% %<<>>=
+%% %options(digits=2)
+%% %@
+%% <<dietData,size='scriptsize'>>=
+%% dietData <- read.csv("dietData.csv")
+%% head(dietData, n=10)
+%% @
+%%     \end{column}
+%%     \pause
+%%     \begin{column}{0.5\textwidth}
+%%       {\bf Design matrix}
+%%       \scriptsize %\tiny
+%% <<X1,size='scriptsize'>>=
+%% X1 <- model.matrix(~age,
+%%                    data=dietData)
+%% head(X1, n=10)
+%% @
+%%     \end{column}
+%%   \end{columns}
+%%   \pause
+%%   \vfill
+%%   {\centering \bf How do we multiply this design matrix ($\bf X$) by
+%%     the vector of regression coefficients ($\bm \beta$)? \par}
+%% \end{frame}
+
+
+
+
+
+
+
+
 \begin{frame}[fragile]
   \frametitle{Design matrix for linear regression}
-  \begin{columns}
-    \begin{column}{0.5\textwidth}
-    {\bf Data}
-      \scriptsize %\tiny
-%<<>>=
-%options(digits=2)
-%@
+%  \begin{columns}
+%    \begin{column}{0.5\textwidth}
+  \scriptsize %\tiny
+    {Model}
 \begin{knitrout}\scriptsize
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlstd{dietData} \hlkwb{<-} \hlkwd{read.csv}\hlstd{(}\hlstr{"dietData.csv"}\hlstd{)}
-\hlkwd{head}\hlstd{(dietData,} \hlkwc{n}\hlstd{=}\hlnum{10}\hlstd{)}
+\hlstd{fm1} \hlkwb{<-} \hlkwd{lm}\hlstd{(jays} \hlopt{~} \hlstd{elevation,} \hlkwc{data}\hlstd{=jayData)}
 \end{alltt}
-\begin{verbatim}
-##      weight    diet       age
-## 1  23.83875 Control 11.622260
-## 2  25.98799 Control 13.555397
-## 3  30.29572 Control 15.357372
-## 4  25.88463 Control  7.950214
-## 5  18.48077 Control  5.493861
-## 6  31.57542 Control 18.874970
-## 7  23.79069 Control 12.811297
-## 8  29.79574 Control 17.402436
-## 9  21.66387 Control  7.379666
-## 10 30.86618 Control 18.611817
-\end{verbatim}
 \end{kframe}
 \end{knitrout}
-    \end{column}
+%    \end{column}
     \pause
-    \begin{column}{0.5\textwidth}
-      {\bf Design matrix}
+    \vfill
+%    \begin{column}{0.5\textwidth}
+      {Design matrix}
       \scriptsize %\tiny
 \begin{knitrout}\scriptsize
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlstd{X1} \hlkwb{<-} \hlkwd{model.matrix}\hlstd{(}\hlopt{~}\hlstd{age,}
-                   \hlkwc{data}\hlstd{=dietData)}
-\hlkwd{head}\hlstd{(X1,} \hlkwc{n}\hlstd{=}\hlnum{10}\hlstd{)}
+\hlstd{X1} \hlkwb{<-} \hlkwd{model.matrix}\hlstd{(fm1)}
+\hlkwd{head}\hlstd{(X1,} \hlkwc{n}\hlstd{=}\hlnum{5}\hlstd{)} \hlcom{# First 5 rows of design matrix}
 \end{alltt}
 \begin{verbatim}
-##    (Intercept)       age
-## 1            1 11.622260
-## 2            1 13.555397
-## 3            1 15.357372
-## 4            1  7.950214
-## 5            1  5.493861
-## 6            1 18.874970
-## 7            1 12.811297
-## 8            1 17.402436
-## 9            1  7.379666
-## 10           1 18.611817
+##      (Intercept) elevation
+## 2345           1       423
+## 740            1       506
+## 2304           1       859
+## 2433           1      1508
+## 1104           1       483
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
-    \end{column}
-  \end{columns}
+%    \end{column}
+%  \end{columns}
+      {Estimated $\beta$ coefficients}
+      \scriptsize %\tiny
+\begin{knitrout}\scriptsize
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{beta.hat} \hlkwb{<-} \hlkwd{coef}\hlstd{(fm1)} \hlcom{# Estimates of beta0 and beta1}
+\hlstd{beta.hat}
+\end{alltt}
+\begin{verbatim}
+##  (Intercept)    elevation 
+## 33.082808066  0.008336657
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
   \pause
   \vfill
-  {\centering \bf How do we multiply this design matrix ($\bf X$) by
-    the vector of regression coefficients ($\bm \beta$)? \par}
+  {\centering How do we multiply the design matrix ($\bf X$) by
+    the vector of regression coefficients ($\bm \beta$)? \\}
 \end{frame}
+
+
 
 
 
@@ -1333,7 +1368,7 @@ between continuous and categorical predictors
   \Large
   \begin{center}
     \[
-      \mathbb{E}(y) = {\bf X}{\bm \beta}
+      \mathbb{E}({\bf y}) = {\bf X}{\bm \beta}
     \]
     \[
     \uncover<3->{
@@ -1370,7 +1405,7 @@ between continuous and categorical predictors
     \begin{itemize}
       \item<4-> The first matrix corresponds to the expected values of $\bm y$
       \item<4-> The second matrix corresponds to the design matrix {$\bf X$}
-      \item<4-> The third matrix (a column vector) corresponds to {$\bm \beta$}
+      \item<4-> The third matrix corresponds to {$\bm \beta$}
     \end{itemize}
 \end{frame}
 
@@ -1381,44 +1416,132 @@ between continuous and categorical predictors
 
 \begin{frame}[fragile]
   \frametitle{Matrix multiplication}
-{\bf \centering The vector of coefficients \\}
-%\small
-\begin{knitrout}\small
-\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlstd{beta} \hlkwb{<-} \hlkwd{coef}\hlstd{(}\hlkwd{lm}\hlstd{(weight} \hlopt{~} \hlstd{age, dietData))}
-\hlstd{beta}
-\end{alltt}
-\begin{verbatim}
-## (Intercept)         age 
-##   21.325234    0.518067
-\end{verbatim}
-\end{kframe}
-\end{knitrout}
-\pause
-\large
+%% {\bf \centering The vector of coefficients \\}
+%% %\small
+%% <<beta,size='small'>>=
+%% beta <- coef(fm1)
+%% beta
+%% @
+%% \pause
+%\large
 \begin{center}
-  {$\mathbb{E}({\bf y}) = {\bf X}{\bm \beta}$ or $y_i = \beta_0 + \beta_1 x_i$}
+  {$\mathbb{E}({\bf y}) = {\bf X}{\bm \beta}$ or $\mathbb{E}(y_i) = \beta_0 + \beta_1 \mathrm{ELEV}_i$}
 \end{center}
 \pause
 \small
-\begin{knitrout}\small
+\begin{knitrout}\footnotesize
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlstd{Ey1} \hlkwb{<-} \hlstd{X1} \hlopt{%*%} \hlstd{beta}
+\hlstd{Ey1} \hlkwb{<-} \hlstd{X1} \hlopt{%*%} \hlstd{beta.hat} \hlcom{# Expected number of jays at each site}
 \hlkwd{head}\hlstd{(Ey1,} \hlnum{5}\hlstd{)}
 \end{alltt}
 \begin{verbatim}
-##       [,1]
-## 1 27.34634
-## 2 28.34784
-## 3 29.28138
-## 4 25.44398
-## 5 24.17142
+##          [,1]
+## 2345 36.60921
+## 740  37.30116
+## 2304 40.24400
+## 2433 45.65449
+## 1104 37.10941
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
 \end{frame}
+
+
+
+
+
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Design matrix for ANCOVA}
+  \scriptsize %\tiny
+    {Model}
+\begin{knitrout}\scriptsize
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{fm4} \hlkwb{<-} \hlkwd{lm}\hlstd{(jays} \hlopt{~} \hlstd{elevation} \hlopt{+} \hlstd{habitat,} \hlkwc{data}\hlstd{=jayData)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\pause
+\vfill
+{Design matrix}
+
+\begin{knitrout}\scriptsize
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{X4} \hlkwb{<-} \hlkwd{model.matrix}\hlstd{(fm4)}
+\hlkwd{head}\hlstd{(X4,} \hlkwc{n}\hlstd{=}\hlnum{5}\hlstd{)} \hlcom{# First 5 rows of design matrix}
+\end{alltt}
+\begin{verbatim}
+##      (Intercept) elevation habitatOak habitatPine
+## 2345           1       423          1           0
+## 740            1       506          1           0
+## 2304           1       859          1           0
+## 2433           1      1508          0           1
+## 1104           1       483          1           0
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+{Estimated $\beta$ coefficients}
+\begin{knitrout}\scriptsize
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{beta.hat4} \hlkwb{<-} \hlkwd{coef}\hlstd{(fm4)} \hlcom{# Estimates of beta0 and beta1}
+\hlstd{beta.hat4}
+\end{alltt}
+\begin{verbatim}
+##  (Intercept)    elevation   habitatOak  habitatPine 
+## 30.716371786  0.008288617  3.166147905  1.695456106
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\pause
+\vfill
+{\centering How do we multiply the design matrix ($\bf X$) by
+ the vector of regression coefficients ($\bm \beta$)? \\}
+\end{frame}
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Matrix multiplication}
+\begin{center}
+  \small
+  {$\mathbb{E}({\bf y}) = {\bf X}{\bm \beta}$ or $\mathbb{E}(y_i) = \beta_0 +
+    \beta_1 \mathrm{ELEV}_i + \beta_2 \mathrm{OAK}_i + \beta_3 \mathrm{PINE}_i$}
+\end{center}
+\pause
+\small
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{Ey4} \hlkwb{<-} \hlstd{X4} \hlopt{%*%} \hlstd{beta.hat4} \hlcom{# Expected number of jays at each site}
+\hlkwd{head}\hlstd{(Ey4,} \hlnum{5}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+##          [,1]
+## 2345 37.38860
+## 740  38.07656
+## 2304 41.00244
+## 2433 44.91106
+## 1104 37.88592
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+
+
+
+
+
+
 
 
 

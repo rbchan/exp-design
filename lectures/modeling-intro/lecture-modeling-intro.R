@@ -129,7 +129,7 @@ lines(fit~elevation, data=pred4dat, subset=habitat=="Oak", col="brown", lwd=3)
 lines(fit~elevation, data=pred4dat, subset=habitat=="Pine", col="darkseagreen", lwd=3)
 legend(0, 47, c("Oak", "Pine", "Bare"), col=c("brown","darkseagreen", "tan"), lwd=3)
 
-## ----fm5,size='scriptsize'-----------------------------------------------
+## ----fm5,size='tiny'-----------------------------------------------------
 fm5 <- lm(jays ~ elevation*habitat, data=jayData)
 summary(fm5)
 
@@ -170,20 +170,20 @@ E7 <- cbind(cruz2[,c("x","y")], E7)
 head(E7)
 
 ## ----Ejay,fig.show='hide',fig.width=6,fig.height=4,echo=FALSE------------
-levelplot(fit ~ x + y, data=E6, aspect="iso",
+levelplot(fit ~ x + y, data=E7, aspect="iso",
           xlab="", ylab="", main="Expected number of jays per grid cell",
 ##          col.regions=heat.colors(101),
           at=22:55, colorkey=list(space="bottom"),
           scales=list(draw=FALSE))
 
 ## ----Ljay,fig.show='hide',fig.width=6,fig.height=4,echo=FALSE------------
-levelplot(lwr ~ x + y, data=E6, aspect="iso",
+levelplot(lwr ~ x + y, data=E7, aspect="iso",
           xlab="", ylab="", main="Lower CI",
           at=25:55, colorkey=list(space="bottom"),
           scales=list(draw=FALSE))
 
 ## ----Ujay,fig.show='hide',fig.width=6,fig.height=4,echo=FALSE------------
-levelplot(upr ~ x + y, data=E6, aspect="iso",
+levelplot(upr ~ x + y, data=E7, aspect="iso",
           xlab="", ylab="", main="Upper CI",
           at=25:55, colorkey=list(space="bottom"),
           scales=list(draw=FALSE))
@@ -219,20 +219,33 @@ levelplot(fit ~ x + y, data=future.pred2, aspect="iso",
           at=25:55, colorkey=list(space="bottom"),
           scales=list(draw=FALSE))
 
-## ----dietData,size='scriptsize'------------------------------------------
-dietData <- read.csv("dietData.csv")
-head(dietData, n=10)
+## ----fm1-2,size='scriptsize',eval=FALSE----------------------------------
+## fm1 <- lm(jays ~ elevation, data=jayData)
 
 ## ----X1,size='scriptsize'------------------------------------------------
-X1 <- model.matrix(~age,
-                   data=dietData)
-head(X1, n=10)
+X1 <- model.matrix(fm1)
+head(X1, n=5) # First 5 rows of design matrix
 
-## ----beta,size='small'---------------------------------------------------
-beta <- coef(lm(weight ~ age, dietData))
-beta
+## ----beta-hat,size='scriptsize'------------------------------------------
+beta.hat <- coef(fm1) # Estimates of beta0 and beta1
+beta.hat
 
-## ----Ey1,size='small'----------------------------------------------------
-Ey1 <- X1 %*% beta
+## ----Ey1,size='footnotesize'---------------------------------------------
+Ey1 <- X1 %*% beta.hat # Expected number of jays at each site
 head(Ey1, 5)
+
+## ----fm4-2,size='scriptsize',eval=FALSE----------------------------------
+## fm4 <- lm(jays ~ elevation + habitat, data=jayData)
+
+## ----X4,size='scriptsize'------------------------------------------------
+X4 <- model.matrix(fm4)
+head(X4, n=5) # First 5 rows of design matrix
+
+## ----beta-hat4,size='scriptsize'-----------------------------------------
+beta.hat4 <- coef(fm4) # Estimates of beta0 and beta1
+beta.hat4
+
+## ----Ey4,size='footnotesize'---------------------------------------------
+Ey4 <- X4 %*% beta.hat4 # Expected number of jays at each site
+head(Ey4, 5)
 

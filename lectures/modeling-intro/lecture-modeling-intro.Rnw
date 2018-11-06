@@ -50,7 +50,7 @@ knit_theme$set("edit-kwrite")
   \textcolor{NavyBlue}{Introduction to Statistical Modeling} \\
   \vspace{1cm}
   \Large
-  November 2 \& 5, 2018 \\
+  November 2, 5, \& 7, 2018 \\
   FANR 6750 \\
   \vfill
   \large
@@ -762,7 +762,7 @@ legend(0, 47, c("Oak", "Pine", "Bare"), col=c("brown","darkseagreen", "tan"), lw
 
 \begin{frame}[fragile]
   \frametitle{Continuous-categorical interaction}
-<<fm5,size='scriptsize'>>=
+<<fm5,size='tiny'>>=
 fm5 <- lm(jays ~ elevation*habitat, data=jayData)
 summary(fm5)
 @
@@ -1122,36 +1122,81 @@ levelplot(fit ~ x + y, data=future.pred2, aspect="iso",
 \end{frame}
 
 
+
+
+
+%% \begin{frame}[fragile]
+%%   \frametitle{Design matrix for linear regression}
+%%   \begin{columns}
+%%     \begin{column}{0.5\textwidth}
+%%     {\bf Data}
+%%       \scriptsize %\tiny
+%% %<<>>=
+%% %options(digits=2)
+%% %@
+%% <<dietData,size='scriptsize'>>=
+%% dietData <- read.csv("dietData.csv")
+%% head(dietData, n=10)
+%% @
+%%     \end{column}
+%%     \pause
+%%     \begin{column}{0.5\textwidth}
+%%       {\bf Design matrix}
+%%       \scriptsize %\tiny
+%% <<X1,size='scriptsize'>>=
+%% X1 <- model.matrix(~age,
+%%                    data=dietData)
+%% head(X1, n=10)
+%% @
+%%     \end{column}
+%%   \end{columns}
+%%   \pause
+%%   \vfill
+%%   {\centering \bf How do we multiply this design matrix ($\bf X$) by
+%%     the vector of regression coefficients ($\bm \beta$)? \par}
+%% \end{frame}
+
+
+
+
+
+
+
+
 \begin{frame}[fragile]
   \frametitle{Design matrix for linear regression}
-  \begin{columns}
-    \begin{column}{0.5\textwidth}
-    {\bf Data}
-      \scriptsize %\tiny
-%<<>>=
-%options(digits=2)
-%@
-<<dietData,size='scriptsize'>>=
-dietData <- read.csv("dietData.csv")
-head(dietData, n=10)
+%  \begin{columns}
+%    \begin{column}{0.5\textwidth}
+  \scriptsize %\tiny
+    {Model}
+<<fm1-2,size='scriptsize',eval=FALSE>>=
+fm1 <- lm(jays ~ elevation, data=jayData)
 @
-    \end{column}
+%    \end{column}
     \pause
-    \begin{column}{0.5\textwidth}
-      {\bf Design matrix}
+    \vfill
+%    \begin{column}{0.5\textwidth}
+      {Design matrix}
       \scriptsize %\tiny
 <<X1,size='scriptsize'>>=
-X1 <- model.matrix(~age,
-                   data=dietData)
-head(X1, n=10)
+X1 <- model.matrix(fm1)
+head(X1, n=5) # First 5 rows of design matrix
 @
-    \end{column}
-  \end{columns}
+%    \end{column}
+%  \end{columns}
+      {Estimated $\beta$ coefficients}
+      \scriptsize %\tiny
+<<beta-hat,size='scriptsize'>>=
+beta.hat <- coef(fm1) # Estimates of beta0 and beta1
+beta.hat
+@
   \pause
   \vfill
-  {\centering \bf How do we multiply this design matrix ($\bf X$) by
-    the vector of regression coefficients ($\bm \beta$)? \par}
+  {\centering How do we multiply the design matrix ($\bf X$) by
+    the vector of regression coefficients ($\bm \beta$)? \\}
 \end{frame}
+
+
 
 
 
@@ -1163,7 +1208,7 @@ head(X1, n=10)
   \Large
   \begin{center}
     \[
-      \mathbb{E}(y) = {\bf X}{\bm \beta}
+      \mathbb{E}({\bf y}) = {\bf X}{\bm \beta}
     \]
     \[
     \uncover<3->{
@@ -1200,7 +1245,7 @@ head(X1, n=10)
     \begin{itemize}
       \item<4-> The first matrix corresponds to the expected values of $\bm y$
       \item<4-> The second matrix corresponds to the design matrix {$\bf X$}
-      \item<4-> The third matrix (a column vector) corresponds to {$\bm \beta$}
+      \item<4-> The third matrix corresponds to {$\bm \beta$}
     \end{itemize}
 \end{frame}
 
@@ -1211,24 +1256,84 @@ head(X1, n=10)
 
 \begin{frame}[fragile]
   \frametitle{Matrix multiplication}
-{\bf \centering The vector of coefficients \\}
-%\small
-<<beta,size='small'>>=
-beta <- coef(lm(weight ~ age, dietData))
-beta
-@
-\pause
-\large
+%% {\bf \centering The vector of coefficients \\}
+%% %\small
+%% <<beta,size='small'>>=
+%% beta <- coef(fm1)
+%% beta
+%% @
+%% \pause
+%\large
 \begin{center}
-  {$\mathbb{E}({\bf y}) = {\bf X}{\bm \beta}$ or $y_i = \beta_0 + \beta_1 x_i$}
+  {$\mathbb{E}({\bf y}) = {\bf X}{\bm \beta}$ or $\mathbb{E}(y_i) = \beta_0 + \beta_1 \mathrm{ELEV}_i$}
 \end{center}
 \pause
 \small
-<<Ey1,size='small'>>=
-Ey1 <- X1 %*% beta
+<<Ey1,size='footnotesize'>>=
+Ey1 <- X1 %*% beta.hat # Expected number of jays at each site
 head(Ey1, 5)
 @
 \end{frame}
+
+
+
+
+
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Design matrix for ANCOVA}
+  \scriptsize %\tiny
+    {Model}
+<<fm4-2,size='scriptsize',eval=FALSE>>=
+fm4 <- lm(jays ~ elevation + habitat, data=jayData)
+@
+\pause
+\vfill
+{Design matrix}
+
+<<X4,size='scriptsize'>>=
+X4 <- model.matrix(fm4)
+head(X4, n=5) # First 5 rows of design matrix
+@
+
+{Estimated $\beta$ coefficients}
+<<beta-hat4,size='scriptsize'>>=
+beta.hat4 <- coef(fm4) # Estimates of beta0 and beta1
+beta.hat4
+@
+\pause
+\vfill
+{\centering How do we multiply the design matrix ($\bf X$) by
+ the vector of regression coefficients ($\bm \beta$)? \\}
+\end{frame}
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Matrix multiplication}
+\begin{center}
+  \small
+  {$\mathbb{E}({\bf y}) = {\bf X}{\bm \beta}$ or $\mathbb{E}(y_i) = \beta_0 +
+    \beta_1 \mathrm{ELEV}_i + \beta_2 \mathrm{OAK}_i + \beta_3 \mathrm{PINE}_i$}
+\end{center}
+\pause
+\small
+<<Ey4,size='footnotesize'>>=
+Ey4 <- X4 %*% beta.hat4 # Expected number of jays at each site
+head(Ey4, 5)
+@
+\end{frame}
+
+
+
+
+
+
+
 
 
 
