@@ -1,0 +1,799 @@
+\documentclass[color=usenames,dvipsnames]{beamer}\usepackage[]{graphicx}\usepackage[]{color}
+%% maxwidth is the original width if it is less than linewidth
+%% otherwise use linewidth (to make sure the graphics do not exceed the margin)
+\makeatletter
+\def\maxwidth{ %
+  \ifdim\Gin@nat@width>\linewidth
+    \linewidth
+  \else
+    \Gin@nat@width
+  \fi
+}
+\makeatother
+
+\definecolor{fgcolor}{rgb}{0, 0, 0}
+\newcommand{\hlnum}[1]{\textcolor[rgb]{0.69,0.494,0}{#1}}%
+\newcommand{\hlstr}[1]{\textcolor[rgb]{0.749,0.012,0.012}{#1}}%
+\newcommand{\hlcom}[1]{\textcolor[rgb]{0.514,0.506,0.514}{\textit{#1}}}%
+\newcommand{\hlopt}[1]{\textcolor[rgb]{0,0,0}{#1}}%
+\newcommand{\hlstd}[1]{\textcolor[rgb]{0,0,0}{#1}}%
+\newcommand{\hlkwa}[1]{\textcolor[rgb]{0,0,0}{\textbf{#1}}}%
+\newcommand{\hlkwb}[1]{\textcolor[rgb]{0,0.341,0.682}{#1}}%
+\newcommand{\hlkwc}[1]{\textcolor[rgb]{0,0,0}{\textbf{#1}}}%
+\newcommand{\hlkwd}[1]{\textcolor[rgb]{0.004,0.004,0.506}{#1}}%
+\let\hlipl\hlkwb
+
+\usepackage{framed}
+\makeatletter
+\newenvironment{kframe}{%
+ \def\at@end@of@kframe{}%
+ \ifinner\ifhmode%
+  \def\at@end@of@kframe{\end{minipage}}%
+  \begin{minipage}{\columnwidth}%
+ \fi\fi%
+ \def\FrameCommand##1{\hskip\@totalleftmargin \hskip-\fboxsep
+ \colorbox{shadecolor}{##1}\hskip-\fboxsep
+     % There is no \\@totalrightmargin, so:
+     \hskip-\linewidth \hskip-\@totalleftmargin \hskip\columnwidth}%
+ \MakeFramed {\advance\hsize-\width
+   \@totalleftmargin\z@ \linewidth\hsize
+   \@setminipage}}%
+ {\par\unskip\endMakeFramed%
+ \at@end@of@kframe}
+\makeatother
+
+\definecolor{shadecolor}{rgb}{.97, .97, .97}
+\definecolor{messagecolor}{rgb}{0, 0, 0}
+\definecolor{warningcolor}{rgb}{1, 0, 1}
+\definecolor{errorcolor}{rgb}{1, 0, 0}
+\newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
+
+\usepackage{alltt}
+%\documentclass[color=usenames,dvipsnames,handout]{beamer}
+
+
+
+
+
+\usepackage[sans]{../../lab1}
+\usepackage{bm}
+
+
+\hypersetup{pdftex,pdfstartview=FitV}
+
+
+
+
+
+
+
+
+
+%% New command for inline code that isn't to be evaluated
+\definecolor{inlinecolor}{rgb}{0.878, 0.918, 0.933}
+\newcommand{\inr}[1]{\colorbox{inlinecolor}{\texttt{#1}}}
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\begin{document}
+
+
+\setlength\fboxsep{0pt}
+
+
+
+
+\begin{frame}[plain]
+  \huge
+  \centering \par
+  {\color{RoyalBlue}{Lab 13 -- Generalized Linear Models}} \\
+  \vspace{1cm}
+  \LARGE
+  November 27 \& 28, 2017
+\end{frame}
+
+
+
+
+
+\section{Logistic regression}
+
+
+\begin{frame}
+  \frametitle{Logistic Regression}
+  \large
+    \begin{gather*}
+      \mathrm{logit}(p_i) = \beta_0 + \beta_1 x_{i1} + \beta_2 x_{i2} + \cdots \\
+      y_i \sim \mathrm{Binomial}(N, p_i)
+  \end{gather*}
+  \pause
+  {\bf where: \\}
+  $N$ is the number of ``trials'' (e.g. coin flips) \\
+  $p_i$ is the probability of a success for sample unit $i$
+\end{frame}
+
+
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Presence-absence and abundance}
+
+\begin{center}
+\tiny
+\begin{knitrout}\tiny
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{frogData}
+\end{alltt}
+\begin{verbatim}
+##    presence abundance elevation habitat
+## 1         0         0        58     Oak
+## 2         1         7       191     Oak
+## 3         0         0        43     Oak
+## 4         1        11       374     Oak
+## 5         1        11       337     Oak
+## 6         1         1        64     Oak
+## 7         1         4       195     Oak
+## 8         1         6       263     Oak
+## 9         0         0       181     Oak
+## 10        1         1        59     Oak
+## 11        1        50       489   Maple
+## 12        1         5       317   Maple
+## 13        0         0        12   Maple
+## 14        1         4       245   Maple
+## 15        1        47       474   Maple
+## 16        1         1        83   Maple
+## 17        1        46       467   Maple
+## 18        1        51       485   Maple
+## 19        1        23       335   Maple
+## 20        0         0        20   Maple
+## 21        1        27       430    Pine
+## 22        1         2       223    Pine
+## 23        0         0        68    Pine
+## 24        1        50       483    Pine
+## 25        0         0        78    Pine
+## 26        0         0       214    Pine
+## 27        1         1        64    Pine
+## 28        1         3        73    Pine
+## 29        1         4       162    Pine
+## 30        1        44       468    Pine
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{center}
+\end{frame}
+
+
+
+%% \begin{frame}[fragile]
+%%   \frametitle{Raw data}
+%%   \tiny
+%% %  \vspace{-0.5cm}
+%% \begin{center}
+%% <<raw-elev,fig=true,include=false>>=
+%% plot(presence ~ elevation, frogData,
+%%      xlab="Elevation", ylab="Frog Occurrence")
+%% @
+%%   \includegraphics[width=0.7\textwidth]{lab13-GLMs-raw-elev}
+%% \end{center}
+%% \end{frame}
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Logistic regression using {\tt glm}}
+  \footnotesize
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{fm1} \hlkwb{<-} \hlkwd{glm}\hlstd{(presence} \hlopt{~} \hlstd{habitat} \hlopt{+} \hlstd{elevation,}
+           \hlkwc{family}\hlstd{=}\hlkwd{binomial}\hlstd{(}\hlkwc{link}\hlstd{=}\hlstr{"logit"}\hlstd{),} \hlkwc{data}\hlstd{=frogData)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\pause
+\tiny
+\begin{knitrout}\tiny
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{summary}\hlstd{(fm1)}
+\end{alltt}
+\begin{verbatim}
+## 
+## Call:
+## glm(formula = presence ~ habitat + elevation, family = binomial(link = "logit"), 
+##     data = frogData)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -1.8843  -0.6169   0.1674   0.6050   1.3775  
+## 
+## Coefficients:
+##               Estimate Std. Error z value Pr(>|z|)  
+## (Intercept)  -1.092759   1.055124  -1.036   0.3004  
+## habitatMaple  0.096781   1.367518   0.071   0.9436  
+## habitatPine  -0.240443   1.154650  -0.208   0.8350  
+## elevation     0.013658   0.006011   2.272   0.0231 *
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 34.795  on 29  degrees of freedom
+## Residual deviance: 23.132  on 26  degrees of freedom
+## AIC: 31.132
+## 
+## Number of Fisher Scoring iterations: 6
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+
+%% \begin{frame}[fragile]
+%%   \frametitle{Test main effects}
+%%   \footnotesize
+%% <<>>=
+%% anova(fm1, test="Chisq")
+%% @
+%% \end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{Occurrence probability and elevation}
+  \footnotesize
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{newdat} \hlkwb{<-} \hlkwd{data.frame}\hlstd{(}\hlkwc{elevation}\hlstd{=}\hlkwd{seq}\hlstd{(}\hlnum{12}\hlstd{,} \hlnum{489}\hlstd{,} \hlkwc{length}\hlstd{=}\hlnum{50}\hlstd{),}
+                     \hlkwc{habitat}\hlstd{=}\hlstr{"Oak"}\hlstd{)}
+\hlkwd{head}\hlstd{(newdat)}
+\end{alltt}
+\begin{verbatim}
+##   elevation habitat
+## 1  12.00000     Oak
+## 2  21.73469     Oak
+## 3  31.46939     Oak
+## 4  41.20408     Oak
+## 5  50.93878     Oak
+## 6  60.67347     Oak
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\pause
+{\bf To get confidence intervals on (0,1) scale, predict on logit
+  (link) scale and then backtransform using inverse-link}
+\pause
+%\scriptsize
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{pred.link} \hlkwb{<-} \hlkwd{predict}\hlstd{(fm1,} \hlkwc{newdata}\hlstd{=newdat,} \hlkwc{se.fit}\hlstd{=}\hlnum{TRUE}\hlstd{,} \hlkwc{type}\hlstd{=}\hlstr{"link"}\hlstd{)}
+\hlstd{newdat}\hlopt{$}\hlstd{p} \hlkwb{<-} \hlkwd{plogis}\hlstd{(pred.link}\hlopt{$}\hlstd{fit)}
+\hlstd{newdat}\hlopt{$}\hlstd{lower} \hlkwb{<-} \hlkwd{plogis}\hlstd{(pred.link}\hlopt{$}\hlstd{fit} \hlopt{-} \hlnum{1.96}\hlopt{*}\hlstd{pred.link}\hlopt{$}\hlstd{se.fit)}
+\hlstd{newdat}\hlopt{$}\hlstd{upper} \hlkwb{<-} \hlkwd{plogis}\hlstd{(pred.link}\hlopt{$}\hlstd{fit} \hlopt{+} \hlnum{1.96}\hlopt{*}\hlstd{pred.link}\hlopt{$}\hlstd{se.fit)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Occurrence probability and elevation}
+  \tiny
+\begin{knitrout}\tiny
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{plot}\hlstd{(p} \hlopt{~} \hlstd{elevation, newdat,} \hlkwc{type}\hlstd{=}\hlstr{"l"}\hlstd{,} \hlkwc{ylim}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{0}\hlstd{,}\hlnum{1}\hlstd{),}
+     \hlkwc{xlab}\hlstd{=}\hlstr{"Elevation"}\hlstd{,} \hlkwc{ylab}\hlstd{=}\hlstr{"Probability of occurrence"}\hlstd{)}
+\hlkwd{points}\hlstd{(presence} \hlopt{~} \hlstd{elevation, frogData)}
+\hlkwd{lines}\hlstd{(lower} \hlopt{~} \hlstd{elevation, newdat,} \hlkwc{lty}\hlstd{=}\hlnum{2}\hlstd{)}
+\hlkwd{lines}\hlstd{(upper} \hlopt{~} \hlstd{elevation, newdat,} \hlkwc{lty}\hlstd{=}\hlnum{2}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\centering
+\includegraphics[width=0.75\textwidth]{figure/pred1-1} \\
+\end{frame}
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Occurrence probability and habitat}
+  \tiny
+\begin{knitrout}\tiny
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{nd} \hlkwb{<-} \hlkwd{data.frame}\hlstd{(}\hlkwc{habitat}\hlstd{=}\hlkwd{c}\hlstd{(}\hlstr{"Oak"}\hlstd{,} \hlstr{"Maple"}\hlstd{,} \hlstr{"Pine"}\hlstd{),}
+                 \hlkwc{elevation}\hlstd{=}\hlnum{250}\hlstd{)}
+\hlstd{pred} \hlkwb{<-} \hlkwd{predict}\hlstd{(fm1,} \hlkwc{newdata}\hlstd{=nd,} \hlkwc{se.fit}\hlstd{=}\hlnum{TRUE}\hlstd{,} \hlkwc{type}\hlstd{=}\hlstr{"link"}\hlstd{)}
+\hlstd{bp} \hlkwb{<-} \hlkwd{barplot}\hlstd{(}\hlkwd{plogis}\hlstd{(pred}\hlopt{$}\hlstd{fit),} \hlkwc{ylab}\hlstd{=}\hlstr{"Probability of occurrence"}\hlstd{,}
+              \hlkwc{names}\hlstd{=}\hlkwd{c}\hlstd{(}\hlstr{"Oak"}\hlstd{,} \hlstr{"Maple"}\hlstd{,} \hlstr{"Pine"}\hlstd{),} \hlkwc{col}\hlstd{=}\hlstr{"lightblue"}\hlstd{,} \hlkwc{ylim}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{0}\hlstd{,} \hlnum{1.1}\hlstd{))}
+\hlkwd{arrows}\hlstd{(bp,} \hlkwd{plogis}\hlstd{(pred}\hlopt{$}\hlstd{fit), bp,} \hlkwd{plogis}\hlstd{(pred}\hlopt{$}\hlstd{fit} \hlopt{+} \hlstd{pred}\hlopt{$}\hlstd{se.fit),}
+       \hlkwc{angle}\hlstd{=}\hlnum{90}\hlstd{,} \hlkwc{code}\hlstd{=}\hlnum{3}\hlstd{,} \hlkwc{length}\hlstd{=}\hlnum{0.1}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\centering
+\includegraphics[width=0.6\textwidth]{figure/habitat-1} \\
+\end{frame}
+
+
+
+
+\section{Poisson regression}
+
+
+
+\begin{frame}
+  \frametitle{Poisson Regression}
+    \begin{gather*}
+      \mathrm{log}(\lambda_i) = \beta_0 + \beta_1 x_{i1} + \beta_2 x_{i2} + \cdots \\
+      y_i \sim \mathrm{Poisson}(\lambda_i)
+  \end{gather*}
+  \pause
+  {\bf where: \\}
+  $\lambda_i$ is the expected value of $y_i$
+\end{frame}
+
+
+
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Poisson regression using {\tt glm}}
+  \footnotesize
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{fm2} \hlkwb{<-} \hlkwd{glm}\hlstd{(abundance} \hlopt{~} \hlstd{habitat} \hlopt{+} \hlstd{elevation,}
+           \hlkwc{family}\hlstd{=}\hlkwd{poisson}\hlstd{(}\hlkwc{link}\hlstd{=}\hlstr{"log"}\hlstd{),} \hlkwc{data}\hlstd{=frogData)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\pause
+\tiny
+\begin{knitrout}\tiny
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{summary}\hlstd{(fm2)}
+\end{alltt}
+\begin{verbatim}
+## 
+## Call:
+## glm(formula = abundance ~ habitat + elevation, family = poisson(link = "log"), 
+##     data = frogData)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -2.6308  -1.0810  -0.1067   0.3353   2.7935  
+## 
+## Coefficients:
+##                Estimate Std. Error z value Pr(>|z|)    
+## (Intercept)  -0.9403442  0.2430730  -3.869 0.000109 ***
+## habitatMaple  0.1533915  0.1971009   0.778 0.436428    
+## habitatPine   0.0881110  0.1994981   0.442 0.658733    
+## elevation     0.0097836  0.0006291  15.551  < 2e-16 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for poisson family taken to be 1)
+## 
+##     Null deviance: 700.762  on 29  degrees of freedom
+## Residual deviance:  44.891  on 26  degrees of freedom
+## AIC: 140.13
+## 
+## Number of Fisher Scoring iterations: 5
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Abundance and elevation}
+  \footnotesize
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{newdat} \hlkwb{<-} \hlkwd{data.frame}\hlstd{(}\hlkwc{elevation}\hlstd{=}\hlkwd{seq}\hlstd{(}\hlnum{12}\hlstd{,} \hlnum{489}\hlstd{,} \hlkwc{length}\hlstd{=}\hlnum{50}\hlstd{),}
+                     \hlkwc{habitat}\hlstd{=}\hlstr{"Oak"}\hlstd{)}
+\hlkwd{head}\hlstd{(newdat)}
+\end{alltt}
+\begin{verbatim}
+##   elevation habitat
+## 1  12.00000     Oak
+## 2  21.73469     Oak
+## 3  31.46939     Oak
+## 4  41.20408     Oak
+## 5  50.93878     Oak
+## 6  60.67347     Oak
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\pause
+{\bf To get confidence intervals on (0,1) scale, predict on log
+  (link) scale and then backtransform using inverse-link}
+\pause
+%\scriptsize
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{pred.link} \hlkwb{<-} \hlkwd{predict}\hlstd{(fm2,} \hlkwc{newdata}\hlstd{=newdat,} \hlkwc{se.fit}\hlstd{=}\hlnum{TRUE}\hlstd{,} \hlkwc{type}\hlstd{=}\hlstr{"link"}\hlstd{)}
+\hlstd{newdat}\hlopt{$}\hlstd{lambda} \hlkwb{<-} \hlkwd{exp}\hlstd{(pred.link}\hlopt{$}\hlstd{fit)} \hlcom{# exp is the inverse-link function}
+\hlstd{newdat}\hlopt{$}\hlstd{lower} \hlkwb{<-} \hlkwd{exp}\hlstd{(pred.link}\hlopt{$}\hlstd{fit} \hlopt{-} \hlnum{1.96}\hlopt{*}\hlstd{pred.link}\hlopt{$}\hlstd{se.fit)}
+\hlstd{newdat}\hlopt{$}\hlstd{upper} \hlkwb{<-} \hlkwd{exp}\hlstd{(pred.link}\hlopt{$}\hlstd{fit} \hlopt{+} \hlnum{1.96}\hlopt{*}\hlstd{pred.link}\hlopt{$}\hlstd{se.fit)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Abundance and elevation}
+  \tiny
+\begin{knitrout}\tiny
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{plot}\hlstd{(lambda} \hlopt{~} \hlstd{elevation, newdat,} \hlkwc{type}\hlstd{=}\hlstr{"l"}\hlstd{,} \hlkwc{ylim}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{0}\hlstd{,}\hlnum{60}\hlstd{),}
+     \hlkwc{xlab}\hlstd{=}\hlstr{"Elevation"}\hlstd{,} \hlkwc{ylab}\hlstd{=}\hlstr{"Expected abundance"}\hlstd{)}
+\hlkwd{points}\hlstd{(abundance} \hlopt{~} \hlstd{elevation, frogData)}
+\hlkwd{lines}\hlstd{(lower} \hlopt{~} \hlstd{elevation, newdat,} \hlkwc{lty}\hlstd{=}\hlnum{2}\hlstd{)}
+\hlkwd{lines}\hlstd{(upper} \hlopt{~} \hlstd{elevation, newdat,} \hlkwc{lty}\hlstd{=}\hlnum{2}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\centering
+\includegraphics[width=0.75\textwidth]{figure/pred2-1} \\
+\end{frame}
+
+
+
+
+
+
+
+%% \begin{frame}[fragile]
+%%   \frametitle{Abundance, elevation, and habitat}
+%%   \tiny
+%% \begin{center}
+%% <<habitat2,fig=true,include=false>>=
+%% nd <- data.frame(habitat=rep(c("Oak", "Maple", "Pine"), each=20),
+%%                  elevation=rep(seq(12, 489, length=20), times=3))
+%% pred <- predict(fm2, newdata=nd, se.fit=TRUE, type="link")
+%% nd$lambda <- exp(pred$fit)
+%% plot(lambda ~ elevation, nd, type="l", ylim=c(0,55), subset=habitat=="Oak",
+%%      xlab="Elevation", ylab="Expected abundance")
+%% lines(lambda ~ elevation, nd, subset=habitat=="Maple", lty=2)
+%% lines(lambda ~ elevation, nd, subset=habitat=="Pine", lty=3)
+%% @
+%%   \includegraphics[width=0.5\textwidth]{lab13-GLMs-habitat2}
+%% \end{center}
+%% \end{frame}
+
+
+
+
+
+
+\begin{frame}
+  \frametitle{Assignment}
+  \begin{enumerate}[\bf (1)]
+    \item Fit a Poisson regression model to the frog data with an
+      interaction between elevation and habitat
+    \item Interpret the parameter estimates
+    \item plot the relationship between the expected value of abundance and
+      elevation, for each of the three habitat types, on the same graph
+    \item Include the raw data points (color coded by habitat) and a legend in
+      the graph
+    \item Do not include confidence intervals
+  \end{enumerate}
+\end{frame}
+
+
+
+
+
+
+
+\end{document}
+
+
+
+
+
+
+\section{Simulating data}
+
+
+
+\begin{frame}
+  \frametitle{Simulating data}
+  \large
+  {\bf R} has many functions for generating random variables
+  \begin{center}
+    \begin{tabular}{lr}
+      \hline
+      Distribution & {\bf R} function \\
+      \hline
+      Uniform & {\tt runif} \\
+      Normal & {\tt rnorm} \\
+      Binomial & {\tt rbinom} \\
+      Poisson & {\tt rpois} \\
+      Negative binomial & {\tt rnbinom} \\
+      \hline
+    \end{tabular}
+  \end{center}
+\end{frame}
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Random Poisson variables}
+  {\bf Ten Poisson variates with $\lambda=0.5$}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{rpois}\hlstd{(}\hlkwc{n}\hlstd{=}\hlnum{10}\hlstd{,} \hlnum{0.5}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+##  [1] 0 0 0 0 0 0 1 1 1 0
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\vfill
+\pause
+  {\bf Ten Poisson variates with $\lambda=5$}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{rpois}\hlstd{(}\hlkwc{n}\hlstd{=}\hlnum{10}\hlstd{,} \hlnum{5}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+##  [1] 6 4 7 7 2 2 3 5 2 2
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\vfill
+\pause
+  {\bf Ten Poisson variates with $\lambda=15$}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{rpois}\hlstd{(}\hlkwc{n}\hlstd{=}\hlnum{10}\hlstd{,} \hlnum{15}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+##  [1] 17 18 15 19 13 13 10 20 14 14
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Simulate Poisson variables}
+  {\bf 1000 Poisson variabes with $\lambda=3$}
+  \small
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{x} \hlkwb{<-} \hlkwd{rpois}\hlstd{(}\hlkwc{n}\hlstd{=}\hlnum{1000}\hlstd{,} \hlnum{3}\hlstd{)}
+\hlkwd{hist}\hlstd{(x,} \hlkwc{col}\hlstd{=}\hlstr{"purple"}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\centering
+\includegraphics[width=0.6\textwidth]{figure/p1000-1} \\
+\end{frame}
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Simulate Poisson regression data}
+  {\bf Create a design matrix}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{X} \hlkwb{<-} \hlkwd{model.matrix}\hlstd{(}\hlopt{~}\hlstd{habitat} \hlopt{+} \hlstd{elevation, frogData)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\pause
+\vfill
+{\bf Choose values of $\bm \beta$ parameters
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{beta} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlnum{0.5}\hlstd{,} \hlnum{1}\hlstd{,} \hlopt{-}\hlnum{3}\hlstd{,} \hlnum{0.01}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\pause
+\vfill
+{\bf Calculate $\mu$, the expected value of $y$}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{lambda} \hlkwb{<-} \hlkwd{exp}\hlstd{(X} \hlopt{%*%} \hlstd{beta)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\pause
+\vfill
+{\bf Simulate $y$, the response variable}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{sampleSize} \hlkwb{<-} \hlkwd{nrow}\hlstd{(X)}
+\hlstd{y} \hlkwb{<-} \hlkwd{rpois}\hlstd{(sampleSize, lambda)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+
+
+
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Fit model to simulated data}
+  \small
+\begin{knitrout}\small
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{fm3} \hlkwb{<-} \hlkwd{glm}\hlstd{(y} \hlopt{~} \hlstd{habitat} \hlopt{+} \hlstd{elevation,} \hlkwc{family}\hlstd{=poisson, frogData)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\scriptsize
+\begin{knitrout}\scriptsize
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{summary}\hlstd{(fm3)}
+\end{alltt}
+\begin{verbatim}
+## 
+## Call:
+## glm(formula = y ~ habitat + elevation, family = poisson, data = frogData)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -2.5340  -0.6240  -0.3600   0.3649   1.7354  
+## 
+## Coefficients:
+##                Estimate Std. Error z value Pr(>|z|)    
+## (Intercept)   0.5869308  0.1091432   5.378 7.55e-08 ***
+## habitatMaple  0.9784189  0.0870290  11.242  < 2e-16 ***
+## habitatPine  -3.2401513  0.2284357 -14.184  < 2e-16 ***
+## elevation     0.0098221  0.0002757  35.629  < 2e-16 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for poisson family taken to be 1)
+## 
+##     Null deviance: 7114.008  on 29  degrees of freedom
+## Residual deviance:   24.796  on 26  degrees of freedom
+## AIC: 147.31
+## 
+## Number of Fisher Scoring iterations: 4
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Check confidence intervals}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{CI} \hlkwb{<-} \hlkwd{confint}\hlstd{(fm3)}
+\end{alltt}
+
+
+{\ttfamily\noindent\itshape\color{messagecolor}{\#\# Waiting for profiling to be done...}}\begin{alltt}
+\hlkwd{cbind}\hlstd{(CI, beta)}
+\end{alltt}
+\begin{verbatim}
+##                    2.5 %      97.5 %  beta
+## (Intercept)   0.36911435  0.79704960  0.50
+## habitatMaple  0.80980524  1.15113417  1.00
+## habitatPine  -3.71522283 -2.81545807 -3.00
+## elevation     0.00929169  0.01037261  0.01
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+
+
+
+
+
+\begin{frame}[fragile]
+
+  \frametitle{Assignment}
+  \begin{enumerate}[\bf (1)]
+    \item Import the data {\tt vegData.csv}
+    \item Simulate a Poisson response variable assuming the model:
+      $\lambda_i = \exp(\beta0 + \beta1\mbox{VegHt}_i)$, where $\beta_0=-1$ and
+      $\beta_1 = 0.5$
+    \item Fit the Poisson regression model to the data
+    \item Do the confidence intervals include the data generating
+      $\bm \beta$ values?
+    \item Plot the estimated relationship between abundance and
+      vegetation height. Include 95\% confidence intervals.
+  \end{enumerate}
+\end{frame}
+
+
+
+
+
+
+\end{document}
+
+
+
+
+
+
+
+
+%% \begin{frame}
+%%   \frametitle{Goodness-of-fit}
+%%   Parametric bootstrap
+%%   \begin{enumerate}[<+->]
+%%     \item Fit a model
+%%     \item Pick a fit statistic
+%%     \item Calculate the fit statistic for the
+%%   \end{enumerate}
+%% \end{frame}
+
+
+
+
+
+%% \begin{frame}[fragile]
+%%   \frametitle{Goodness-of-fit}
+%% <<>>=
+%% fitStat <- function(fm) sum(resid(fm)^2)
+%% boot(fm2$data, fitStat, sim="parametric", ran.gen=simulate, R=100)
+%% @
+%% \end{frame}
+
+
+
+
+
+%% \begin{frame}[fragile]
+%%   \frametitle{Goodness-of-fit}
+%% <<>>=
+%% nSims <- 1000
+%% fitStats <- rep(NA, nSim)
+%% for(i in 1:nSims) {
+%%     frogData$abundance.star <- as.numeric(simulate(fm2))
+%%     fit.star <- glm(abundance.star ~ habitat + elevation,
+%%                  family=poisson(link="log"), data=frogData)
+%%     fitStats[i] <- SSE
+%% }
+%% @
+%% \end{frame}
+
+
+

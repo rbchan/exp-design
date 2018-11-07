@@ -52,7 +52,7 @@ knit_theme$set("edit-kwrite")
     \vfill
     \includegraphics[width=0.3\textwidth]{McCullagh-Nelder} \\
     \large \vfill
-    November 13 \& 15, 2017
+    November 9 \& 12, 2018
   \end{center}
 %  \note{not to be confused with General Linear Model}
 \end{frame}

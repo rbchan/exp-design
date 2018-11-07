@@ -1,0 +1,541 @@
+\documentclass[color=usenames,dvipsnames]{beamer}
+%\documentclass[color=usenames,dvipsnames,handout]{beamer}
+
+
+
+
+
+\usepackage[sans]{../../lab1}
+\usepackage{bm}
+
+
+\hypersetup{pdftex,pdfstartview=FitV}
+
+
+
+<<build-fun, include=FALSE, cache=TRUE, eval=FALSE, purl=FALSE>>=
+## A function to compile and open the pdf
+source("../rnw2pdf.R")
+if(1==2) {
+    ## Usage:
+    rnw2pdf("lab-GLMs") # Don't include the file extension
+    rnw2pdf("lab-GLMs", clean=FALSE) # Don't clean intermediate files
+    rnw2pdf("lab-GLMs", tangle=TRUE) # If you want the .R file
+}
+@
+
+
+<<knitr-theme, include=FALSE, purl=FALSE>>=
+##knit_theme$set("navajo-night")
+knit_theme$set("edit-kwrite")
+@
+
+
+%% New command for inline code that isn't to be evaluated
+\definecolor{inlinecolor}{rgb}{0.878, 0.918, 0.933}
+\newcommand{\inr}[1]{\colorbox{inlinecolor}{\texttt{#1}}}
+
+
+
+
+
+\begin{document}
+
+
+\setlength\fboxsep{0pt}
+
+
+
+
+\begin{frame}[plain]
+  \huge
+  \centering \par
+  {\color{RoyalBlue}{Lab 13 -- Generalized Linear Models}} \\
+  \vspace{1cm}
+  \LARGE
+  November 12 \& 13, 2018
+\end{frame}
+
+
+
+
+
+\section{Logistic regression}
+
+
+\begin{frame}
+  \frametitle{Logistic Regression}
+  \large
+    \begin{gather*}
+      \mathrm{logit}(p_i) = \beta_0 + \beta_1 x_{i1} + \beta_2 x_{i2} + \cdots \\
+      y_i \sim \mathrm{Binomial}(N, p_i)
+  \end{gather*}
+  \pause
+  {\bf where: \\}
+  $N$ is the number of ``trials'' (e.g. coin flips) \\
+  $p_i$ is the probability of a success for sample unit $i$
+\end{frame}
+
+
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Presence-absence and abundance}
+<<simData,echo=FALSE,results='hide',purl=FALSE>>=
+set.seed(43340)
+n <- 30
+elev <- round(runif(n, 0, 500))
+habitat <- gl(3, 10, labels=c("Oak", "Maple", "Pine"))
+beta0 <- -1
+beta1 <- 0.01
+mu <- plogis(beta0 + beta1*elev)
+summary(mu)
+abundance <- rpois(n, exp(beta0 + beta1*elev))
+presence <- ifelse(abundance>0, 1, 0)
+frogData <- data.frame(presence, abundance, elevation=elev, habitat)
+glm1 <- glm(presence ~ elev+habitat, family=binomial(link="logit"), data=frogData)
+summary(glm1)
+anova(glm1)
+@
+\begin{center}
+\tiny
+<<frogData,size='tiny'>>=
+frogData
+@
+\end{center}
+\end{frame}
+
+
+
+%% \begin{frame}[fragile]
+%%   \frametitle{Raw data}
+%%   \tiny
+%% %  \vspace{-0.5cm}
+%% \begin{center}
+%% <<raw-elev,fig=true,include=false>>=
+%% plot(presence ~ elevation, frogData,
+%%      xlab="Elevation", ylab="Frog Occurrence")
+%% @
+%%   \includegraphics[width=0.7\textwidth]{lab13-GLMs-raw-elev}
+%% \end{center}
+%% \end{frame}
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Logistic regression using {\tt glm}}
+  \footnotesize
+<<fm1,size='footnotesize'>>=
+fm1 <- glm(presence ~ habitat + elevation,
+           family=binomial(link="logit"), data=frogData)
+@
+\pause
+\tiny
+<<summary-fm1,size='tiny'>>=
+summary(fm1)
+@
+\end{frame}
+
+
+%% \begin{frame}[fragile]
+%%   \frametitle{Test main effects}
+%%   \footnotesize
+%% <<>>=
+%% anova(fm1, test="Chisq")
+%% @
+%% \end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{Occurrence probability and elevation}
+  \footnotesize
+<<newdat,size='footnotesize'>>=
+newdat <- data.frame(elevation=seq(12, 489, length=50),
+                     habitat="Oak")
+head(newdat)
+@
+\pause
+{\bf To get confidence intervals on (0,1) scale, predict on logit
+  (link) scale and then backtransform using inverse-link}
+\pause
+%\scriptsize
+<<pred-link,size='footnotesize'>>=
+pred.link <- predict(fm1, newdata=newdat, se.fit=TRUE, type="link")
+newdat$p <- plogis(pred.link$fit)
+newdat$lower <- plogis(pred.link$fit - 1.96*pred.link$se.fit)
+newdat$upper <- plogis(pred.link$fit + 1.96*pred.link$se.fit)
+@
+\end{frame}
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Occurrence probability and elevation}
+  \tiny
+<<pred1,fig.show='hide',fig.width=6,fig.height=5,size='tiny'>>=
+plot(p ~ elevation, newdat, type="l", ylim=c(0,1),
+     xlab="Elevation", ylab="Probability of occurrence")
+points(presence ~ elevation, frogData)
+lines(lower ~ elevation, newdat, lty=2)
+lines(upper ~ elevation, newdat, lty=2)
+@
+\centering
+\includegraphics[width=0.75\textwidth]{figure/pred1-1} \\
+\end{frame}
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Occurrence probability and habitat}
+  \tiny
+<<habitat,fig.show='hide',size='tiny'>>=
+nd <- data.frame(habitat=c("Oak", "Maple", "Pine"),
+                 elevation=250)
+pred <- predict(fm1, newdata=nd, se.fit=TRUE, type="link")
+bp <- barplot(plogis(pred$fit), ylab="Probability of occurrence",
+              names=c("Oak", "Maple", "Pine"), col="lightblue", ylim=c(0, 1.1))
+arrows(bp, plogis(pred$fit), bp, plogis(pred$fit + pred$se.fit),
+       angle=90, code=3, length=0.1)
+@
+\centering
+\includegraphics[width=0.6\textwidth]{figure/habitat-1} \\
+\end{frame}
+
+
+
+
+\section{Poisson regression}
+
+
+
+\begin{frame}
+  \frametitle{Poisson Regression}
+    \begin{gather*}
+      \mathrm{log}(\lambda_i) = \beta_0 + \beta_1 x_{i1} + \beta_2 x_{i2} + \cdots \\
+      y_i \sim \mathrm{Poisson}(\lambda_i)
+  \end{gather*}
+  \pause
+  {\bf where: \\}
+  $\lambda_i$ is the expected value of $y_i$
+\end{frame}
+
+
+
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Poisson regression using {\tt glm}}
+  \footnotesize
+<<fm2,size='footnotesize'>>=
+fm2 <- glm(abundance ~ habitat + elevation,
+           family=poisson(link="log"), data=frogData)
+@
+\pause
+\tiny
+<<summary-fm2,size='tiny'>>=
+summary(fm2)
+@
+\end{frame}
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Abundance and elevation}
+  \footnotesize
+<<newdat2,size='footnotesize'>>=
+newdat <- data.frame(elevation=seq(12, 489, length=50),
+                     habitat="Oak")
+head(newdat)
+@
+\pause
+{\bf To get confidence intervals on (0,1) scale, predict on log
+  (link) scale and then backtransform using inverse-link}
+\pause
+%\scriptsize
+<<pred-link2,size='footnotesize'>>=
+pred.link <- predict(fm2, newdata=newdat, se.fit=TRUE, type="link")
+newdat$lambda <- exp(pred.link$fit) # exp is the inverse-link function
+newdat$lower <- exp(pred.link$fit - 1.96*pred.link$se.fit)
+newdat$upper <- exp(pred.link$fit + 1.96*pred.link$se.fit)
+@
+\end{frame}
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Abundance and elevation}
+  \tiny
+<<pred2,fig.show='hide',fig.width=6,fig.height=5,size='tiny'>>=
+plot(lambda ~ elevation, newdat, type="l", ylim=c(0,60),
+     xlab="Elevation", ylab="Expected abundance")
+points(abundance ~ elevation, frogData)
+lines(lower ~ elevation, newdat, lty=2)
+lines(upper ~ elevation, newdat, lty=2)
+@
+\centering
+\includegraphics[width=0.75\textwidth]{figure/pred2-1} \\
+\end{frame}
+
+
+
+
+
+
+
+%% \begin{frame}[fragile]
+%%   \frametitle{Abundance, elevation, and habitat}
+%%   \tiny
+%% \begin{center}
+%% <<habitat2,fig=true,include=false>>=
+%% nd <- data.frame(habitat=rep(c("Oak", "Maple", "Pine"), each=20),
+%%                  elevation=rep(seq(12, 489, length=20), times=3))
+%% pred <- predict(fm2, newdata=nd, se.fit=TRUE, type="link")
+%% nd$lambda <- exp(pred$fit)
+%% plot(lambda ~ elevation, nd, type="l", ylim=c(0,55), subset=habitat=="Oak",
+%%      xlab="Elevation", ylab="Expected abundance")
+%% lines(lambda ~ elevation, nd, subset=habitat=="Maple", lty=2)
+%% lines(lambda ~ elevation, nd, subset=habitat=="Pine", lty=3)
+%% @
+%%   \includegraphics[width=0.5\textwidth]{lab13-GLMs-habitat2}
+%% \end{center}
+%% \end{frame}
+
+
+
+
+
+
+\begin{frame}
+  \frametitle{Assignment}
+  \begin{enumerate}[\bf (1)]
+    \item Fit a Poisson regression model to the frog data with an
+      interaction between elevation and habitat
+    \item Interpret the parameter estimates
+    \item plot the relationship between the expected value of abundance and
+      elevation, for each of the three habitat types, on the same graph
+    \item Include the raw data points (color coded by habitat) and a legend in
+      the graph
+    \item Do not include confidence intervals
+  \end{enumerate}
+\end{frame}
+
+
+
+
+
+
+
+\end{document}
+
+
+
+
+
+
+\section{Simulating data}
+
+
+
+\begin{frame}
+  \frametitle{Simulating data}
+  \large
+  {\bf R} has many functions for generating random variables
+  \begin{center}
+    \begin{tabular}{lr}
+      \hline
+      Distribution & {\bf R} function \\
+      \hline
+      Uniform & {\tt runif} \\
+      Normal & {\tt rnorm} \\
+      Binomial & {\tt rbinom} \\
+      Poisson & {\tt rpois} \\
+      Negative binomial & {\tt rnbinom} \\
+      \hline
+    \end{tabular}
+  \end{center}
+\end{frame}
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Random Poisson variables}
+  {\bf Ten Poisson variates with $\lambda=0.5$}
+<<rpois1>>=
+rpois(n=10, 0.5)
+@
+\vfill
+\pause
+  {\bf Ten Poisson variates with $\lambda=5$}
+<<rpois2>>=
+rpois(n=10, 5)
+@
+\vfill
+\pause
+  {\bf Ten Poisson variates with $\lambda=15$}
+<<rpois3>>=
+rpois(n=10, 15)
+@
+\end{frame}
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Simulate Poisson variables}
+  {\bf 1000 Poisson variabes with $\lambda=3$}
+  \small
+<<p1000,fig.show='hide'>>=
+x <- rpois(n=1000, 3)
+hist(x, col="purple")
+@
+\centering
+\includegraphics[width=0.6\textwidth]{figure/p1000-1} \\
+\end{frame}
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Simulate Poisson regression data}
+  {\bf Create a design matrix}
+<<X>>=
+X <- model.matrix(~habitat + elevation, frogData)
+@
+\pause
+\vfill
+{\bf Choose values of $\bm \beta$ parameters
+<<beta>>=
+beta <- c(0.5, 1, -3, 0.01)
+@
+\pause
+\vfill
+{\bf Calculate $\mu$, the expected value of $y$}
+<<lambda>>=
+lambda <- exp(X %*% beta)
+@
+\pause
+\vfill
+{\bf Simulate $y$, the response variable}
+<<sampleSize>>=
+sampleSize <- nrow(X)
+y <- rpois(sampleSize, lambda)
+@
+\end{frame}
+
+
+
+
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Fit model to simulated data}
+  \small
+<<fm3,size='small'>>=
+fm3 <- glm(y ~ habitat + elevation, family=poisson, frogData)
+@
+\scriptsize
+<<summary-fm3,size='scriptsize'>>=
+summary(fm3)
+@
+\end{frame}
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Check confidence intervals}
+<<CI>>=
+CI <- confint(fm3)
+cbind(CI, beta)
+@
+\end{frame}
+
+
+
+
+
+
+\begin{frame}[fragile]
+<<echo=FALSE>>=
+set.seed(340)
+vegData <- data.frame(veght=rnorm(30, 5, 1))
+write.csv(vegData, "vegData.csv", row.names=FALSE)
+@
+  \frametitle{Assignment}
+  \begin{enumerate}[\bf (1)]
+    \item Import the data {\tt vegData.csv}
+    \item Simulate a Poisson response variable assuming the model:
+      $\lambda_i = \exp(\beta0 + \beta1\mbox{VegHt}_i)$, where $\beta_0=-1$ and
+      $\beta_1 = 0.5$
+    \item Fit the Poisson regression model to the data
+    \item Do the confidence intervals include the data generating
+      $\bm \beta$ values?
+    \item Plot the estimated relationship between abundance and
+      vegetation height. Include 95\% confidence intervals.
+  \end{enumerate}
+\end{frame}
+
+
+
+
+
+
+\end{document}
+
+
+
+
+
+
+
+
+%% \begin{frame}
+%%   \frametitle{Goodness-of-fit}
+%%   Parametric bootstrap
+%%   \begin{enumerate}[<+->]
+%%     \item Fit a model
+%%     \item Pick a fit statistic
+%%     \item Calculate the fit statistic for the
+%%   \end{enumerate}
+%% \end{frame}
+
+
+
+
+
+%% \begin{frame}[fragile]
+%%   \frametitle{Goodness-of-fit}
+%% <<>>=
+%% fitStat <- function(fm) sum(resid(fm)^2)
+%% boot(fm2$data, fitStat, sim="parametric", ran.gen=simulate, R=100)
+%% @
+%% \end{frame}
+
+
+
+
+
+%% \begin{frame}[fragile]
+%%   \frametitle{Goodness-of-fit}
+%% <<>>=
+%% nSims <- 1000
+%% fitStats <- rep(NA, nSim)
+%% for(i in 1:nSims) {
+%%     frogData$abundance.star <- as.numeric(simulate(fm2))
+%%     fit.star <- glm(abundance.star ~ habitat + elevation,
+%%                  family=poisson(link="log"), data=frogData)
+%%     fitStats[i] <- SSE
+%% }
+%% @
+%% \end{frame}
+
+
+
