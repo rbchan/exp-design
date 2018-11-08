@@ -1,4 +1,54 @@
-\documentclass[color=usenames,dvipsnames]{beamer}
+\documentclass[color=usenames,dvipsnames]{beamer}\usepackage[]{graphicx}\usepackage[]{color}
+%% maxwidth is the original width if it is less than linewidth
+%% otherwise use linewidth (to make sure the graphics do not exceed the margin)
+\makeatletter
+\def\maxwidth{ %
+  \ifdim\Gin@nat@width>\linewidth
+    \linewidth
+  \else
+    \Gin@nat@width
+  \fi
+}
+\makeatother
+
+\definecolor{fgcolor}{rgb}{0, 0, 0}
+\newcommand{\hlnum}[1]{\textcolor[rgb]{0.69,0.494,0}{#1}}%
+\newcommand{\hlstr}[1]{\textcolor[rgb]{0.749,0.012,0.012}{#1}}%
+\newcommand{\hlcom}[1]{\textcolor[rgb]{0.514,0.506,0.514}{\textit{#1}}}%
+\newcommand{\hlopt}[1]{\textcolor[rgb]{0,0,0}{#1}}%
+\newcommand{\hlstd}[1]{\textcolor[rgb]{0,0,0}{#1}}%
+\newcommand{\hlkwa}[1]{\textcolor[rgb]{0,0,0}{\textbf{#1}}}%
+\newcommand{\hlkwb}[1]{\textcolor[rgb]{0,0.341,0.682}{#1}}%
+\newcommand{\hlkwc}[1]{\textcolor[rgb]{0,0,0}{\textbf{#1}}}%
+\newcommand{\hlkwd}[1]{\textcolor[rgb]{0.004,0.004,0.506}{#1}}%
+\let\hlipl\hlkwb
+
+\usepackage{framed}
+\makeatletter
+\newenvironment{kframe}{%
+ \def\at@end@of@kframe{}%
+ \ifinner\ifhmode%
+  \def\at@end@of@kframe{\end{minipage}}%
+  \begin{minipage}{\columnwidth}%
+ \fi\fi%
+ \def\FrameCommand##1{\hskip\@totalleftmargin \hskip-\fboxsep
+ \colorbox{shadecolor}{##1}\hskip-\fboxsep
+     % There is no \\@totalrightmargin, so:
+     \hskip-\linewidth \hskip-\@totalleftmargin \hskip\columnwidth}%
+ \MakeFramed {\advance\hsize-\width
+   \@totalleftmargin\z@ \linewidth\hsize
+   \@setminipage}}%
+ {\par\unskip\endMakeFramed%
+ \at@end@of@kframe}
+\makeatother
+
+\definecolor{shadecolor}{rgb}{.97, .97, .97}
+\definecolor{messagecolor}{rgb}{0, 0, 0}
+\definecolor{warningcolor}{rgb}{1, 0, 1}
+\definecolor{errorcolor}{rgb}{1, 0, 0}
+\newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
+
+\usepackage{alltt}
 %\documentclass[color=usenames,dvipsnames,handout]{beamer}
 
 
@@ -10,33 +60,16 @@
 
 
 
-<<build-fun, include=FALSE, cache=TRUE, eval=FALSE, purl=FALSE>>=
-## A function to compile and open the pdf
-source("../rnw2pdf.R")
-if(1==2) {
-    ## Usage:
-    rnw2pdf("lecture-modeling-intro") # Don't include the file extension
-    rnw2pdf("lecture-modeling-intro", clean=FALSE) # Don't clean intermediate files
-    rnw2pdf("lecture-modeling-intro", tangle=TRUE) # If you want the .R file
-}
-@
 
 
-<<knitr-theme, include=FALSE, purl=FALSE>>=
-##knit_theme$set("navajo-night")
-knit_theme$set("edit-kwrite")
-@
+
+
 
 
 %% New command for inline code that isn't to be evaluated
 \definecolor{inlinecolor}{rgb}{0.878, 0.918, 0.933}
 \newcommand{\inr}[1]{\colorbox{inlinecolor}{\texttt{#1}}}
-
-
-
-
-
-
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
 \begin{document}
 
 
@@ -320,10 +353,7 @@ knit_theme$set("edit-kwrite")
 \[
 y = 20 + 0.5 x
 \]
-<<linmod1,include=FALSE,fig.show="hide">>=
-par(mai=c(0.8,0.8,0.1,0.1))
-plot(function(x) 20 + 0.5*x, 0, 10, ylab="y")
-@
+
 \begin{center}
   \includegraphics[width=0.6\textwidth]{figure/linmod1-1}
 \end{center}
@@ -337,10 +367,7 @@ plot(function(x) 20 + 0.5*x, 0, 10, ylab="y")
 \[
 y = 20 + 0.5 x - 0.3 x^2
 \]
-<<linmod2,include=FALSE,fig.show='hide'>>=
-par(mai=c(0.8,0.8,0.1,0.1))
-plot(function(x) 20 + 0.5*x - 0.3*x^2 , 0, 10, ylab="y")
-@
+
 \begin{center}
   \includegraphics[width=0.6\textwidth]{figure/linmod2-1}
 \end{center}
@@ -443,9 +470,13 @@ between continuous and categorical predictors
   \pause
   \vfill
   The default method corresponds to:
-<<contr-trt,size='small'>>=
-options(contrasts=c("contr.treatment","contr.poly"))
-@
+\begin{knitrout}\small
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{options}\hlstd{(}\hlkwc{contrasts}\hlstd{=}\hlkwd{c}\hlstd{(}\hlstr{"contr.treatment"}\hlstd{,}\hlstr{"contr.poly"}\hlstd{))}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
 \end{frame}
 
 
@@ -471,9 +502,13 @@ options(contrasts=c("contr.treatment","contr.poly"))
   \pause
   \vfill
   This method corresponds to:
-<<contr-sum,size='small',eval=FALSE>>=
-options(contrasts=c("contr.sum","contr.poly"))
-@
+\begin{knitrout}\small
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{options}\hlstd{(}\hlkwc{contrasts}\hlstd{=}\hlkwd{c}\hlstd{(}\hlstr{"contr.sum"}\hlstd{,}\hlstr{"contr.poly"}\hlstd{))}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
 \end{frame}
 
 
@@ -519,35 +554,25 @@ options(contrasts=c("contr.sum","contr.poly"))
 \begin{frame}[fragile]
   \frametitle{Santa Cruz Data}
   \footnotesize
-<<cruz,echo=FALSE,results='hide'>>=
-library(unmarked)
-head(cruz)
-@
-<<cruz2,echo=FALSE,results='hide'>>=
-cruz2 <- cruz
-set.seed(43893)
-cruz2$habitat <- factor(sample(c("Pine","Oak","Bare"),
-                               size=nrow(cruz2), replace=TRUE,
-                               prob=c(0.3, 0.6, 0.1)))
-cruz2$seeds <- factor(sample(c("Low","Med","High"),
-                               size=nrow(cruz2), replace=TRUE,
-                               prob=c(0.3, 0.6, 0.1)))
-plots <- sample(1:nrow(cruz2), size=100)
-jayData <- cruz2[plots,]
-jayX <- model.matrix(~elevation+I(elevation^2)+chaparral+habitat, jayData)
-jayBeta <- c(30, 0.01, -0.000001, 1, 2.5, 1.5)
-summary(jaymu <- jayX %*% jayBeta)
-sigmaSq <- 5
-set.seed(4530)
-summary(jayData$jays <- round(rnorm(nrow(jayData), jaymu, sqrt(sigmaSq))))
-# hist(jayData$jays)
-summary(lm(jays ~ elevation + I(elevation^2) + chaparral + habitat + forest + seeds,
-           jayData))
-@
+
+
 {\bf Habitat data for all 2787 grid cells covering the island}
-<<cruz2-head>>=
-head(cruz2)
-@
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{head}\hlstd{(cruz2)}
+\end{alltt}
+\begin{verbatim}
+##          x       y elevation forest chaparral habitat seeds
+## 1 230736.7 3774324       241      0         0     Oak   Low
+## 2 231036.7 3774324       323      0         0    Pine   Med
+## 3 231336.7 3774324       277      0         0    Pine  High
+## 4 230436.7 3774024        13      0         0     Oak   Med
+## 5 230736.7 3774024       590      0         0     Oak  High
+## 6 231036.7 3774024       533      0         0     Oak   Low
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
 \end{frame}
 
 
@@ -556,14 +581,7 @@ head(cruz2)
   \frametitle{Maps of predictor variables}
 %  {\bf Elevation}
   \scriptsize
-<<elev,fig.show='hide',fig.width=6,fig.height=4,echo=FALSE>>=
-library(lattice)
-levelplot(elevation ~ x + y, data=cruz2, aspect="iso",
-          scales=list(draw=FALSE),
-##          col.regions=rev(topo.colors(101)),
-          at=seq(10, 2300, length=100),
-          xlab="Easting", ylab="Northing", main="Elevation")
-@
+
 \begin{columns}
   \column{\dimexpr\paperwidth-10pt}
   \includegraphics[width=\textwidth]{figure/elev-1}
@@ -577,13 +595,7 @@ levelplot(elevation ~ x + y, data=cruz2, aspect="iso",
   \frametitle{Maps of predictor variables}
 %  {\bf Forest cover}
   \scriptsize
-<<forest,fig.show='hide',fig.width=6,fig.height=4,echo=FALSE>>=
-levelplot(forest ~ x + y, data=cruz, aspect="iso",
-          xlab="",ylab="",main="Forest Cover",
-          col.regions=rev(terrain.colors(100)),
-          at=seq(0, 1, length=100),
-          scales=list(draw=FALSE))
-@
+
 \begin{columns}
   \column{\dimexpr\paperwidth-10pt}
   \includegraphics[width=\textwidth]{figure/forest-1}
@@ -613,19 +625,7 @@ levelplot(forest ~ x + y, data=cruz, aspect="iso",
 \begin{frame}[fragile]
   \frametitle{Maps of predictor variables}
 %  {\bf Chaparral cover}
-<<plots,echo=FALSE,fig.show='hide',fig.width=6,fig.height=4>>=
-levelplot(chaparral ~ x + y, data=cruz2, aspect="iso",
-          xlab="", ylab="", main="Chaparral and survey plots",
-          scales=list(draw=FALSE),
-          col.regions=heat.colors(100),
-          panel = function(...) {
-              panel.levelplot(...)
-#                  grid.points(jayData$x, jayData$y, pch=0,
-#                              size=unit(0.01, "npc"))
-              lpoints(jayData$x, jayData$y, pch=0, col=1, cex=0.5)
-              }
-          )
-@
+
 \begin{columns}
   \column{\dimexpr\paperwidth-10pt}
   \includegraphics[width=\textwidth]{figure/plots-1}
@@ -637,9 +637,22 @@ levelplot(chaparral ~ x + y, data=cruz2, aspect="iso",
 
 \begin{frame}[fragile]
   \frametitle{The (fake) jay data}
-<<jayData,size='scriptsize'>>=
-head(jayData)
-@
+\begin{knitrout}\scriptsize
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{head}\hlstd{(jayData)}
+\end{alltt}
+\begin{verbatim}
+##             x       y elevation forest chaparral habitat seeds jays
+## 2345 258636.7 3764124       423   0.00      0.02     Oak   Med   34
+## 740  261936.7 3769224       506   0.10      0.45     Oak   Med   38
+## 2304 246336.7 3764124       859   0.00      0.26     Oak  High   40
+## 2433 239436.7 3763524      1508   0.02      0.03    Pine   Med   43
+## 1104 239436.7 3767724       483   0.26      0.37     Oak   Med   36
+## 607  236436.7 3769524       830   0.00      0.01     Oak   Low   39
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
 \end{frame}
 
 
@@ -647,35 +660,79 @@ head(jayData)
 
 \begin{frame}[fragile]
   \frametitle{Simple linear regression}
-<<fm1,size='scriptsize'>>=
-fm1 <- lm(jays ~ elevation, data=jayData)
-summary(fm1)
-@
+\begin{knitrout}\scriptsize
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{fm1} \hlkwb{<-} \hlkwd{lm}\hlstd{(jays} \hlopt{~} \hlstd{elevation,} \hlkwc{data}\hlstd{=jayData)}
+\hlkwd{summary}\hlstd{(fm1)}
+\end{alltt}
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = jays ~ elevation, data = jayData)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -5.4874 -1.7539  0.1566  1.6159  4.6155 
+## 
+## Coefficients:
+##              Estimate Std. Error t value Pr(>|t|)    
+## (Intercept) 33.082808   0.453997   72.87   <2e-16 ***
+## elevation    0.008337   0.000595   14.01   <2e-16 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 2.285 on 98 degrees of freedom
+## Multiple R-squared:  0.667,	Adjusted R-squared:  0.6636 
+## F-statistic: 196.3 on 1 and 98 DF,  p-value: < 2.2e-16
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
 \end{frame}
 
 
 \begin{frame}[fragile]
   \frametitle{Simple linear regression}
-<<pred1,echo=FALSE,fig.width=7,fig.height=5.5>>=
-nseq <- 20
-elev.seq <- seq(0, 2300, length=nseq)
-predData1 <- data.frame(elevation=elev.seq)
-pred1 <- predict(fm1, newdata=predData1, interval="confidence", se.fit=TRUE)
-plot(jays ~ elevation, jayData, xlab="Elevation (m)", ylab="Jays", cex.lab=1.3)
-lines(predData1$elevation, pred1$fit[,1])
-lines(predData1$elevation, pred1$fit[,2], lty=3)
-lines(predData1$elevation, pred1$fit[,3], lty=3)
-@
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}
+\includegraphics[width=\maxwidth]{figure/pred1-1} 
+
+\end{knitrout}
 \end{frame}
 
 
 
 \begin{frame}[fragile]
   \frametitle{Multiple linear regression}
-<<fm2,size='scriptsize'>>=
-fm2 <- lm(jays ~ elevation+forest, data=jayData)
-summary(fm2)
-@
+\begin{knitrout}\scriptsize
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{fm2} \hlkwb{<-} \hlkwd{lm}\hlstd{(jays} \hlopt{~} \hlstd{elevation}\hlopt{+}\hlstd{forest,} \hlkwc{data}\hlstd{=jayData)}
+\hlkwd{summary}\hlstd{(fm2)}
+\end{alltt}
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = jays ~ elevation + forest, data = jayData)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -5.4717 -1.7384  0.1552  1.5993  4.6319 
+## 
+## Coefficients:
+##              Estimate Std. Error t value Pr(>|t|)    
+## (Intercept) 33.065994   0.467624  70.711   <2e-16 ***
+## elevation    0.008337   0.000598  13.943   <2e-16 ***
+## forest       0.294350   1.793079   0.164     0.87    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 2.296 on 97 degrees of freedom
+## Multiple R-squared:  0.6671,	Adjusted R-squared:  0.6603 
+## F-statistic: 97.21 on 2 and 97 DF,  p-value: < 2.2e-16
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
 \end{frame}
 
 
@@ -683,18 +740,11 @@ summary(fm2)
 
 \begin{frame}[fragile]
   \frametitle{Multiple linear regression}
-<<pred2,echo=FALSE,fig.width=7,fig.height=6>>=
-forest.seq <- seq(0,1,length=nseq)
-predData2 <- data.frame(elevation=rep(elev.seq, each=nseq),
-                        forest=rep(forest.seq, times=nseq))
-pred2 <- predict(fm2, newdata=predData2, interval="confidence", se.fit=TRUE)
-res <- persp(forest.seq, elev.seq, matrix(pred2$fit[,1],nseq),
-             theta=40, phi=20, col=rgb(0,0,1,0.5), zlab="Expected number of jays",
-             ylab="Elevation", xlab="Forest cover", zlim=c(30, 55),
-             ticktype="detailed")
-#points(trans3d(jayData$forest, jayData$elev, jayData$jays, pmat=res),
-#       col="red", cex=1.5, pch=16)
-@
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}
+\includegraphics[width=\maxwidth]{figure/pred2-1} 
+
+\end{knitrout}
 \end{frame}
 
 
@@ -703,10 +753,35 @@ res <- persp(forest.seq, elev.seq, matrix(pred2$fit[,1],nseq),
 
 \begin{frame}[fragile]
   \frametitle{One-way ANOVA}
-<<fm3,size='scriptsize'>>=
-fm3 <- lm(jays ~ habitat, data=jayData)
-summary(fm3)
-@
+\begin{knitrout}\scriptsize
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{fm3} \hlkwb{<-} \hlkwd{lm}\hlstd{(jays} \hlopt{~} \hlstd{habitat,} \hlkwc{data}\hlstd{=jayData)}
+\hlkwd{summary}\hlstd{(fm3)}
+\end{alltt}
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = jays ~ habitat, data = jayData)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -7.9143 -2.3684 -0.3684  3.0857  8.6316 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)   35.875      1.356  26.456   <2e-16 ***
+## habitatOak     3.493      1.448   2.413   0.0177 *  
+## habitatPine    2.039      1.503   1.357   0.1780    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 3.835 on 97 degrees of freedom
+## Multiple R-squared:  0.07126,	Adjusted R-squared:  0.05211 
+## F-statistic: 3.721 on 2 and 97 DF,  p-value: 0.02773
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
 \end{frame}
 
 
@@ -714,15 +789,7 @@ summary(fm3)
 
 \begin{frame}[fragile]
   \frametitle{One-way ANOVA}
-<<pred3,echo=FALSE,fig.width=6,fig.height=6,fig.show='hide'>>=
-predData3 <- data.frame(habitat=levels(jayData$habitat))
-pred3 <- predict(fm3, newdata=predData3, interval="confidence", se.fit=TRUE)
-xmid <- barplot(pred3$fit[,1], xlab="Habitat", names=predData3$habitat,
-                cex.lab=1.5,
-                ylim=c(0, 45), col="darkcyan", ylab="Expected number of jays")
-arrows(xmid, pred3$fit[,1], xmid, pred3$fit[,1]+pred3$se, angle=90, length=0.05, code=3)
-box()
-@
+
 \centering
 \includegraphics[width=0.8\textwidth]{figure/pred3-1} \\
 \end{frame}
@@ -733,27 +800,47 @@ box()
 
 \begin{frame}[fragile]
   \frametitle{ANCOVA}
-<<fm4,size='scriptsize'>>=
-fm4 <- lm(jays ~ elevation+habitat, data=jayData)
-summary(fm4)
-@
+\begin{knitrout}\scriptsize
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{fm4} \hlkwb{<-} \hlkwd{lm}\hlstd{(jays} \hlopt{~} \hlstd{elevation}\hlopt{+}\hlstd{habitat,} \hlkwc{data}\hlstd{=jayData)}
+\hlkwd{summary}\hlstd{(fm4)}
+\end{alltt}
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = jays ~ elevation + habitat, data = jayData)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -5.0327 -1.5356  0.0091  1.4686  4.2391 
+## 
+## Coefficients:
+##              Estimate Std. Error t value Pr(>|t|)    
+## (Intercept) 3.072e+01  8.084e-01  37.997  < 2e-16 ***
+## elevation   8.289e-03  5.414e-04  15.308  < 2e-16 ***
+## habitatOak  3.166e+00  7.850e-01   4.034  0.00011 ***
+## habitatPine 1.695e+00  8.148e-01   2.081  0.04010 *  
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 2.078 on 96 degrees of freedom
+## Multiple R-squared:  0.7301,	Adjusted R-squared:  0.7217 
+## F-statistic: 86.56 on 3 and 96 DF,  p-value: < 2.2e-16
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
 \end{frame}
 
 
 
 \begin{frame}[fragile]
   \frametitle{ANCOVA}
-<<pred4,echo=FALSE,fig.width=7,fig.height=5.5>>=
-predData4 <- data.frame(elevation=rep(elev.seq, 3),
-                        habitat=rep(levels(jayData$habitat), each=nseq))
-pred4 <- predict(fm4, newdata=predData4, interval="confidence", se.fit=TRUE)
-pred4dat <- data.frame(pred4$fit, predData4)
-plot(jays ~ elevation, jayData, xlab="Elevation (m)", ylab="Jays", cex.lab=1.3)
-lines(fit~elevation, data=pred4dat, subset=habitat=="Bare", col="tan", lwd=3)
-lines(fit~elevation, data=pred4dat, subset=habitat=="Oak", col="brown", lwd=3)
-lines(fit~elevation, data=pred4dat, subset=habitat=="Pine", col="darkseagreen", lwd=3)
-legend(0, 47, c("Oak", "Pine", "Bare"), col=c("brown","darkseagreen", "tan"), lwd=3)
-@
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}
+\includegraphics[width=\maxwidth]{figure/pred4-1} 
+
+\end{knitrout}
 \end{frame}
 
 
@@ -762,10 +849,38 @@ legend(0, 47, c("Oak", "Pine", "Bare"), col=c("brown","darkseagreen", "tan"), lw
 
 \begin{frame}[fragile]
   \frametitle{Continuous-categorical interaction}
-<<fm5,size='tiny'>>=
-fm5 <- lm(jays ~ elevation*habitat, data=jayData)
-summary(fm5)
-@
+\begin{knitrout}\tiny
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{fm5} \hlkwb{<-} \hlkwd{lm}\hlstd{(jays} \hlopt{~} \hlstd{elevation}\hlopt{*}\hlstd{habitat,} \hlkwc{data}\hlstd{=jayData)}
+\hlkwd{summary}\hlstd{(fm5)}
+\end{alltt}
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = jays ~ elevation * habitat, data = jayData)
+## 
+## Residuals:
+##    Min     1Q Median     3Q    Max 
+## -5.008 -1.581 -0.103  1.420  4.184 
+## 
+## Coefficients:
+##                        Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)           31.654383   1.446322  21.886  < 2e-16 ***
+## elevation              0.006781   0.001999   3.393  0.00101 ** 
+## habitatOak             2.428682   1.565227   1.552  0.12411    
+## habitatPine            0.399953   1.579874   0.253  0.80070    
+## elevation:habitatOak   0.001204   0.002153   0.559  0.57737    
+## elevation:habitatPine  0.002046   0.002151   0.951  0.34414    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 2.087 on 94 degrees of freedom
+## Multiple R-squared:  0.7334,	Adjusted R-squared:  0.7192 
+## F-statistic: 51.72 on 5 and 94 DF,  p-value: < 2.2e-16
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
 \end{frame}
 
 
@@ -773,15 +888,11 @@ summary(fm5)
 
 \begin{frame}[fragile]
   \frametitle{Continuous-categorical interaction}
-<<pred5,echo=FALSE,fig.width=7,fig.height=5.5>>=
-pred5 <- predict(fm5, newdata=predData4, interval="confidence", se.fit=TRUE)
-pred5dat <- data.frame(pred5$fit, predData4)
-plot(jays ~ elevation, jayData, xlab="Elevation (m)", ylab="Jays", cex.lab=1.3)
-lines(fit~elevation, data=pred5dat, subset=habitat=="Bare", col="tan", lwd=3)
-lines(fit~elevation, data=pred5dat, subset=habitat=="Oak", col="brown", lwd=3)
-lines(fit~elevation, data=pred5dat, subset=habitat=="Pine", col="darkseagreen", lwd=3)
-legend(0, 47, c("Oak", "Pine", "Bare"), col=c("brown","darkseagreen", "tan"), lwd=3)
-@
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}
+\includegraphics[width=\maxwidth]{figure/pred5-1} 
+
+\end{knitrout}
 \end{frame}
 
 
@@ -791,10 +902,35 @@ legend(0, 47, c("Oak", "Pine", "Bare"), col=c("brown","darkseagreen", "tan"), lw
 
 \begin{frame}[fragile]
   \frametitle{Quadratic effect of elevation}
-<<fm6,size='scriptsize'>>=
-fm6 <- lm(jays ~ elevation+I(elevation^2), data=jayData)
-summary(fm6)
-@
+\begin{knitrout}\scriptsize
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{fm6} \hlkwb{<-} \hlkwd{lm}\hlstd{(jays} \hlopt{~} \hlstd{elevation}\hlopt{+}\hlkwd{I}\hlstd{(elevation}\hlopt{^}\hlnum{2}\hlstd{),} \hlkwc{data}\hlstd{=jayData)}
+\hlkwd{summary}\hlstd{(fm6)}
+\end{alltt}
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = jays ~ elevation + I(elevation^2), data = jayData)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -4.8429 -1.4608  0.1304  1.5908  4.7854 
+## 
+## Coefficients:
+##                  Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)     3.162e+01  7.631e-01  41.434  < 2e-16 ***
+## elevation       1.368e-02  2.342e-03   5.843 6.86e-08 ***
+## I(elevation^2) -3.542e-06  1.503e-06  -2.357   0.0204 *  
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 2.233 on 97 degrees of freedom
+## Multiple R-squared:  0.6851,	Adjusted R-squared:  0.6786 
+## F-statistic: 105.5 on 2 and 97 DF,  p-value: < 2.2e-16
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
 \end{frame}
 
 
@@ -802,16 +938,11 @@ summary(fm6)
 
 \begin{frame}[fragile]
   \frametitle{Quadratic effect of elevation}
-<<pred6,echo=FALSE,fig.width=7,fig.height=5.5>>=
-nseq <- 20
-elev.seq <- seq(0, 2300, length=nseq)
-predData6 <- data.frame(elevation=elev.seq)
-pred6 <- predict(fm6, newdata=predData6, interval="confidence", se.fit=TRUE)
-plot(jays ~ elevation, jayData, xlab="Elevation (m)", ylab="Jays", cex.lab=1.3)
-lines(predData6$elevation, pred6$fit[,1])
-lines(predData6$elevation, pred6$fit[,2], lty=3)
-lines(predData6$elevation, pred6$fit[,3], lty=3)
-@
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}
+\includegraphics[width=\maxwidth]{figure/pred6-1} 
+
+\end{knitrout}
 \end{frame}
 
 
@@ -822,39 +953,81 @@ lines(predData6$elevation, pred6$fit[,3], lty=3)
 \begin{frame}[fragile]
   \frametitle{Interaction and quadratic effects}
   \vspace{-2mm}
-<<fm7,size='tiny'>>=
-fm7 <- lm(jays ~ habitat * forest + elevation +
-          I(elevation^2), data=jayData)
-summary(fm7)
-@
+\begin{knitrout}\tiny
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{fm7} \hlkwb{<-} \hlkwd{lm}\hlstd{(jays} \hlopt{~} \hlstd{habitat} \hlopt{*} \hlstd{forest} \hlopt{+} \hlstd{elevation} \hlopt{+}
+          \hlkwd{I}\hlstd{(elevation}\hlopt{^}\hlnum{2}\hlstd{),} \hlkwc{data}\hlstd{=jayData)}
+\hlkwd{summary}\hlstd{(fm7)}
+\end{alltt}
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = jays ~ habitat * forest + elevation + I(elevation^2), 
+##     data = jayData)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -5.2574 -1.4400  0.0487  1.4055  3.7924 
+## 
+## Coefficients:
+##                      Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)         2.920e+01  1.030e+00  28.338  < 2e-16 ***
+## habitatOak          3.705e+00  8.433e-01   4.394 2.98e-05 ***
+## habitatPine         2.216e+00  8.757e-01   2.531   0.0131 *  
+## forest              4.007e+01  2.780e+01   1.441   0.1529    
+## elevation           1.215e-02  2.300e-03   5.285 8.41e-07 ***
+## I(elevation^2)     -2.554e-06  1.484e-06  -1.721   0.0886 .  
+## habitatOak:forest  -4.292e+01  2.785e+01  -1.541   0.1267    
+## habitatPine:forest -3.918e+01  2.784e+01  -1.407   0.1627    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 2.044 on 92 degrees of freedom
+## Multiple R-squared:  0.7497,	Adjusted R-squared:  0.7307 
+## F-statistic: 39.37 on 7 and 92 DF,  p-value: < 2.2e-16
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
 \end{frame}
 
 
 
 \begin{frame}[fragile]
   \frametitle{Predict jay abundance at each grid cell}
-<<E7>>=
-E7 <- predict(fm7, type="response", newdata=cruz2,
-              interval="confidence")
-@
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{E7} \hlkwb{<-} \hlkwd{predict}\hlstd{(fm7,} \hlkwc{type}\hlstd{=}\hlstr{"response"}\hlstd{,} \hlkwc{newdata}\hlstd{=cruz2,}
+              \hlkwc{interval}\hlstd{=}\hlstr{"confidence"}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
 \pause
-<<E72>>=
-E7 <- cbind(cruz2[,c("x","y")], E7)
-head(E7)
-@
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{E7} \hlkwb{<-} \hlkwd{cbind}\hlstd{(cruz2[,}\hlkwd{c}\hlstd{(}\hlstr{"x"}\hlstd{,}\hlstr{"y"}\hlstd{)], E7)}
+\hlkwd{head}\hlstd{(E7)}
+\end{alltt}
+\begin{verbatim}
+##          x       y      fit      lwr      upr
+## 1 230736.7 3774324 35.68349 34.86313 36.50386
+## 2 231036.7 3774324 35.07284 34.22917 35.91652
+## 3 231336.7 3774324 34.58427 33.72668 35.44186
+## 4 230436.7 3774024 33.06042 31.55907 34.56177
+## 5 230736.7 3774024 39.18440 38.49766 39.87113
+## 6 231036.7 3774024 38.65512 37.98859 39.32165
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
 \end{frame}
 
 
 \begin{frame}[fragile]
   \frametitle{Map the predictions}
   \scriptsize
-<<Ejay,fig.show='hide',fig.width=6,fig.height=4,echo=FALSE>>=
-levelplot(fit ~ x + y, data=E7, aspect="iso",
-          xlab="", ylab="", main="Expected number of jays per grid cell",
-##          col.regions=heat.colors(101),
-          at=22:55, colorkey=list(space="bottom"),
-          scales=list(draw=FALSE))
-@
+
 \begin{columns}
   \column{\dimexpr\paperwidth-10pt}
   \includegraphics[width=\textwidth]{figure/Ejay-1}
@@ -867,12 +1040,7 @@ levelplot(fit ~ x + y, data=E7, aspect="iso",
 \begin{frame}[fragile]
   \frametitle{Map the predictions}
   \scriptsize
-<<Ljay,fig.show='hide',fig.width=6,fig.height=4,echo=FALSE>>=
-levelplot(lwr ~ x + y, data=E7, aspect="iso",
-          xlab="", ylab="", main="Lower CI",
-          at=25:55, colorkey=list(space="bottom"),
-          scales=list(draw=FALSE))
-@
+
 \begin{columns}
   \column{\dimexpr\paperwidth-10pt}
   \includegraphics[width=\textwidth]{figure/Ljay-1}
@@ -885,12 +1053,7 @@ levelplot(lwr ~ x + y, data=E7, aspect="iso",
 \begin{frame}[fragile]
   \frametitle{Map the predictions}
   \scriptsize
-<<Ujay,fig.show='hide',fig.width=6,fig.height=4,echo=FALSE>>=
-levelplot(upr ~ x + y, data=E7, aspect="iso",
-          xlab="", ylab="", main="Upper CI",
-          at=25:55, colorkey=list(space="bottom"),
-          scales=list(draw=FALSE))
-@
+
 \begin{columns}
   \column{\dimexpr\paperwidth-10pt}
   \includegraphics[width=\textwidth]{figure/Ujay-1}
@@ -924,19 +1087,8 @@ levelplot(upr ~ x + y, data=E7, aspect="iso",
   \frametitle{Future scenarios}
   {\bf What if pine and oak disapper? \par}
   \scriptsize
-<<future1,echo=FALSE>>=
-future1 <- cruz2
-future1$habitat[] <- "Bare"
-future.pred1 <- predict(fm6, type="response", newdata=future1,
-                        interval="confidence")
-future.pred1 <- cbind(cruz2[,c("x","y")], future.pred1)
-@
-<<future1fig,fig.show='hide',fig.width=6,fig.height=4,echo=FALSE>>=
-levelplot(fit ~ x + y, data=future.pred1, aspect="iso",
-          xlab="", ylab="", main="Expected values",
-          at=25:55, colorkey=list(space="bottom"),
-          scales=list(draw=FALSE))
-@
+
+
 \begin{columns}
   \column{\dimexpr\paperwidth-10pt}
   \only<1>{\includegraphics[width=\textwidth]{figure/Ejay-1} \\}
@@ -974,24 +1126,8 @@ levelplot(fit ~ x + y, data=future.pred1, aspect="iso",
   {\bf What if sea level rises? \par}
   \scriptsize
   \pause
-<<future2,echo=FALSE>>=
-future2 <- cruz2
-future2$elevation <- future2$elevation - 1000
-future2$elevation[future2$elevation < 0] <- NA
-future.pred2 <- predict(fm6, type="response", newdata=future2,
-                        interval="confidence")
-future.pred2 <- cbind(cruz2[,c("x","y")], future.pred2)
-@
-<<future2fig,echo=FALSE,fig.show='hide',fig.width=6,fig.height=4>>=
-levelplot(fit ~ x + y, data=future.pred2, aspect="iso",
-          panel = function(...) {
-              panel.fill(col="skyblue1")
-              panel.levelplot(...)
-          },
-          xlab="", ylab="", main="Expected values",
-          at=25:55, colorkey=list(space="bottom"),
-          scales=list(draw=FALSE))
-@
+
+
 \begin{columns}
   \column{\dimexpr\paperwidth-10pt}
   \includegraphics[width=\textwidth]{figure/future2fig-1}
@@ -1169,27 +1305,51 @@ levelplot(fit ~ x + y, data=future.pred2, aspect="iso",
 %    \begin{column}{0.5\textwidth}
   \scriptsize %\tiny
     {Model}
-<<fm1-2,size='scriptsize',eval=FALSE>>=
-fm1 <- lm(jays ~ elevation, data=jayData)
-@
+\begin{knitrout}\scriptsize
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{fm1} \hlkwb{<-} \hlkwd{lm}\hlstd{(jays} \hlopt{~} \hlstd{elevation,} \hlkwc{data}\hlstd{=jayData)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
 %    \end{column}
     \pause
     \vfill
 %    \begin{column}{0.5\textwidth}
       {Design matrix}
       \scriptsize %\tiny
-<<X1,size='scriptsize'>>=
-X1 <- model.matrix(fm1)
-head(X1, n=5) # First 5 rows of design matrix
-@
+\begin{knitrout}\scriptsize
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{X1} \hlkwb{<-} \hlkwd{model.matrix}\hlstd{(fm1)}
+\hlkwd{head}\hlstd{(X1,} \hlkwc{n}\hlstd{=}\hlnum{5}\hlstd{)} \hlcom{# First 5 rows of design matrix}
+\end{alltt}
+\begin{verbatim}
+##      (Intercept) elevation
+## 2345           1       423
+## 740            1       506
+## 2304           1       859
+## 2433           1      1508
+## 1104           1       483
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
 %    \end{column}
 %  \end{columns}
       {Estimated $\beta$ coefficients}
       \scriptsize %\tiny
-<<beta-hat,size='scriptsize'>>=
-beta.hat <- coef(fm1) # Estimates of beta0 and beta1
-beta.hat
-@
+\begin{knitrout}\scriptsize
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{beta.hat} \hlkwb{<-} \hlkwd{coef}\hlstd{(fm1)} \hlcom{# Estimates of beta0 and beta1}
+\hlstd{beta.hat}
+\end{alltt}
+\begin{verbatim}
+##  (Intercept)    elevation 
+## 33.082808066  0.008336657
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
   \pause
   \vfill
   {\centering How do we multiply the design matrix ($\bf X$) by
@@ -1269,10 +1429,22 @@ beta.hat
 \end{center}
 \pause
 \small
-<<Ey1,size='footnotesize'>>=
-Ey1 <- X1 %*% beta.hat # Expected number of jays at each site
-head(Ey1, 5)
-@
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{Ey1} \hlkwb{<-} \hlstd{X1} \hlopt{%*%} \hlstd{beta.hat} \hlcom{# Expected number of jays at each site}
+\hlkwd{head}\hlstd{(Ey1,} \hlnum{5}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+##          [,1]
+## 2345 36.60921
+## 740  37.30116
+## 2304 40.24400
+## 2433 45.65449
+## 1104 37.10941
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
 \end{frame}
 
 
@@ -1287,23 +1459,47 @@ head(Ey1, 5)
   \frametitle{Design matrix for ANCOVA}
   \scriptsize %\tiny
     {Model}
-<<fm4-2,size='scriptsize',eval=FALSE>>=
-fm4 <- lm(jays ~ elevation + habitat, data=jayData)
-@
+\begin{knitrout}\scriptsize
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{fm4} \hlkwb{<-} \hlkwd{lm}\hlstd{(jays} \hlopt{~} \hlstd{elevation} \hlopt{+} \hlstd{habitat,} \hlkwc{data}\hlstd{=jayData)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
 \pause
 \vfill
 {Design matrix}
 
-<<X4,size='scriptsize'>>=
-X4 <- model.matrix(fm4)
-head(X4, n=5) # First 5 rows of design matrix
-@
+\begin{knitrout}\scriptsize
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{X4} \hlkwb{<-} \hlkwd{model.matrix}\hlstd{(fm4)}
+\hlkwd{head}\hlstd{(X4,} \hlkwc{n}\hlstd{=}\hlnum{5}\hlstd{)} \hlcom{# First 5 rows of design matrix}
+\end{alltt}
+\begin{verbatim}
+##      (Intercept) elevation habitatOak habitatPine
+## 2345           1       423          1           0
+## 740            1       506          1           0
+## 2304           1       859          1           0
+## 2433           1      1508          0           1
+## 1104           1       483          1           0
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
 
 {Estimated $\beta$ coefficients}
-<<beta-hat4,size='scriptsize'>>=
-beta.hat4 <- coef(fm4) # Estimates of beta0 and beta1
-beta.hat4
-@
+\begin{knitrout}\scriptsize
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{beta.hat4} \hlkwb{<-} \hlkwd{coef}\hlstd{(fm4)} \hlcom{# Estimates of beta0 and beta1}
+\hlstd{beta.hat4}
+\end{alltt}
+\begin{verbatim}
+##  (Intercept)    elevation   habitatOak  habitatPine 
+## 30.716371786  0.008288617  3.166147905  1.695456106
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
 \pause
 \vfill
 {\centering How do we multiply the design matrix ($\bf X$) by
@@ -1322,10 +1518,22 @@ beta.hat4
 \end{center}
 \pause
 \small
-<<Ey4,size='footnotesize'>>=
-Ey4 <- X4 %*% beta.hat4 # Expected number of jays at each site
-head(Ey4, 5)
-@
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{Ey4} \hlkwb{<-} \hlstd{X4} \hlopt{%*%} \hlstd{beta.hat4} \hlcom{# Expected number of jays at each site}
+\hlkwd{head}\hlstd{(Ey4,} \hlnum{5}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+##          [,1]
+## 2345 37.38860
+## 740  38.07656
+## 2304 41.00244
+## 2433 44.91106
+## 1104 37.88592
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
 \end{frame}
 
 
