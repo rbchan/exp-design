@@ -47,4 +47,7 @@ which students learn how to use [R](https://www.r-project.org/).
 ### [Week 12 - Linear models](modeling-intro/modeling-intro.md)
 
 
+### [Week 13 - Generalized linear models](glm/GLMs.md)
+
+
 
