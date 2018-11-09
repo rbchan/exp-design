@@ -101,26 +101,28 @@ knit_theme$set("edit-kwrite")
   \frametitle{Outline}
   {\bf Logistic regression \\}
   \begin{itemize}
-    \item The response variable is usually binary
+    \item The response variable is usually binary and modeled with a
+      binomial distribution
       % \begin{itemize}
       %   \item Presence/absence data
       %   \item Yes/no data
       % \end{itemize}
-    \item The response variable is modeled with a binomial distribution
-    \item The probability of success is usually modeled with a linear
-      model on the logit scale
+%    \item The response variable is modeled with a binomial distribution
+    \item The probability of success is usually a logit-linear
+      model
   \end{itemize}
   \pause
   \vfill
   {\bf Poisson regression \\}
   \begin{itemize}
-    \item The response variable is a non-negative integer
+    \item The response variable is a non-negative integer modeled with
+      a Poisson distribution
       % \begin{itemize}
       %   \item Count data
       % \end{itemize}
-    \item The response variable is modeled with a Poisson distribution
-    \item The expected count is usually modeled with a linear
-      model on the log scale
+%    \item The response variable is modeled with a Poisson distribution
+    \item The expected count is usually modeled with a log-linear
+      model
   \end{itemize}
   \vfill
 \end{frame}
@@ -395,7 +397,7 @@ anova(glm1)
   \pause
   {\bf where: \\}
   $N$ is the number of ``trials'' (e.g. coin flips) \\
-  $p_i$ is the probability of a success for sample unit $i$
+  $p_i$ is the probability of success for sample unit $i$
 \end{frame}
 
 
@@ -462,7 +464,7 @@ plot(0:5, dbinom(0:5, 5, 0.9), type="h",
   \begin{column}{0.45\textwidth}
   \tiny
 <<frogData,size='tiny'>>=
-frogData
+head(frogData, n=25)
 @
   \end{column}
   \begin{column}{0.54\textwidth}
@@ -470,10 +472,10 @@ frogData
     \small
     First we will model the presence-absence response variable to
     determine if elevation and habitat affect the probability of
-    occurrence. \par
-    \pause
-    \vspace{1cm}
-    Then we will model abundance.
+    occurrence. Then we will model abundance. \\
+%    \pause
+%    \vspace{1cm}
+%    Then we will model abundance.
     \endminipage
   \end{column}
 \end{columns}
@@ -573,7 +575,7 @@ lines(upper ~ elevation, newdat, lty=2)
 @
 %  \begin{center}
 \centering
-    \includegraphics[width=0.85\textwidth]{figure/pred1-1} \\
+    \includegraphics[width=0.89\textwidth]{figure/pred1-1} \\
 %  \end{center}
 \end{frame}
 
@@ -757,21 +759,23 @@ lines(upper ~ elevation, newdat, lty=2)
 
 \begin{frame}
   \frametitle{Assessing model fit}
-  {\bf Most common problem in Poisson regression is {\alert{overdispersion}}}
+  {The most common problem in Poisson regression is
+    {\alert{overdispersion}}. \\}
   \pause
   \vfill
-%  {\bf Overdispersion is the situation in which the data are more variable than
-%    allowed by the model}
-%  \pause
-%  \vfill
-%  {\bf Overdispersion should always be checked when using Poisson regression}
-%  \pause
-%  \vfill
-  {\bf Just because there are lots of zeros, doesn't mean the data are overdispersed}
+  {Overdispersion is the situation in which there is more variability
+    in the data than predicted by the model. \\}
   \pause
   \vfill
-  {\bf The most generic way of assessing overdispersion (or other types of
-    lack of fit) is to use the parametric bootstrap}
+  {Overdispersion cannot be assessed by simply comparing the mean and
+    variance of the response variable. \\}
+  \pause
+  \vfill
+  {For example, the presence of many zeros is not necessarily
+    indicative of overdispersion. \\}
+  \pause
+  \vfill
+  {Overdispersion can be assessed using a goodness-of-fit test. \\}
 \end{frame}
 
 
@@ -784,7 +788,7 @@ test. \\
 \vfill
 The test statistic is the residual deviance:
 \[
-  D = 2 \left\{\sum y_i \log\left(\frac{y_i}{\hat{\lambda_i}}\right) - (y_i-\lambda_i)\right\}
+  D = 2 \left\{\sum y_i \log\left(\frac{y_i}{\hat{\lambda_i}}\right) - (y_i-\hat{\lambda}_i)\right\}
 \]
 \pause
 \vfill
@@ -857,8 +861,12 @@ p.value                               # fail to reject H0
 curve(dchisq(x, df=df.resid), from=0, to=50, xlab="Deviance", ylab="Density")
 abline(v=Dev, lwd=3, col="red")
 @
-\centering
+{\centering
 \includegraphics[width=0.8\textwidth]{figure/chisq-1} \\
+}
+The red line is the residual deviance. We fail to reject the null
+hypothesis, and we conclude that the Poisson model fits the data
+well.  \\
 \end{frame}
 
 
