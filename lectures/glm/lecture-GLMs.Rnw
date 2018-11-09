@@ -61,6 +61,8 @@ knit_theme$set("edit-kwrite")
 
 \section{Generalized linear models}
 
+
+
 \begin{frame}
   \frametitle{Motivation}
   %% {\bf Limitations of linear models}
@@ -95,6 +97,35 @@ knit_theme$set("edit-kwrite")
 
 
 
+\begin{frame}
+  \frametitle{Outline}
+  {\bf Logistic regression \\}
+  \begin{itemize}
+    \item The response variable is usually binary
+      % \begin{itemize}
+      %   \item Presence/absence data
+      %   \item Yes/no data
+      % \end{itemize}
+    \item The response variable is modeled with a binomial distribution
+    \item The probability of success is usually modeled with a linear
+      model on the logit scale
+  \end{itemize}
+  \pause
+  \vfill
+  {\bf Poisson regression \\}
+  \begin{itemize}
+    \item The response variable is a non-negative integer
+      % \begin{itemize}
+      %   \item Count data
+      % \end{itemize}
+    \item The response variable is modeled with a Poisson distribution
+    \item The expected count is usually modeled with a linear
+      model on the log scale
+  \end{itemize}
+  \vfill
+\end{frame}
+
+
 
 % \begin{frame}
 %   \frametitle{From linear to generalized linear}
@@ -115,12 +146,13 @@ knit_theme$set("edit-kwrite")
 
 \begin{frame}
   \frametitle{From linear to generalized linear}
-%  {\bf Linear model}
-%  \begin{gather*}
-%    \mu_i = \beta_0 + \beta_1 x_{i1} + \beta_2 x_{i2} + \cdots \\
-%    y_i \sim \mathrm{Normal}(\mu_i, \sigma^2)
-%  \end{gather*}
-%  \pause
+  {\bf Linear model}
+  \begin{gather*}
+    \mu_i = \beta_0 + \beta_1 x_{i1} + \beta_2 x_{i2} + \cdots \\
+    y_i \sim \mathrm{Normal}(\mu_i, \sigma^2)
+  \end{gather*}
+  \pause
+  \vfill
   {\bf Generalized Linear model}
   \begin{gather*}
     g(\mu_i) = \beta_0 + \beta_1 x_{i1} + \beta_2 x_{i2} + \cdots \\
@@ -168,10 +200,10 @@ knit_theme$set("edit-kwrite")
 %    \item
   The link function ($g$) does the reverse \\
 %    \item
-  \pause
-  \vfill
-  The two link functions that you will see most often are the
-      ``logit'' and ``log'' links.
+%  \pause
+%  \vfill
+%  The two link functions that you will see most often are the
+%      ``logit'' and ``log'' links.
 %  \end{itemize}
 \end{frame}
 
@@ -180,7 +212,7 @@ knit_theme$set("edit-kwrite")
   \frametitle{Link functions}
   \begin{tabular}{llcc}
     \hline
-    Distribution & link name\footnote{These are the most commonly used link functions for each distribution, but others are available} & link equation             & inverse link equation       \\
+    Distribution & link name\footnote{\scriptsize These are the most common link functions, but others are available} & link equation             & inverse link equation       \\
     \hline
 %    Normal       & identity  & $\mu$                     & ${\bf X}{\bm \beta}$  \\
 %                 &           &                           &                             \\
@@ -237,27 +269,27 @@ knit_theme$set("edit-kwrite")
   \frametitle{Logit link example}
   \vspace{-5pt}
   \scriptsize
-<<logit-p,size='scriptsize'>>=
+<<logit-p,size='tiny'>>=
 beta0 <- 5
 beta1 <- -0.08
 elevation <- 100
 (logit.p <- beta0 + beta1*elevation)
 @
 \pause
-{How do we convert -3 to a probability? \pause Use the
+{How do we convert \Sexpr{logit.p} to a probability? \pause Use the
   inverse-link: \\}
-<<inv-logit,size='scriptsize'>>=
+<<inv-logit,size='tiny'>>=
 p <- exp(logit.p)/(1+exp(logit.p))
 p
 @
 \pause
 {Same as:}
-<<plogis,size='scriptsize'>>=
+<<plogis,size='tiny'>>=
 plogis(logit.p)
 @
 \pause
 {To go back, use the link function itself:}
-<<logit,size='scriptsize'>>=
+<<logit,size='tiny'>>=
 log(p/(1-p))
 qlogis(p)
 @
@@ -269,7 +301,6 @@ qlogis(p)
   \frametitle{Logit link example}
 <<nologit,fig.show='hide',fig.width=6,fig.height=4,size='scriptsize'>>=
 plot(function(x) 5 + -0.08*x, from=0, to=100,
-     main="Without the logit transformation",
      xlab="Elevation", ylab="logit(prob of occurrence)")
 @
 %\begin{center}
@@ -285,7 +316,6 @@ plot(function(x) 5 + -0.08*x, from=0, to=100,
   \frametitle{Logit link example}
 <<logit2,fig.show='hide',fig.width=6,fig.height=4,size='scriptsize'>>=
 plot(function(x) plogis(5 + -0.08*x), from=0, to=100,
-     main="With the logit transformation",
      xlab="Elevation", ylab="Probability of occurrence")
 @
 %\begin{center}
@@ -330,6 +360,30 @@ plot(function(x) plogis(5 + -0.08*x), from=0, to=100,
       \end{itemize}
 %  \end{itemize}
 \end{frame}
+
+
+
+%\begin{frame}[fragile]
+%  \frametitle{Logistic Regression}
+<<simFrogs,echo=FALSE,results='hide'>>=
+set.seed(43340)
+n <- 30
+elev <- round(runif(n, 0, 500))
+habitat <- gl(3, 10, labels=c("Oak", "Maple", "Pine"))
+beta0 <- -1
+beta1 <- 0.01
+mu <- plogis(beta0 + beta1*elev)
+summary(mu)
+y <- rbinom(n, 1, mu)
+frogData <- data.frame(presence=y,
+                       abundance=rpois(n, exp(beta0 + beta1*elev)),
+                       elevation=elev, habitat)
+glm1 <- glm(presence ~ elev+habitat, family=binomial(link="logit"), data=frogData)
+summary(glm1)
+anova(glm1)
+@
+%\end{frame}
+
 
 
 \begin{frame}
@@ -383,7 +437,7 @@ plot(0:5, dbinom(0:5, 5, 0.9), type="h",
   \frametitle{Binomial Distribution}
   {\bf Properties}
   \begin{itemize}
-    \item The mean is $Np$
+    \item The expected value of $y$ is $Np$
     \item The variance is $Np(1-p)$
   \end{itemize}
   \pause
@@ -399,30 +453,14 @@ plot(0:5, dbinom(0:5, 5, 0.9), type="h",
 \end{frame}
 
 
-\section{The {\tt glm} function}
+% \section{The {\tt glm} function}
+
 
 \begin{frame}[fragile]
   \frametitle{Worked example using {\tt glm}}
-<<simFrogs,echo=FALSE,results='hide'>>=
-set.seed(43340)
-n <- 30
-elev <- round(runif(n, 0, 500))
-habitat <- gl(3, 10, labels=c("Oak", "Maple", "Pine"))
-beta0 <- -1
-beta1 <- 0.01
-mu <- plogis(beta0 + beta1*elev)
-summary(mu)
-y <- rbinom(n, 1, mu)
-frogData <- data.frame(presence=y,
-                       abundance=rpois(n, exp(beta0 + beta1*elev)),
-                       elevation=elev, habitat)
-glm1 <- glm(presence ~ elev+habitat, family=binomial(link="logit"), data=frogData)
-summary(glm1)
-anova(glm1)
-@
 \begin{columns}
   \begin{column}{0.45\textwidth}
-    \tiny
+  \tiny
 <<frogData,size='tiny'>>=
 frogData
 @
@@ -576,7 +614,7 @@ lines(upper ~ elevation, newdat, lty=2)
   \vfill
   {\bf Properties}
   \begin{itemize}
-    \item The mean ($\lambda$) is equal to the variance
+    \item The expected value of $y$ ($\lambda$) is equal to the variance
     \item This is an assumption of the Poisson model
     \item Like all assumptions, it can be relaxed if you have enough data
   \end{itemize}
@@ -625,7 +663,6 @@ plot(x, dpois(x, lambda=10), type="h", lwd=5, col="blue", lend="butt",
   \footnotesize
 <<nolog,fig.show='hide',fig.width=7,fig.height=5,size='footnotesize'>>=
 plot(function(x) 5 + -0.08*x, from=0, to=100,
-     main="Without the log transformation",
      xlab="Elevation", ylab="log(Expected abundance)")
 @
 \begin{center}
@@ -641,7 +678,6 @@ plot(function(x) 5 + -0.08*x, from=0, to=100,
   \footnotesize
 <<log,fig.show='hide',fig.width=7,fig.height=5,size='footnotesize'>>=
 plot(function(x) exp(5 + -0.08*x), from=0, to=100,
-     main="With the log transformation",
      xlab="Elevation", ylab="Expected abundance")
 @
 \begin{center}
@@ -740,51 +776,90 @@ lines(upper ~ elevation, newdat, lty=2)
 
 
 
-\begin{frame}
-  \frametitle{Parametric bootstrap}
-  {\bf Algorithm}
-  \begin{enumerate}[\bf (1)]
-    \item Simulate a dataset
-    \item Fit model to simulated dataset
-    \item Compute fit statistic (measures distance between observed and expected values)
-    \item Repeat steps 1--3 many times
-    \item Compare distribution of simulated fit statistics to fit
-      statistic of observed data
-  \end{enumerate}
-\end{frame}
-
-
-
 \begin{frame}[fragile]
-  \frametitle{Parametric bootstrap}
-  \footnotesize
-<<pb,fig.show='hide'>>=
-nSims <- 500
-simOut <- rep(NA, nSims)
-sse <- function(x) sum(resid(x)^2)
-for(i in 1:nSims) {
-    frogData$sim.star <- simulate(fm2)[,1]
-    fm.star <- glm(sim.star ~ habitat + elevation,
-                   poisson, frogData)
-    simOut[i] <- sse(fm.star)
-}
-hist(simOut,
-     xlab="Fit statistic (sum of squared residuals)",
-     main="Model fits the data well", col="aquamarine",
-     cex.lab=1.5)
-abline(v=sse(fm2), lwd=3, lty=3)
+  \frametitle{Goodness-of-fit}
+The fit of a Poisson regression can be assessed using a $\chi^2$
+test. \\
+\pause
+\vfill
+The test statistic is the residual deviance:
+\[
+  D = 2 \left\{\sum y_i \frac{y_i}{\hat{\lambda_i}} - (y_i-\lambda_i)\right\}
+\]
+\pause
+\vfill
+If the null hypothesis is true (ie, the model fits the data), $D$ should
+follow $\chi^2$ distribution with $N-K$ degrees-of-freedom.
+\pause
+\vfill
+<<dev,size='footnotesize'>>=
+N <- nrow(frogData)                   # sample size
+K <- length(coef(fm2))                # number of parameters
+df.resid <- N-K                       # degrees-of-freedom
+Dev <- deviance(fm2)                  # residual deviance
+p.value <- 1-pchisq(Dev, df=df.resid) # p-value
+p.value                               # fail to reject H0
 @
 \end{frame}
 
 
 
-\begin{frame}
-  \frametitle{Parametric bootstrap}
-  \begin{center}
-    \includegraphics[width=0.7\textwidth]{figure/pb-1}
-  \end{center}
-\end{frame}
 
+% \begin{frame}
+%   \frametitle{Parametric bootstrap}
+%   {\bf Algorithm}
+%   \begin{enumerate}[\bf (1)]
+%     \item Simulate a dataset
+%     \item Fit model to simulated dataset
+%     \item Compute fit statistic (measures distance between observed and expected values)
+%     \item Repeat steps 1--3 many times
+%     \item Compare distribution of simulated fit statistics to fit
+%       statistic of observed data
+%   \end{enumerate}
+% \end{frame}
+
+
+
+% \begin{frame}[fragile]
+%   \frametitle{Parametric bootstrap}
+%   \footnotesize
+% <<pb,fig.show='hide'>>=
+% nSims <- 500
+% simOut <- rep(NA, nSims)
+% sse <- function(x) sum(resid(x)^2)
+% for(i in 1:nSims) {
+%     frogData$sim.star <- simulate(fm2)[,1]
+%     fm.star <- glm(sim.star ~ habitat + elevation,
+%                    poisson, frogData)
+%     simOut[i] <- sse(fm.star)
+% }
+% hist(simOut,
+%      xlab="Fit statistic (sum of squared residuals)",
+%      main="Model fits the data well", col="aquamarine",
+%      cex.lab=1.5)
+% abline(v=sse(fm2), lwd=3, lty=3)
+% @
+% \end{frame}
+
+
+
+% \begin{frame}
+%   \frametitle{Parametric bootstrap}
+%   \begin{center}
+%     \includegraphics[width=0.7\textwidth]{figure/pb-1}
+%   \end{center}
+% \end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{$\chi^2$ distribution and residual deviance}
+<<chisq,fig.show='hide',fig.width=7,fig.height=5,size='tiny'>>=
+curve(dchisq(x, df=df.resid), from=0, to=50, xlab="Deviance", ylab="Density")
+abline(v=Dev, lwd=3, col="red")
+@
+\centering
+\includegraphics[width=0.8\textwidth]{figure/chisq-1} \\
+\end{frame}
 
 
 

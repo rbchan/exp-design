@@ -93,6 +93,8 @@
 
 \section{Generalized linear models}
 
+
+
 \begin{frame}
   \frametitle{Motivation}
   %% {\bf Limitations of linear models}
@@ -127,6 +129,35 @@
 
 
 
+\begin{frame}
+  \frametitle{Outline}
+  {\bf Logistic regression \\}
+  \begin{itemize}
+    \item The response variable is usually binary
+      % \begin{itemize}
+      %   \item Presence/absence data
+      %   \item Yes/no data
+      % \end{itemize}
+    \item The response variable is modeled with a binomial distribution
+    \item The probability of success is usually modeled with a linear
+      model on the logit scale
+  \end{itemize}
+  \pause
+  \vfill
+  {\bf Poisson regression \\}
+  \begin{itemize}
+    \item The response variable is a non-negative integer
+      % \begin{itemize}
+      %   \item Count data
+      % \end{itemize}
+    \item The response variable is modeled with a Poisson distribution
+    \item The expected count is usually modeled with a linear
+      model on the log scale
+  \end{itemize}
+  \vfill
+\end{frame}
+
+
 
 % \begin{frame}
 %   \frametitle{From linear to generalized linear}
@@ -147,12 +178,13 @@
 
 \begin{frame}
   \frametitle{From linear to generalized linear}
-%  {\bf Linear model}
-%  \begin{gather*}
-%    \mu_i = \beta_0 + \beta_1 x_{i1} + \beta_2 x_{i2} + \cdots \\
-%    y_i \sim \mathrm{Normal}(\mu_i, \sigma^2)
-%  \end{gather*}
-%  \pause
+  {\bf Linear model}
+  \begin{gather*}
+    \mu_i = \beta_0 + \beta_1 x_{i1} + \beta_2 x_{i2} + \cdots \\
+    y_i \sim \mathrm{Normal}(\mu_i, \sigma^2)
+  \end{gather*}
+  \pause
+  \vfill
   {\bf Generalized Linear model}
   \begin{gather*}
     g(\mu_i) = \beta_0 + \beta_1 x_{i1} + \beta_2 x_{i2} + \cdots \\
@@ -200,10 +232,10 @@
 %    \item
   The link function ($g$) does the reverse \\
 %    \item
-  \pause
-  \vfill
-  The two link functions that you will see most often are the
-      ``logit'' and ``log'' links.
+%  \pause
+%  \vfill
+%  The two link functions that you will see most often are the
+%      ``logit'' and ``log'' links.
 %  \end{itemize}
 \end{frame}
 
@@ -212,7 +244,7 @@
   \frametitle{Link functions}
   \begin{tabular}{llcc}
     \hline
-    Distribution & link name\footnote{These are the most commonly used link functions for each distribution, but others are available} & link equation             & inverse link equation       \\
+    Distribution & link name\footnote{\scriptsize These are the most common link functions, but others are available} & link equation             & inverse link equation       \\
     \hline
 %    Normal       & identity  & $\mu$                     & ${\bf X}{\bm \beta}$  \\
 %                 &           &                           &                             \\
@@ -269,7 +301,7 @@
   \frametitle{Logit link example}
   \vspace{-5pt}
   \scriptsize
-\begin{knitrout}\scriptsize
+\begin{knitrout}\tiny
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlstd{beta0} \hlkwb{<-} \hlnum{5}
@@ -285,7 +317,7 @@
 \pause
 {How do we convert -3 to a probability? \pause Use the
   inverse-link: \\}
-\begin{knitrout}\scriptsize
+\begin{knitrout}\tiny
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlstd{p} \hlkwb{<-} \hlkwd{exp}\hlstd{(logit.p)}\hlopt{/}\hlstd{(}\hlnum{1}\hlopt{+}\hlkwd{exp}\hlstd{(logit.p))}
@@ -298,7 +330,7 @@
 \end{knitrout}
 \pause
 {Same as:}
-\begin{knitrout}\scriptsize
+\begin{knitrout}\tiny
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlkwd{plogis}\hlstd{(logit.p)}
@@ -310,7 +342,7 @@
 \end{knitrout}
 \pause
 {To go back, use the link function itself:}
-\begin{knitrout}\scriptsize
+\begin{knitrout}\tiny
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlkwd{log}\hlstd{(p}\hlopt{/}\hlstd{(}\hlnum{1}\hlopt{-}\hlstd{p))}
@@ -336,7 +368,6 @@
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlkwd{plot}\hlstd{(}\hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{)} \hlnum{5} \hlopt{+ -}\hlnum{0.08}\hlopt{*}\hlstd{x,} \hlkwc{from}\hlstd{=}\hlnum{0}\hlstd{,} \hlkwc{to}\hlstd{=}\hlnum{100}\hlstd{,}
-     \hlkwc{main}\hlstd{=}\hlstr{"Without the logit transformation"}\hlstd{,}
      \hlkwc{xlab}\hlstd{=}\hlstr{"Elevation"}\hlstd{,} \hlkwc{ylab}\hlstd{=}\hlstr{"logit(prob of occurrence)"}\hlstd{)}
 \end{alltt}
 \end{kframe}
@@ -356,7 +387,6 @@
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlkwd{plot}\hlstd{(}\hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{)} \hlkwd{plogis}\hlstd{(}\hlnum{5} \hlopt{+ -}\hlnum{0.08}\hlopt{*}\hlstd{x),} \hlkwc{from}\hlstd{=}\hlnum{0}\hlstd{,} \hlkwc{to}\hlstd{=}\hlnum{100}\hlstd{,}
-     \hlkwc{main}\hlstd{=}\hlstr{"With the logit transformation"}\hlstd{,}
      \hlkwc{xlab}\hlstd{=}\hlstr{"Elevation"}\hlstd{,} \hlkwc{ylab}\hlstd{=}\hlstr{"Probability of occurrence"}\hlstd{)}
 \end{alltt}
 \end{kframe}
@@ -403,6 +433,14 @@
       \end{itemize}
 %  \end{itemize}
 \end{frame}
+
+
+
+%\begin{frame}[fragile]
+%  \frametitle{Logistic Regression}
+
+%\end{frame}
+
 
 
 \begin{frame}
@@ -454,7 +492,7 @@
   \frametitle{Binomial Distribution}
   {\bf Properties}
   \begin{itemize}
-    \item The mean is $Np$
+    \item The expected value of $y$ is $Np$
     \item The variance is $Np(1-p)$
   \end{itemize}
   \pause
@@ -470,14 +508,14 @@
 \end{frame}
 
 
-\section{The {\tt glm} function}
+% \section{The {\tt glm} function}
+
 
 \begin{frame}[fragile]
   \frametitle{Worked example using {\tt glm}}
-
 \begin{columns}
   \begin{column}{0.45\textwidth}
-    \tiny
+  \tiny
 \begin{knitrout}\tiny
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
@@ -722,7 +760,7 @@
   \vfill
   {\bf Properties}
   \begin{itemize}
-    \item The mean ($\lambda$) is equal to the variance
+    \item The expected value of $y$ ($\lambda$) is equal to the variance
     \item This is an assumption of the Poisson model
     \item Like all assumptions, it can be relaxed if you have enough data
   \end{itemize}
@@ -758,7 +796,6 @@
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlkwd{plot}\hlstd{(}\hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{)} \hlnum{5} \hlopt{+ -}\hlnum{0.08}\hlopt{*}\hlstd{x,} \hlkwc{from}\hlstd{=}\hlnum{0}\hlstd{,} \hlkwc{to}\hlstd{=}\hlnum{100}\hlstd{,}
-     \hlkwc{main}\hlstd{=}\hlstr{"Without the log transformation"}\hlstd{,}
      \hlkwc{xlab}\hlstd{=}\hlstr{"Elevation"}\hlstd{,} \hlkwc{ylab}\hlstd{=}\hlstr{"log(Expected abundance)"}\hlstd{)}
 \end{alltt}
 \end{kframe}
@@ -778,7 +815,6 @@
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlkwd{plot}\hlstd{(}\hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{)} \hlkwd{exp}\hlstd{(}\hlnum{5} \hlopt{+ -}\hlnum{0.08}\hlopt{*}\hlstd{x),} \hlkwc{from}\hlstd{=}\hlnum{0}\hlstd{,} \hlkwc{to}\hlstd{=}\hlnum{100}\hlstd{,}
-     \hlkwc{main}\hlstd{=}\hlstr{"With the log transformation"}\hlstd{,}
      \hlkwc{xlab}\hlstd{=}\hlstr{"Elevation"}\hlstd{,} \hlkwc{ylab}\hlstd{=}\hlstr{"Expected abundance"}\hlstd{)}
 \end{alltt}
 \end{kframe}
@@ -929,55 +965,101 @@
 
 
 
-\begin{frame}
-  \frametitle{Parametric bootstrap}
-  {\bf Algorithm}
-  \begin{enumerate}[\bf (1)]
-    \item Simulate a dataset
-    \item Fit model to simulated dataset
-    \item Compute fit statistic (measures distance between observed and expected values)
-    \item Repeat steps 1--3 many times
-    \item Compare distribution of simulated fit statistics to fit
-      statistic of observed data
-  \end{enumerate}
-\end{frame}
-
-
-
 \begin{frame}[fragile]
-  \frametitle{Parametric bootstrap}
-  \footnotesize
-\begin{knitrout}
+  \frametitle{Goodness-of-fit}
+The fit of a Poisson regression can be assessed using a $\chi^2$
+test. \\
+\pause
+\vfill
+The test statistic is the residual deviance:
+\[
+  D = 2 \left\{\sum y_i \frac{y_i}{\hat{\lambda_i}} - (y_i-\lambda_i)\right\}
+\]
+\pause
+\vfill
+If the null hypothesis is true (ie, the model fits the data), $D$ should
+follow $\chi^2$ distribution with $N-K$ degrees-of-freedom.
+\pause
+\vfill
+\begin{knitrout}\footnotesize
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlstd{nSims} \hlkwb{<-} \hlnum{500}
-\hlstd{simOut} \hlkwb{<-} \hlkwd{rep}\hlstd{(}\hlnum{NA}\hlstd{, nSims)}
-\hlstd{sse} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{)} \hlkwd{sum}\hlstd{(}\hlkwd{resid}\hlstd{(x)}\hlopt{^}\hlnum{2}\hlstd{)}
-\hlkwa{for}\hlstd{(i} \hlkwa{in} \hlnum{1}\hlopt{:}\hlstd{nSims) \{}
-    \hlstd{frogData}\hlopt{$}\hlstd{sim.star} \hlkwb{<-} \hlkwd{simulate}\hlstd{(fm2)[,}\hlnum{1}\hlstd{]}
-    \hlstd{fm.star} \hlkwb{<-} \hlkwd{glm}\hlstd{(sim.star} \hlopt{~} \hlstd{habitat} \hlopt{+} \hlstd{elevation,}
-                   \hlstd{poisson, frogData)}
-    \hlstd{simOut[i]} \hlkwb{<-} \hlkwd{sse}\hlstd{(fm.star)}
-\hlstd{\}}
-\hlkwd{hist}\hlstd{(simOut,}
-     \hlkwc{xlab}\hlstd{=}\hlstr{"Fit statistic (sum of squared residuals)"}\hlstd{,}
-     \hlkwc{main}\hlstd{=}\hlstr{"Model fits the data well"}\hlstd{,} \hlkwc{col}\hlstd{=}\hlstr{"aquamarine"}\hlstd{,}
-     \hlkwc{cex.lab}\hlstd{=}\hlnum{1.5}\hlstd{)}
-\hlkwd{abline}\hlstd{(}\hlkwc{v}\hlstd{=}\hlkwd{sse}\hlstd{(fm2),} \hlkwc{lwd}\hlstd{=}\hlnum{3}\hlstd{,} \hlkwc{lty}\hlstd{=}\hlnum{3}\hlstd{)}
+\hlstd{N} \hlkwb{<-} \hlkwd{nrow}\hlstd{(frogData)}                   \hlcom{# sample size}
+\hlstd{K} \hlkwb{<-} \hlkwd{length}\hlstd{(}\hlkwd{coef}\hlstd{(fm2))}                \hlcom{# number of parameters}
+\hlstd{df.resid} \hlkwb{<-} \hlstd{N}\hlopt{-}\hlstd{K}                       \hlcom{# degrees-of-freedom}
+\hlstd{Dev} \hlkwb{<-} \hlkwd{deviance}\hlstd{(fm2)}                  \hlcom{# residual deviance}
+\hlstd{p.value} \hlkwb{<-} \hlnum{1}\hlopt{-}\hlkwd{pchisq}\hlstd{(Dev,} \hlkwc{df}\hlstd{=df.resid)} \hlcom{# p-value}
+\hlstd{p.value}                               \hlcom{# fail to reject H0}
 \end{alltt}
+\begin{verbatim}
+## [1] 0.3556428
+\end{verbatim}
 \end{kframe}
 \end{knitrout}
 \end{frame}
 
 
 
-\begin{frame}
-  \frametitle{Parametric bootstrap}
-  \begin{center}
-    \includegraphics[width=0.7\textwidth]{figure/pb-1}
-  \end{center}
-\end{frame}
 
+% \begin{frame}
+%   \frametitle{Parametric bootstrap}
+%   {\bf Algorithm}
+%   \begin{enumerate}[\bf (1)]
+%     \item Simulate a dataset
+%     \item Fit model to simulated dataset
+%     \item Compute fit statistic (measures distance between observed and expected values)
+%     \item Repeat steps 1--3 many times
+%     \item Compare distribution of simulated fit statistics to fit
+%       statistic of observed data
+%   \end{enumerate}
+% \end{frame}
+
+
+
+% \begin{frame}[fragile]
+%   \frametitle{Parametric bootstrap}
+%   \footnotesize
+% <<pb,fig.show='hide'>>=
+% nSims <- 500
+% simOut <- rep(NA, nSims)
+% sse <- function(x) sum(resid(x)^2)
+% for(i in 1:nSims) {
+%     frogData$sim.star <- simulate(fm2)[,1]
+%     fm.star <- glm(sim.star ~ habitat + elevation,
+%                    poisson, frogData)
+%     simOut[i] <- sse(fm.star)
+% }
+% hist(simOut,
+%      xlab="Fit statistic (sum of squared residuals)",
+%      main="Model fits the data well", col="aquamarine",
+%      cex.lab=1.5)
+% abline(v=sse(fm2), lwd=3, lty=3)
+% @
+% \end{frame}
+
+
+
+% \begin{frame}
+%   \frametitle{Parametric bootstrap}
+%   \begin{center}
+%     \includegraphics[width=0.7\textwidth]{figure/pb-1}
+%   \end{center}
+% \end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{$\chi^2$ distribution and residual deviance}
+\begin{knitrout}\tiny
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{curve}\hlstd{(}\hlkwd{dchisq}\hlstd{(x,} \hlkwc{df}\hlstd{=df.resid),} \hlkwc{from}\hlstd{=}\hlnum{0}\hlstd{,} \hlkwc{to}\hlstd{=}\hlnum{50}\hlstd{,} \hlkwc{xlab}\hlstd{=}\hlstr{"Deviance"}\hlstd{,} \hlkwc{ylab}\hlstd{=}\hlstr{"Density"}\hlstd{)}
+\hlkwd{abline}\hlstd{(}\hlkwc{v}\hlstd{=Dev,} \hlkwc{lwd}\hlstd{=}\hlnum{3}\hlstd{,} \hlkwc{col}\hlstd{=}\hlstr{"red"}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\centering
+\includegraphics[width=0.8\textwidth]{figure/chisq-1} \\
+\end{frame}
 
 
 
