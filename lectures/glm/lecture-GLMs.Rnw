@@ -784,7 +784,7 @@ test. \\
 \vfill
 The test statistic is the residual deviance:
 \[
-  D = 2 \left\{\sum y_i \frac{y_i}{\hat{\lambda_i}} - (y_i-\lambda_i)\right\}
+  D = 2 \left\{\sum y_i \log\left(\frac{y_i}{\hat{\lambda_i}}\right) - (y_i-\lambda_i)\right\}
 \]
 \pause
 \vfill
