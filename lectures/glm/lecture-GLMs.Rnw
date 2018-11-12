@@ -771,7 +771,7 @@ lines(upper ~ elevation, newdat, lty=2)
     variance of the response variable. \\}
   \pause
   \vfill
-  {For example, the presence of many zeros is not necessarily
+  {The presence of many zeros is not necessarily
     indicative of overdispersion. \\}
   \pause
   \vfill
