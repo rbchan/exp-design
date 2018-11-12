@@ -628,19 +628,17 @@ lines(upper ~ elevation, newdat, lty=2)
 \begin{frame}[fragile]
   \frametitle{Poisson distribution}
 <<pois1,fig.show='hide',echo=FALSE>>=
-x <- 1:25
+x <- 0:25
 plot(x, dpois(x, lambda=1), type="h", lwd=5, col="blue", lend="butt",
      xlab="Response variable", ylab="Probability",
      main=expression(paste("Poisson(", lambda, "= 1)", sep="")), cex.lab=1.5 )
 @
 <<pois2,fig.show='hide',echo=FALSE>>=
-x <- 1:25
 plot(x, dpois(x, lambda=5), type="h", lwd=5, col="blue", lend="butt",
      xlab="Response variable", ylab="Probability",
      main=expression(paste("Poisson(", lambda, "= 5)", sep="")), cex.lab=1.5 )
 @
 <<pois3,fig.show='hide',echo=FALSE>>=
-x <- 1:25
 plot(x, dpois(x, lambda=10), type="h", lwd=5, col="blue", lend="butt",
      xlab="Response variable", ylab="Probability",
      main=expression(paste("Poisson(", lambda, "= 10)", sep="")), cex.lab=1.5 )
@@ -888,19 +886,17 @@ well.  \\
 \begin{frame}
   \frametitle{Negative binomial distribution}
 <<nb1,fig.show='hide',echo=FALSE>>=
-x <- 1:25
+x <- 0:25
 plot(x, dnbinom(x, mu=2, size=10), type="h", lwd=5, col="blue", lend="butt",
      xlab="Response variable", ylab="Probability",
      main=expression(paste("NegBin(", lambda, "= 2, ", alpha, "= 10", ")", sep="")), cex.lab=1.5 )
 @
 <<nb2,fig.show='hide',echo=FALSE>>=
-x <- 1:25
 plot(x, dnbinom(x, mu=2, size=5), type="h", lwd=5, col="blue", lend="butt",
      xlab="Response variable", ylab="Probability",
      main=expression(paste("NegBin(", lambda, "= 2, ", alpha, "= 5", ")", sep="")), cex.lab=1.5 )
 @
 <<nb3,fig.show='hide',echo=FALSE>>=
-x <- 1:25
 plot(x, dnbinom(x, mu=2, size=.1), type="h", lwd=5, col="blue", lend="butt",
      xlab="Response variable", ylab="Probability",
      main=expression(paste("NegBin(", lambda, "= 2, ", alpha, "= 0.1", ")", sep="")), cex.lab=1.5 )
