@@ -306,12 +306,12 @@ lines(upper ~ elevation, predData.elev, lty=2)
 <<simCrowData,purl=FALSE,include=FALSE>>=
 set.seed(389)
 N <- 100
-landcover <- factor(c(rep("Urban", N/2), rep("Rural", N/2)))
+landscape <- factor(c(rep("Urban", N/2), rep("Rural", N/2)))
 latitude <- runif(N, 20, 50)
-X <- model.matrix(~latitude+landcover)
+X <- model.matrix(~latitude+landscape)
 p <- plogis(X %*% c(2, -0.05, 1.5))
 infected <- rbinom(N, 1, p)
-crowData <- data.frame(infected, landcover, latitude)
+crowData <- data.frame(infected, landscape, latitude)
 write.csv(crowData, file="crowData.csv", row.names=FALSE)
 ## summary(glm(infected ~ latitude+landcover, binomial, crowData))
 @

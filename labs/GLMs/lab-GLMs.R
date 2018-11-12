@@ -26,10 +26,10 @@ points(presence ~ elevation, frogData)
 lines(lower ~ elevation, data=predData.elev, lty=2)
 lines(upper ~ elevation, data=predData.elev, lty=2)
 
-## ----habitat,fig.show='hide',size='tiny'---------------------------------
+## ----habitat,fig.show='hide',size='tiny',fig.width=6,fig.height=6--------
 predData.hab <- data.frame(habitat=c("Oak", "Maple", "Pine"), elevation=250)
 pred <- predict(fm1, newdata=predData.hab, se.fit=TRUE, type="link")
-bp <- barplot(plogis(pred$fit), ylab="Probability of occurrence",
+bp <- barplot(plogis(pred$fit), ylab="Probability of occurrence", cex.lab=1.5,
               names=c("Oak", "Maple", "Pine"), col="lightblue", ylim=c(0, 1.1))
 arrows(bp, plogis(pred$fit), bp, plogis(pred$fit + pred$se.fit),
        angle=90, code=3, length=0.1)
