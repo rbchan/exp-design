@@ -115,12 +115,22 @@ variable and time is of interest.
 - Multivariate approach using `manova` with Wilks' lambda or Pillai's trace
 
 
-
-
 ### [Week 11 - ANCOVA](ANCOVA/ANCOVA.md)
 
 Analysis of covariance in which one explantory variable is a factor,
 and the other is a continuous variable.
 
-- Model fitting with `lm` 
+- Model fitting with `lm`
 - Predictions with `predict`
+
+
+
+### Week 12 - Linear models
+
+Stepping back to look at linear models
+
+
+
+### [Week 13 - Generalized linear models](GLMs/GLMs.md)
+
+Logistic regression and Poisson regression with `glm`
