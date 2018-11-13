@@ -52,7 +52,7 @@ knit_theme$set("edit-kwrite")
   \vspace{1cm}
 %  \LARGE
   \large
-  November 29 \& 31, 2017
+  November 14 \& 26, 2018
 \end{frame}
 
 
@@ -60,40 +60,59 @@ knit_theme$set("edit-kwrite")
 
 
 
+%% \begin{frame}
+%%   \frametitle{References}
+%%   {\bf Well known book:} \\
+%%   Burnham, K.P. and D.R. Anderson. 2002. Model Selection and
+%%   Multimodel Inference. Springer.\\
+%%   \vspace{0.5cm}
+%%   {\bf Great overview:} \\
+%%   \url{http://www.stats.ox.ac.uk/~ripley/ModelChoice.pdf} \\
+%% \end{frame}
+
+
+
 \begin{frame}
-  \frametitle{References}
-  {\bf Well known book:} \\
-  Burnham, K.P. and D.R. Anderson. 2002. Model Selection and
-  Multimodel Inference. Springer.\\
-  \vspace{0.5cm}
-  {\bf Great overview:} \\
-  \url{http://www.stats.ox.ac.uk/~ripley/ModelChoice.pdf} \\
+  \frametitle{Overview}
+  As scientists, we usually have more than one hypothesis \\
+  \pause
+  \vfill
+  Consequently, we usually want to evaluate more than one model \\
+  \pause
+  \vfill
+  {\bf Model selection} is the process of choosing which model is most
+  supported by our data \\
+  \pause
+  \vfill
+  In cases where more than one model is highly supported, we can make
+  inferences from multiple models using {\bf model averaging} \\
 \end{frame}
 
 
 
 \begin{frame}
   \frametitle{Questions}
-  \Large
-{How do we know which model is best? \par}
+  \large
+  {How do we know which model is best? \par}
   \pause
   \vspace{0.9cm}
-{ Are any of them any good? \par}
+  { Are any of them any good? \par}
   \pause
   \vspace{0.9cm}
-{What is a good model? \par}
+  {What is a good model? \par}
 \end{frame}
 
 
 \begin{frame}
   \frametitle{What is a good model?}
-  \Large
+%  \large
   {\bf Explanation \par}
-  A good model should be a good approximation of reality \\
+  A good model should be a good approximation of reality. It should
+  describe how things actually work. \\
   \pause
   \vspace{0.5cm}
   {\bf Prediction \par}
-  A good model should have good predictive abilities
+  A good model should have good predictive abilities. 
 \end{frame}
 
 
@@ -110,10 +129,12 @@ As scientists, we want
 \vspace{1cm}
 Why do we want simplicity?
 \pause
-\begin{quote}
-  ``All models are wrong but some are useful''
-\end{quote}
-{\small \flushright G.E.P. Box, 1976 \par}
+%\begin{quote}
+%  ``All models are wrong but some are useful''
+%\end{quote}
+%{\small \flushright G.E.P. Box, 1976 \par}
+Overly-complicated models don't predict well. They are too specific to
+a particular dataset to be useful for generalization. 
 \end{frame}
 
 
@@ -171,28 +192,6 @@ Why do we want simplicity?
   \end{itemize}
 \end{frame}
 
-
-\begin{frame}
-  \frametitle{Limitations of $p$-values}
-  \large
-  Null hypotheses are rarely true
-  \pause
-  \vfill
-  $p$-value tells us nothing about the alternative hypothesis
-  \pause
-  \vfill
-  Specification of $\alpha$ is arbitrary
-  \pause
-  \vfill
-  Significance is a function of sample size
-  \pause
-  \vfill
-  Statistical significance does not equal biological significance
-  \pause
-  \vfill
-  \centering \bf
-  The use of AIC avoids some of these issues \\
-\end{frame}
 
 
 
@@ -413,6 +412,34 @@ Why do we want simplicity?
     \vfill
     Always assess the fit of your best model.
 %  \end{itemize}
+\end{frame}
+
+
+
+
+\begin{frame}
+  \frametitle{AIC as an alternative to null hypothesis testing} %Limitations of $p$-values}
+  \large
+  The use of AIC avoids some of the limitations of null hypothesis
+  testing, such as \\
+  \pause
+  \vfill
+  Null hypotheses are rarely true
+  \pause
+  \vfill
+  $p$-value tells us nothing about the alternative hypothesis
+  \pause
+  \vfill
+  Specification of $\alpha$ is arbitrary
+  \pause
+  \vfill
+  Significance is a function of sample size
+  \pause
+  \vfill
+  Statistical significance does not equal biological significance
+  \pause
+  \vfill
+%  \centering \bf
 \end{frame}
 
 
@@ -968,6 +995,16 @@ Why do we want simplicity?
     \vfill
     But, just like any method, it is easy to abuse
 %  \end{itemize}
+    
+  \pause
+  \vfill
+  Additional references
+  \begin{itemize}
+    \item {\bf Well known book:} Burnham, K.P. and
+      D.R. Anderson. 2002. Model Selection and 
+      Multimodel Inference. Springer.
+    \item {\bf Great overview:} \url{http://www.stats.ox.ac.uk/~ripley/ModelChoice.pdf} 
+  \end{itemize}
 \end{frame}
 
 

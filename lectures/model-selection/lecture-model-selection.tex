@@ -75,7 +75,7 @@
 \begin{document}
 
 
-\setlength\fboxsep{0pt}
+%\setlength\fboxsep{0pt}
 
 
 
@@ -84,12 +84,12 @@
 %  \huge
   \LARGE
   \centering \par
-  {\color{PineGreen}{Model Selection and %\\
-  Multimodel Inference \par}}
+  {\color{NavyBlue}{ Model Selection and %\\
+  Multimodel Inference \\}}
   \vspace{1cm}
 %  \LARGE
   \large
-  November 29 \& 31, 2017
+  November 14 \& 26, 2018
 \end{frame}
 
 
@@ -97,22 +97,32 @@
 
 
 
+%% \begin{frame}
+%%   \frametitle{References}
+%%   {\bf Well known book:} \\
+%%   Burnham, K.P. and D.R. Anderson. 2002. Model Selection and
+%%   Multimodel Inference. Springer.\\
+%%   \vspace{0.5cm}
+%%   {\bf Great overview:} \\
+%%   \url{http://www.stats.ox.ac.uk/~ripley/ModelChoice.pdf} \\
+%% \end{frame}
+
+
+
 \begin{frame}
-  \frametitle{References}
-  {\bf Well known book:} \\
-  Burnham, K.P. and D.R. Anderson. 2002. Model Selection and
-  Multimodel Inference. Springer.\\
-  \vspace{0.5cm}
-  {\bf Great overview:} \\
-  \url{http://www.stats.ox.ac.uk/~ripley/ModelChoice.pdf} \\
-%  \pause
-%  \vspace{0.5cm}
-%  {\bf ... but see:} \\ {\tiny
-%  \url{http://warnercnr.colostate.edu/~anderson/PDF_files/AIC\%20Myths\%20and\%20Misunderstandings.pdf}} \\
-%  \pause
-%  \vspace{0.5cm}
-%  {\bf ... and this:} \\
-%  \url{http://tolstoy.newcastle.edu.au/R/help/06/02/21794.html}
+  \frametitle{Overview}
+  As scientists, we usually have more than one hypothesis \\
+  \pause
+  \vfill
+  Consequently, we usually want to evaluate more than one model \\
+  \pause
+  \vfill
+  {\bf Model selection} is the process of choosing which model is most
+  supported by our data \\
+  \pause
+  \vfill
+  In cases where more than one model is highly supported, we can make
+  inferences from multiple models using {\bf model averaging} \\
 \end{frame}
 
 
@@ -120,16 +130,13 @@
 \begin{frame}
   \frametitle{Questions}
   \Large
-{How do we know which model is best? \par}
+  {How do we know which model is best? \par}
   \pause
   \vspace{0.9cm}
-{ Are any of them any good? \par}
+  { Are any of them any good? \par}
   \pause
   \vspace{0.9cm}
-{What is a good model? \par}
-%\begin{enumerate}[<+- | visible@+->][\bf \color{PineGreen} (1)]
-%\end{enumerate}
-% Mention BLOGs
+  {What is a good model? \par}
 \end{frame}
 
 
@@ -143,8 +150,6 @@
   {\bf Prediction \par}
   A good model should have good predictive abilities
 \end{frame}
-
-
 
 
 
@@ -170,7 +175,7 @@ Why do we want simplicity?
 
 \begin{frame}
   \frametitle{Prediction}
-  \Large
+  \large
   All that matters is that it works \par
   \pause
   \vspace{1cm}
@@ -190,71 +195,54 @@ Why do we want simplicity?
 
 \begin{frame}
   \frametitle{Model Selection Approaches}
-%  \Large
-%  \begin{itemize}
-%    \item<1-> Comparison of 2 models
-    Comparison of 2 models
-      \begin{itemize}
-        \item $F$-test
-        \item Likelihood-ratio ($\chi^2$) test
-      \end{itemize}
-%    \item<2-> Stepwise procedures
-      \pause
-    Stepwise procedures
-      \begin{itemize}
-        \item Forward-selection
-        \item Backward selection
-        \item Stepwise selection
-      \end{itemize}
-%    \item<3-> Information-theortic approaches
-      \pause
-    Information-theortic approaches
-      \begin{itemize}
-        \item Akaike's Information Criterion (AIC)
-        \item Bayesian Information Criterio (BIC)
-      \end{itemize}
-%    \item<4-> Cross-validation
-      \pause
-    Cross-validation
-      \begin{itemize}
-        \item Leave-one-out
-        \item $K$-fold %cross-validation
-      \end{itemize}
-%    \item<5-> Out-of-sample validation
-      \pause
-    Out-of-sample validation
-      \begin{itemize}
-        \item Compare predictions to new data
-      \end{itemize}
-%  \end{itemize}
+  Comparison of 2 models
+  \begin{itemize}
+    \item $F$-test
+    \item Likelihood-ratio ($\chi^2$) test
+  \end{itemize}
+  \pause
+  Stepwise procedures
+  \begin{itemize}
+    \item Forward-selection
+    \item Backward selection
+    \item Stepwise selection
+  \end{itemize}
+  \pause
+  Information-theortic approaches
+  \begin{itemize}
+    \item Akaike's Information Criterion (AIC)
+    \item Bayesian Information Criterio (BIC)
+  \end{itemize}
+  \pause
+  Cross-validation
+  \begin{itemize}
+    \item Leave-one-out
+    \item $K$-fold %cross-validation
+  \end{itemize}
+  \pause
+  Out-of-sample validation
+  \begin{itemize}
+    \item Compare predictions to new data
+  \end{itemize}
 \end{frame}
 
 
 \begin{frame}
-  \frametitle{Perils of $P$-values}
-  \Large
-%  \begin{itemize}[<+->]
-%    \item Null hypotheses are rarely true
-    Null hypotheses are rarely true
-    \pause
-    \vfill
-%    \item $P$-value tells us nothing about the alternative hypothesis
-    $P$-value tells us nothing about the alternative hypothesis
-    \pause
-    \vfill
-%    \item Specification of $\alpha$ is arbitrary
-    Specification of $\alpha$ is arbitrary
-    \pause
-    \vfill
-%    \item Significance is a function of sample size
-    Significance is a function of sample size
-    \pause
-    \vfill
-%    \item Statistical significance does not equal biological significance
-    Statistical significance does not equal biological significance
-%    \item Many statistical tests are only valid as sample size tends
-%      toward infinity! (in asymptopia)
-%  \end{itemize}
+  \frametitle{Limitations of $p$-values}
+  \large
+  Null hypotheses are rarely true
+  \pause
+  \vfill
+  $p$-value tells us nothing about the alternative hypothesis
+  \pause
+  \vfill
+  Specification of $\alpha$ is arbitrary
+  \pause
+  \vfill
+  Significance is a function of sample size
+  \pause
+  \vfill
+  Statistical significance does not equal biological significance
   \pause
   \vfill
   \centering \bf
@@ -1035,6 +1023,16 @@ Why do we want simplicity?
     \vfill
     But, just like any method, it is easy to abuse
 %  \end{itemize}
+    
+  \pause
+  \vfill
+  Additional references
+  \begin{itemize}
+    \item {\bf Well known book:} Burnham, K.P. and
+      D.R. Anderson. 2002. Model Selection and 
+      Multimodel Inference. Springer.
+    \item {\bf Great overview:} \url{http://www.stats.ox.ac.uk/~ripley/ModelChoice.pdf} 
+  \end{itemize}
 \end{frame}
 
 
