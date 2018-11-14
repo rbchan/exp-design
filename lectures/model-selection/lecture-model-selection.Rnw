@@ -119,7 +119,7 @@ knit_theme$set("edit-kwrite")
 
 \begin{frame}
   \frametitle{Explanation}
-  \Large
+  \large
 As scientists, we want
 \begin{quote}
   ``an explanation that is as simple as possible, but no simpler''
@@ -127,26 +127,53 @@ As scientists, we want
 {\small \flushright Einstein (paraphrased by Reader's Digest!) \par}
 \pause
 \vspace{1cm}
-Why do we want simplicity?
-\pause
+Why do we want simplicity? %\\
+%\pause
 %\begin{quote}
 %  ``All models are wrong but some are useful''
 %\end{quote}
 %{\small \flushright G.E.P. Box, 1976 \par}
-Overly-complicated models don't predict well. They are too specific to
-a particular dataset to be useful for generalization. 
 \end{frame}
+
+
+
+
+\begin{frame}
+  \frametitle{Fit and over-fit}
+  \large
+%  {\bf $r^2$ is a measure of model fit \par}
+  {$r^2$ is a measure of model fit \par}
+  \vspace{1cm}
+  \pause
+%  {\bf Questions}
+  {Questions}
+  \begin{itemize}%[<+->]
+    \item<2-> Does the addition of a new predictor variable always
+      increase $r^2$?
+    \item<3-> Do we want the model with the highest $r^2$?
+    \item<4-> What is the harm in adding ``extra'' predictor variables?
+  \end{itemize}
+  \vfill
+  \uncover<5->{Overly-complicated models don't predict well. They are
+    too specific to a particular dataset.}
+\end{frame}
+
 
 
 
 \begin{frame}
   \frametitle{Prediction}
   \large
-  All that matters is that it works \par
+  Predictive ability is assessed by comparing observed and expected
+  values \\ 
   \pause
-  \vspace{1cm}
-  This may be perfectly fine in non-scientific fields like
-  engineering, pattern recognition, etc\dots
+  \vfill
+  In non-scientific fields, we might not care about describing how
+  things actually work. We might only care about prediction. \par
+  \pause
+  \vfill
+  However, in scientific contexts we want models that are good at
+  description and prediction.
   \pause
   \vfill
   Excellent paper: \\
@@ -200,13 +227,14 @@ a particular dataset to be useful for generalization.
 
 
 
+
 \begin{frame}[fragile]
   \frametitle{AIC}
   \large
   Minus twice the (maximized) log-likelihood plus two times the number of
   parameters
 \[
- \mathrm{AIC} = -2\mathcal{L}(\hat{\theta} | {\bf y}) + 2K
+ \mathrm{AIC} = -2\mathcal{L}(\hat{\theta} ; {\bf y}) + 2K
 \]
   \pause
   Or, when ordinary least squares (OLS) is used for estimation, AIC is
@@ -226,23 +254,6 @@ a particular dataset to be useful for generalization.
 \end{frame}
 
 
-
-\begin{frame}
-  \frametitle{Fit and over-fit}
-  \large
-%  {\bf $r^2$ is a measure of model fit \par}
-  {$r^2$ is a measure of model fit \par}
-  \vspace{1cm}
-  \pause
-%  {\bf Questions}
-  {Questions}
-  \begin{itemize}[<+->]
-    \item Does the addition of a new predictor variable always
-      increase $r^2$?
-    \item Do we want the model with the highest $r^2$?
-    \item What is the harm in adding ``extra'' predictor variables?
-  \end{itemize}
-\end{frame}
 
 
 \begin{frame}
@@ -417,30 +428,27 @@ a particular dataset to be useful for generalization.
 
 
 
+
 \begin{frame}
-  \frametitle{AIC as an alternative to null hypothesis testing} %Limitations of $p$-values}
-  \large
+  \frametitle{\normalsize AIC as an alternative to null hypothesis testing} %Limitations of $p$-values}
+%  \large
   The use of AIC avoids some of the limitations of null hypothesis
-  testing, such as \\
-  \pause
-  \vfill
-  Null hypotheses are rarely true
-  \pause
-  \vfill
-  $p$-value tells us nothing about the alternative hypothesis
-  \pause
-  \vfill
-  Specification of $\alpha$ is arbitrary
-  \pause
-  \vfill
-  Significance is a function of sample size
-  \pause
-  \vfill
-  Statistical significance does not equal biological significance
-  \pause
-  \vfill
+  testing, such as: \\
+%  \pause
+%  \vfill
+  \begin{itemize}
+    \item Null hypotheses are rarely true %\pause \vfill 
+    \item A $p$-value tells us nothing about the alternative hypothesis %\pause \vfill
+    \item Specification of $\alpha$ is arbitrary %\pause \vfill 
+    \item Statistical significance is a function of sample size %\pause \vfill 
+    \item Statistical significance does not equal biological significance
+  \end{itemize}
+%  \pause
+%  \vfill
 %  \centering \bf
 \end{frame}
+
+
 
 
 
@@ -970,7 +978,7 @@ a particular dataset to be useful for generalization.
 
 \begin{frame}
   \frametitle{Summary}
-  \large
+%  \large
 %  \begin{itemize}%[<+->]
 %    \item Information-theoretic approaches avoid many of the problems
 %      associated with null hypothesis testing
@@ -989,21 +997,17 @@ a particular dataset to be useful for generalization.
     \pause
     \vfill
 %    \item Requires much more thought than accept/reject approach
-    Requires much more thought than accept/reject approach
-%    \item But, just like any method, it is easy to abuse
-    \pause
-    \vfill
-    But, just like any method, it is easy to abuse
+    Requires much more thought than accept/reject approach, but just
+    like any method, it is easy to abuse. 
 %  \end{itemize}
-    
   \pause
   \vfill
   Additional references
   \begin{itemize}
-    \item {\bf Well known book:} Burnham, K.P. and
+    \item[] {\bf Well known book:} Burnham, K.P. and
       D.R. Anderson. 2002. Model Selection and 
       Multimodel Inference. Springer.
-    \item {\bf Great overview:} \url{http://www.stats.ox.ac.uk/~ripley/ModelChoice.pdf} 
+    \item[] {\bf Great overview:} \url{http://www.stats.ox.ac.uk/~ripley/ModelChoice.pdf} 
   \end{itemize}
 \end{frame}
 
