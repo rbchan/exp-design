@@ -47,10 +47,14 @@ knit_theme$set("edit-kwrite")
 \begin{frame}[plain]
   \centering \huge
 %  \color{MidnightBlue} %\bf
-  {\color{RoyalBlue}{Lab 14 -- Model selection and Multimodel Inference}} \\
+  {\color{RoyalBlue}{Lab 14 -- Model Selection and Multimodel Inference}} \\
   \vspace{1cm}
   \LARGE
-  November 26 \& 27, 2018 \par
+  November 26 \& 27, 2018 \\
+  FANR 6750 \\
+  \vfill
+  \large
+  Richard Chandler and Bob Cooper
 \end{frame}
 
 
@@ -95,6 +99,7 @@ fm4 <- lm(sppRichness ~ forest + elevation +
 
 \begin{frame}[fragile]
   \frametitle{Model 4 -- Estimates}
+  \vspace{-5pt}
 <<fm4,size='scriptsize'>>=
 summary(fm4)
 @
@@ -109,6 +114,15 @@ summary(fm4)
 <<anova-fm4,size='scriptsize'>>=
 summary.aov(fm4)
 @
+\small
+%\vfill
+We could compute AIC using the equation
+$\mathrm{AIC}=n\log(\mathrm{RSS}/n)+2K$, where RSS is the residual
+sum-of-squares.
+\pause
+\vfill
+However, we will use the more general formula: $\mathrm{AIC} =
+-2\mathcal{L}(\hat{\theta} ; {\bf y}) + 2K$.
 \end{frame}
 
 
@@ -138,41 +152,42 @@ summary.aov(fm4)
   \frametitle{Compute AIC for each model}
   {Sample size}
   \small
-<<n>>=
+<<n,size='footnotesize'>>=
 n <- nrow(swissData)
 @
 \pause
 \vfill
-{Residual sums-of-squares (from ANOVA tables)}
-<<rss>>=
-RSS <- c(17735, 17089, 6429, 6430)
+%{Residual sums-of-squares (from ANOVA tables)}
+{log-likelihood for each model}
+<<rss,size='footnotesize'>>=
+logL <- c(logLik(fm1), logLik(fm2), logLik(fm3), logLik(fm4))
 @
 \pause
 \vfill
 %{\bf Number of parameters}
 {Number of parameters}
-<<K>>=
+<<K,size='footnotesize'>>=
 K <- c(3, 3, 5, 6)
 @
 \pause
 \vfill
 %{\bf AIC}
 {AIC}
-<<aic>>=
-AIC <- n*log(RSS/n) + 2*K
+<<aic,size='footnotesize'>>=
+AIC <- -2*logL + 2*K
 @
 \pause
 \vfill
 %  {\bf $\Delta$AIC}
   {$\Delta$AIC}
-<<delta>>=
+<<delta,size='footnotesize'>>=
 delta <- AIC - min(AIC)
 @
 \pause
 \vfill
 %  {\bf AIC Weights}
   {AIC Weights}
-<<w>>=
+<<w,size='footnotesize'>>=
 w <- exp(-0.5*delta)/sum(exp(-0.5*delta))
 @
 \end{frame}
@@ -186,7 +201,7 @@ w <- exp(-0.5*delta)/sum(exp(-0.5*delta))
 %  {\bf Put vectors in data.frame}
   {Put vectors in data.frame}
 <<ms,size='footnotesize'>>=
-ms <- data.frame(RSS, K, AIC, delta, w)
+ms <- data.frame(logL, K, AIC, delta, w)
 rownames(ms) <- c("fm1", "fm2", "fm3", "fm4")
 round(ms, digits=2)
 @
@@ -213,10 +228,12 @@ AIC(fm1, fm2, fm3, fm4)
 %{\bf Notes}
 {Notes}
 \begin{itemize}[<+->]
-  \item {\bf R} uses {\tt logLik(fm)} instead of {\tt n*log(RSS/n)}
-  \item AIC values are different but $\Delta$AIC values are the same
-  \item Either approach is fine with linear models, but log-likelihood
-    must be used with GLMs, and other models fit using maximum likelihood
+%  \item {\bf R} uses {\tt logLik(fm)} instead of {\tt n*log(RSS/n)}
+  \item If we had used the residual sums-of-squares instead of the
+    log-likelihoods, the AIC values would have been different, but the
+    $\Delta$AIC values would have been the same
+  \item Either approach is fine with linear models, but log-likelihoods
+    must be used with GLMs and other models fit using maximum likelihood
 \end{itemize}
 \end{frame}
 
@@ -241,37 +258,41 @@ AIC(fm1, fm2, fm3, fm4)
 
 
 \begin{frame}[fragile]
-  \frametitle{Prediction}
+  \frametitle{Model-specific predictions}
   \footnotesize
 %  {\bf Predict number of species at site 1000m high with 25\% forest
 %    cover, and no water, for \alert{each} model}
-  {Predict number of species at a site 1000m in elevation with 25\% forest
-    cover, and no water, for \alert{each} model}
-<<nd,size='footnotesize'>>=
-nd <- data.frame(elevation=1000, forest=25, water="No")
+  {Expected number of species at 1000m elevation, 25\% forest
+    cover, and no water, \alert{for each model}}
+<<predData1,size='scriptsize'>>=
+predData1 <- data.frame(elevation=1000, forest=25, water="No")
 @
 \pause
-\vfill
-<<E1,size='footnotesize'>>=
-E1 <- predict(fm1, newdata=nd, type="response")
-as.numeric(E1) # as.numeric() removes names (optional)
+%\vfill
+\vspace{-7pt}
+<<E1,size='scriptsize'>>=
+E1 <- predict(fm1, newdata=predData1, type="response")
+as.numeric(E1) # remove names (optional)
 @
 \pause
-\vfill
-<<E2,size='footnotesize'>>=
-E2 <- predict(fm2, newdata=nd, type="response")
+%\vfill
+\vspace{-7pt}
+<<E2,size='scriptsize'>>=
+E2 <- predict(fm2, newdata=predData1, type="response")
 as.numeric(E2)
 @
 \pause
-\vfill
-<<E3,size='footnotesize'>>=
-E3 <- predict(fm3, newdata=nd, type="response")
+%\vfill
+\vspace{-7pt}
+<<E3,size='scriptsize'>>=
+E3 <- predict(fm3, newdata=predData1, type="response")
 as.numeric(E3)
 @
 \pause
-\vfill
-<<E4,size='footnotesize'>>=
-E4 <- predict(fm4, newdata=nd, type="response")
+%\vfill
+\vspace{-7pt}
+<<E4,size='scriptsize'>>=
+E4 <- predict(fm4, newdata=predData1, type="response")
 as.numeric(E4)
 @
 \end{frame}
@@ -284,7 +305,7 @@ as.numeric(E4)
 %  {\bf Expected number of species at 1000m, 25\% forest cover, and no
 %    water, averaged over \alert{all} 4 models}
   {Expected number of species at 1000m, 25\% forest cover, and no
-    water, averaged over \alert{all} 4 models}
+    water, \alert{averaged over all 4 models}}
   \pause
   \vspace{1pt}
 <<ma>>=
@@ -301,12 +322,12 @@ E1*w[1] + E2*w[2] + E3*w[3] + E4*w[4]
 %  {\bf Predict species richness over range of forest cover, for each model}
   {Predict species richness over range of forest cover, for each model}
 <<Emat>>=
-nd <- data.frame(forest=seq(0, 100, length=50),
-                 elevation=1000, water="No")
-E1 <- predict(fm1, newdata=nd)
-E2 <- predict(fm2, newdata=nd)
-E3 <- predict(fm3, newdata=nd)
-E4 <- predict(fm4, newdata=nd)
+predData2 <- data.frame(forest=seq(0, 100, length=50),
+                        elevation=1000, water="No")
+E1 <- predict(fm1, newdata=predData2)
+E2 <- predict(fm2, newdata=predData2)
+E3 <- predict(fm3, newdata=predData2)
+E4 <- predict(fm4, newdata=predData2)
 Emat <- cbind(E1, E2, E3, E4)
 @
 \pause
@@ -323,30 +344,25 @@ Evec <- Emat %*% w
 
 
 \begin{frame}[fragile]
-  \frametitle{Model-averaged regression lines}
-  \tiny
-<<reglines,fig.show=FALSE>>=
-plot(sppRichness ~ forest, data=swissData)
-lines(E1 ~ forest, nd, col="grey")
-lines(E2 ~ forest, nd, col="grey")
-lines(E3 ~ forest, nd, col="grey")
-lines(E4 ~ forest, nd, col="grey")
-lines(Evec ~ forest, nd, col="blue", lwd=3)
+  \frametitle{Model-averaged regression line}
+<<reglines,fig.show='hide',fig.width=8,fig.height=6,size='tiny'>>=
+plot(sppRichness~forest, data=swissData, xlab="Forest cover", ylab="Species richness", cex.lab=1.5)
+lines(E1 ~ forest, predData2, col="lightgreen", lwd=4)
+lines(E2 ~ forest, predData2, col="orange", lwd=3)
+lines(E3 ~ forest, predData2, col="purple", lwd=2)
+lines(E4 ~ forest, predData2, col="red", lwd=1)
+lines(Evec ~ forest, predData2, col=rgb(0,0,1,0.2), lwd=10)
+legend(60, 30, c("Model 1","Model 2","Model 3","Model 4","Model averaged"), lty=1, cex=1.2,
+       lwd=c(4,3,2,1,10), col=c("lightgreen", "orange", "purple", "red", rgb(0,0,1,0.2)))
 @
-\begin{center}
-  \includegraphics[width=0.6\textwidth]{figure/reglines-1}
-\end{center}
+%\begin{center}
+\centering
+  \includegraphics[width=0.75\textwidth]{figure/reglines-1} \\
+%\end{center}
 \end{frame}
 
 
 
-
-
-
-%% \begin{frame}[fragile]
-%%   \frametitle{Model-average prediction maps}
-
-%% \end{frame}
 
 
 
