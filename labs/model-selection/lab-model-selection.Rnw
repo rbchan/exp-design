@@ -16,9 +16,9 @@
 source("../rnw2pdf.R")
 if(1==2) {
     ## Usage:
-    rnw2pdf("model-selection") # Don't include the file extension
-    rnw2pdf("model-selection", clean=FALSE) # Don't clean intermediate files
-    rnw2pdf("model-selection", tangle=TRUE) # If you want the .R file
+    rnw2pdf("lab-model-selection") # Don't include the file extension
+    rnw2pdf("lab-model-selection", clean=FALSE) # Don't clean intermediate files
+    rnw2pdf("lab-model-selection", tangle=TRUE) # If you want the .R file
 }
 @
 
