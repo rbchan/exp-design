@@ -1,0 +1,377 @@
+\documentclass[color=usenames,dvipsnames]{beamer}
+%\documentclass[color=usenames,dvipsnames,handout]{beamer}
+
+
+
+\usepackage[sans]{../../lab1}
+\usepackage{bm}
+
+
+\hypersetup{pdftex,pdfstartview=FitV}
+
+
+
+<<build-fun,include=FALSE,cache=TRUE,eval=FALSE,purl=FALSE>>=
+## A function to compile and open the pdf
+source("../rnw2pdf.R")
+if(1==2) {
+    ## Usage:
+    rnw2pdf("model-selection") # Don't include the file extension
+    rnw2pdf("model-selection", clean=FALSE) # Don't clean intermediate files
+    rnw2pdf("model-selection", tangle=TRUE) # If you want the .R file
+}
+@
+
+
+<<knitr-theme,include=FALSE,purl=FALSE>>=
+##knit_theme$set("navajo-night")
+knit_theme$set("edit-kwrite")
+@
+
+
+%% New command for inline code that isn't to be evaluated
+\definecolor{inlinecolor}{rgb}{0.878, 0.918, 0.933}
+\newcommand{\inr}[1]{\colorbox{inlinecolor}{\texttt{#1}}}
+
+
+
+
+
+\begin{document}
+
+
+%\setlength\fboxsep{0pt}
+
+
+
+\begin{frame}[plain]
+  \centering \huge
+%  \color{MidnightBlue} %\bf
+  {\color{RoyalBlue}{Lab 14 -- Model selection and Multimodel Inference}} \\
+  \vspace{1cm}
+  \LARGE
+  November 26 \& 27, 2018 \par
+\end{frame}
+
+
+
+
+\section{Model Fitting}
+
+
+
+\begin{frame}[plain]
+  \frametitle{Today's Topics}
+  \LARGE
+  \only<1>{\tableofcontents}%[hideallsubsections]}
+  \only<2 | handout:0>{\tableofcontents[currentsection]}%,hideallsubsections]}
+\end{frame}
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Swiss Data}
+<<swissData,size='small'>>=
+swissData <- read.csv("swissData.csv")
+head(swissData, n=11)
+@
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{Four linear models}
+<<four-lms>>=
+fm1 <- lm(sppRichness ~ forest, data=swissData)
+fm2 <- lm(sppRichness ~ elevation, data=swissData)
+fm3 <- lm(sppRichness ~ forest + elevation +
+          water, data=swissData)
+fm4 <- lm(sppRichness ~ forest + elevation +
+          I(elevation^2) + water, data=swissData)
+@
+\end{frame}
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Model 4 -- Estimates}
+<<fm4,size='scriptsize'>>=
+summary(fm4)
+@
+\end{frame}
+
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Model 4 -- ANOVA table}
+<<anova-fm4,size='scriptsize'>>=
+summary.aov(fm4)
+@
+\end{frame}
+
+
+
+
+
+
+
+\section{Model Selection}
+
+
+
+
+
+
+\begin{frame}[plain]
+  \frametitle{Outline}
+  \huge
+  \tableofcontents[currentsection]
+\end{frame}
+
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Compute AIC for each model}
+  {Sample size}
+  \small
+<<n>>=
+n <- nrow(swissData)
+@
+\pause
+\vfill
+{Residual sums-of-squares (from ANOVA tables)}
+<<rss>>=
+RSS <- c(17735, 17089, 6429, 6430)
+@
+\pause
+\vfill
+%{\bf Number of parameters}
+{Number of parameters}
+<<K>>=
+K <- c(3, 3, 5, 6)
+@
+\pause
+\vfill
+%{\bf AIC}
+{AIC}
+<<aic>>=
+AIC <- n*log(RSS/n) + 2*K
+@
+\pause
+\vfill
+%  {\bf $\Delta$AIC}
+  {$\Delta$AIC}
+<<delta>>=
+delta <- AIC - min(AIC)
+@
+\pause
+\vfill
+%  {\bf AIC Weights}
+  {AIC Weights}
+<<w>>=
+w <- exp(-0.5*delta)/sum(exp(-0.5*delta))
+@
+\end{frame}
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{AIC table}
+  \small
+%  {\bf Put vectors in data.frame}
+  {Put vectors in data.frame}
+<<ms,size='footnotesize'>>=
+ms <- data.frame(RSS, K, AIC, delta, w)
+rownames(ms) <- c("fm1", "fm2", "fm3", "fm4")
+round(ms, digits=2)
+@
+\pause
+%  {\bf Sort data.frame based on AIC values}
+  {Sort data.frame based on AIC values}
+<<ms-order,size='footnotesize'>>=
+ms <- ms[order(ms$AIC),]
+round(ms, digits=2)
+@
+\end{frame}
+
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Similar process using R's {\tt AIC} function}
+<<AIC-fn>>=
+AIC(fm1, fm2, fm3, fm4)
+@
+\pause
+\vfill
+%{\bf Notes}
+{Notes}
+\begin{itemize}[<+->]
+  \item {\bf R} uses {\tt logLik(fm)} instead of {\tt n*log(RSS/n)}
+  \item AIC values are different but $\Delta$AIC values are the same
+  \item Either approach is fine with linear models, but log-likelihood
+    must be used with GLMs, and other models fit using maximum likelihood
+\end{itemize}
+\end{frame}
+
+
+
+
+
+\section{Multi-model Inference}
+
+
+
+
+\begin{frame}[plain]
+  \frametitle{Outline}
+  \huge
+  \tableofcontents[currentsection]
+\end{frame}
+
+
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Prediction}
+  \footnotesize
+%  {\bf Predict number of species at site 1000m high with 25\% forest
+%    cover, and no water, for \alert{each} model}
+  {Predict number of species at a site 1000m in elevation with 25\% forest
+    cover, and no water, for \alert{each} model}
+<<nd,size='footnotesize'>>=
+nd <- data.frame(elevation=1000, forest=25, water="No")
+@
+\pause
+\vfill
+<<E1,size='footnotesize'>>=
+E1 <- predict(fm1, newdata=nd, type="response")
+as.numeric(E1) # as.numeric() removes names (optional)
+@
+\pause
+\vfill
+<<E2,size='footnotesize'>>=
+E2 <- predict(fm2, newdata=nd, type="response")
+as.numeric(E2)
+@
+\pause
+\vfill
+<<E3,size='footnotesize'>>=
+E3 <- predict(fm3, newdata=nd, type="response")
+as.numeric(E3)
+@
+\pause
+\vfill
+<<E4,size='footnotesize'>>=
+E4 <- predict(fm4, newdata=nd, type="response")
+as.numeric(E4)
+@
+\end{frame}
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Model-averaged prediction}
+%  {\bf Expected number of species at 1000m, 25\% forest cover, and no
+%    water, averaged over \alert{all} 4 models}
+  {Expected number of species at 1000m, 25\% forest cover, and no
+    water, averaged over \alert{all} 4 models}
+  \pause
+  \vspace{1pt}
+<<ma>>=
+E1*w[1] + E2*w[2] + E3*w[3] + E4*w[4]
+@
+\end{frame}
+
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Model-averaged regression lines}
+%  {\bf Predict species richness over range of forest cover, for each model}
+  {Predict species richness over range of forest cover, for each model}
+<<Emat>>=
+nd <- data.frame(forest=seq(0, 100, length=50),
+                 elevation=1000, water="No")
+E1 <- predict(fm1, newdata=nd)
+E2 <- predict(fm2, newdata=nd)
+E3 <- predict(fm3, newdata=nd)
+E4 <- predict(fm4, newdata=nd)
+Emat <- cbind(E1, E2, E3, E4)
+@
+\pause
+\vfill
+%{\bf How do we model-average these vectors?}
+{How do we model-average these vectors?}
+\pause
+<<Evec>>=
+Evec <- Emat %*% w
+@
+\end{frame}
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Model-averaged regression lines}
+  \tiny
+<<reglines,fig.show=FALSE>>=
+plot(sppRichness ~ forest, data=swissData)
+lines(E1 ~ forest, nd, col="grey")
+lines(E2 ~ forest, nd, col="grey")
+lines(E3 ~ forest, nd, col="grey")
+lines(E4 ~ forest, nd, col="grey")
+lines(Evec ~ forest, nd, col="blue", lwd=3)
+@
+\begin{center}
+  \includegraphics[width=0.6\textwidth]{figure/reglines-1}
+\end{center}
+\end{frame}
+
+
+
+
+
+
+%% \begin{frame}[fragile]
+%%   \frametitle{Model-average prediction maps}
+
+%% \end{frame}
+
+
+
+% \begin{frame}
+%   \frametitle{Assignment}
+
+%   NOTES FOR 2016: Elev model gets 100\% of the weight. Try to fix that somehow.
+
+%   {\bf Use the {\tt jayData} from lab 12 to do the following:}
+%   \begin{enumerate}[\bf (1)]
+%     \item Fit four linear models of jay abundance. Include at least
+%       one interaction, and one quadratic term for elevation.
+%     \item Create AIC table by hand, not using \R's {\tt AIC} function
+% %    \item Model-average predictions of jay abundance at 25\% forest
+% %      cover (i.e., forest=0.25)
+%     \item Model-average regression lines of jay abundance and
+%       elevation. Plot the averaged regression line along with the
+%       regression lines from each model.
+%     \item Create a map showing the model-averaged estimates of jay
+%       abundance on Santa Cruz Island. Hint: use {\tt predict} with
+%       {\tt cruzData} supplied as the {\tt newdata} argument.
+%   \end{enumerate}
+% \end{frame}
+
+
+
+
+\end{document}

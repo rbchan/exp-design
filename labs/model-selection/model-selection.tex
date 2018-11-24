@@ -1,0 +1,586 @@
+\documentclass[color=usenames,dvipsnames]{beamer}\usepackage[]{graphicx}\usepackage[]{color}
+%% maxwidth is the original width if it is less than linewidth
+%% otherwise use linewidth (to make sure the graphics do not exceed the margin)
+\makeatletter
+\def\maxwidth{ %
+  \ifdim\Gin@nat@width>\linewidth
+    \linewidth
+  \else
+    \Gin@nat@width
+  \fi
+}
+\makeatother
+
+\definecolor{fgcolor}{rgb}{0, 0, 0}
+\newcommand{\hlnum}[1]{\textcolor[rgb]{0.69,0.494,0}{#1}}%
+\newcommand{\hlstr}[1]{\textcolor[rgb]{0.749,0.012,0.012}{#1}}%
+\newcommand{\hlcom}[1]{\textcolor[rgb]{0.514,0.506,0.514}{\textit{#1}}}%
+\newcommand{\hlopt}[1]{\textcolor[rgb]{0,0,0}{#1}}%
+\newcommand{\hlstd}[1]{\textcolor[rgb]{0,0,0}{#1}}%
+\newcommand{\hlkwa}[1]{\textcolor[rgb]{0,0,0}{\textbf{#1}}}%
+\newcommand{\hlkwb}[1]{\textcolor[rgb]{0,0.341,0.682}{#1}}%
+\newcommand{\hlkwc}[1]{\textcolor[rgb]{0,0,0}{\textbf{#1}}}%
+\newcommand{\hlkwd}[1]{\textcolor[rgb]{0.004,0.004,0.506}{#1}}%
+\let\hlipl\hlkwb
+
+\usepackage{framed}
+\makeatletter
+\newenvironment{kframe}{%
+ \def\at@end@of@kframe{}%
+ \ifinner\ifhmode%
+  \def\at@end@of@kframe{\end{minipage}}%
+  \begin{minipage}{\columnwidth}%
+ \fi\fi%
+ \def\FrameCommand##1{\hskip\@totalleftmargin \hskip-\fboxsep
+ \colorbox{shadecolor}{##1}\hskip-\fboxsep
+     % There is no \\@totalrightmargin, so:
+     \hskip-\linewidth \hskip-\@totalleftmargin \hskip\columnwidth}%
+ \MakeFramed {\advance\hsize-\width
+   \@totalleftmargin\z@ \linewidth\hsize
+   \@setminipage}}%
+ {\par\unskip\endMakeFramed%
+ \at@end@of@kframe}
+\makeatother
+
+\definecolor{shadecolor}{rgb}{.97, .97, .97}
+\definecolor{messagecolor}{rgb}{0, 0, 0}
+\definecolor{warningcolor}{rgb}{1, 0, 1}
+\definecolor{errorcolor}{rgb}{1, 0, 0}
+\newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
+
+\usepackage{alltt}
+%\documentclass[color=usenames,dvipsnames,handout]{beamer}
+
+
+
+\usepackage[sans]{../../lab1}
+\usepackage{bm}
+
+
+\hypersetup{pdftex,pdfstartview=FitV}
+
+
+
+
+
+
+
+
+
+%% New command for inline code that isn't to be evaluated
+\definecolor{inlinecolor}{rgb}{0.878, 0.918, 0.933}
+\newcommand{\inr}[1]{\colorbox{inlinecolor}{\texttt{#1}}}
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\begin{document}
+
+
+%\setlength\fboxsep{0pt}
+
+
+
+\begin{frame}[plain]
+  \centering \huge
+%  \color{MidnightBlue} %\bf
+  {\color{RoyalBlue}{Lab 14 -- Model selection and Multimodel Inference}} \\
+  \vspace{1cm}
+  \LARGE
+  November 26 \& 27, 2018 \par
+\end{frame}
+
+
+
+
+\section{Model Fitting}
+
+
+
+\begin{frame}[plain]
+  \frametitle{Today's Topics}
+  \LARGE
+  \only<1>{\tableofcontents}%[hideallsubsections]}
+  \only<2 | handout:0>{\tableofcontents[currentsection]}%,hideallsubsections]}
+\end{frame}
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Swiss Data}
+\begin{knitrout}\small
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{swissData} \hlkwb{<-} \hlkwd{read.csv}\hlstd{(}\hlstr{"swissData.csv"}\hlstd{)}
+\hlkwd{head}\hlstd{(swissData,} \hlkwc{n}\hlstd{=}\hlnum{11}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+##    elevation forest water sppRichness
+## 1        450      3    No          35
+## 2        450     21    No          51
+## 3       1050     32    No          46
+## 4        950      9   Yes          31
+## 5       1150     35   Yes          50
+## 6        550      2    No          43
+## 7        750      6    No          37
+## 8        650     60   Yes          47
+## 9        550      5   Yes          37
+## 10       550     13    No          43
+## 11      1150     50    No          52
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{Four linear models}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{fm1} \hlkwb{<-} \hlkwd{lm}\hlstd{(sppRichness} \hlopt{~} \hlstd{forest,} \hlkwc{data}\hlstd{=swissData)}
+\hlstd{fm2} \hlkwb{<-} \hlkwd{lm}\hlstd{(sppRichness} \hlopt{~} \hlstd{elevation,} \hlkwc{data}\hlstd{=swissData)}
+\hlstd{fm3} \hlkwb{<-} \hlkwd{lm}\hlstd{(sppRichness} \hlopt{~} \hlstd{forest} \hlopt{+} \hlstd{elevation} \hlopt{+}
+          \hlstd{water,} \hlkwc{data}\hlstd{=swissData)}
+\hlstd{fm4} \hlkwb{<-} \hlkwd{lm}\hlstd{(sppRichness} \hlopt{~} \hlstd{forest} \hlopt{+} \hlstd{elevation} \hlopt{+}
+          \hlkwd{I}\hlstd{(elevation}\hlopt{^}\hlnum{2}\hlstd{)} \hlopt{+} \hlstd{water,} \hlkwc{data}\hlstd{=swissData)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Model 4 -- Estimates}
+\begin{knitrout}\scriptsize
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{summary}\hlstd{(fm4)}
+\end{alltt}
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = sppRichness ~ forest + elevation + I(elevation^2) + 
+##     water, data = swissData)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -11.314  -3.205  -0.377   3.334  15.082 
+## 
+## Coefficients:
+##                  Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)     4.518e+01  1.286e+00  35.137  < 2e-16 ***
+## forest          2.311e-01  1.276e-02  18.111  < 2e-16 ***
+## elevation      -1.016e-02  2.572e-03  -3.951   0.0001 ***
+## I(elevation^2)  6.103e-08  9.661e-07   0.063   0.9497    
+## waterYes       -3.013e+00  6.821e-01  -4.418 1.46e-05 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 4.954 on 262 degrees of freedom
+## Multiple R-squared:  0.7929,	Adjusted R-squared:  0.7897 
+## F-statistic: 250.8 on 4 and 262 DF,  p-value: < 2.2e-16
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Model 4 -- ANOVA table}
+\begin{knitrout}\scriptsize
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{summary.aov}\hlstd{(fm4)}
+\end{alltt}
+\begin{verbatim}
+##                 Df Sum Sq Mean Sq F value   Pr(>F)    
+## forest           1  13311   13311  542.40  < 2e-16 ***
+## elevation        1  10820   10820  440.89  < 2e-16 ***
+## I(elevation^2)   1      7       7    0.27    0.604    
+## water            1    479     479   19.52 1.46e-05 ***
+## Residuals      262   6430      25                     
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+
+
+
+
+
+
+\section{Model Selection}
+
+
+
+
+
+
+\begin{frame}[plain]
+  \frametitle{Outline}
+  \huge
+  \tableofcontents[currentsection]
+\end{frame}
+
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Compute AIC for each model}
+  {Sample size}
+  \small
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{n} \hlkwb{<-} \hlkwd{nrow}\hlstd{(swissData)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\pause
+\vfill
+{Residual sums-of-squares (from ANOVA tables)}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{RSS} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlnum{17735}\hlstd{,} \hlnum{17089}\hlstd{,} \hlnum{6429}\hlstd{,} \hlnum{6430}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\pause
+\vfill
+%{\bf Number of parameters}
+{Number of parameters}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{K} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlnum{3}\hlstd{,} \hlnum{3}\hlstd{,} \hlnum{5}\hlstd{,} \hlnum{6}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\pause
+\vfill
+%{\bf AIC}
+{AIC}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{AIC} \hlkwb{<-} \hlstd{n}\hlopt{*}\hlkwd{log}\hlstd{(RSS}\hlopt{/}\hlstd{n)} \hlopt{+} \hlnum{2}\hlopt{*}\hlstd{K}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\pause
+\vfill
+%  {\bf $\Delta$AIC}
+  {$\Delta$AIC}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{delta} \hlkwb{<-} \hlstd{AIC} \hlopt{-} \hlkwd{min}\hlstd{(AIC)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\pause
+\vfill
+%  {\bf AIC Weights}
+  {AIC Weights}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{w} \hlkwb{<-} \hlkwd{exp}\hlstd{(}\hlopt{-}\hlnum{0.5}\hlopt{*}\hlstd{delta)}\hlopt{/}\hlkwd{sum}\hlstd{(}\hlkwd{exp}\hlstd{(}\hlopt{-}\hlnum{0.5}\hlopt{*}\hlstd{delta))}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{AIC table}
+  \small
+%  {\bf Put vectors in data.frame}
+  {Put vectors in data.frame}
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{ms} \hlkwb{<-} \hlkwd{data.frame}\hlstd{(RSS, K, AIC, delta, w)}
+\hlkwd{rownames}\hlstd{(ms)} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlstr{"fm1"}\hlstd{,} \hlstr{"fm2"}\hlstd{,} \hlstr{"fm3"}\hlstd{,} \hlstr{"fm4"}\hlstd{)}
+\hlkwd{round}\hlstd{(ms,} \hlkwc{digits}\hlstd{=}\hlnum{2}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+##       RSS K     AIC  delta    w
+## fm1 17735 3 1126.34 266.93 0.00
+## fm2 17089 3 1116.44 257.02 0.00
+## fm3  6429 5  859.41   0.00 0.74
+## fm4  6430 6  861.46   2.04 0.26
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\pause
+%  {\bf Sort data.frame based on AIC values}
+  {Sort data.frame based on AIC values}
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{ms} \hlkwb{<-} \hlstd{ms[}\hlkwd{order}\hlstd{(ms}\hlopt{$}\hlstd{AIC),]}
+\hlkwd{round}\hlstd{(ms,} \hlkwc{digits}\hlstd{=}\hlnum{2}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+##       RSS K     AIC  delta    w
+## fm3  6429 5  859.41   0.00 0.74
+## fm4  6430 6  861.46   2.04 0.26
+## fm2 17089 3 1116.44 257.02 0.00
+## fm1 17735 3 1126.34 266.93 0.00
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Similar process using R's {\tt AIC} function}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{AIC}\hlstd{(fm1, fm2, fm3, fm4)}
+\end{alltt}
+\begin{verbatim}
+##     df      AIC
+## fm1  3 1884.057
+## fm2  3 1874.146
+## fm3  5 1617.157
+## fm4  6 1619.153
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\pause
+\vfill
+%{\bf Notes}
+{Notes}
+\begin{itemize}[<+->]
+  \item {\bf R} uses {\tt logLik(fm)} instead of {\tt n*log(RSS/n)}
+  \item AIC values are different but $\Delta$AIC values are the same
+  \item Either approach is fine with linear models, but log-likelihood
+    must be used with GLMs, and other models fit using maximum likelihood
+\end{itemize}
+\end{frame}
+
+
+
+
+
+\section{Multi-model Inference}
+
+
+
+
+\begin{frame}[plain]
+  \frametitle{Outline}
+  \huge
+  \tableofcontents[currentsection]
+\end{frame}
+
+
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Prediction}
+  \footnotesize
+%  {\bf Predict number of species at site 1000m high with 25\% forest
+%    cover, and no water, for \alert{each} model}
+  {Predict number of species at a site 1000m in elevation with 25\% forest
+    cover, and no water, for \alert{each} model}
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{nd} \hlkwb{<-} \hlkwd{data.frame}\hlstd{(}\hlkwc{elevation}\hlstd{=}\hlnum{1000}\hlstd{,} \hlkwc{forest}\hlstd{=}\hlnum{25}\hlstd{,} \hlkwc{water}\hlstd{=}\hlstr{"No"}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\pause
+\vfill
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{E1} \hlkwb{<-} \hlkwd{predict}\hlstd{(fm1,} \hlkwc{newdata}\hlstd{=nd,} \hlkwc{type}\hlstd{=}\hlstr{"response"}\hlstd{)}
+\hlkwd{as.numeric}\hlstd{(E1)} \hlcom{# as.numeric() removes names (optional)}
+\end{alltt}
+\begin{verbatim}
+## [1] 37.90222
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\pause
+\vfill
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{E2} \hlkwb{<-} \hlkwd{predict}\hlstd{(fm2,} \hlkwc{newdata}\hlstd{=nd,} \hlkwc{type}\hlstd{=}\hlstr{"response"}\hlstd{)}
+\hlkwd{as.numeric}\hlstd{(E2)}
+\end{alltt}
+\begin{verbatim}
+## [1] 42.53368
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\pause
+\vfill
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{E3} \hlkwb{<-} \hlkwd{predict}\hlstd{(fm3,} \hlkwc{newdata}\hlstd{=nd,} \hlkwc{type}\hlstd{=}\hlstr{"response"}\hlstd{)}
+\hlkwd{as.numeric}\hlstd{(E3)}
+\end{alltt}
+\begin{verbatim}
+## [1] 40.88604
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\pause
+\vfill
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{E4} \hlkwb{<-} \hlkwd{predict}\hlstd{(fm4,} \hlkwc{newdata}\hlstd{=nd,} \hlkwc{type}\hlstd{=}\hlstr{"response"}\hlstd{)}
+\hlkwd{as.numeric}\hlstd{(E4)}
+\end{alltt}
+\begin{verbatim}
+## [1] 40.86092
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Model-averaged prediction}
+%  {\bf Expected number of species at 1000m, 25\% forest cover, and no
+%    water, averaged over \alert{all} 4 models}
+  {Expected number of species at 1000m, 25\% forest cover, and no
+    water, averaged over \alert{all} 4 models}
+  \pause
+  \vspace{1pt}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{E1}\hlopt{*}\hlstd{w[}\hlnum{1}\hlstd{]} \hlopt{+} \hlstd{E2}\hlopt{*}\hlstd{w[}\hlnum{2}\hlstd{]} \hlopt{+} \hlstd{E3}\hlopt{*}\hlstd{w[}\hlnum{3}\hlstd{]} \hlopt{+} \hlstd{E4}\hlopt{*}\hlstd{w[}\hlnum{4}\hlstd{]}
+\end{alltt}
+\begin{verbatim}
+##        1 
+## 40.87938
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Model-averaged regression lines}
+%  {\bf Predict species richness over range of forest cover, for each model}
+  {Predict species richness over range of forest cover, for each model}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{nd} \hlkwb{<-} \hlkwd{data.frame}\hlstd{(}\hlkwc{forest}\hlstd{=}\hlkwd{seq}\hlstd{(}\hlnum{0}\hlstd{,} \hlnum{100}\hlstd{,} \hlkwc{length}\hlstd{=}\hlnum{50}\hlstd{),}
+                 \hlkwc{elevation}\hlstd{=}\hlnum{1000}\hlstd{,} \hlkwc{water}\hlstd{=}\hlstr{"No"}\hlstd{)}
+\hlstd{E1} \hlkwb{<-} \hlkwd{predict}\hlstd{(fm1,} \hlkwc{newdata}\hlstd{=nd)}
+\hlstd{E2} \hlkwb{<-} \hlkwd{predict}\hlstd{(fm2,} \hlkwc{newdata}\hlstd{=nd)}
+\hlstd{E3} \hlkwb{<-} \hlkwd{predict}\hlstd{(fm3,} \hlkwc{newdata}\hlstd{=nd)}
+\hlstd{E4} \hlkwb{<-} \hlkwd{predict}\hlstd{(fm4,} \hlkwc{newdata}\hlstd{=nd)}
+\hlstd{Emat} \hlkwb{<-} \hlkwd{cbind}\hlstd{(E1, E2, E3, E4)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\pause
+\vfill
+%{\bf How do we model-average these vectors?}
+{How do we model-average these vectors?}
+\pause
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{Evec} \hlkwb{<-} \hlstd{Emat} \hlopt{%*%} \hlstd{w}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Model-averaged regression lines}
+  \tiny
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{plot}\hlstd{(sppRichness} \hlopt{~} \hlstd{forest,} \hlkwc{data}\hlstd{=swissData)}
+\hlkwd{lines}\hlstd{(E1} \hlopt{~} \hlstd{forest, nd,} \hlkwc{col}\hlstd{=}\hlstr{"grey"}\hlstd{)}
+\hlkwd{lines}\hlstd{(E2} \hlopt{~} \hlstd{forest, nd,} \hlkwc{col}\hlstd{=}\hlstr{"grey"}\hlstd{)}
+\hlkwd{lines}\hlstd{(E3} \hlopt{~} \hlstd{forest, nd,} \hlkwc{col}\hlstd{=}\hlstr{"grey"}\hlstd{)}
+\hlkwd{lines}\hlstd{(E4} \hlopt{~} \hlstd{forest, nd,} \hlkwc{col}\hlstd{=}\hlstr{"grey"}\hlstd{)}
+\hlkwd{lines}\hlstd{(Evec} \hlopt{~} \hlstd{forest, nd,} \hlkwc{col}\hlstd{=}\hlstr{"blue"}\hlstd{,} \hlkwc{lwd}\hlstd{=}\hlnum{3}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\includegraphics[width=\maxwidth]{figure/reglines-1} 
+
+\end{knitrout}
+\begin{center}
+  \includegraphics[width=0.6\textwidth]{figure/reglines-1}
+\end{center}
+\end{frame}
+
+
+
+
+
+
+%% \begin{frame}[fragile]
+%%   \frametitle{Model-average prediction maps}
+
+%% \end{frame}
+
+
+
+% \begin{frame}
+%   \frametitle{Assignment}
+
+%   NOTES FOR 2016: Elev model gets 100\% of the weight. Try to fix that somehow.
+
+%   {\bf Use the {\tt jayData} from lab 12 to do the following:}
+%   \begin{enumerate}[\bf (1)]
+%     \item Fit four linear models of jay abundance. Include at least
+%       one interaction, and one quadratic term for elevation.
+%     \item Create AIC table by hand, not using \R's {\tt AIC} function
+% %    \item Model-average predictions of jay abundance at 25\% forest
+% %      cover (i.e., forest=0.25)
+%     \item Model-average regression lines of jay abundance and
+%       elevation. Plot the averaged regression line along with the
+%       regression lines from each model.
+%     \item Create a map showing the model-averaged estimates of jay
+%       abundance on Santa Cruz Island. Hint: use {\tt predict} with
+%       {\tt cruzData} supplied as the {\tt newdata} argument.
+%   \end{enumerate}
+% \end{frame}
+
+
+
+
+\end{document}
