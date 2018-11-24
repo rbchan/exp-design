@@ -134,3 +134,8 @@ Stepping back to look at linear models
 ### [Week 13 - Generalized linear models](GLMs/GLMs.md)
 
 Logistic regression and Poisson regression with `glm`
+
+
+### [Week 14 - Model selection](model-selection/model-selection.md)
+
+Model selection and multi-model inference
