@@ -70,7 +70,7 @@ The above components of a scientific study need to be considered together rather
 | 14   | Logistic regression     | [GLMs](labs/GLMs/GLMs.md)            |            |
 |      | Poisson regression      |                 |            |
 |      | Generalized linear mixed effects models | |            |
-| 15   | Model selection     | Model selection     |            |
+| 15   | Model selection     | [Model selection](labs/model-selection/model-selection.md)     |            |
 |      | Goodness-of-fit     |                     |            |
 |      | Multi-model inference |                   |            |
 
