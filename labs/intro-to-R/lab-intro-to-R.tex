@@ -1,6 +1,6 @@
 \documentclass[color=usenames,dvipsnames]{beamer}\usepackage[]{graphicx}\usepackage[]{color}
-%% maxwidth is the original width if it is less than linewidth
-%% otherwise use linewidth (to make sure the graphics do not exceed the margin)
+% maxwidth is the original width if it is less than linewidth
+% otherwise use linewidth (to make sure the graphics do not exceed the margin)
 \makeatletter
 \def\maxwidth{ %
   \ifdim\Gin@nat@width>\linewidth
@@ -72,6 +72,7 @@
 %\DefineVerbatimEnvironment{Sinput}{Verbatim}{fontshape=sl,formatcom=\color{red}}
 %\DefineVerbatimEnvironment{Soutput}{Verbatim}{formatcom=\color{MidnightBlue}}
 %\DefineVerbatimEnvironment{Scode}{Verbatim}{fontshape=sl}
+
 
 
 % <<knitr-setup, include=FALSE>>=
@@ -970,7 +971,7 @@ A very compact summary
 
 \begin{frame}[fragile]
   \frametitle{Importing and exporting data}
-  \verb+read.csv+ and \verb+write.csv+ are easy options, but there are
+  \inr{read.csv} and \inr{write.csv} are easy options, but there are
   many more possibilities that we won't cover. \\
 %  \begin{itemize}
 %    \item
@@ -1025,7 +1026,7 @@ You can check your working directory like this:
 \hlkwd{getwd}\hlstd{()}
 \end{alltt}
 \begin{verbatim}
-## [1] "d:/exp-design/labs/intro-to-R"
+## [1] "/home/rchandler/courses/exp-design/labs/intro-to-R"
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -1065,10 +1066,9 @@ Change your working directory to another location:
 \hlkwd{ls}\hlstd{()}
 \end{alltt}
 \begin{verbatim}
-##  [1] "BMI"      "clean"    "filestub" "height"   "mydata"   "mydata2" 
-##  [7] "open"     "reqval"   "rnw.file" "tangle"   "weight"   "x1"      
-## [13] "x2"       "y"        "y.re"     "y.sub1"   "y.sub2"   "y.sub4"  
-## [19] "y1"       "y2"       "z"
+##  [1] "BMI"     "height"  "mydata"  "mydata2" "reqval"  "rnw2pdf" "weight" 
+##  [8] "x1"      "x2"      "y"       "y.re"    "y.sub1"  "y.sub2"  "y.sub4" 
+## [15] "y1"      "y2"      "z"
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -1083,8 +1083,7 @@ Removing (deleting) some objects
 \hlkwd{ls}\hlstd{()}
 \end{alltt}
 \begin{verbatim}
-## [1] "clean"    "filestub" "mydata"   "open"     "reqval"   "rnw.file"
-## [7] "tangle"
+## [1] "mydata"  "reqval"  "rnw2pdf"
 \end{verbatim}
 \end{kframe}
 \end{knitrout}

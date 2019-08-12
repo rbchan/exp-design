@@ -24,6 +24,7 @@
 %\DefineVerbatimEnvironment{Scode}{Verbatim}{fontshape=sl}
 
 
+
 % <<knitr-setup, include=FALSE>>=
 % opts_hooks$set(comment=function(x) return("comment"=NA))
 % ##knit_hooks$set(inline = function(x) {
