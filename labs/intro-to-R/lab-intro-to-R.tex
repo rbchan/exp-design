@@ -118,7 +118,7 @@
   \vspace{0.9cm}
   \includegraphics[width=0.4\textwidth]{figs/Rlogo} \\
   \vspace{0.5cm}
-  August 13 \& 14, 2018 \\
+%  August 13 \& 14, 2018 \\
   FANR 6750 \par
   \vfill
   \large
@@ -235,9 +235,10 @@
 %  \pause
   \small
   \vspace{0.5cm}
-  You are encouraged to learn and use these programs, but we will not
-  use them for instruction because we want to focus on \R~itself, not
-  the interface.
+  %% You are encouraged to learn and use these programs, but we will not
+  %% use them for instruction because we want to focus on \R~itself, not
+  %% the interface.
+  You are encouraged to use these programs, rather than the default GUI, to run R. However, instruction will focus on \R~itself, not on the details or Emacs or RStudio. 
 \end{frame}
 
 
@@ -260,7 +261,8 @@
 \begin{frame}[fragile]
   \frametitle{How to read the code in the lab slides}
 %  \small
-  Anything in a shaded box like this one is \R~code:
+  Anything in a shaded box like this one is \R~code, and you can copy
+  and paste it into the Console:  
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
@@ -275,15 +277,17 @@
   The line \inr{2+2} is \R~code (\alert{input}). You can copy
   and paste it into the console. Note that the command prompt (\verb+>+) is
   not shown.
+\pause
 \vfill
   The line \inr{\#\# [1] 4} is \alert{output}. Output is
-  always indicated by two hash signs (\texttt{\#\#}). Anything after a
-  \texttt{\#} is ignored by \R~at the command line.
-\pause \vfill
-  You can copy and paste the entire code box directly into your
-  console, but it might be easier to work with the \R~script
-  that accompanies the PDF: %. In this case, the script is called
-  \texttt{lab-intro-to-R.R}.
+  always indicated by two hash signs (\texttt{\#\#}). Anything after
+  \texttt{\#} is ignored by \R~at the command line. The \inr{[1]}
+  simply indicates that this is the first value in the output.
+%% \pause \vfill
+%%   You can copy and paste the entire code box directly into your
+%%   console, but it might be easier to work with the \R~script
+%%   that accompanies the PDF: %. In this case, the script is called
+%%   \texttt{lab-intro-to-R.R}.
 \end{frame}
 
 
@@ -634,7 +638,7 @@ Factors can be used to store categorical variables: %character strings
     \item Create a new script called ``lab1-prob1.R''. You can do this by:
       \begin{enumerate}[i]
         \item Clicking on the Console
-        \item Choosing \verb_"File > New Script"_ from the drop-down menu
+        \item Choosing \verb_"File > New File > R Script"_ from the drop-down menu
         \item Clicking on \verb_"File > Save as..."_
       \end{enumerate}
     \item Create a vector containing the radii
@@ -649,18 +653,18 @@ Factors can be used to store categorical variables: %character strings
 
 
 
-\begin{frame}[fragile]
-  \frametitle{A common beginner's problem}
-  If you accidentally hit ``return'' or fail to complete a command, you
-  will see the cursor on a new line beginning with \verb_+_ instead of
-  \verb+>+. \\
-  \pause
-  \begin{center}
-    \includegraphics[width=0.7\textwidth]{figs/plus-prompt}
-  \end{center}
-  \pause
-  Just hit the ``Esc'' key or complete the command.
-\end{frame}
+%% \begin{frame}[fragile]
+%%   \frametitle{A common beginner's problem}
+%%   If you accidentally hit ``return'' or fail to complete a command, you
+%%   will see the cursor on a new line beginning with \verb_+_ instead of
+%%   \verb+>+. \\
+%%   \pause
+%%   \begin{center}
+%%     \includegraphics[width=0.7\textwidth]{figs/plus-prompt}
+%%   \end{center}
+%%   \pause
+%%   Just hit the ``Esc'' key or complete the command.
+%% \end{frame}
 
 
 
@@ -1017,7 +1021,7 @@ Read it back in:
 \begin{frame}[fragile]
   \frametitle{The working directory}
 The working directory is the location on your computer where \R~will
-look for files by default. \\
+look for files and export files. \\
 \pause \vfill
 You can check your working directory like this:
 \begin{knitrout}\small
@@ -1096,17 +1100,34 @@ Removing (deleting) some objects
 
 \begin{frame}[fragile]
   \frametitle{Saving and restoring the workspace}
-  \begin{center}
-    \includegraphics[width=0.8\textwidth]{figs/save-workspace}
-  \end{center}
-  \pause
-If you prefer commands over point-and-click:
+  %% \begin{center}
+  %%   \includegraphics[width=0.8\textwidth]{figs/save-workspace}
+  %% \end{center}
+%% ##   \pause
+%% If you prefer commands over point-and-click:
+Save all the objects in your workspace to a file and then remove them:
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlkwd{save.image}\hlstd{(}\hlstr{"myimage.RData"}\hlstd{)} \hlcom{# Save all objects to file}
-\hlkwd{load}\hlstd{(}\hlstr{"myimage.RData"}\hlstd{)}       \hlcom{# Load the saved workspace}
+\hlkwd{save.image}\hlstd{(}\hlstr{"myimage.RData"}\hlstd{)}  \hlcom{## Save workspace}
+\hlkwd{rm}\hlstd{(}\hlkwc{list}\hlstd{=}\hlkwd{ls}\hlstd{())}                \hlcom{## Remove all objects}
+\hlkwd{ls}\hlstd{()}                         \hlcom{## All are gone}
 \end{alltt}
+\begin{verbatim}
+## character(0)
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{load}\hlstd{(}\hlstr{"myimage.RData"}\hlstd{)}        \hlcom{## Load the saved workspace}
+\hlkwd{ls}\hlstd{()}                         \hlcom{## Objects are back}
+\end{alltt}
+\begin{verbatim}
+## [1] "mydata"  "reqval"  "rnw2pdf"
+\end{verbatim}
 \end{kframe}
 \end{knitrout}
 \end{frame}

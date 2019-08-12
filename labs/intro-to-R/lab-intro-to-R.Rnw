@@ -81,7 +81,7 @@ knit_theme$set("edit-kwrite")
   \vspace{0.9cm}
   \includegraphics[width=0.4\textwidth]{figs/Rlogo} \\
   \vspace{0.5cm}
-  August 13 \& 14, 2018 \\
+%  August 13 \& 14, 2018 \\
   FANR 6750 \par
   \vfill
   \large
@@ -198,9 +198,10 @@ knit_theme$set("edit-kwrite")
 %  \pause
   \small
   \vspace{0.5cm}
-  You are encouraged to learn and use these programs, but we will not
-  use them for instruction because we want to focus on \R~itself, not
-  the interface.
+  %% You are encouraged to learn and use these programs, but we will not
+  %% use them for instruction because we want to focus on \R~itself, not
+  %% the interface.
+  You are encouraged to use these programs to run \R, instead of the default GUI. However, instruction will focus on \R~itself, not on the details or Emacs or RStudio. 
 \end{frame}
 
 
@@ -223,7 +224,8 @@ knit_theme$set("edit-kwrite")
 \begin{frame}[fragile]
   \frametitle{How to read the code in the lab slides}
 %  \small
-  Anything in a shaded box like this one is \R~code:
+  Anything in a shaded box like this one is \R~code, and you can copy
+  and paste it into the Console:  
 <<add2>>=
 2+2
 @
@@ -231,15 +233,17 @@ knit_theme$set("edit-kwrite")
   The line \inr{2+2} is \R~code (\alert{input}). You can copy
   and paste it into the console. Note that the command prompt (\verb+>+) is
   not shown.
+\pause
 \vfill
   The line \inr{\#\# [1] 4} is \alert{output}. Output is
-  always indicated by two hash signs (\texttt{\#\#}). Anything after a
-  \texttt{\#} is ignored by \R~at the command line.
-\pause \vfill
-  You can copy and paste the entire code box directly into your
-  console, but it might be easier to work with the \R~script
-  that accompanies the PDF: %. In this case, the script is called
-  \texttt{lab-intro-to-R.R}.
+  always indicated by two hash signs (\texttt{\#\#}). Anything after
+  \texttt{\#} is ignored by \R~at the command line. The \inr{[1]}
+  simply indicates that this is the first value in the output.
+%% \pause \vfill
+%%   You can copy and paste the entire code box directly into your
+%%   console, but it might be easier to work with the \R~script
+%%   that accompanies the PDF: %. In this case, the script is called
+%%   \texttt{lab-intro-to-R.R}.
 \end{frame}
 
 
@@ -493,7 +497,7 @@ BMI
     \item Create a new script called ``lab1-prob1.R''. You can do this by:
       \begin{enumerate}[i]
         \item Clicking on the Console
-        \item Choosing \verb_"File > New Script"_ from the drop-down menu
+        \item Choosing \verb_"File > New File > R Script"_ from the drop-down menu
         \item Clicking on \verb_"File > Save as..."_
       \end{enumerate}
     \item Create a vector containing the radii
@@ -508,18 +512,18 @@ BMI
 
 
 
-\begin{frame}[fragile]
-  \frametitle{A common beginner's problem}
-  If you accidentally hit ``return'' or fail to complete a command, you
-  will see the cursor on a new line beginning with \verb_+_ instead of
-  \verb+>+. \\
-  \pause
-  \begin{center}
-    \includegraphics[width=0.7\textwidth]{figs/plus-prompt}
-  \end{center}
-  \pause
-  Just hit the ``Esc'' key or complete the command.
-\end{frame}
+%% \begin{frame}[fragile]
+%%   \frametitle{A common beginner's problem}
+%%   If you accidentally hit ``return'' or fail to complete a command, you
+%%   will see the cursor on a new line beginning with \verb_+_ instead of
+%%   \verb+>+. \\
+%%   \pause
+%%   \begin{center}
+%%     \includegraphics[width=0.7\textwidth]{figs/plus-prompt}
+%%   \end{center}
+%%   \pause
+%%   Just hit the ``Esc'' key or complete the command.
+%% \end{frame}
 
 
 
@@ -711,8 +715,8 @@ str(mydata)
 
 \begin{frame}[fragile]
   \frametitle{Importing and exporting data}
-  \inr{read.csv} and \inr{write.csv} are easy options, but there are
-  many more possibilities that we won't cover. \\
+  Data can be imported using \inr{read.csv} and exported using \inr{write.csv}. \\
+%  There are many more possibilities that we won't cover. \\
 %  \begin{itemize}
 %    \item
   \small
@@ -745,7 +749,7 @@ mydata2 <- read.csv("mydata.csv")
 \begin{frame}[fragile]
   \frametitle{The working directory}
 The working directory is the location on your computer where \R~will
-look for files by default. \\
+look for files and export files. \\
 \pause \vfill
 You can check your working directory like this:
 <<getwd, size='small'>>=
@@ -797,14 +801,23 @@ ls()
 
 \begin{frame}[fragile]
   \frametitle{Saving and restoring the workspace}
-  \begin{center}
-    \includegraphics[width=0.8\textwidth]{figs/save-workspace}
-  \end{center}
-  \pause
-If you prefer commands over point-and-click:
-<<eval=FALSE>>=
-save.image("myimage.RData") # Save all objects to file
-load("myimage.RData")       # Load the saved workspace
+  %% \begin{center}
+  %%   \includegraphics[width=0.8\textwidth]{figs/save-workspace}
+  %% \end{center}
+%% ##   \pause
+%% If you prefer commands over point-and-click:
+Save all the objects in your workspace to a file and then remove them:
+<<save-image,eval=TRUE>>=
+save.image("myimage.RData")  ## Save workspace
+rm(list=ls())                ## Remove all objects
+ls()                         ## All are gone
+@
+\pause
+\vfill
+Load the objects back into the workspace:
+<<load-image,eval=TRUE>>=
+load("myimage.RData")        ## Load the saved workspace
+ls()                         ## Check that the objects are back
 @
 \end{frame}
 

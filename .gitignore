@@ -5,6 +5,10 @@ exams/
 KEY*
 
 
+## Ignore binary R files
+*.RData
+*.gzip
+
 ## Core latex/pdflatex auxiliary files:
 *.aux
 *.lof
