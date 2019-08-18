@@ -57,13 +57,13 @@
 
 
 
-\hypersetup{pdfpagemode=UseNone,pdfstartview=FitV}
+\hypersetup{pdfpagemode=UseNone,pdfstartview=FitH}
 
 
 
 \title{Lab 1 -- Introduction to {\bf R}}
 \author{Richard Chandler and Bob Cooper}
-\date{August 13 \& 14, 2018}
+%\date{August 13 \& 14, 2018}
 
 %\newcommand{\R}{{\bf R}}
 
@@ -238,7 +238,7 @@
   %% You are encouraged to learn and use these programs, but we will not
   %% use them for instruction because we want to focus on \R~itself, not
   %% the interface.
-  You are encouraged to use these programs, rather than the default GUI, to run R. However, instruction will focus on \R~itself, not on the details or Emacs or RStudio. 
+  You are encouraged to use these programs to run \R, instead of the default GUI. However, instruction will focus on \R~itself, not on the details or Emacs or RStudio. 
 \end{frame}
 
 
@@ -274,9 +274,8 @@
 \end{kframe}
 \end{knitrout}
 \pause %\vfill
-  The line \inr{2+2} is \R~code (\alert{input}). You can copy
-  and paste it into the console. Note that the command prompt (\verb+>+) is
-  not shown.
+  The line \inr{2+2} is \R~code (\alert{input}). Note that the command
+  prompt (\verb+>+) is not shown.
 \pause
 \vfill
   The line \inr{\#\# [1] 4} is \alert{output}. Output is
@@ -356,13 +355,9 @@
 
 \begin{frame}[fragile]
   \frametitle{Objects and assignment arrow}
-%  {\Large Important things to know about objects:}
-%  \begin{itemize}[<+->]
-%    \item
       Everything in \R~is an object. We can create objects using the
       \inr{<-} assignment arrow.
       \pause \vfill
-%    \item
       In this example, we assign the value 2 to the object \inr{y}:
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
@@ -371,18 +366,11 @@
 \end{alltt}
 \end{kframe}
 \end{knitrout}
-%\pause \vfill
-%    \item The \colorbox{inlinecolor}{\texttt{<-}} arrow assigns the value y to the object \texttt{y}.
-%    \item
-%The \inr{<-} arrow assigns the value 2 to the object \inr{y}.
       \pause \vfill
-%    \item
       You cannot have a space between \inr{<} and \inr{-}
       \pause \vfill
-%    \item
       You can use \inr{=} instead of \inr{<-} but this can cause confusion
       \pause \vfill
-%    \item
       Typing the name of an object returns its value:
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
@@ -394,7 +382,6 @@
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
-%  \end{itemize}
 \end{frame}
 
 
@@ -403,10 +390,7 @@
 
 \begin{frame}[fragile]
   \frametitle{Vectors}
-%  \begin{itemize}[<+->]
-%    \item
 We store data in objects so that they can be easily manipulated:
-%  Notice how \inr{y} behaves just like the number 2:
 \begin{knitrout}\small
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
@@ -417,12 +401,10 @@ We store data in objects so that they can be easily manipulated:
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
-%    \item
 \pause \vfill
 Usually, we want more than one number in an object. In statistics, a
 vector is simply a set of numbers that can be thought of as a row or
 column of a matrix \\
-%\item
 \pause \vfill
 The easiest way to create a vector is to use the \inr{c}
 function to ``combine'' numbers:
@@ -437,7 +419,6 @@ function to ``combine'' numbers:
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
-%  \end{itemize}
 \end{frame}
 
 
@@ -469,14 +450,6 @@ function to ``combine'' numbers:
 
 \begin{frame}[fragile]
   \frametitle{Other useful ways of creating vectors}
-%\begin{itemize}[<+->]
-%  \item The easiest way to create a vector is to use the \verb+c+
-%      function to ``combine'' numbers
-%<<>>=
-%x1 <- c(1, 2, 3, 9, -100)
-%x1
-%@
-%  \item
 A sequence of numbers
 \begin{knitrout}\small
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
@@ -491,13 +464,7 @@ A sequence of numbers
 \end{kframe}
 \end{knitrout}
 \pause \vfill
-%\item
 \inr{seq} is more general
-%% <<>>=
-%% x2 <- seq(from=1, to=3, by=1)
-%% x2
-%% @
-%% \item[]
 \begin{knitrout}\small
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
@@ -509,7 +476,6 @@ A sequence of numbers
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
-%\item
 \pause \vfill
 Use \inr{rep} to repeat elements of a vector
 \begin{knitrout}\small
@@ -522,7 +488,6 @@ Use \inr{rep} to repeat elements of a vector
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
-%\end{itemize}
 \end{frame}
 
 
@@ -701,7 +666,6 @@ What is the sum of this vector? $\sum_{i=1}^5 y_i$ = ???
 \end{kframe}
 \end{knitrout}
 \pause
-%\item \large
 What is the mean? $\frac{\sum_{i=1}^5 y_i}{5}$ = ???
   \pause
 \begin{knitrout}\footnotesize
@@ -715,7 +679,6 @@ What is the mean? $\frac{\sum_{i=1}^5 y_i}{5}$ = ???
 \end{kframe}
 \end{knitrout}
   \pause
-%\item
   And the variance? $\frac{\sum_{i=1}^5 (y_i - \bar{y})^2}{5-1}$ = ???
 \begin{knitrout}\footnotesize
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
@@ -727,7 +690,6 @@ What is the mean? $\frac{\sum_{i=1}^5 y_i}{5}$ = ???
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
-%\end{itemize}
 \end{frame}
 
 
@@ -739,8 +701,6 @@ What is the mean? $\frac{\sum_{i=1}^5 y_i}{5}$ = ???
 
 \begin{frame}[fragile]
   \frametitle{Indexing vectors}
-%  \begin{itemize}[<+->]
-%  \item
   \small
   Extract the first and third elements of a vector
 \begin{knitrout}\small
@@ -789,8 +749,6 @@ Rearrange the order of the vector
 
 \begin{frame}[fragile]
   \frametitle{Indexing vectors}
-%\begin{itemize}[<+->]
-%  \item
   \small
   Which elements of the vector are greater than 4? (logical test)
 \begin{knitrout}\small
@@ -826,19 +784,14 @@ Rearrange the order of the vector
 \begin{frame}[fragile]
   \frametitle{Data frames}
   \large
-%  \begin{itemize}[<+->]
-%    \item
   Most basic datasets are stored as \verb+data.frame+s
   \pause \vfill
-%    \item
-  They are like a matrix in which each column can be a
+  They are like a matrix, except each column can be a
       different type of vector (numeric, factor, etc...)
-%    \item
   \pause \vfill
    They have attributes for row names (e.g. the names of
       the experimental units) and column names (e.g. the names of
       the response and predictor variables)
-%  \end{itemize}
 \end{frame}
 
 
@@ -870,8 +823,6 @@ Rearrange the order of the vector
 
 \begin{frame}[fragile]
   \frametitle{Indexing data frames}
-%  \begin{itemize}[<+->]
-%    \item
   \small
   Bracket method. Extract data from row 1, columns 1 and 3
 \begin{knitrout}\footnotesize
@@ -885,7 +836,6 @@ Rearrange the order of the vector
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
-%    \item
 \pause \vfill
 Bracket method. Extract from rows 2 and 3, columns 1 and 3
 \begin{knitrout}\footnotesize
@@ -900,9 +850,8 @@ Bracket method. Extract from rows 2 and 3, columns 1 and 3
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
-%    \item
 \pause \vfill
-Dollar sign method. Pull out column 1
+Dollar sign method. Extract data from column 1
 \begin{knitrout}\footnotesize
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
@@ -914,14 +863,11 @@ Dollar sign method. Pull out column 1
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
-%  \end{itemize}
 \end{frame}
 
 
 \begin{frame}[fragile]
   \frametitle{Summarizing data frames}
-%  \begin{itemize}[<+->]
-%    \item
   \small
   View the data as a `spreadsheet'
 \begin{knitrout}\footnotesize
@@ -931,7 +877,6 @@ Dollar sign method. Pull out column 1
 \end{alltt}
 \end{kframe}
 \end{knitrout}
-%    \item
 \pause \vfill
 Compute some summary statistics
 \begin{knitrout}\scriptsize
@@ -950,7 +895,6 @@ Compute some summary statistics
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
-%    \item
 \pause \vfill
 A very compact summary
 \begin{knitrout}\scriptsize
@@ -966,7 +910,6 @@ A very compact summary
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
-%  \end{itemize}
 \end{frame}
 
 
@@ -975,10 +918,7 @@ A very compact summary
 
 \begin{frame}[fragile]
   \frametitle{Importing and exporting data}
-  \inr{read.csv} and \inr{write.csv} are easy options, but there are
-  many more possibilities that we won't cover. \\
-%  \begin{itemize}
-%    \item
+  Data can be imported using \inr{read.csv} and exported using \inr{write.csv}. \\
   \small
   \pause \vfill
   Export the \verb+data.frame+ we created earlier
@@ -989,9 +929,8 @@ A very compact summary
 \end{alltt}
 \end{kframe}
 \end{knitrout}
-%    \item
   \pause \vfill
-Confirm that it is there:
+The data will be exported to your working directory:
 \begin{knitrout}\scriptsize
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
@@ -999,9 +938,8 @@ Confirm that it is there:
 \end{alltt}
 \end{kframe}
 \end{knitrout}
-%    \item
   \pause \vfill
-Read it back in:
+Import it back in:
 \begin{knitrout}\small
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
@@ -1009,7 +947,6 @@ Read it back in:
 \end{alltt}
 \end{kframe}
 \end{knitrout}
-%  \end{itemize}
 \end{frame}
 
 
@@ -1061,24 +998,21 @@ Change your working directory to another location:
 
 \begin{frame}[fragile]
   \frametitle{The workspace}
-%  \begin{itemize}[<+->]
-%    \item
-  Viewing the objects in your workspace
+  View the objects in your workspace
 \begin{knitrout}\scriptsize
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlkwd{ls}\hlstd{()}
 \end{alltt}
 \begin{verbatim}
-##  [1] "BMI"     "height"  "mydata"  "mydata2" "reqval"  "rnw2pdf" "weight" 
-##  [8] "x1"      "x2"      "y"       "y.re"    "y.sub1"  "y.sub2"  "y.sub4" 
-## [15] "y1"      "y2"      "z"
+##  [1] "BMI"     "height"  "mydata"  "mydata2" "rnw2pdf" "weight"  "x1"     
+##  [8] "x2"      "y"       "y.re"    "y.sub1"  "y.sub2"  "y.sub4"  "y1"     
+## [15] "y2"      "z"
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
-%    \item
 \pause \vfill
-Removing (deleting) some objects
+Remove (delete) some objects
 \begin{knitrout}\scriptsize
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
@@ -1087,11 +1021,10 @@ Removing (deleting) some objects
 \hlkwd{ls}\hlstd{()}
 \end{alltt}
 \begin{verbatim}
-## [1] "mydata"  "reqval"  "rnw2pdf"
+## [1] "mydata"  "rnw2pdf"
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
-%  \end{itemize}
 \end{frame}
 
 
@@ -1100,11 +1033,6 @@ Removing (deleting) some objects
 
 \begin{frame}[fragile]
   \frametitle{Saving and restoring the workspace}
-  %% \begin{center}
-  %%   \includegraphics[width=0.8\textwidth]{figs/save-workspace}
-  %% \end{center}
-%% ##   \pause
-%% If you prefer commands over point-and-click:
 Save all the objects in your workspace to a file and then remove them:
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
@@ -1118,15 +1046,17 @@ Save all the objects in your workspace to a file and then remove them:
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
-
-\begin{knitrout}
+\pause
+\vfill
+Load the objects back into the workspace:
+\begin{knitrout}\small
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlkwd{load}\hlstd{(}\hlstr{"myimage.RData"}\hlstd{)}        \hlcom{## Load the saved workspace}
-\hlkwd{ls}\hlstd{()}                         \hlcom{## Objects are back}
+\hlkwd{ls}\hlstd{()}                         \hlcom{## Check that the objects are back}
 \end{alltt}
 \begin{verbatim}
-## [1] "mydata"  "reqval"  "rnw2pdf"
+## [1] "mydata"  "rnw2pdf"
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -1142,8 +1072,6 @@ Save all the objects in your workspace to a file and then remove them:
 \begin{frame}[fragile]
   \frametitle{Additional Resources}
   \large
-%\begin{itemize}
-%  \item
   `Official' manuals
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
@@ -1152,8 +1080,6 @@ Save all the objects in your workspace to a file and then remove them:
 \end{alltt}
 \end{kframe}
 \end{knitrout}
-%  \item[]
-%  \item
 \vfill
 Useful books
 \begin{itemize}

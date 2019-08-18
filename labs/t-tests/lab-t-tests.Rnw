@@ -49,7 +49,7 @@ knit_theme$set("edit-kwrite")
     Lab 2 -- Summary statistics,
     graphics, and the $t$-test} \\
   \vspace{1cm}
-  August 20 \& 21, 2018 \par
+%  August 20 \& 21, 2018 \par
   FANR 6750 \par
   \vfill
   \large
@@ -109,22 +109,8 @@ knit_theme$set("edit-kwrite")
 
 
 \begin{frame}[fragile]
-  \frametitle{Two-sample, two-tailed scenario}
+  \frametitle{Two-sample, unpaired, two-tailed scenario}
   \small
-%  \begin{itemize}%[<+->]
-%    \item We have 2 samples of data
-%    \item<2-> Questions: Do the samples come from the same %statistical
-%      population, or do they come from populations with different
-%      means?   %2 populations have the same mean?
-%    \item<3-> Problem: We don't know the true population means ($\mu_1, \mu_1$)% -- we only
-%      know the sample means ($\bar{y_1}, \bar{y_1}$) and sample standard deviations ($s_1.
-    %% \item<4-> Under the assumption that the variances of the two
-    %%   populations are equal, the relevant hypotheses are:
-    %%   \begin{itemize}
-    %%     \item $H_0: \mu_1 = \mu_2$
-    %%     \item $H_A: \mu_1 \neq \mu_2$
-    %%   \end{itemize}
-%  \end{itemize}
   We have 2 samples of data and we want to know if they came from
   the same population. \\
   \pause
@@ -146,16 +132,14 @@ equal, the relevant hypotheses are:
   \normalsize
   \pause
   \vfill
-%  \uncover<4->{
-%\begin{center}
 <<pop,echo=FALSE,include=TRUE,fig.width=9,fig.height=3,cache=TRUE>>=
 op <- par(mai=c(0.6,.1,0.4,0.1))
 curve(dnorm(x, mean=3, sd=1), 0, 10, xlab="Tree density", ylab="", xaxt="n", yaxt="n", frame=FALSE)
 curve(dnorm(x, mean=6, sd=1), 0, 10, add=TRUE, col=4)
 segments(3, 0, 3, dnorm(3, 3, 1), lty=2)
 segments(6, 0, 6, dnorm(6, 6, 1), col=4, lty=2)
-text(3, dnorm(3,3,1), expression(mu[1]), pos=1, cex=2)
-text(6, dnorm(6,6,1), expression(mu[2]), pos=1, cex=2, col=4)
+text(3, dnorm(3,3,1), expression(mu[1]), pos=3, cex=2, xpd=TRUE)
+text(6, dnorm(6,6,1), expression(mu[2]), pos=3, cex=2, col=4, xpd=TRUE)
 @
 %\end{center}
 %}
@@ -165,10 +149,7 @@ text(6, dnorm(6,6,1), expression(mu[2]), pos=1, cex=2, col=4)
 
 
 \begin{frame}[fragile]
-%  \frametitle{Reminder about the $t$-distribution}
-%  \frametitle{$t$-distribution with df=18}
   \frametitle{Key points}
-%\begin{center}
 <<tdist,echo=FALSE,include=FALSE,fig.height=6,fig.width=8>>=
 op <- par(mai=c(0.8, 0.2, 0.2, 0.2))
 curve(dt(x, df=18), -4, 4, xlab="t-value", ylab="", yaxt="n",
@@ -194,32 +175,21 @@ arrows(xs2[1], dt(0,18)/1.5, xs2[1], ys2[1], length=0.1)
 #arrows(3, dt(0,18), 3, dt(3,18), length=0.1)
 par(op)
 @
-%\end{center}
-\small
-%\vspace{-1cm}
-%{\bf Key points}
-%\begin{itemize}%[<+->]
-%  \item<1->
-If the two sample means ($\bar{y_1}, \bar{y_2}$) are very
-different and the standard error of the difference in means is
-small, the $t$ statistic will be far from zero. \\
-\pause
-\vfill
 
-%  \item<2->
-If the $t$ statistic is more extreme than the critical
-    values, you reject the null hypothesis ($H_0$). \\
-\pause
-    \vfill
+  \small
+  If the two sample means ($\bar{y_1}, \bar{y_2}$) are very
+  different and the standard error of the difference in means is
+  small, the $t$ statistic will be far from zero. \\
+  \pause
+  \vfill
 
-%\end{itemize}
-%\uncover<3>{
-%\vspace{-0.1cm}
-%\begin{center}
-    \centering
-  \includegraphics[width=0.6\textwidth]{figure/tdist-1} \\
-%\end{center}
-%}
+  If the $t$ statistic is more extreme than the critical
+  values, you reject the null hypothesis ($H_0$). \\
+  \pause
+  \vfill
+
+  \centering
+  \includegraphics[width=0.65\textwidth]{figure/tdist-1} \\
 \end{frame}
 
 
@@ -233,7 +203,8 @@ If the $t$ statistic is more extreme than the critical
 %  \large
   \begin{enumerate}[\bf (1)]
     \item<1-> Open {\bf R} and set the working directory to a convenient
-      location on your computer. Do this using {\tt File > Change dir ...}, or the \inr{setwd} function.
+      location on your computer. Do this using the drop down menu or
+      the \inr{setwd} function.   
     \item[]
     \item<2-> Put the file {\tt treedata.csv} into your working directory
     \item[]
@@ -435,15 +406,10 @@ par(op)
   \[
   t = \frac{(\bar{y_L} - \bar{y_H}) - (\mu_L - \mu_H)}{
     \sqrt{s^2_p/n_L + s^2_p/n_H}}
-%  t = \frac{(\bar{y_L} - \bar{y_H})}{
-%    \sqrt{(s_L/\sqrt{n_L})^2 + (s_H/\sqrt{n_H})^2}}
   \]
-%  where $s_L$ and $s_H$ are the standard deviations of the low and
-%  high groups.
   where $s^2_p$ is the pooled variance:
   \[
   s^2_p = \frac{(n_L-1)s^2_L + (n_H-1)s^2_H}{n_L + n_H - 2}
-%  s_L = \sqrt{\frac{1}{n_L-1} \sum_{i=1}^{n_L} (y_{L i} - \bar{y_L})^2}
   \]
   \pause
   {\bf Step 2:} Compare $t$ statistic to critical values
@@ -478,10 +444,10 @@ par(op)
 
 \begin{frame}[fragile]
   \frametitle{Do it by hand in \R}
-  {\bf Step 1:} Compute the $t$ statistic:
   \footnotesize
+  {\bf Step 1:} Compute the $t$ statistic:
 %  \note{Make them do this before you show the answer}
-<<hand1, size='scriptsize'>>=
+<<hand1,size='scriptsize'>>=
 mean.L <- mean(yL)
 mean.H <- mean(yH)
 s2.L <- var(yL)
@@ -497,16 +463,16 @@ t.stat
 %  \normalsize
   {\bf Step 2:} Compare $t$ statistic to critical values (two-tailed)
   \footnotesize
-<<hand2, size='tiny'>>=
+<<hand2,size='scriptsize'>>=
 alpha <- 0.05
 ## NOTE: qt returns critical values. No need to use "t tables"
 critical.vals <- qt(c(alpha/2, 1-alpha/2), df=n.L+n.H-2)
 critical.vals
 @
-\scriptsize
+%\scriptsize
+  \pause
   {\bf Conclusion:} Reject $H_0$ because %\Sexpr{t.stat}
-  5.4 is more
-  extreme than the critical values.
+  5.4 is more extreme than the critical values.
 \end{frame}
 
 
@@ -515,7 +481,7 @@ critical.vals
 \begin{frame}[fragile]
   \frametitle{Let \R~do all the work -- Option 1}
   \footnotesize
-<<t-test1, size='normalsize'>>=
+<<t-test1,size='scriptsize'>>=
 t.test(yH, yL, var.equal=TRUE,
        paired=FALSE, alternative="two.sided")
 @
@@ -531,7 +497,7 @@ t.test(yH, yL, var.equal=TRUE,
 \begin{frame}[fragile]
   \frametitle{Let \R~do all the work -- Option 2}
   \footnotesize
-<<>>=
+<<t-test2,size='scriptsize'>>=
 t.test(treeDensity ~ Elevation, data=treedata, var.equal=TRUE,
        paired=FALSE, alternative="two.sided")
 @
@@ -561,7 +527,7 @@ t.test(treeDensity ~ Elevation, data=treedata, var.equal=TRUE,
   \frametitle{Test equality of variances by hand}
   {\bf Step 1:} Compute ratio of variances $s^2_1/s^2_2$ (the $F$-statistic)
   \footnotesize
-<<>>=
+<<var-ratio>>=
 var.ratio <- var(yL)/var(yH) # F-statistic
 var.ratio
 @
@@ -593,7 +559,7 @@ critical.vals
   The standard 2 sample $t$-test assumes that the variances are
   equal. Here's how you can test this assumption:
 %  \footnotesize
-<<vartest, size='small'>>=
+<<vartest,size='scriptsize'>>=
 var.test(yL, yH)
 @
 \end{frame}
@@ -642,7 +608,7 @@ treated <- c(19,18,24,23,31,22,16,23,24,26,24,28)
     extraneous sources of variation among sample pairs.}
   \vfill
   \pause
-<<>>=
+<<catdiff>>=
 diff <- untreated-treated
 diff
 mean(diff) ## Estimate of the mean of the differences
@@ -729,8 +695,6 @@ abline(v=0, lty=2)
   \normalsize
   {\bf Step 1}. Calculate the standard deviation of the differences.
   \[
-%    \mbox{SEM} = \frac{s}{\sqrt{n}} = \frac{\sqrt{\frac{1}{n-1} \sum_{i=1}^n
-%        (y_i - \bar{y})^2}}{\sqrt{n}}
     s_d = \sqrt{\frac{1}{n-1} \sum_{i=1}^n
         (y_i - \bar{y})^2}%}{\sqrt{n}}
   \]
@@ -738,12 +702,9 @@ abline(v=0, lty=2)
   \vfill
   {\bf Step 2}. Calculate the test statistic.
   \[
-%     t = \frac{\bar{y} - 0}{\mbox{SEM}}
      t = \frac{\bar{y} - 0}{s_d/\sqrt{n}}
   \]
   {\bf Step 3}. Compare to critical value.
-%  \[
-%  \]
 \end{frame}
 
 
@@ -779,11 +740,11 @@ abline(v=0, lty=2)
     \item Do a paired $t$ test on the caterpillar data without using the \inr{t.test}
       function. Use only the functions \inr{mean}, \inr{sd}, and
       possibly \inr{length}.
-    \item Do the paired $t$ test again, but this time using the \inr{
-        t.test} function.
+    \item Do the paired $t$ test again, but this time using the 
+      \inr{t.test} function.
       \begin{itemize}
         \scriptsize
-        \item You will need to use the \texttt{``paired''} argument %when using the \inr{t.test} function
+        \item You will need to use the \texttt{"paired"} argument %when using the \inr{t.test} function
         \item Assume variances are equal
       \end{itemize}
     \item Do a standard ({\it unpaired}) two-sample $t$ test using
@@ -866,12 +827,6 @@ abline(v=0, lty=2)
 
 
 
-
-
-
-
-
-
 %% \section{Visualizing data}
 
 
@@ -895,20 +850,6 @@ abline(v=0, lty=2)
 %% # boxplot(treatment, goats, )
 %% @
 %% \end{frame}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

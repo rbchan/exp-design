@@ -1,6 +1,6 @@
 \documentclass[color=usenames,dvipsnames]{beamer}\usepackage[]{graphicx}\usepackage[]{color}
-%% maxwidth is the original width if it is less than linewidth
-%% otherwise use linewidth (to make sure the graphics do not exceed the margin)
+% maxwidth is the original width if it is less than linewidth
+% otherwise use linewidth (to make sure the graphics do not exceed the margin)
 \makeatletter
 \def\maxwidth{ %
   \ifdim\Gin@nat@width>\linewidth
@@ -87,7 +87,7 @@
     Lab 2 -- Summary statistics,
     graphics, and the $t$-test} \\
   \vspace{1cm}
-  August 20 \& 21, 2018 \par
+%  August 20 \& 21, 2018 \par
   FANR 6750 \par
   \vfill
   \large
@@ -147,22 +147,8 @@
 
 
 \begin{frame}[fragile]
-  \frametitle{Two-sample, two-tailed scenario}
+  \frametitle{Two-sample, unpaired, two-tailed scenario}
   \small
-%  \begin{itemize}%[<+->]
-%    \item We have 2 samples of data
-%    \item<2-> Questions: Do the samples come from the same %statistical
-%      population, or do they come from populations with different
-%      means?   %2 populations have the same mean?
-%    \item<3-> Problem: We don't know the true population means ($\mu_1, \mu_1$)% -- we only
-%      know the sample means ($\bar{y_1}, \bar{y_1}$) and sample standard deviations ($s_1.
-    %% \item<4-> Under the assumption that the variances of the two
-    %%   populations are equal, the relevant hypotheses are:
-    %%   \begin{itemize}
-    %%     \item $H_0: \mu_1 = \mu_2$
-    %%     \item $H_A: \mu_1 \neq \mu_2$
-    %%   \end{itemize}
-%  \end{itemize}
   We have 2 samples of data and we want to know if they came from
   the same population. \\
   \pause
@@ -184,8 +170,6 @@ equal, the relevant hypotheses are:
   \normalsize
   \pause
   \vfill
-%  \uncover<4->{
-%\begin{center}
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}
 \includegraphics[width=\maxwidth]{figure/pop-1} 
@@ -199,37 +183,23 @@ equal, the relevant hypotheses are:
 
 
 \begin{frame}[fragile]
-%  \frametitle{Reminder about the $t$-distribution}
-%  \frametitle{$t$-distribution with df=18}
   \frametitle{Key points}
-%\begin{center}
 
-%\end{center}
-\small
-%\vspace{-1cm}
-%{\bf Key points}
-%\begin{itemize}%[<+->]
-%  \item<1->
-If the two sample means ($\bar{y_1}, \bar{y_2}$) are very
-different and the standard error of the difference in means is
-small, the $t$ statistic will be far from zero. \\
-\pause
-\vfill
 
-%  \item<2->
-If the $t$ statistic is more extreme than the critical
-    values, you reject the null hypothesis ($H_0$). \\
-\pause
-    \vfill
+  \small
+  If the two sample means ($\bar{y_1}, \bar{y_2}$) are very
+  different and the standard error of the difference in means is
+  small, the $t$ statistic will be far from zero. \\
+  \pause
+  \vfill
 
-%\end{itemize}
-%\uncover<3>{
-%\vspace{-0.1cm}
-%\begin{center}
-    \centering
-  \includegraphics[width=0.6\textwidth]{figure/tdist-1} \\
-%\end{center}
-%}
+  If the $t$ statistic is more extreme than the critical
+  values, you reject the null hypothesis ($H_0$). \\
+  \pause
+  \vfill
+
+  \centering
+  \includegraphics[width=0.65\textwidth]{figure/tdist-1} \\
 \end{frame}
 
 
@@ -243,7 +213,8 @@ If the $t$ statistic is more extreme than the critical
 %  \large
   \begin{enumerate}[\bf (1)]
     \item<1-> Open {\bf R} and set the working directory to a convenient
-      location on your computer. Do this using {\tt File > Change dir ...}, or the \inr{setwd} function.
+      location on your computer. Do this using the drop down menu or
+      the \inr{setwd} function.   
     \item[]
     \item<2-> Put the file {\tt treedata.csv} into your working directory
     \item[]
@@ -419,15 +390,10 @@ If the $t$ statistic is more extreme than the critical
   \[
   t = \frac{(\bar{y_L} - \bar{y_H}) - (\mu_L - \mu_H)}{
     \sqrt{s^2_p/n_L + s^2_p/n_H}}
-%  t = \frac{(\bar{y_L} - \bar{y_H})}{
-%    \sqrt{(s_L/\sqrt{n_L})^2 + (s_H/\sqrt{n_H})^2}}
   \]
-%  where $s_L$ and $s_H$ are the standard deviations of the low and
-%  high groups.
   where $s^2_p$ is the pooled variance:
   \[
   s^2_p = \frac{(n_L-1)s^2_L + (n_H-1)s^2_H}{n_L + n_H - 2}
-%  s_L = \sqrt{\frac{1}{n_L-1} \sum_{i=1}^{n_L} (y_{L i} - \bar{y_L})^2}
   \]
   \pause
   {\bf Step 2:} Compare $t$ statistic to critical values
@@ -462,8 +428,8 @@ If the $t$ statistic is more extreme than the critical
 
 \begin{frame}[fragile]
   \frametitle{Do it by hand in \R}
-  {\bf Step 1:} Compute the $t$ statistic:
   \footnotesize
+  {\bf Step 1:} Compute the $t$ statistic:
 %  \note{Make them do this before you show the answer}
 \begin{knitrout}\scriptsize
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
@@ -488,7 +454,7 @@ If the $t$ statistic is more extreme than the critical
 %  \normalsize
   {\bf Step 2:} Compare $t$ statistic to critical values (two-tailed)
   \footnotesize
-\begin{knitrout}\tiny
+\begin{knitrout}\scriptsize
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlstd{alpha} \hlkwb{<-} \hlnum{0.05}
@@ -501,10 +467,10 @@ If the $t$ statistic is more extreme than the critical
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
-\scriptsize
+%\scriptsize
+  \pause
   {\bf Conclusion:} Reject $H_0$ because %5.4048957
-  5.4 is more
-  extreme than the critical values.
+  5.4 is more extreme than the critical values.
 \end{frame}
 
 
@@ -513,7 +479,7 @@ If the $t$ statistic is more extreme than the critical
 \begin{frame}[fragile]
   \frametitle{Let \R~do all the work -- Option 1}
   \footnotesize
-\begin{knitrout}
+\begin{knitrout}\scriptsize
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlkwd{t.test}\hlstd{(yH, yL,} \hlkwc{var.equal}\hlstd{=}\hlnum{TRUE}\hlstd{,}
@@ -546,7 +512,7 @@ If the $t$ statistic is more extreme than the critical
 \begin{frame}[fragile]
   \frametitle{Let \R~do all the work -- Option 2}
   \footnotesize
-\begin{knitrout}
+\begin{knitrout}\scriptsize
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlkwd{t.test}\hlstd{(treeDensity} \hlopt{~} \hlstd{Elevation,} \hlkwc{data}\hlstd{=treedata,} \hlkwc{var.equal}\hlstd{=}\hlnum{TRUE}\hlstd{,}
@@ -639,7 +605,7 @@ If the $t$ statistic is more extreme than the critical
   The standard 2 sample $t$-test assumes that the variances are
   equal. Here's how you can test this assumption:
 %  \footnotesize
-\begin{knitrout}\small
+\begin{knitrout}\scriptsize
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlkwd{var.test}\hlstd{(yL, yH)}
@@ -691,8 +657,8 @@ If the $t$ statistic is more extreme than the critical
   \pause
   \vfill
   {%\bf
-    For paired $t$-tests, we want to know if the \alert{mean of the
-    differences} differs from zero. This allows us to account for
+    For paired $t$-tests, we are interested in the \alert{mean of the 
+    differences}. Focusing on the differences allows us to account for
     extraneous sources of variation among sample pairs.}
   \vfill
   \pause
@@ -794,8 +760,6 @@ If the $t$ statistic is more extreme than the critical
   \normalsize
   {\bf Step 1}. Calculate the standard deviation of the differences.
   \[
-%    \mbox{SEM} = \frac{s}{\sqrt{n}} = \frac{\sqrt{\frac{1}{n-1} \sum_{i=1}^n
-%        (y_i - \bar{y})^2}}{\sqrt{n}}
     s_d = \sqrt{\frac{1}{n-1} \sum_{i=1}^n
         (y_i - \bar{y})^2}%}{\sqrt{n}}
   \]
@@ -803,12 +767,9 @@ If the $t$ statistic is more extreme than the critical
   \vfill
   {\bf Step 2}. Calculate the test statistic.
   \[
-%     t = \frac{\bar{y} - 0}{\mbox{SEM}}
      t = \frac{\bar{y} - 0}{s_d/\sqrt{n}}
   \]
   {\bf Step 3}. Compare to critical value.
-%  \[
-%  \]
 \end{frame}
 
 
@@ -844,11 +805,11 @@ If the $t$ statistic is more extreme than the critical
     \item Do a paired $t$ test on the caterpillar data without using the \inr{t.test}
       function. Use only the functions \inr{mean}, \inr{sd}, and
       possibly \inr{length}.
-    \item Do the paired $t$ test again, but this time using the \inr{
-        t.test} function.
+    \item Do the paired $t$ test again, but this time using the 
+      \inr{t.test} function.
       \begin{itemize}
         \scriptsize
-        \item You will need to use the \texttt{``paired''} argument %when using the \inr{t.test} function
+        \item You will need to use the \texttt{"paired"} argument %when using the \inr{t.test} function
         \item Assume variances are equal
       \end{itemize}
     \item Do a standard ({\it unpaired}) two-sample $t$ test using
@@ -931,12 +892,6 @@ If the $t$ statistic is more extreme than the critical
 
 
 
-
-
-
-
-
-
 %% \section{Visualizing data}
 
 
@@ -960,20 +915,6 @@ If the $t$ statistic is more extreme than the critical
 %% # boxplot(treatment, goats, )
 %% @
 %% \end{frame}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
