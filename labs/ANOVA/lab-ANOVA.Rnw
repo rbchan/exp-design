@@ -44,8 +44,8 @@ knit_theme$set("edit-kwrite")
   \textcolor{RoyalBlue}{Lab 3 -- Completely Randomized ANOVA \\
   (a.k.a. One-way ANOVA)} \par
   \vspace{1cm}
-  \large
-  Aug 27 \& 28, 2018 \\
+%  \large
+%  Aug 27 \& 28, 2018 \\
   FANR 6750 \\
   \vfill
   \large
@@ -87,7 +87,7 @@ knit_theme$set("edit-kwrite")
   {\Large Scenario}
   \begin{itemize}
     \item We have independent samples from $a>2$ groups
-    \item We assume a common variance
+    \item We assume the residuals are normally distributed with a mean of zero and a common variance
   \end{itemize}
 %  \vspace{0.5cm}
   \pause
