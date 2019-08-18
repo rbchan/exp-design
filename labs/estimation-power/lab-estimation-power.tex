@@ -1,6 +1,6 @@
 \documentclass[color=usenames,dvipsnames]{beamer}\usepackage[]{graphicx}\usepackage[]{color}
-%% maxwidth is the original width if it is less than linewidth
-%% otherwise use linewidth (to make sure the graphics do not exceed the margin)
+% maxwidth is the original width if it is less than linewidth
+% otherwise use linewidth (to make sure the graphics do not exceed the margin)
 \makeatletter
 \def\maxwidth{ %
   \ifdim\Gin@nat@width>\linewidth
@@ -85,7 +85,7 @@
   {\bf \color{RoyalBlue}{Lab 4 -- Contrasts, Estimation, and Power Analysis \par}}
   \vspace{1cm}
   \Large
-  September 10 \& 11, 2018 \\
+  %% September 10 \& 11, 2018 \\
   FANR 6750 \par
   \vfill
   \large
@@ -135,27 +135,27 @@
 \hlstd{sawData}
 \end{alltt}
 \begin{verbatim}
-##     y Brand
-## 1  42     A
-## 2  17     A
-## 3  24     A
-## 4  39     A
-## 5  43     A
-## 6  28     B
-## 7  50     B
-## 8  44     B
-## 9  32     B
-## 10 61     B
-## 11 57     C
-## 12 45     C
-## 13 48     C
-## 14 41     C
-## 15 54     C
-## 16 29     D
-## 17 40     D
-## 18 22     D
-## 19 34     D
-## 20 30     D
+##    Kick.angle Brand
+## 1          42     A
+## 2          17     A
+## 3          24     A
+## 4          39     A
+## 5          43     A
+## 6          28     B
+## 7          50     B
+## 8          44     B
+## 9          32     B
+## 10         61     B
+## 11         57     C
+## 12         45     C
+## 13         48     C
+## 14         41     C
+## 15         54     C
+## 16         29     D
+## 17         40     D
+## 18         22     D
+## 19         34     D
+## 20         30     D
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -337,7 +337,7 @@ Are they orthogonal?}
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlstd{aov.out} \hlkwb{<-} \hlkwd{aov}\hlstd{(y} \hlopt{~} \hlstd{Brand,} \hlkwc{data}\hlstd{=sawData,}
+\hlstd{aov.out} \hlkwb{<-} \hlkwd{aov}\hlstd{(Kick.angle} \hlopt{~} \hlstd{Brand,} \hlkwc{data}\hlstd{=sawData,}
                \hlkwc{contrasts}\hlstd{=}\hlkwd{list}\hlstd{(}\hlkwc{Brand}\hlstd{=contrast.mat))}
 \end{alltt}
 \end{kframe}
@@ -376,7 +376,7 @@ Are they orthogonal?}
 \begin{knitrout}\scriptsize
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlstd{(group.means} \hlkwb{<-} \hlkwd{tapply}\hlstd{(sawData}\hlopt{$}\hlstd{y, sawData}\hlopt{$}\hlstd{Brand, mean))}
+\hlstd{(group.means} \hlkwb{<-} \hlkwd{tapply}\hlstd{(sawData}\hlopt{$}\hlstd{Kick.angle, sawData}\hlopt{$}\hlstd{Brand, mean))}
 \end{alltt}
 \begin{verbatim}
 ##  A  B  C  D 
@@ -531,13 +531,14 @@ Are they orthogonal?}
 
 \begin{frame}[fragile]
   \frametitle{Estimating confidence intervals}
-  In an ANOVA context, confidence intervals can be
+  In a one-way ANOVA context, confidence intervals can be
   constructed using the equation:
   \[
     \text{CI} = \text{Point estimate} \pm t_{\alpha/2,a(n-1)} \times \text{SE}
   \]
   As usual, the hard part is computing the SE\footnote{See page 300 of
-    Dowdy et al. for SE formulas}
+    Dowdy et al. for SE formulas}\footnote{In general, the
+    degrees-of-freedom for the t-value should be taken from error term}  
 %  \pause
 %\footnotesize
 %<<>>=

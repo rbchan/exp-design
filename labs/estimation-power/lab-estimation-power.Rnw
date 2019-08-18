@@ -49,7 +49,7 @@ knit_theme$set("edit-kwrite")
   {\bf \color{RoyalBlue}{Lab 4 -- Contrasts, Estimation, and Power Analysis \par}}
   \vspace{1cm}
   \Large
-  September 10 \& 11, 2018 \\
+  %% September 10 \& 11, 2018 \\
   FANR 6750 \par
   \vfill
   \large
@@ -223,7 +223,7 @@ contrast.mat
 {\bf Fit the model with contrasts}
 \begin{footnotesize}
 <<>>=
-aov.out <- aov(Kick.Angle ~ Brand, data=sawData,
+aov.out <- aov(Kick.angle ~ Brand, data=sawData,
                contrasts=list(Brand=contrast.mat))
 @
 \pause
@@ -244,7 +244,7 @@ summary(aov.out, split = list(Brand =
   \footnotesize %\small
 {\bf Group means}
 <<gmeans1,size='scriptsize'>>=
-(group.means <- tapply(sawData$y, sawData$Brand, mean))
+(group.means <- tapply(sawData$Kick.angle, sawData$Brand, mean))
 @
 \pause
 \vfill
@@ -537,7 +537,7 @@ arrows(1:4, CI$lowerCI, 1:4, CI$upperCI, code=3, angle=90, length=0.05)
 
 \begin{frame}[fragile]
 \frametitle{Power analysis for a 2-sample $t$-test}
-<<>>=
+<<power-t>>=
 power.t.test(n=NULL, delta=3, sd=2, sig.level=0.05,
              power=0.8)
 @
@@ -548,7 +548,7 @@ power.t.test(n=NULL, delta=3, sd=2, sig.level=0.05,
 \begin{frame}[fragile]
   \frametitle{Power analysis for one-way ANOVA}
 \begin{small}
-<<>>=
+<<power-anova>>=
 power.anova.test(groups=4, n=5, between.var=360.0,
                  within.var=101.2, power=NULL)
 @
