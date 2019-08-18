@@ -49,7 +49,7 @@ knit_theme$set("edit-kwrite")
   {\bf \color{RoyalBlue}{Lab 5 -- Assumptions of ANOVA}} \par
   \vspace{1cm}
   \Large
-  September 17 \& 18, 2018 \\
+%  September 17 \& 18, 2018 \\
   FANR 6750 \\
   \vfill
   \large
