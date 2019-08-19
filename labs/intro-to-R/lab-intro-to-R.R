@@ -1,19 +1,3 @@
-## ----build-fun, include=FALSE, cache=TRUE--------------------------------
-## A function to compile and open the pdf
-## Usage:
-## rnw2pdf("lab-intro-to-R") # Don't include the file extension
-source("../rnw2pdf.R")
-
-
-## ----knitr-theme, include=FALSE------------------------------------------
-##knit_theme$set("navajo-night")
-knit_theme$set("edit-kwrite")
-
-
-## ----knitr-setup, include=FALSE------------------------------------------
-##opts_chunk$set(comment=NA)
-
-
 ## ----add2----------------------------------------------------------------
 2+2
 
