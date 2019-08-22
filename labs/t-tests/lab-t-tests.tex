@@ -216,16 +216,16 @@ equal, the relevant hypotheses are:
       location on your computer. Do this using the drop down menu or
       the \inr{setwd} function.   
     \item[]
-    \item<2-> Put the file {\tt treedata.csv} into your working directory
+    \item<2-> Put the file {\tt treedata.csv} into your working directory.
     \item[]
     \item<3-> Create a new \R~script and import {\tt treedata.csv}. Name your object {\tt treedata}.
     \item[]
-    \item<4-> Using the indexing methods we covered last time to
+    \item<4-> Use the indexing methods we covered last time to
       create 2 objects: \inr{yL} is the tree density data for the
       first 10 experimental units (low elevation), and \inr{yH} is
-      the tree density data for the last 10 units (high elevation)
+      the tree density data for the last 10 units (high elevation).
     \item[]
-    \item<5-> Compute the mean, variance, and standard deviation of the 2 samples
+    \item<5-> Compute the mean, variance, and standard deviation of the 2 samples.
   \end{enumerate}
 \end{frame}
 
@@ -478,7 +478,8 @@ equal, the relevant hypotheses are:
 
 \begin{frame}[fragile]
   \frametitle{Let \R~do all the work -- Option 1}
-  \footnotesize
+  Provide the data as two vectors, one for each sample.
+%  \footnotesize
 \begin{knitrout}\scriptsize
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
@@ -511,7 +512,8 @@ equal, the relevant hypotheses are:
 
 \begin{frame}[fragile]
   \frametitle{Let \R~do all the work -- Option 2}
-  \footnotesize
+  Provide the data as a data.frame, with one column for treeDensity and one column for Elevation. 
+%  \footnotesize
 \begin{knitrout}\scriptsize
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
@@ -810,7 +812,7 @@ equal, the relevant hypotheses are:
       \begin{itemize}
         \scriptsize
         \item You will need to use the \texttt{"paired"} argument %when using the \inr{t.test} function
-        \item Assume variances are equal
+%        \item Assume variances are equal
       \end{itemize}
     \item Do a standard ({\it unpaired}) two-sample $t$ test using
       the \inr{t.test} function.

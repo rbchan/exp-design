@@ -4,8 +4,9 @@ curve(dnorm(x, mean=3, sd=1), 0, 10, xlab="Tree density", ylab="", xaxt="n", yax
 curve(dnorm(x, mean=6, sd=1), 0, 10, add=TRUE, col=4)
 segments(3, 0, 3, dnorm(3, 3, 1), lty=2)
 segments(6, 0, 6, dnorm(6, 6, 1), col=4, lty=2)
-text(3, dnorm(3,3,1), expression(mu[1]), pos=1, cex=2)
-text(6, dnorm(6,6,1), expression(mu[2]), pos=1, cex=2, col=4)
+text(3, dnorm(3,3,1), expression(mu[1]), pos=3, cex=2, xpd=TRUE)
+text(6, dnorm(6,6,1), expression(mu[2]), pos=3, cex=2, col=4, xpd=TRUE)
+
 
 ## ----tdist,echo=FALSE,include=FALSE,fig.height=6,fig.width=8-------------
 op <- par(mai=c(0.8, 0.2, 0.2, 0.2))
@@ -32,6 +33,7 @@ arrows(xs2[1], dt(0,18)/1.5, xs2[1], ys2[1], length=0.1)
 #arrows(3, dt(0,18), 3, dt(3,18), length=0.1)
 par(op)
 
+
 ## ----echo=FALSE----------------------------------------------------------
 yL <- c(16,24,18,17,29,31,14,16,22,15)
 yH <- c(2, 11, 6, 8, 0, 3,19, 1, 6,5)
@@ -40,9 +42,11 @@ treedata <- data.frame(treeDensity=c(yL, yH),
                            rep('High', length(yH))))
 write.csv(treedata, "treedata.csv", row.names=FALSE)
 
+
 ## ----boxplot,fig.show='hide',fig.width=6,fig.height=6--------------------
 boxplot(yL, yH, xlab="Elevation", names=c("Low", "High"),
         ylab="Tree density", col=c("lightblue", "purple"))
+
 
 ## ----histogram,echo=FALSE,include=FALSE,fig.width=12,fig.height=6--------
 par(mfrow=c(1,2))
@@ -56,6 +60,7 @@ hist(yH, xlab="Tree density (high elevation)", col="purple",
 ##      xlim=c(0, 40))
 ## hist(yH, xlab="Tree density (high elevation)", col="purple",
 ##      xlim=c(0, 40))
+
 
 ## ----popsamp,echo=FALSE,include=TRUE,fig.height=7,fig.width=7------------
 op <- par(mfrow=c(2,2), mai=c(0.7,0.7,0.7,0.6))
@@ -83,7 +88,8 @@ hist(yH, xlim=c(0, 50), ylim=c(0,0.2), breaks=seq(0,50,2), freq=FALSE,
 lines(density(yH))
 par(op)
 
-## ----hand1, size='scriptsize'--------------------------------------------
+
+## ----hand1,size='scriptsize'---------------------------------------------
 mean.L <- mean(yL)
 mean.H <- mean(yH)
 s2.L <- var(yL)
@@ -95,31 +101,38 @@ SE <- sqrt(s2.p/n.L + s2.p/n.H)
 t.stat <- (mean.L - mean.H) / SE
 t.stat
 
-## ----hand2, size='tiny'--------------------------------------------------
+
+## ----hand2,size='scriptsize'---------------------------------------------
 alpha <- 0.05
 ## NOTE: qt returns critical values. No need to use "t tables"
 critical.vals <- qt(c(alpha/2, 1-alpha/2), df=n.L+n.H-2)
 critical.vals
 
-## ----t-test1, size='normalsize'------------------------------------------
+
+## ----t-test1,size='scriptsize'-------------------------------------------
 t.test(yH, yL, var.equal=TRUE,
        paired=FALSE, alternative="two.sided")
 
-## ------------------------------------------------------------------------
+
+## ----t-test2,size='scriptsize'-------------------------------------------
 t.test(treeDensity ~ Elevation, data=treedata, var.equal=TRUE,
        paired=FALSE, alternative="two.sided")
 
-## ------------------------------------------------------------------------
+
+## ----var-ratio-----------------------------------------------------------
 var.ratio <- var(yL)/var(yH) # F-statistic
 var.ratio
+
 
 ## ------------------------------------------------------------------------
 alpha <- 0.05
 critical.vals <- qf(c(alpha/2, 1-alpha/2), df1=n.L-1, df2=n.H-1)
 critical.vals
 
-## ----vartest, size='small'-----------------------------------------------
+
+## ----vartest,size='scriptsize'-------------------------------------------
 var.test(yL, yH)
+
 
 ## ----F,echo=FALSE,eval=FALSE---------------------------------------------
 ## curve(df(x, n.L, n.H), 0, 5, xlab="F value", yaxt="n", frame=FALSE,
@@ -135,20 +148,24 @@ var.test(yL, yH)
 ## arrows(xs1[1], .7, xs1[1], ys1[1], length=0.1)
 ## arrows(xs2[1], .7, xs2[1], ys2[1], length=0.1)
 
+
 ## ----catdat--------------------------------------------------------------
 location <- 1:12
 untreated <- c(23,18,29,22,33,20,17,25,27,30,25,27)
 treated <- c(19,18,24,23,31,22,16,23,24,26,24,28)
 
-## ------------------------------------------------------------------------
+
+## ----catdiff-------------------------------------------------------------
 diff <- untreated-treated
 diff
 mean(diff) ## Estimate of the mean of the differences
+
 
 ## ----box2,fig.show='hide',fig.width=6,fig.height=6-----------------------
 boxplot(diff, col="lightgreen", size='small',
         ylab="Differences in caterpillars (untreated-treated)")
 abline(h=0, col="grey")
+
 
 ## ----diff,include=FALSE,fig.width=8,fig.height=6-------------------------
 diff <- untreated-treated
