@@ -116,7 +116,7 @@ knit_theme$set("edit-kwrite")
   \pause
   \vfill
 
-  The problem is that the true population means ($\mu_1, \mu_1$) are
+  The problem is that the true population means ($\mu_1, \mu_2$) are
   unknown. \\ %-- we only know the sample means ($\bar{y_1}, \bar{y_1}$)
 %  and sample standard deviations ($s_1, s_2$). \\
   \pause
