@@ -318,7 +318,7 @@ ybar.
 %  \small
 <<ybar-i, size='footnotesize'>>=
 ybar.i <- c(A=mean(kick.angle.brandA), B=mean(kick.angle.brandB),
-            D=mean(kick.angle.brandC), C=mean(kick.angle.brandD))
+            C=mean(kick.angle.brandC), D=mean(kick.angle.brandD))
 ybar.i
 @
 \pause
