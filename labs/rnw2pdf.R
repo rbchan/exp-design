@@ -18,6 +18,9 @@ rnw2pdf <- function(filestub, env=globalenv(), tangle=FALSE,
 
     ## Create the PDF
     ## Make sure to install texinfo and texlive on linux
+    ## sudo apt-get install texinfo
+    ## sudo apt-get install texlive
+    ## sudo apt-get install texlive-latex-extra
     tools::texi2dvi(tex.file, pdf=TRUE, clean=clean)
 
     ## Open the PDF
