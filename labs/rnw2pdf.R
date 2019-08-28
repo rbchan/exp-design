@@ -29,7 +29,7 @@ rnw2pdf <- function(filestub, env=globalenv(), tangle=FALSE,
         os <- .Platform$OS.type
         if(os=="unix") {
 ##            open.pdf <- paste0("okular ", filestub, ".pdf") ## Must install okular
-            open.pdf <- paste0("xdg-open ", filestub, ".pdf") ## Must install okular
+            open.pdf <- paste0("xdg-open ", filestub, ".pdf") 
         } else 
             open.pdf <- paste0("open ", filestub, ".pdf")
         sysval <- system(open.pdf, wait=FALSE, ignore.stdout=TRUE, ignore.stderr=TRUE)

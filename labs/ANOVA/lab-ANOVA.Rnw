@@ -626,9 +626,9 @@ plot(TukeyHSD(aov.out1))
     sums-of-squares, mean-squared error, and F-value) without using
     \inr{aov}. Compute either the critical value of F or
     the $p$-value.
-  \item Add a comment to the script indicating what the null
-    hypothesis is, and whether or not it can be rejected at the
-    $\alpha = 0.05$ level.
+  \item Add a comment to the script indicating what the null and
+    alternative hypotheses are, and whether the null can be rejected
+    at the $\alpha = 0.05$ level.
   \item Use Tukey's HSD test to determine which pairs of means differ
     at the $\alpha = 0.05$ level.  Add a comment, indicating which
     pairs are different.
