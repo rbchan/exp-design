@@ -42,7 +42,7 @@ knit_theme$set("edit-kwrite")
     {\color{NavyBlue}{\huge \bf Power Analysis \\}}
     \vspace{2cm}
     \large
-    { September 7, 2018} \par
+    { September 4, 2019} \par
     \vspace{1cm}
     \large
     {FANR 6750: Experimental Methods in Natural Resources
@@ -118,20 +118,26 @@ knit_theme$set("edit-kwrite")
 
 \begin{frame}
   \frametitle{Type I \& type II errors}
-  {\bf The type I error rate is set by the scientist.} \par
+  {%\bf
+    The \alert{type I error rate} is set by the scientist.} \par
   \pause
   \vfill
-  {\bf The type II error rate, and hence the power of the test, depend
+  {%\bf
+    The \alert{type II error rate}, and hence the power of the test, depend
     on many factors.}
   \pause
   \vfill
-  {\bf In the context of a two-sample $t$ test, these factors are:}
-  \begin{enumerate}[\bf (1)]
-    \item Magnitude of the difference ($\delta$)
-    \item Standard deviation (or variance) of population ($\sigma$)
-    \item The sample size ($n$)
-    \item The Type I error rate ($\alpha$)
-  \end{enumerate}
+  {%\bf
+    In the context of a two-sample $t$ test, power goes up when:} %these factors are:}
+%  \begin{enumerate}[\bf (1)]
+  \begin{itemize}[<+->]%[\bf (1)]
+    \item The magnitude of the difference ($\delta$) increases
+    \item The standard deviation (or variance) of the population
+      ($\sigma$) decreases
+    \item The sample size ($n$) increases
+    \item The Type I error rate ($\alpha$) increases
+  \end{itemize}
+%  \end{enumerate}
 \end{frame}
 
 
@@ -299,19 +305,20 @@ par(op)
 
 
 
-\begin{frame}
-  \frametitle{Factors affecting power}
-  \large
-  {\bf In two-sample $t$ test, power increases when:}
-  \begin{enumerate}[\bf (1)]
-    \item The difference in means increases
-    \item The standard deviation of the population decreases
-    \item The sample size increases
-    \item The Type I error rate increases
-  \end{enumerate}
-%  \pause
-%  {\bf How can one know power ahead of time?}
-\end{frame}
+% \begin{frame}
+%   \frametitle{Factors affecting power}
+%   \large
+%   {%\bf
+%     In a two-sample $t$ test, power increases when:}
+%   \begin{enumerate}[\bf (1)]
+%     \item The difference in means increases
+%     \item The standard deviation of the population decreases
+%     \item The sample size increases
+%     \item The Type I error rate increases
+%   \end{enumerate}
+% %  \pause
+% %  {\bf How can one know power ahead of time?}
+% \end{frame}
 
 
 
@@ -335,27 +342,33 @@ power.t.test(n=5, delta=10, sd=5,
 
 \begin{frame}
   \frametitle{When should I do a power analysis?}
-  {\bf A prospective power analysis is always better than a
-    retrospective power analysis.} \par
+  {%\bf
+    \centering \large
+    \alert{\bf Prospective power analysis} is better than
+    \alert{\bf retrospective power analysis} \\}
   \pause
   \vfill
-  {\bf Retrospective}
+  {\bf
+    Retrospective}
   \begin{itemize}
     \item Conducted after experiment
-    \item If you failed to reject the null, then your power was low
+    \item If you failed to reject the null, then your power was likely low
     \item But you can't use this as an excuse!
     \item Only useful as a way of planning a subsequent experiment
   \end{itemize}
   \pause
   \vfill
-  {\bf Prospective}
+  {\bf
+    Prospective}
   \begin{itemize}
     \item Done before the experiment
     \item Used to determine sample size or power, given $\delta$ and $\sigma$
     \item How can $\delta$ and/or $\sigma$ be known ahead of time?
-    \item Requires prior knowledge, perhaps from a pilot study
-    \item Requires clear-headed thinking about what consitutes a
-      biologically significant difference.
+    \item Requires prior knowledge, perhaps from a pilot study, and
+      careful thought about what constitutes a biologically significant
+      difference. 
+    % \item Requires clear-headed thinking about what consitutes a
+    %   biologically significant difference.
   \end{itemize}
 \end{frame}
 
@@ -363,14 +376,18 @@ power.t.test(n=5, delta=10, sd=5,
 
 \begin{frame}
   \frametitle{What level of power should I aim for?}
-  {\bf We want power to be as close to 1 as possible.} \par
+  \large
+  {%\bf
+    We want power to be as close to 1 as possible.} \par
   \pause
-  \vspace{1cm}
-  {\bf Sometimes it may be prohibitively expensive to obtain a sample
+  \vfill %\vspace{1cm}
+  {%\bf
+    Sometimes it may be prohibitively expensive to obtain a sample
     size large enough to achieve power close to 1.} \par
   \pause
-  \vspace{1cm}
-  {\bf In practice, we are usually satisfied with power $>$0.8. }
+  \vfill %\vspace{1cm}
+  {%\bf
+    In practice, we are usually satisfied with power $>$0.8. }
 \end{frame}
 
 
@@ -381,8 +398,9 @@ power.t.test(n=5, delta=10, sd=5,
 
 \begin{frame}
   \frametitle{One-way ANOVA}
-  \large
-  {\bf To conduct a power analysis in the context of a one-way ANOVA,
+%  \large
+  {%\bf
+    To conduct a power analysis in the context of a one-way ANOVA,
     we need:}
   \begin{itemize}
     \item The among group variance (MSa) instead of the difference in means, and
@@ -391,7 +409,8 @@ power.t.test(n=5, delta=10, sd=5,
   \end{itemize}
   \pause
   \vfill
-  {\bf Power goes up when:}
+  {%\bf
+    Power goes up when:}
   \begin{itemize}
     \item MSa increases
     \item MSe decreases
@@ -419,19 +438,32 @@ power.anova.test(groups=4, n=5, between.var=101,
 
 \begin{frame}
   \frametitle{Summary}
-  \begin{itemize}[<+->]
-    \item Power analysis let's you determine the necessary sample size
-      (or power) for testing an effect size of interest
-    \item Power is influenced by the magnitude of the effect, the
-      standard deviation of the population, the Type I error rate, and
-      the sample size
-    \item Retrospective power analysis isn't useful unless you are
-      planning a subsequent experiment
-    \item {\bf R} has several functions for conducting power analysis,
-      but only for simple tests
-    \item More complicated power analysis can be performed using
-      simulation (not covered in this course)
-  \end{itemize}
+%  \begin{itemize}[<+->]
+%  \item
+  Power analysis let's you determine the necessary sample size
+  (or power) for testing an effect size of interest
+  \pause
+  \vfill
+  % \item
+  Power is influenced by the magnitude of the effect, the
+  standard deviation of the population, the Type I error rate, and
+  the sample size
+  \pause
+  \vfill
+  % \item
+  Retrospective power analysis isn't useful unless you are
+  planning a subsequent experiment
+  \pause
+  \vfill
+  % \item
+  {\bf R} has several functions for conducting power analysis,
+  but only for simple tests
+  % \item
+  \pause
+  \vfill
+  More complicated power analysis can be performed using
+  simulation (not covered in this course)
+%  \end{itemize}
 \end{frame}
 
 
