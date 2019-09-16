@@ -89,8 +89,8 @@
   FANR 6750 \par
   \vfill
   \large
-  Richard Chandler and Bob Cooper \\
-  University of Georgia \\
+  Richard Chandler and Bob Cooper %\\
+%  University of Georgia \\
 \end{frame}
 
 
@@ -168,7 +168,8 @@
 
 \begin{frame}[fragile]
   \frametitle{Contrasts}
-  {\bf Suppose we want to make 3 {\it a priori} comparisons:}
+  {%\bf
+    Suppose we want to make 3 {\it a priori} comparisons:}
   \begin{enumerate}[\bf (1)]
     \item Groups A\&D vs B\&C
     \item Groups A vs D
@@ -193,7 +194,8 @@
 \begin{frame}[fragile]
   \frametitle{Constructing contrasts in \R}
   \small
-  {\bf Coefficients}
+  {%\bf
+    Coefficients}
 \begin{knitrout}\scriptsize
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
@@ -204,7 +206,7 @@
 \end{kframe}
 \end{knitrout}
 \pause
-{\bf
+{%\bf
 Are they orthogonal?}
 \pause
 \begin{columns}
@@ -261,7 +263,8 @@ Are they orthogonal?}
 \pause
 \vfill
 {%\centering
-  \bf Yes, they are. \par}
+  %\bf
+  Yes, they are. \par}
 \end{frame}
 
 
@@ -287,10 +290,13 @@ Are they orthogonal?}
 
 \begin{frame}[fragile]
   \frametitle{We need to put the contrasts into a matrix}
-  {\bf To use contrasts in {\tt R}, each set of coefficients must be formatted as a column in a matrix. \par }
+  {%\bf
+    To use contrasts in {\tt R}, each set of coefficients must be
+    formatted as a column in a matrix. \par }  
   \pause
   \vfill
-  {\bf We can use {\tt cbind} for this:}
+  {%\bf
+    We can use {\tt cbind} for this:}
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
@@ -332,9 +338,10 @@ Are they orthogonal?}
 
 \begin{frame}[fragile]
   \frametitle{Contrasts}
-{\bf Fit the model with contrasts}
-\begin{footnotesize}
-\begin{knitrout}
+  {%\bf
+    Fit the model with contrasts}
+%\begin{footnotesize}
+\begin{knitrout}\footnotesize
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlstd{aov.out} \hlkwb{<-} \hlkwd{aov}\hlstd{(Kick.angle} \hlopt{~} \hlstd{Brand,} \hlkwc{data}\hlstd{=sawData,}
@@ -344,8 +351,9 @@ Are they orthogonal?}
 \end{knitrout}
 \pause
 \vfill
-{\bf Now ``split'' apart the sum-of-squares}
-\begin{knitrout}
+{%\bf
+  Now ``split'' apart the sum-of-squares}
+\begin{knitrout}\footnotesize
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlkwd{summary}\hlstd{(aov.out,} \hlkwc{split} \hlstd{=} \hlkwd{list}\hlstd{(}\hlkwc{Brand} \hlstd{=}
@@ -357,13 +365,13 @@ Are they orthogonal?}
 ##   Brand: ADvBC  1    980   980.0   9.679 0.00672 **
 ##   Brand: AvD    1     10    10.0   0.099 0.75738   
 ##   Brand: BvC    1     90    90.0   0.889 0.35980   
-## Residuals      16   1620   101.2                   
+## Residuals      16   1620   101.3                   
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
-\end{footnotesize}
+%\end{footnotesize}
 \end{frame}
 
 
@@ -371,8 +379,9 @@ Are they orthogonal?}
 
 \begin{frame}[fragile]
   \frametitle{Difference in means for each contrast}
-  \footnotesize %\small
-{\bf Group means}
+%  \footnotesize %\small
+  {%\bf
+    Group means}
 \begin{knitrout}\scriptsize
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
@@ -386,7 +395,7 @@ Are they orthogonal?}
 \end{knitrout}
 \pause
 \vfill
-{\bf %\centering
+{%\bf %\centering
   Difference in means for A vs D \par}
 \begin{knitrout}\scriptsize
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
@@ -401,7 +410,7 @@ Are they orthogonal?}
 \end{knitrout}
 \pause
 \vfill
-{\bf %\centering
+{%\bf %\centering
   Difference in means for B vs C \par}
 \begin{knitrout}\scriptsize
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
@@ -415,7 +424,7 @@ Are they orthogonal?}
 \end{knitrout}
 \pause
 \vfill
-{\bf %\centering
+{%\bf %\centering
   Difference in means for AD vs BC \par}
 %\scriptsize
 \begin{knitrout}\scriptsize
@@ -428,7 +437,6 @@ Are they orthogonal?}
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
-
 \end{frame}
 
 
@@ -441,7 +449,7 @@ Are they orthogonal?}
   \frametitle{Standard errors for each contrast}%{Contrasts}
   \small
 %{\bf Compute the standard error of a contrast \par}
-{\bf %\centering
+{%\bf %\centering
   SE for A vs D \par}
 \begin{knitrout}\footnotesize
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
@@ -456,7 +464,7 @@ Are they orthogonal?}
 \end{knitrout}
 \pause
 \vfill
-{\bf %\centering
+{%\bf %\centering
   SE for B vs C \par}
 \begin{knitrout}\footnotesize
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
@@ -471,7 +479,7 @@ Are they orthogonal?}
 \end{knitrout}
 \pause
 \vfill
-{\bf %\centering
+{%\bf %\centering
   SE for AD vs BC \par}
 %\scriptsize
 \begin{knitrout}\footnotesize
@@ -534,11 +542,12 @@ Are they orthogonal?}
   In a one-way ANOVA context, confidence intervals can be
   constructed using the equation:
   \[
-    \text{CI} = \text{Point estimate} \pm t_{\alpha/2,a(n-1)} \times \text{SE}
+    \text{CI} = \text{Estimate} \pm t_{\alpha/2,a(n-1)} \times \text{SE}
   \]
-  As usual, the hard part is computing the SE\footnote{See page 300 of
-    Dowdy et al. for SE formulas}\footnote{In general, the
-    degrees-of-freedom for the t-value should be taken from error term}  
+  Equations for computing the SE can be found on page 300 of
+    Dowdy et al. book
+  %\footnote{In general, the
+  %  degrees-of-freedom for the t-value should be taken from error term}  
 %  \pause
 %\footnotesize
 %<<>>=
@@ -586,7 +595,8 @@ Are they orthogonal?}
 %aov1 <- aov(y ~ group, dat)
 %@
 %\pause
-  {\bf SE's for the effect sizes ($\alpha$'s)}
+  {%\bf
+    SE's for the effect sizes ($\alpha$'s)}
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
@@ -617,7 +627,8 @@ Are they orthogonal?}
 \begin{frame}[fragile]
   \frametitle{Confidence intervals from one-way ANOVA}
   \small
-  {\bf Extract the $\alpha$'s and the SEs}
+  {%\bf
+    Extract the $\alpha$'s and the SEs}
 \begin{knitrout}\footnotesize
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
@@ -628,7 +639,8 @@ Are they orthogonal?}
 \end{kframe}
 \end{knitrout}
   \pause
-  {\bf Compute confidence intervals}
+  {%\bf
+    Compute confidence intervals}
 \begin{knitrout}\footnotesize
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
@@ -639,7 +651,8 @@ Are they orthogonal?}
 \end{kframe}
 \end{knitrout}
   \pause
-  {\bf Put results into a {\tt data.frame}}
+  {%\bf
+    Put results into a {\tt data.frame}}
 \begin{knitrout}\footnotesize
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
@@ -757,7 +770,7 @@ Are they orthogonal?}
 
 \begin{frame}[fragile]
 \frametitle{Power analysis for a 2-sample $t$-test}
-\begin{knitrout}
+\begin{knitrout}\footnotesize
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlkwd{power.t.test}\hlstd{(}\hlkwc{n}\hlstd{=}\hlkwa{NULL}\hlstd{,} \hlkwc{delta}\hlstd{=}\hlnum{3}\hlstd{,} \hlkwc{sd}\hlstd{=}\hlnum{2}\hlstd{,} \hlkwc{sig.level}\hlstd{=}\hlnum{0.05}\hlstd{,}
@@ -784,8 +797,8 @@ Are they orthogonal?}
 
 \begin{frame}[fragile]
   \frametitle{Power analysis for one-way ANOVA}
-\begin{small}
-\begin{knitrout}
+%\begin{small}
+\begin{knitrout}\footnotesize
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlkwd{power.anova.test}\hlstd{(}\hlkwc{groups}\hlstd{=}\hlnum{4}\hlstd{,} \hlkwc{n}\hlstd{=}\hlnum{5}\hlstd{,} \hlkwc{between.var}\hlstd{=}\hlnum{360.0}\hlstd{,}
@@ -806,7 +819,7 @@ Are they orthogonal?}
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
-\end{small}
+%\end{small}
 \end{frame}
 
 
@@ -851,7 +864,7 @@ Are they orthogonal?}
   Researchers wish to know if food supplementation affects the growth
   of nestling Canada warblers. The treatment groups are: (A) No
   supplementation control, (B) low, (C) medium, (D) high, and (E) very
-  high. The response variable is the weight of a 10 day old nestling.
+  high. The response variable is the weight of a 6 day old nestling.
   \begin{enumerate}[\bf (1)]
     \footnotesize
     \item<1-> The researchers are interested in the following
@@ -883,9 +896,10 @@ Are they orthogonal?}
   \uncover<5->{
 %  \vspace{0.2cm}
 %  {{\color{red} \bf Due:}
-    Submit your answers in a
-    self-contained script before the
-    next lab. %The script should be self-contained.}
+    \centering
+    Submit a
+    self-contained script (or .Rmd file) before your
+    next lab.\\
   }
 
 \end{frame}

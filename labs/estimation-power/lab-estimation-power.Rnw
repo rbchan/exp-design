@@ -53,8 +53,8 @@ knit_theme$set("edit-kwrite")
   FANR 6750 \par
   \vfill
   \large
-  Richard Chandler and Bob Cooper \\
-  University of Georgia \\
+  Richard Chandler and Bob Cooper %\\
+%  University of Georgia \\
 \end{frame}
 
 
@@ -105,7 +105,8 @@ sawData
 
 \begin{frame}[fragile]
   \frametitle{Contrasts}
-  {\bf Suppose we want to make 3 {\it a priori} comparisons:}
+  {%\bf
+    Suppose we want to make 3 {\it a priori} comparisons:}
   \begin{enumerate}[\bf (1)]
     \item Groups A\&D vs B\&C
     \item Groups A vs D
@@ -130,14 +131,15 @@ sawData
 \begin{frame}[fragile]
   \frametitle{Constructing contrasts in \R}
   \small
-  {\bf Coefficients}
+  {%\bf
+    Coefficients}
 <<coef,size='scriptsize'>>=
 ADvBC <- c(1/2, -1/2, -1/2, 1/2)
 AvD <- c(1, 0, 0, -1)
 BvC <- c(0, 1, -1, 0)
 @
 \pause
-{\bf
+{%\bf
 Are they orthogonal?}
 \pause
 \begin{columns}
@@ -160,7 +162,8 @@ sum(AvD * BvC)
 \pause
 \vfill
 {%\centering
-  \bf Yes, they are. \par}
+  %\bf
+  Yes, they are. \par}
 \end{frame}
 
 
@@ -186,10 +189,13 @@ sum(AvD * BvC)
 
 \begin{frame}[fragile]
   \frametitle{We need to put the contrasts into a matrix}
-  {\bf To use contrasts in {\tt R}, each set of coefficients must be formatted as a column in a matrix. \par }
+  {%\bf
+    To use contrasts in {\tt R}, each set of coefficients must be
+    formatted as a column in a matrix. \par }  
   \pause
   \vfill
-  {\bf We can use {\tt cbind} for this:}
+  {%\bf
+    We can use {\tt cbind} for this:}
 <<conmat>>=
 contrast.mat <- cbind(ADvBC, AvD, BvC)
 contrast.mat
@@ -220,20 +226,22 @@ contrast.mat
 
 \begin{frame}[fragile]
   \frametitle{Contrasts}
-{\bf Fit the model with contrasts}
-\begin{footnotesize}
-<<>>=
+  {%\bf
+    Fit the model with contrasts}
+%\begin{footnotesize}
+<<aov-out,size='footnotesize'>>=
 aov.out <- aov(Kick.angle ~ Brand, data=sawData,
                contrasts=list(Brand=contrast.mat))
 @
 \pause
 \vfill
-{\bf Now ``split'' apart the sum-of-squares}
-<<>>=
+{%\bf
+  Now ``split'' apart the sum-of-squares}
+<<aov-split,size='footnotesize'>>=
 summary(aov.out, split = list(Brand =
                       list("ADvBC"=1, "AvD"=2, "BvC"=3)))
 @
-\end{footnotesize}
+%\end{footnotesize}
 \end{frame}
 
 
@@ -241,14 +249,15 @@ summary(aov.out, split = list(Brand =
 
 \begin{frame}[fragile]
   \frametitle{Difference in means for each contrast}
-  \footnotesize %\small
-{\bf Group means}
+%  \footnotesize %\small
+  {%\bf
+    Group means}
 <<gmeans1,size='scriptsize'>>=
 (group.means <- tapply(sawData$Kick.angle, sawData$Brand, mean))
 @
 \pause
 \vfill
-{\bf %\centering
+{%\bf %\centering
   Difference in means for A vs D \par}
 <<gmeans2,size='scriptsize'>>=
 group.means <- unname(group.means) # Drop names (optional)
@@ -256,20 +265,19 @@ group.means[1] - group.means[4]
 @
 \pause
 \vfill
-{\bf %\centering
+{%\bf %\centering
   Difference in means for B vs C \par}
 <<gdiff1,size='scriptsize'>>=
 group.means[2] - group.means[3]
 @
 \pause
 \vfill
-{\bf %\centering
+{%\bf %\centering
   Difference in means for AD vs BC \par}
 %\scriptsize
 <<gdiff2,size='scriptsize'>>=
 mean(group.means[c(1,4)]) - mean(group.means[2:3])
 @
-
 \end{frame}
 
 
@@ -282,7 +290,7 @@ mean(group.means[c(1,4)]) - mean(group.means[2:3])
   \frametitle{Standard errors for each contrast}%{Contrasts}
   \small
 %{\bf Compute the standard error of a contrast \par}
-{\bf %\centering
+{%\bf %\centering
   SE for A vs D \par}
 <<se-con1,size='footnotesize'>>=
 se.contrast(aov.out, list(sawData$Brand=="A",
@@ -290,7 +298,7 @@ se.contrast(aov.out, list(sawData$Brand=="A",
 @
 \pause
 \vfill
-{\bf %\centering
+{%\bf %\centering
   SE for B vs C \par}
 <<se-con2,size='footnotesize'>>=
 se.contrast(aov.out, list(sawData$Brand=="B",
@@ -298,7 +306,7 @@ se.contrast(aov.out, list(sawData$Brand=="B",
 @
 \pause
 \vfill
-{\bf %\centering
+{%\bf %\centering
   SE for AD vs BC \par}
 %\scriptsize
 <<se-con3,size='footnotesize'>>=
@@ -354,11 +362,12 @@ se.contrast(aov.out, list(sawData$Brand=="A" |
   In a one-way ANOVA context, confidence intervals can be
   constructed using the equation:
   \[
-    \text{CI} = \text{Point estimate} \pm t_{\alpha/2,a(n-1)} \times \text{SE}
+    \text{CI} = \text{Estimate} \pm t_{\alpha/2,a(n-1)} \times \text{SE}
   \]
-  As usual, the hard part is computing the SE\footnote{See page 300 of
-    Dowdy et al. for SE formulas}\footnote{In general, the
-    degrees-of-freedom for the t-value should be taken from error term}  
+  Equations for computing the SE can be found on page 300 of
+    Dowdy et al. book
+  %\footnote{In general, the
+  %  degrees-of-freedom for the t-value should be taken from error term}  
 %  \pause
 %\footnotesize
 %<<>>=
@@ -406,7 +415,8 @@ se.contrast(aov.out, list(sawData$Brand=="A" |
 %aov1 <- aov(y ~ group, dat)
 %@
 %\pause
-  {\bf SE's for the effect sizes ($\alpha$'s)}
+  {%\bf
+    SE's for the effect sizes ($\alpha$'s)}
 <<effSE>>=
 effects.SE <- model.tables(aov.out, type="effects",
                            se=TRUE)
@@ -420,21 +430,24 @@ effects.SE
 \begin{frame}[fragile]
   \frametitle{Confidence intervals from one-way ANOVA}
   \small
-  {\bf Extract the $\alpha$'s and the SEs}
+  {%\bf
+    Extract the $\alpha$'s and the SEs}
 <<alphas,size='footnotesize'>>=
 # str(effects.SE)
 alpha.i <- as.numeric(effects.SE$tables$Brand)
 SE <- as.numeric(effects.SE$se)
 @
   \pause
-  {\bf Compute confidence intervals}
+  {%\bf
+    Compute confidence intervals}
 <<CIs,size='footnotesize'>>=
 tc <- qt(0.975, 4*(5-1))
 lowerCI <- alpha.i - tc * SE
 upperCI <- alpha.i + tc * SE
 @
   \pause
-  {\bf Put results into a {\tt data.frame}}
+  {%\bf
+    Put results into a {\tt data.frame}}
 <<CIr,size='footnotesize'>>=
 CI <- data.frame(effect.size=alpha.i, SE,
                  lowerCI, upperCI)
@@ -537,7 +550,7 @@ arrows(1:4, CI$lowerCI, 1:4, CI$upperCI, code=3, angle=90, length=0.05)
 
 \begin{frame}[fragile]
 \frametitle{Power analysis for a 2-sample $t$-test}
-<<power-t>>=
+<<power-t,size='footnotesize'>>=
 power.t.test(n=NULL, delta=3, sd=2, sig.level=0.05,
              power=0.8)
 @
@@ -547,12 +560,12 @@ power.t.test(n=NULL, delta=3, sd=2, sig.level=0.05,
 
 \begin{frame}[fragile]
   \frametitle{Power analysis for one-way ANOVA}
-\begin{small}
-<<power-anova>>=
+%\begin{small}
+<<power-anova,size='footnotesize'>>=
 power.anova.test(groups=4, n=5, between.var=360.0,
                  within.var=101.2, power=NULL)
 @
-\end{small}
+%\end{small}
 \end{frame}
 
 
@@ -597,7 +610,7 @@ power.anova.test(groups=4, n=5, between.var=360.0,
   Researchers wish to know if food supplementation affects the growth
   of nestling Canada warblers. The treatment groups are: (A) No
   supplementation control, (B) low, (C) medium, (D) high, and (E) very
-  high. The response variable is the weight of a 10 day old nestling.
+  high. The response variable is the weight of a 6 day old nestling.
   \begin{enumerate}[\bf (1)]
     \footnotesize
     \item<1-> The researchers are interested in the following
@@ -629,9 +642,10 @@ power.anova.test(groups=4, n=5, between.var=360.0,
   \uncover<5->{
 %  \vspace{0.2cm}
 %  {{\color{red} \bf Due:}
-    Submit your answers in a
-    self-contained script before the
-    next lab. %The script should be self-contained.}
+    \centering
+    Submit a
+    self-contained script (or .Rmd file) before your
+    next lab.\\
   }
 
 \end{frame}
