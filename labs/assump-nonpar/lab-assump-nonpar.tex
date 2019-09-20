@@ -187,7 +187,7 @@
 
 
 \begin{frame}[fragile]
-  \frametitle{Normality diagnostics}
+  \frametitle{A fake dataset}
 
 \small
 %  {%\bf %\large
@@ -233,7 +233,7 @@ virus at the end of the study. \\
 
 
 \begin{frame}[fragile]
-  \frametitle{ANOVA diagnostics}
+  \frametitle{One-way ANOVA}
 \begin{knitrout}\footnotesize
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
@@ -259,7 +259,7 @@ Significant, but did we meet the assumptions?
 
 
 \begin{frame}[fragile]
-  \frametitle{Boxplots}
+  \frametitle{Boxplots for each landscape type}
 \begin{knitrout}\footnotesize
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
@@ -271,7 +271,9 @@ Significant, but did we meet the assumptions?
 \end{knitrout}
 \vspace{-0.5cm}
 \centering
-\includegraphics[width=0.7\textwidth]{figure/boxfor1-1} \\
+\includegraphics[width=0.6\textwidth]{figure/boxfor1-1} \\
+\vfill
+Notice that the variances don't look equal among groups.
 \end{frame}
 
 
@@ -294,7 +296,8 @@ Significant, but did we meet the assumptions?
 \end{kframe}
 \end{knitrout}
 \vfill
-{We reject the null hypothesis that the group variances are equal}
+{We reject the null hypothesis that the group variances are equal,
+  suggesting that we failed to meet the assumption of constant variance.}
 \end{frame}
 
 
@@ -316,7 +319,10 @@ Significant, but did we meet the assumptions?
 \end{knitrout}
 %\end{center}
 \centering
-\includegraphics[width=0.65\textwidth]{figure/histresid0-1} \\
+\includegraphics[width=0.6\textwidth]{figure/histresid0-1} \\
+\vfill
+The histogram doesn't look bad, but we need to test the normality
+assumption.
 \end{frame}
 
 
@@ -339,7 +345,7 @@ Significant, but did we meet the assumptions?
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
-\pause
+%\pause
 \vspace{0.6cm}
 %% {\bf Remember, this is not the correct test:}
 %% <<>>=
@@ -501,7 +507,7 @@ Significant, but did we meet the assumptions?
 %  \large
   \begin{itemize}%[<+->]
     \small %\normalsize
-    \item The constant $C$ is often 1, or 0 if there are no zeros in the data ($u$)
+    \item The constant $C$ is often 1 if there are no zeros in the data ($u$)
     \item Useful when group variances are proportional to the means
   \end{itemize}
   \pause
