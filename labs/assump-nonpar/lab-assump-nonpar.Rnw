@@ -129,7 +129,11 @@ knit_theme$set("edit-kwrite")
   \vfill
   {%\bf
     This is incorrect because the normality assumptions pertain to
-    the {\it residuals}, \alert{not} the response variable. The key assumption of
+    the {\it residuals}, \alert{not} the response variable.
+
+    \pause
+    \vfill
+    The key assumption of
     ANOVA is that the residuals are independent and come from a normal
     distribution with mean 0 and variance $\sigma^2$.}
   \pause
@@ -141,11 +145,11 @@ knit_theme$set("edit-kwrite")
   \varepsilon_{ij} \sim \text{Normal}(0, \sigma^2)
 \]
 \pause
-\vfill
+%\vfill
 \normalsize
   {%\bf
     We can assess this assumption by looking at the residuals
-    themselves or the data within each treatment}
+    themselves or by looking at the response variable for each treatment group. }
 \end{frame}
 
 
@@ -206,7 +210,7 @@ Significant, but did we meet the assumptions?
 
 
 \begin{frame}[fragile]
-  \frametitle{Boxplots for each landscape type}
+  \frametitle{Boxplots for the three landscape types}
 <<boxfor1,fig.show='hide',size='footnotesize'>>=
 boxplot(percentInfected~landscape, infectionRates,
         col="lightgreen", cex.lab=1.5, cex.axis=1.3,
@@ -221,16 +225,16 @@ Notice that the variances don't look equal among groups.
 
 
 
-\begin{frame}[fragile]
-  \frametitle{Are group variances equal?}
-  \small
-<<bartlett,size='footnotesize'>>=
-bartlett.test(percentInfected~landscape, data=infectionRates)
-@
-\vfill
-{We reject the null hypothesis that the group variances are equal,
-  suggesting that we failed to meet the assumption of constant variance.}
-\end{frame}
+% \begin{frame}[fragile]
+%   \frametitle{Are group variances equal?}
+%   \small
+% <<bartlett,size='footnotesize'>>=
+% bartlett.test(percentInfected~landscape, data=infectionRates)
+% @
+% \vfill
+% {We reject the null hypothesis that the group variances are equal,
+%   suggesting that we failed to meet the assumption of constant variance.}
+% \end{frame}
 
 
 
@@ -269,130 +273,17 @@ shapiro.test(resids)
 %% shapiro.test(infectionRates$pcForest)
 %% @
 {We reject the null hypothesis that the residuals come from a normal
-  distribution. Time to consider transformations and/or nonparametric
-  tests.}
+  distribution.
+  \pause
+  \vfill 
+  Since we failed to meet the key assumption of ANOVA,
+  we should consider transformations and/or nonparametric tests.
+}  
 \end{frame}
 
 
 
 
-
-
-
-
-
-
-%% \begin{frame}[fragile]
-%%   \frametitle{Two Vectors}
-%% <<echo=false,eval=false>>=
-%% set.seed(393)
-%% cat(round(rnorm(30, 5), 1), sep=", ", fill=TRUE)
-%% cat(round(exp(rnorm(30, 5)), 1), sep=", ", fill=TRUE)
-%% @
-%% \small
-%% <<>>=
-%% # Weights
-%% u1 <- c(4.4, 5, 5.6, 4.2, 4.3, 5.3, 4.2, 3.6, 4.8, 4.9,
-%%         5.7, 4.6, 5.8, 6.3, 4.5, 4.1, 3.6, 4, 4.5, 4.6,
-%%         6.6, 4.3, 4.8, 3.7, 5.5, 2.9, 4.3, 4.2, 3.6, 4.7)
-%% #
-%% #
-%% # Tree diameters
-%% u2 <- c(137.6, 102.6, 327.6, 550.4, 214, 86, 185.2, 24.5,
-%%         134.6, 169.1, 263.5, 226.4, 225.3, 82, 391.8, 567.1,
-%%         74.8, 52.8, 72.2, 474.2, 138, 42.4, 172.5, 209.6,
-%%         102.6, 563.4, 241.1, 260.6, 203.1, 137.9)
-%% @
-%% \pause
-%% {\LARGE \bf Are they normally distributed?}
-%% \end{frame}
-
-
-%% \begin{frame}[fragile]
-%%   \frametitle{Shapiro-Wilk Test}
-%% %\pause
-%% <<>>=
-%% shapiro.test(u1)
-%% @
-%% \pause
-%% \vspace{0.3cm}
-%% <<>>=
-%% shapiro.test(u2)
-%% @
-%% \pause
-%% \vspace{0.3cm}
-%% {\LARGE \bf What to do about \verb+u2+?}
-%% \end{frame}
-
-
-%\section{Visual Inspecting Data}
-
-
-%% \begin{frame}[fragile]
-%%   \frametitle{Boxplot -- Normal}
-%% %%<<echo=false>>=
-%% %#par(mai=c(0.9,0.9,0.1,0.1))
-%% %@
-%%   \scriptsize
-%% %\vspace{-1cm}
-%% \begin{center}
-%% <<fig=true>>=
-%% boxplot(u1, col="lightgreen", xlab="u1")
-%% @
-%% \end{center}
-%% \end{frame}
-
-
-%% \begin{frame}[fragile]
-%%   \frametitle{Boxplot -- Not}
-%% %<<echo=false>>=
-%% %par(mai=c(0.9,0.9,0.1,0.1))
-%% %@
-%% \scriptsize
-%% \begin{center}
-%% <<fig=true>>=
-%% boxplot(u2, col="purple", xlab="u2")
-%% @
-%% \end{center}
-%% %\vspace{-1cm}
-%% \end{frame}
-
-
-
-%% \begin{frame}[fragile]
-%%   \frametitle{Boxplot -- Not}
-%%   \scriptsize
-%% \begin{center}
-%% <<fig=true>>=
-%% boxplot(u2, col="purple", horizontal=TRUE)
-%% @
-%% \end{center}
-%% \end{frame}
-
-
-
-%% \begin{frame}[fragile]
-%%   \frametitle{Histogram -- Normal}
-%%   \scriptsize
-%% \begin{center}
-%% <<fig=true>>=
-%% hist(u1, col="lightgreen")
-%% @
-%% \end{center}
-%% \end{frame}
-
-
-%% \begin{frame}[fragile]
-%%   \frametitle{Histogram -- Not}
-%%   \vspace{-.2cm}
-%%   \tiny
-%% \begin{center}
-%% <<fig=true>>=
-%% hist(u2, col="purple", ylim=c(0, 9), breaks=8)
-%% boxplot(u2, col="purple", horizontal=TRUE, add=TRUE, at=8)
-%% @
-%% \end{center}
-%% \end{frame}
 
 
 
@@ -404,34 +295,38 @@ shapiro.test(resids)
 
 
 
-%\begin{frame}[plain]
-%  \frametitle{Outline}
-%  \Large
-%  \only<1>{\tableofcontents}%[hideallsubsections]}
-%  \only<2 | handout:0>{\tableofcontents[currentsection]}%,hideallsubsections]}
-%  \tableofcontents[currentsection]
-%\end{frame}
+\begin{frame}[plain]
+ \frametitle{Outline}
+ \Large
+ \tableofcontents[currentsection]
+\end{frame}
 
 
 
 
 \begin{frame}[fragile]
   \frametitle{Logarithmic Transformation}
-%  \LARGE
+  % \LARGE
+  \small
+  $y$ is the transformed response variable. $u$ is original response variable.
   \[
   y = \log(u + C)
   \]
-%  \large
+  % \large
+  \vspace{-5mm}
   \begin{itemize}%[<+->]
     \small %\normalsize
     \item The constant $C$ is often 1 if there are no zeros in the data ($u$)
     \item Useful when group variances are proportional to the means
   \end{itemize}
   \pause
-<<log,fig.width=6,fig.height=6,fig.align='center',out.width="40%",size='scriptsize'>>=
+%  <<log,fig.width=6,fig.height=6,fig.align='center',out.width="35%",size='scriptsize'>>=
+  <<log,size='scriptsize',fig.show='hide'>>=
 boxplot(log(percentInfected)~landscape, infectionRates, col="green",
         cex.lab=1.5, cex.axis=1.3, ylab="log(percent forest cover)")
 @
+\includegraphics[width=0.45\textwidth]{figure/boxfor1-1} \hfill
+\includegraphics[width=0.45\textwidth]{figure/log-1} \\
 \end{frame}
 
 
@@ -451,10 +346,12 @@ boxplot(log(percentInfected)~landscape, infectionRates, col="green",
 \begin{frame}[fragile]
   \frametitle{Square Root Transformation}
 %  \LARGE
+  \small
   \[
   y = \sqrt{u + C}
   \]
 %  \large
+  \vspace{-5mm}
   \begin{itemize}%[<+->]
     \small
     \item $C$ is often 0.5 or some other small number
@@ -462,10 +359,12 @@ boxplot(log(percentInfected)~landscape, infectionRates, col="green",
 %      (count data)
   \end{itemize}
   \pause
-<<sqrt,fig.width=6,fig.height=6,fig.align='center',out.width="40%",size='scriptsize'>>=
+<<sqrt,size='scriptsize',fig.show='hide'>>=
 boxplot(sqrt(percentInfected)~landscape, infectionRates, col="yellow",
         cex.lab=1.5, cex.axis=1.3, ylab="sqrt(percent forest cover)")
 @
+\includegraphics[width=0.45\textwidth]{figure/boxfor1-1} \hfill
+\includegraphics[width=0.45\textwidth]{figure/sqrt-1} \\
 \end{frame}
 
 
@@ -485,10 +384,12 @@ boxplot(sqrt(percentInfected)~landscape, infectionRates, col="yellow",
 \begin{frame}[fragile]
   \frametitle{Arcsine-square root Transformation}
 %  \LARGE
+  \small
   \[
   y = \mathrm{arcsin}(\sqrt{u})
   \]
 %  \large
+  \vspace{-5mm}
   \begin{itemize}%[<+->]
     \small
     \item Used on proportions.
@@ -496,10 +397,12 @@ boxplot(sqrt(percentInfected)~landscape, infectionRates, col="yellow",
 %    \item Binomial (logistic) regression is an alternative for proportions.
   \end{itemize}
   \pause
-<<asin,fig.width=6,fig.height=6,fig.align='center',out.width="40%",size='scriptsize'>>=
+<<asin,size='scriptsize',fig.show='hide'>>=
 boxplot(asin(sqrt(percentInfected))~landscape, infectionRates, col="orange",
         cex.lab=1.5, cex.axis=1.3, ylab="asin(sqrt(percent forest cover))")
 @
+\includegraphics[width=0.45\textwidth]{figure/boxfor1-1} \hfill
+\includegraphics[width=0.45\textwidth]{figure/asin-1} \\
 \end{frame}
 
 
@@ -508,20 +411,24 @@ boxplot(asin(sqrt(percentInfected))~landscape, infectionRates, col="orange",
 \begin{frame}[fragile]
   \frametitle{Reciprocal Transformation}
 %  \LARGE
+  \small
   \[
   y = \frac{1}{u + C}
   \]
 %  \large
+  \vspace{-5mm}
   \begin{itemize}%[<+->]
     \small
     \item $C$ is often 1 but could be 0 if there are no zeros in $u$
     \item Useful when group SDs are proportional to the squared group means
   \end{itemize}
   \pause
-<<recip,fig.width=6,fig.height=6,fig.align='center',out.width="40%",size='scriptsize'>>=
+<<recip,size='scriptsize',fig.show='hide'>>=
 boxplot(1/percentInfected~landscape, infectionRates, col="pink",
         cex.lab=1.5, cex.axis=1.3, ylab="1/percent forest cover")
 @
+\includegraphics[width=0.45\textwidth]{figure/boxfor1-1} \hfill
+\includegraphics[width=0.45\textwidth]{figure/recip-1} \\
 \end{frame}
 
 
@@ -537,7 +444,8 @@ summary(anova2)
 @
   \pause
   \vfill
-  {Now we fail to reject the normality assumption -- good news}
+  {The log transformation didn't help much: We still reject the
+    normality assumption.} 
 <<shapiro2,size='footnotesize'>>=
 shapiro.test(resid(anova2))
 @
@@ -546,55 +454,16 @@ shapiro.test(resid(anova2))
 
 
 
-
-%% \begin{frame}[fragile]
-%%   \frametitle{Exercise I}
-%% <<echo=false>>=
-%% set.seed(3550)
-%% M <- 100
-%% p1 <- 0.5
-%% p2 <- 0.3
-%% p3 <- 0.2
-%% n <- 30
-%% y <- c(rbinom(n, M, p1), rbinom(n, M, p2),
-%%        rbinom(n, M, p3)) / M
-%% infectionRates <- data.frame(pcForest=sin(y)^2,
-%%                           landscape=rep(c("Park", "Suburbs", "Urban"), each=n))
-%% write.csv(infectionRates, "infectionRates.csv", row.names=FALSE)
-%% @
-%%   {\bf \large Consider the data:}
-%%   \small
-%% <<>>=
-%% str(infectionRates)
-%% head(infectionRates)
-%% @
-%% \end{frame}
-
-
-
-%% \begin{frame}[fragile]
-%%   \frametitle{The {\tt aov plot()} method}
-%%   \footnotesize
-%% <<aov-plot,fig=true,include=false>>=
-%% par(mfrow = c(2, 2))
-%% plot(anova1)
-%% @
-%% \vspace{-1cm}
-%% \begin{center}
-%%   \includegraphics[width=0.7\textwidth]{lab05-assump-nonpar-aov-plot}
-%% \end{center}
-%% \end{frame}
-
-
-
-
-
-
-
-
 \section{Non-parametrics}
 
 
+
+
+\begin{frame}[plain]
+ \frametitle{Outline}
+ \Large
+ \tableofcontents[currentsection]
+\end{frame}
 
 
 
@@ -652,20 +521,21 @@ These two functions can be used in almost the exact same way as
 
 \begin{frame}
   \frametitle{Assignment}
-%  \small
-  \footnotesize
+  \small
+%  \footnotesize
   \begin{enumerate}
     \item[\bf (1)] Decide which transformation is best for the
-      \inr{infectionRates} data by conducting an ANOVA on the
-      untransformed and transformed data. Use graphical assessments,
-      Bartlett's test, and Shapiro's test to evaluate each of the
-      following tranformations:
-      \begin{itemize}
-        \item log
-        \item square-root
-        \item arcsine square-root
-        \item reciprocal
-      \end{itemize}
+      \inr{infectionRates} data by conducting ANOVAs using the log,
+      square-root, arcsine square-root, and reciprocal
+      transformations. Use boxplots, historgrams, and Shapiro's tests
+      to determine the best transformation.
+      % following tranformations:
+      % \begin{itemize}
+      %   \item log
+      %   \item square-root
+      %   \item arcsine square-root
+      %   \item reciprocal
+      % \end{itemize}
     \item[\bf (2)] Does transformation alter the conclusion about the
       null hypothesis of no difference in means? If not, were the
       transformations necessary?
@@ -677,8 +547,9 @@ These two functions can be used in almost the exact same way as
   \end{enumerate}
 %  \centering
   \vfill
-  Use comments in your \R~script to explain your answers. Upload your
-  results to ELC at least one day before your next lab.\\
+  Use comments in your \R~script (or .Rmd file) to explain your
+  answers. Upload your results to ELC at least one day before your
+  next lab.\\ 
 \end{frame}
 
 
