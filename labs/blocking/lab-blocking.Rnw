@@ -50,7 +50,7 @@ knit_theme$set("edit-kwrite")
   \vspace{1cm}
   \large
 %  October 1 \& 2, 2018 \\
-  September 24 \& 25, 2018 \\
+%  September 24 \& 25, 2018 \\
   FANR 6750 \\
   \vfill
   \large
@@ -112,7 +112,7 @@ write.csv(gypsyData, "gypsyData.csv", row.names=FALSE)
   \frametitle{Gypsy Moth Data}
 %  \small
   \footnotesize
-<<gypsyData,size='small'>>=
+<<gypsyData,size='footnotesize'>>=
 gypsyData <- read.csv("gypsyData.csv")
 gypsyData$region <- factor(gypsyData$region) # Convert to factor
 gypsyData
