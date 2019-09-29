@@ -1,6 +1,6 @@
 \documentclass[color=usenames,dvipsnames]{beamer}\usepackage[]{graphicx}\usepackage[]{color}
-%% maxwidth is the original width if it is less than linewidth
-%% otherwise use linewidth (to make sure the graphics do not exceed the margin)
+% maxwidth is the original width if it is less than linewidth
+% otherwise use linewidth (to make sure the graphics do not exceed the margin)
 \makeatletter
 \def\maxwidth{ %
   \ifdim\Gin@nat@width>\linewidth
@@ -84,7 +84,7 @@
   {\color{RoyalBlue}{\huge Lab 7 -- $A \times B$ Factorial Designs}} \par
   \vspace{1cm}
   \Large
-  October 1 \& 2, 2018 \\
+  %%  October 1 \& 2, 2018 \\
   FANR 6750 \\
   \vfill
   \large
@@ -183,19 +183,7 @@
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlstd{voleData} \hlkwb{<-} \hlkwd{read.csv}\hlstd{(}\hlstr{"microtus_data.csv"}\hlstd{)}
-\hlkwd{head}\hlstd{(voleData,} \hlnum{7}\hlstd{)}
-\end{alltt}
-\begin{verbatim}
-##   voles food predators
-## 1    10    0   Present
-## 2    12    0   Present
-## 3     8    0   Present
-## 4    14    0   Present
-## 5    18    1   Present
-## 6    20    1   Present
-## 7    21    1   Present
-\end{verbatim}
-\begin{alltt}
+\hlcom{##head(voleData, 7)}
 \hlkwd{str}\hlstd{(voleData)}
 \end{alltt}
 \begin{verbatim}
@@ -211,13 +199,9 @@
 %\centering
 %\LARGE %\normalsize
 %What is wrong with the format of the data? \par
-\end{frame}
-
-
-
-\begin{frame}[fragile]
-  \frametitle{Must convert {\tt food} to a factor}
-  \small
+\pause
+\vfill
+Must convert \inr{food} to a factor
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
@@ -233,6 +217,17 @@
 \end{kframe}
 \end{knitrout}
 \end{frame}
+
+
+
+% \begin{frame}[fragile]
+%   \frametitle{Must convert {\tt food} to a factor}
+%   \small
+% <<factor>>=
+% voleData$food <- factor(voleData$food)
+% str(voleData)
+% @
+% \end{frame}
 
 
 \begin{frame}[fragile]
@@ -255,8 +250,7 @@
 \vfill
 %\begin{columns}
 %  \column{\dimexpr\paperwidth-20pt}
-  This is a balanced design with 4 replicates of each level of the two
-  factors:
+  Balanced design with 4 replicates of each combination of factors
   \begin{itemize}
     \small
     \item Factor A: Predators (Absent and Present)
@@ -309,8 +303,8 @@
 
 \begin{frame}[fragile]
   \frametitle{$A \times B$ interaction}
-  \small
-\begin{knitrout}
+%  \small
+\begin{knitrout}\footnotesize
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlstd{aov1} \hlkwb{<-} \hlkwd{aov}\hlstd{(voles} \hlopt{~} \hlstd{food} \hlopt{*} \hlstd{predators,} \hlkwc{data}\hlstd{=voleData)}
@@ -320,7 +314,7 @@
 ##                Df Sum Sq Mean Sq F value   Pr(>F)    
 ## food            2 1337.3   668.6   40.56 2.15e-07 ***
 ## predators       1  975.4   975.4   59.16 4.27e-07 ***
-## food:predators  2  518.2   259.1   15.72 0.000112 ***
+## food:predators  2  518.3   259.1   15.72 0.000112 ***
 ## Residuals      18  296.8    16.5                     
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
@@ -391,7 +385,7 @@ whether predators are present or not. %(and vice versa)
 
 \begin{frame}[fragile]
   \frametitle{Follow-up}
-  \footnotesize
+%  \footnotesize
 %  {\centering \large \bf Assess effect of food for each level of predator
 %    factor \\}
   Test for an effect of food when predators are present
@@ -649,8 +643,9 @@ is recorded in the file ``acidityData.csv.'' \par
   \item Test the null hypotheses using an $A \times B$ factorial ANOVA
     implemented with \inr{aov}. %Create an ANOVA table using \inr{summary}.
   \item Does the effect of lime depend upon the bedrock type? If so,
-    how? Answer this question by plotting the estimates of the effect of lime on
-    pH change. Include 95\% confidence intervals.
+    how? Answer this question using 2-3 sentences, and by plotting the
+    estimates of the mean differences in pH for each combination of
+    the two factors. Include 95\% confidence intervals.
 \end{enumerate}
 \pause
 \vfill

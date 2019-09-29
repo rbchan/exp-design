@@ -52,7 +52,7 @@ knit_theme$set("edit-kwrite")
   {\color{RoyalBlue}{\huge Lab 7 -- $A \times B$ Factorial Designs}} \par
   \vspace{1cm}
   \Large
-  October 1 \& 2, 2018 \\
+  %%  October 1 \& 2, 2018 \\
   FANR 6750 \\
   \vfill
   \large
@@ -117,7 +117,7 @@ write.csv(richness, "speciesRichness.csv", row.names=FALSE)
   \scriptsize
 <<voleData>>=
 voleData <- read.csv("microtus_data.csv")
-head(voleData, 7)
+##head(voleData, 7)
 str(voleData)
 @
 %\pause
@@ -125,18 +125,25 @@ str(voleData)
 %\centering
 %\LARGE %\normalsize
 %What is wrong with the format of the data? \par
-\end{frame}
-
-
-
-\begin{frame}[fragile]
-  \frametitle{Must convert {\tt food} to a factor}
-  \small
+\pause
+\vfill
+Must convert \inr{food} to a factor
 <<factor>>=
 voleData$food <- factor(voleData$food)
 str(voleData)
 @
 \end{frame}
+
+
+
+% \begin{frame}[fragile]
+%   \frametitle{Must convert {\tt food} to a factor}
+%   \small
+% <<factor>>=
+% voleData$food <- factor(voleData$food)
+% str(voleData)
+% @
+% \end{frame}
 
 
 \begin{frame}[fragile]
@@ -149,8 +156,7 @@ table(voleData$predators, voleData$food)
 \vfill
 %\begin{columns}
 %  \column{\dimexpr\paperwidth-20pt}
-  This is a balanced design with 4 replicates of each level of the two
-  factors:
+  Balanced design with 4 replicates of each combination of factors
   \begin{itemize}
     \small
     \item Factor A: Predators (Absent and Present)
@@ -199,8 +205,8 @@ boxplot(voles ~ food + predators, data=voleData, ylab="Voles", cex.lab=1.5)
 
 \begin{frame}[fragile]
   \frametitle{$A \times B$ interaction}
-  \small
-<<aov1>>=
+%  \small
+<<aov1,size='footnotesize'>>=
 aov1 <- aov(voles ~ food * predators, data=voleData)
 summary(aov1)
 @
@@ -256,7 +262,7 @@ summary(aov2)
 
 \begin{frame}[fragile]
   \frametitle{Follow-up}
-  \footnotesize
+%  \footnotesize
 %  {\centering \large \bf Assess effect of food for each level of predator
 %    factor \\}
   Test for an effect of food when predators are present
@@ -418,8 +424,8 @@ is recorded in the file ``acidityData.csv.'' \par
 \end{enumerate}
 \pause
 \vfill
-Put your answers in a self-contained \R~script, and upload the script
-to ELC at least one day before your next lab.
+Put your answers in a self-contained \R~script (or .Rmd file), and
+upload the script to ELC at least one day before your next lab.
 \end{frame}
 
 
