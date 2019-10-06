@@ -178,8 +178,9 @@
 
 \begin{frame}[fragile]
   \frametitle{\small Example: effects of food and predators on voles}
-  \scriptsize
-\begin{knitrout}
+%  \scriptsize
+  Import the data
+\begin{knitrout}\scriptsize
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlstd{voleData} \hlkwb{<-} \hlkwd{read.csv}\hlstd{(}\hlstr{"microtus_data.csv"}\hlstd{)}
@@ -201,8 +202,8 @@
 %What is wrong with the format of the data? \par
 \pause
 \vfill
-Must convert \inr{food} to a factor
-\begin{knitrout}
+Convert \inr{food} to a factor
+\begin{knitrout}\scriptsize
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlstd{voleData}\hlopt{$}\hlstd{food} \hlkwb{<-} \hlkwd{factor}\hlstd{(voleData}\hlopt{$}\hlstd{food)}
@@ -314,7 +315,7 @@ Must convert \inr{food} to a factor
 ##                Df Sum Sq Mean Sq F value   Pr(>F)    
 ## food            2 1337.3   668.6   40.56 2.15e-07 ***
 ## predators       1  975.4   975.4   59.16 4.27e-07 ***
-## food:predators  2  518.3   259.1   15.72 0.000112 ***
+## food:predators  2  518.2   259.1   15.72 0.000112 ***
 ## Residuals      18  296.8    16.5                     
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
@@ -427,7 +428,8 @@ whether predators are present or not. %(and vice versa)
 
 \begin{frame}[fragile]
   \frametitle{Tukey's HSD}
-%  \tiny %\scriptsize
+  % \tiny %\scriptsize
+  Multiple comparisons of all combinations of the two factors
 \begin{knitrout}\scriptsize
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
@@ -622,35 +624,37 @@ whether predators are present or not. %(and vice versa)
 \scriptsize %\tiny
 
 {\bf Fictitious Scenario \par}
-Acid rain has lowered the pH of many
-lakes in the northeastern United States, and as a result, fish
-populations have declined. Managers have resorted to aerial
-applications of lime (powdered calcium carbonate) in hopes of
-increasing pH. To determine if lime applications result in increased
-pH, they applied equal amounts of lime to 15 lakes, and as a control,
-they applied the same amount of inert white powder to an additional 15
-lakes. Researchers suspected that the effect of lime might depend upon
-the buffering effects of the underlying bedrock. To assess this
-hypothesis, the 30 lakes were chosen such that 10 had limestone
-bedrock, 10 had granite bedrock, and 10 had shist bedrock. pH was
-measured before and after each application, and the difference in pH
-is recorded in the file ``acidityData.csv.'' \par
+Acid rain has lowered the pH of many lakes in the northeastern United
+States, and as a result, some fish populations have declined. Managers
+have resorted to aerial applications of lime (powdered calcium
+carbonate) in hopes of increasing pH. To determine if lime
+applications result in increased pH, they applied equal amounts of
+lime to 15 lakes, and as a control, they applied the same amount of
+inert white powder to an additional 15 lakes. Researchers suspected
+that the effect of lime might depend upon the buffering effects of the
+underlying bedrock. To assess this hypothesis, the 30 lakes were
+chosen such that 10 had limestone bedrock, 10 had granite bedrock, and
+10 had shist bedrock. pH was measured before and after each
+application, and the difference in pH is recorded in the file
+``acidityData.csv.'' \par 
 \pause
 \vfill
 {\bf Questions}
 \begin{enumerate}[{\bf 1}]
-  \item What are the null and alternative hypotheses?
-  \item Test the null hypotheses using an $A \times B$ factorial ANOVA
-    implemented with \inr{aov}. %Create an ANOVA table using \inr{summary}.
-  \item Does the effect of lime depend upon the bedrock type? If so,
-    how? Answer this question using 2-3 sentences, and by plotting the
-    estimates of the mean differences in pH for each combination of
-    the two factors. Include 95\% confidence intervals.
+  \item Use an $A \times B$ factorial ANOVA to determine if the effect
+    of lime depend upon the bedrock type. List all of the null and
+    alternative hypotheses associated with the analysis.
+  \item Summarize your main conclusions using 2-3 sentences, and by
+    plotting the estimates of the mean differences in pH for each
+    combination of the two factors. Include 95\% confidence intervals.
+  % \item What are the null and alternative hypotheses?
+  % \item Test the null hypotheses using an  %Create an ANOVA table
+  % using \inr {summary}. 
 \end{enumerate}
 \pause
 \vfill
-Put your answers in a self-contained \R~script, and upload the script
-to ELC at least one day before your next lab.
+Put your answers in a self-contained \R~script (or .Rmd file), and
+upload the script to ELC at least one day before your next lab.
 \end{frame}
 
 

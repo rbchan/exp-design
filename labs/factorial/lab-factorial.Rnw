@@ -114,8 +114,9 @@ write.csv(richness, "speciesRichness.csv", row.names=FALSE)
 
 \begin{frame}[fragile]
   \frametitle{\small Example: effects of food and predators on voles}
-  \scriptsize
-<<voleData>>=
+%  \scriptsize
+  Import the data
+<<voleData,size='scriptsize'>>=
 voleData <- read.csv("microtus_data.csv")
 ##head(voleData, 7)
 str(voleData)
@@ -127,8 +128,8 @@ str(voleData)
 %What is wrong with the format of the data? \par
 \pause
 \vfill
-Must convert \inr{food} to a factor
-<<factor>>=
+Convert \inr{food} to a factor
+<<factor,size='scriptsize'>>=
 voleData$food <- factor(voleData$food)
 str(voleData)
 @
@@ -282,7 +283,8 @@ summary(aov(voles ~ food, data=voleData, subset=predators=="Absent"))
 
 \begin{frame}[fragile]
   \frametitle{Tukey's HSD}
-%  \tiny %\scriptsize
+  % \tiny %\scriptsize
+  Multiple comparisons of all combinations of the two factors
 <<tuk,size='scriptsize'>>=
 tuk.out <- TukeyHSD(aov1)
 tuk.out$'food:predators'
@@ -397,30 +399,32 @@ arrows(bp, ybar_ij., bp, ybar_ij.+SE_ij., code=2, angle=90, length=0.05, lwd=1)
 \scriptsize %\tiny
 
 {\bf Fictitious Scenario \par}
-Acid rain has lowered the pH of many
-lakes in the northeastern United States, and as a result, fish
-populations have declined. Managers have resorted to aerial
-applications of lime (powdered calcium carbonate) in hopes of
-increasing pH. To determine if lime applications result in increased
-pH, they applied equal amounts of lime to 15 lakes, and as a control,
-they applied the same amount of inert white powder to an additional 15
-lakes. Researchers suspected that the effect of lime might depend upon
-the buffering effects of the underlying bedrock. To assess this
-hypothesis, the 30 lakes were chosen such that 10 had limestone
-bedrock, 10 had granite bedrock, and 10 had shist bedrock. pH was
-measured before and after each application, and the difference in pH
-is recorded in the file ``acidityData.csv.'' \par
+Acid rain has lowered the pH of many lakes in the northeastern United
+States, and as a result, some fish populations have declined. Managers
+have resorted to aerial applications of lime (powdered calcium
+carbonate) in hopes of increasing pH. To determine if lime
+applications result in increased pH, they applied equal amounts of
+lime to 15 lakes, and as a control, they applied the same amount of
+inert white powder to an additional 15 lakes. Researchers suspected
+that the effect of lime might depend upon the buffering effects of the
+underlying bedrock. To assess this hypothesis, the 30 lakes were
+chosen such that 10 had limestone bedrock, 10 had granite bedrock, and
+10 had shist bedrock. pH was measured before and after each
+application, and the difference in pH is recorded in the file
+``acidityData.csv.'' \par 
 \pause
 \vfill
 {\bf Questions}
 \begin{enumerate}[{\bf 1}]
-  \item What are the null and alternative hypotheses?
-  \item Test the null hypotheses using an $A \times B$ factorial ANOVA
-    implemented with \inr{aov}. %Create an ANOVA table using \inr{summary}.
-  \item Does the effect of lime depend upon the bedrock type? If so,
-    how? Answer this question using 2-3 sentences, and by plotting the
-    estimates of the mean differences in pH for each combination of
-    the two factors. Include 95\% confidence intervals.
+  \item Use an $A \times B$ factorial ANOVA to determine if the effect
+    of lime depend upon the bedrock type. List all of the null and
+    alternative hypotheses associated with the analysis.
+  \item Summarize your main conclusions using 2-3 sentences, and by
+    plotting the estimates of the mean differences in pH for each
+    combination of the two factors. Include 95\% confidence intervals.
+  % \item What are the null and alternative hypotheses?
+  % \item Test the null hypotheses using an  %Create an ANOVA table
+  % using \inr {summary}. 
 \end{enumerate}
 \pause
 \vfill
