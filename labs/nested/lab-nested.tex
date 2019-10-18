@@ -1,6 +1,6 @@
 \documentclass[color=usenames,dvipsnames]{beamer}\usepackage[]{graphicx}\usepackage[]{color}
-%% maxwidth is the original width if it is less than linewidth
-%% otherwise use linewidth (to make sure the graphics do not exceed the margin)
+% maxwidth is the original width if it is less than linewidth
+% otherwise use linewidth (to make sure the graphics do not exceed the margin)
 \makeatletter
 \def\maxwidth{ %
   \ifdim\Gin@nat@width>\linewidth
@@ -80,10 +80,10 @@
 \begin{frame}[plain]
   \LARGE
   \centering
-  {\color{RoyalBlue}{\bf Lab 8 -- Nested ANOVA} \\}
+  {\color{RoyalBlue}{Lab 8 -- Nested Designs} \\}
   \vspace{1cm}
   \Large
-  October 8 \& 9, 2017 \\
+  % October 8 \& 9, 2017 \\
   FANR 6750 \\
   \vfill
   \large
@@ -419,6 +419,10 @@ $H_a: \sigma^2_B > 0$
 \begin{alltt}
 \hlkwd{library}\hlstd{(nlme)}
 \hlkwd{library}\hlstd{(multcomp)}
+\end{alltt}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in library(multcomp): there is no package called 'multcomp'}}\begin{alltt}
 \hlstd{lme1} \hlkwb{<-} \hlkwd{lme}\hlstd{(larvae} \hlopt{~} \hlstd{Treatment,} \hlkwc{random}\hlstd{=}\hlopt{~}\hlnum{1}\hlopt{|}\hlstd{Plot,}
             \hlkwc{data}\hlstd{=gypsyData)}
 \end{alltt}
@@ -506,7 +510,9 @@ $H_a: \sigma^2_B > 0$
 \begin{alltt}
 \hlstd{tuk} \hlkwb{<-} \hlkwd{glht}\hlstd{(lme1,} \hlkwc{linfct}\hlstd{=}\hlkwd{mcp}\hlstd{(}\hlkwc{Treatment}\hlstd{=}\hlstr{"Tukey"}\hlstd{))}
 \end{alltt}
-\end{kframe}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in glht(lme1, linfct = mcp(Treatment = "{}Tukey"{})): could not find function "{}glht"{}}}\end{kframe}
 \end{knitrout}
 \pause
 \begin{knitrout}\scriptsize
@@ -514,26 +520,9 @@ $H_a: \sigma^2_B > 0$
 \begin{alltt}
 \hlkwd{summary}\hlstd{(tuk)}
 \end{alltt}
-\begin{verbatim}
-## 
-## 	 Simultaneous Tests for General Linear Hypotheses
-## 
-## Multiple Comparisons of Means: Tukey Contrasts
-## 
-## 
-## Fit: lme.formula(fixed = larvae ~ Treatment, data = gypsyData, random = ~1 | 
-##     Plot)
-## 
-## Linear Hypotheses:
-##                        Estimate Std. Error z value Pr(>|z|)    
-## Control - Bt == 0        4.3333     0.5569   7.781   <0.001 ***
-## Dimilin - Bt == 0       -1.4167     0.5569  -2.544   0.0295 *  
-## Dimilin - Control == 0  -5.7500     0.5569 -10.324   <0.001 ***
-## ---
-## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-## (Adjusted p values reported -- single-step method)
-\end{verbatim}
-\end{kframe}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in summary(tuk): object 'tuk' not found}}\end{kframe}
 \end{knitrout}
 \end{frame}
 
@@ -550,13 +539,15 @@ $H_a: \sigma^2_B > 0$
   To determine if salinity affects adult fish reproductive
   performance, a researcher places one pregnant female in a tank with
   one of three salinity levels: low, medium, and high, or a control
-  tank. A week after birth, two offspring (fry) are measured. \\
+  tank. A week after birth, two offspring (fry) are measured. Fry
+  growth rate is used as a measure of adult performance.\\
   \vfill
   Run a nested ANOVA using \inr{aov} and \inr{lme} on the
   {\tt fishData.csv} dataset. Answer the following questions:
 \begin{enumerate}[\bf (1)]
   \item What are the null and alternative hypotheses?
-  \item Does salinity affect fry growth?
+  \item Does salinity affect reproductive performance, as measured by
+    fry growth? 
   \item If so, which salinity levels differ?
   \item Is there more random variation among or within experimental units?
 \end{enumerate}

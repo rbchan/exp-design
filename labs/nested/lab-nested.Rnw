@@ -49,7 +49,7 @@ knit_theme$set("edit-kwrite")
   {\color{RoyalBlue}{Lab 8 -- Nested Designs} \\}
   \vspace{1cm}
   \Large
-  October 8 \& 9, 2017 \\
+  % October 8 \& 9, 2017 \\
   FANR 6750 \\
   \vfill
   \large
