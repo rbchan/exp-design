@@ -1,6 +1,6 @@
 \documentclass[color=usenames,dvipsnames]{beamer}\usepackage[]{graphicx}\usepackage[]{color}
-%% maxwidth is the original width if it is less than linewidth
-%% otherwise use linewidth (to make sure the graphics do not exceed the margin)
+% maxwidth is the original width if it is less than linewidth
+% otherwise use linewidth (to make sure the graphics do not exceed the margin)
 \makeatletter
 \def\maxwidth{ %
   \ifdim\Gin@nat@width>\linewidth
@@ -83,7 +83,7 @@
   {\color{RoyalBlue}{Lab 9 -- Split-plot Designs}} \\
   \vspace{1cm}
   \Large
-  October 15 \& 16, 2018 \\
+  % October 15 \& 16, 2018 \\
   FANR 6750 \\
   \vfill
   \large
@@ -148,7 +148,7 @@ The $\alpha$'s and $\beta$'s are fixed treatment effects. Note the interaction.
 %\vspace{0.4cm}
 \pause
 \vfill
-Because we want our inferences to apply to all roasts,
+Because we want our inferences to apply to all whole units,
 $\delta_{ik}$ is random. Specifically:
 %\Large
 \[
@@ -419,8 +419,8 @@ Yes, it is
 \end{alltt}
 \begin{verbatim}
 ## F-test for: time 
-##   numDF denDF F-value p-value
-## 1     3    15 274.716  <.0001
+##   numDF denDF  F-value p-value
+## 1     3    15 274.7159  <.0001
 \end{verbatim}
 \begin{alltt}
 \hlkwd{anova}\hlstd{(lme.meatC,} \hlkwc{Terms}\hlstd{=}\hlstr{"time"}\hlstd{)}
@@ -484,8 +484,14 @@ Yes, it is
 
 \begin{frame}[fragile]
   \frametitle{\small Differences between cooking times for ``P'' tenderizer}
-  \centering \footnotesize %\small
-
+  \centering %\footnotesize %\small
+\begin{knitrout}\scriptsize
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{plot}\hlstd{(mcP)} \hlcom{# Should do this for the other 2 levels of tenderizer too}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
 \includegraphics[width=0.9\textwidth]{figure/mcp-1} \\
 \end{frame}
 
@@ -499,7 +505,7 @@ Yes, it is
 
 \begin{frame}[fragile]
   \frametitle{Nested and crossed assignment\footnote{Nested and crossed
-      is same as split-plot, but without the block}}
+      is the same as split-plot, but without the block}}
 
 %{%\centering %\large %\bf
 %  \large
@@ -511,18 +517,20 @@ Yes, it is
 \small
 {\bf Design}
 \begin{itemize}%[<+- | visible@+->]
-\small
+  % \small
+  \footnotesize
   \item Sweet potato yield is studied in response to (a=3)
     types of herbicide.
   \item Each herbicide is applied to 5 fields
   \item Each field is divided into 4 plots. Each plot is treated with
     one of (b=4) fertilizers.
 \end{itemize}
-%\pause
-%\vfill
+\pause
+\vfill
 {\bf Exercise}
 \begin{enumerate}[(1)]%[<+- | visible@+->][\bf \color{PineGreen} (1)]
-\small
+% \small
+  \footnotesize
   \item Import {\tt yieldData.csv} and conduct
     the appropriate ANOVA using \inr{aov} and \inr{lme}.
   \item Does the effect of herbicide depend on fertilizer?
@@ -530,13 +538,12 @@ Yes, it is
   \item State the null and alternative hypotheses, and summarize your
     results in 2-3 sentences. 
 \end{enumerate}
-%\vfill
+\vfill
 %\centering
 %\small
 \footnotesize
 \bf
-Upload your self-contained script to ELC the day before your next
-lab. \\
+Upload your self-contained script to ELC the day before your next lab. \\
 \vfill
 \end{frame}
 
