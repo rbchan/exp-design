@@ -16,7 +16,7 @@
 ##
 source("../rnw2pdf.R")
 if(1==2) {
-  rnw2pdf("lab-nested", clean=FALSE)
+  rnw2pdf("lab-nested")
   rnw2pdf("lab-nested", tangle=TRUE)
 }
 @
@@ -83,15 +83,15 @@ knit_theme$set("edit-kwrite")
   \pause
   \vfill
   For example
-      \begin{itemize}
-        \large
-        \item We count larvae at multiple subplots within a plot
-        \item We weigh multiple chicks in a brood
-      \end{itemize}
+  \begin{itemize}
+    \large
+    \item We count larvae at multiple subplots within a plot, or
+    \item We weigh multiple chicks in a brood
+  \end{itemize}
   \pause
   \vfill
   We're interested in treatment effects at the experimental (whole) unit
-  level, not the subunit level
+  level, not the subunit level \\
 \end{frame}
 
 
@@ -106,7 +106,7 @@ y_{ijk} = \mu + \alpha_i + \beta_{ij} + \varepsilon_{ijk}
 \vspace{1cm}
 \pause
 \large
-Because we want our inferences to apply to all experimental units, not
+Because we want our inference to apply to all experimental units, not
 just the ones in our sample, $\beta_{ij}$ is random.
 \pause
 \vfill
@@ -210,6 +210,11 @@ aov.correct <- aov(larvae ~ Treatment + Error(Plot),
 <<aov-correct-out,size='small'>>=
 summary(aov.correct)
 @
+\pause
+\vfill
+\centering
+%\large
+SS and MS are the same as before, but $F$ and $p$ are different \\
 \end{frame}
 
 
@@ -263,9 +268,8 @@ summary(aov.correct)
   \uncover<2->{{\bf An alternative is to use \inr{lme} function in
       \inr{nlme} package}}
   \begin{itemize}
-    \item<3-> Possible to get direct estimates of $\sigma^2_B$ and
-      other variance parameters
-    \item<3-> Handles very complex models and unbalanced designs
+    \item<3-> Direct estimates of $\sigma^2_B$ and other variance parameters
+    \item<3-> Handles complex models and unbalanced designs
     \item<3-> Possible to do multiple comparisons and contrasts using the the
       \inr{glht} function in the \inr{multcomp} package. %(We will cover
 %      this next time)
@@ -358,18 +362,17 @@ summary(tuk)
 \begin{frame}[fragile]
   \frametitle{Assignment}
   \small
-  To determine if salinity affects adult fish reproductive
-  performance, a researcher places one pregnant female in a tank with
-  one of three salinity levels: low, medium, and high, or a control
-  tank. A week after birth, two offspring (fry) are measured. Fry
-  growth rate is used as a measure of adult performance.\\
+  To determine if salinity causes maternal effects on offspring
+  growth, a researcher places one pregnant female in each of several
+  tanks with one of three salinity levels: low, medium, and high, or a
+  control tank. A week after birth, two offspring (fry) are
+  measured. Fry length is used as a measure of maternal effects.\\
   \vfill
   Run a nested ANOVA using \inr{aov} and \inr{lme} on the
   {\tt fishData.csv} dataset. Answer the following questions:
 \begin{enumerate}[\bf (1)]
   \item What are the null and alternative hypotheses?
-  \item Does salinity affect reproductive performance, as measured by
-    fry growth? 
+  \item Does salinity cause maternal effects on fry length? 
   \item If so, which salinity levels differ?
   \item Is there more random variation among or within experimental units?
 \end{enumerate}
@@ -377,8 +380,8 @@ summary(tuk)
 \vfill
 \centering
 \normalsize
-Upload your self-contained \R~script to ELC at least one
-day before your next lab \\
+Upload your self-contained \R~script (or .Rmd file) to ELC at least
+one day before your next lab \\
 \end{frame}
 
 
