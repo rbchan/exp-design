@@ -1,6 +1,6 @@
 \documentclass[color=usenames,dvipsnames]{beamer}\usepackage[]{graphicx}\usepackage[]{color}
-%% maxwidth is the original width if it is less than linewidth
-%% otherwise use linewidth (to make sure the graphics do not exceed the margin)
+% maxwidth is the original width if it is less than linewidth
+% otherwise use linewidth (to make sure the graphics do not exceed the margin)
 \makeatletter
 \def\maxwidth{ %
   \ifdim\Gin@nat@width>\linewidth
@@ -83,7 +83,7 @@
   \textcolor{NavyBlue}{Introduction to Statistical Modeling} \\
   \vspace{1cm}
   \Large
-  November 2, 5, \& 7, 2018 \\
+%  November 2, 5, \& 7, 2018 \\
   FANR 6750 \\
   \vfill
   \large
@@ -92,32 +92,6 @@
 
 
 \section{Motivation}
-
-
-
-\begin{frame}
-  \frametitle{Looking ahead}
-  \Large
-%  \begin{itemize}
-%    \item
-  Linear models
-%    \item[]
-%    \item Linear mixed effects models
-%    \item[]
-%    \item
-  \vfill
-  Generalized linear models
-%    \item[]
-%    \item
-  \vfill
-  Model selection and multi-model inference
-%    \item[]
-%    \item Goodness-of-fit
-%  \end{itemize}
-\end{frame}
-
-
-
 
 
 
@@ -138,98 +112,48 @@
   \pause
 %\begin{enumerate}[<+- | visible@+->][\bf \color{PineGreen} (1)]
   \begin{itemize}%[<+->]
+    \item[]
     \item<2-> We have been modeling all along
     \item[]
-    \item<3-> Good experimental design + ANOVA is usually the most direct
+    \item<3-> Good experimental design + ANOVA is often the most direct
       route to causal inference
     \item[]
-    \item<4-> Often, however, it isn't possible (or even desirable) to
+    \item<4-> However, it isn't always possible (or even desirable) to
       control some aspects of the system being investigated
     \item[]
-    \item<5-> When manipulative experiments aren't %causal inference isn't
+    \item<5-> When manipulative experiments aren't 
       possible, observational studies
       and predictive models can be the next best option
   \end{itemize}
-%\end{enumerate}
-% Mention BLOGs
 \end{frame}
 
 
 
 
-%% \begin{frame}
-%%   \frametitle{Assignment}
-%% <<eval=true,echo=false,results=hide>>=
-%% set.seed(894)
-%% N <- 100
-%% a <- 4
-%% n <- N/a
-%% x <- runif(N, 5, 20)
-%% g <- gl(a, n, labels=c("Control", "Low", "Med", "High"))
-%% #contrasts(g) <- c("contr.sum", "contr.poly")
-%% dat <- data.frame(diet=g, length=x,
-%%                   moon=sample(1:4, N, replace=TRUE),
-%%                   sun=sample(1:10, N, replace=TRUE))
-%% X <- model.matrix(~diet+length, dat)
-%% X
-%% beta <- c(20, 1, 2, 4, 0.5)
-%% mu <- X %*% beta
-%% mu
-%% sigma <- 2
-%% set.seed(52)
-%% y <- rnorm(N, mu, sigma)
-%% tapply(y, g, mean)
-%% dat <- cbind(weight=y, dat)
-%% #plot(weight ~ x, dat, col=rep(1:4, each=n))
-%% #boxplot(weight ~ diet, dat)
-%% write.csv(dat, "dietData.csv", row.names=FALSE)
-%% @
-%% \end{frame}
-
-
-
-
-%\section{What is a model?}
-
-
-
 \begin{frame}
   \frametitle{What is a model?}
-%  \begin{block}
-%  \large
     {\bf Definition} \\
     A model is an abstraction of reality used to describe the
     relationship between two or more variables \par
-%  \end{block}
-%    \pause
+    \pause
     \vfill %\vspace{0.5cm}
-    \uncover<2->{
+    % \uncover<2->{
     {\bf Types of models}
     \begin{itemize}
       \item Conceptual
       \item Mathematical
       \item Statistical
     \end{itemize}
-  }
-  \uncover<3->{
-  {\bf Important point} \\
-  ``All models are wrong but some are useful'' (George Box, 1976) \\
-  }
-%  \pause
+  \pause
   \vfill
-  \begin{columns}%[c]
-    \begin{column}{0.65\textwidth}
-      %% \uncover<3->{
-      %% {\bf Types of models}
-      %% \begin{itemize}
-      %%   \item Conceptual
-      %%   \item Mathematical
-      %%   \item Statistical
-      %% \end{itemize}
-      %% }
+  \begin{columns}%[t]
+    \begin{column}[T]{0.75\textwidth}
+      {\bf Important point} \\
+      ``All models are wrong but some are useful'' \\ (George Box, 1976) %\\
     \end{column}
-    \begin{column}{0.15\textwidth}
-      \uncover<3->{\includegraphics[width=\textwidth]{figs/Box}} \\
+    \begin{column}[T]{0.15\textwidth}
+%      \uncover<3->{\includegraphics[width=\textwidth]{figs/Box}} \\
+      {\includegraphics[width=\textwidth]{figs/Box}} \\
     \end{column}
   \end{columns}
 \end{frame}
@@ -242,6 +166,7 @@
   \large
   {\bf What are they \alert{useful} for?}
   \begin{itemize}%[<+->]
+    \item[]
     \item<2-> Formalizing hypotheses using math and probability
     \item[]
     \item<3-> Evaulating hypotheses by confronting models with data
@@ -255,24 +180,28 @@
 
 \begin{frame}
   \frametitle{Statistical models}
-  {\bf \large Two important pieces \par}
   \large
+  {Unlike other types of models, statistical models are fitted to data \\}
+  \pause
+  \vspace{12pt} %\vfill
+  {Two important components: \\}
+  \vspace{6pt}
+%  \large
 %  \begin{enumerate}[<+- | visible@+->][\bf \color{PineGreen} (1)]
-  \begin{enumerate}[\bf \color{gb} (1)]
+  \begin{enumerate}[\normalsize \bf \color{gb} (1)]
     \large
     \item<1-> Deterministic component%(s)
       \begin{itemize}
-        \large
+        % \large
+        \normalsize
         \item Equation for the expected value of the response
           variable %, denoted $\mathbb{E}(y)$
-%        \item Often a linear model (LM), but could be a generalized
-%          linear model (GLM), a generalized additive (GAM), or a
-%          genearlized linear mixed effects model (GLMM), etc\dots
       \end{itemize}
     \item[]
     \item<2-> Stochastic component %(s)
       \begin{itemize}
-        \large
+%        \large
+        \normalsize
         \item Probability distribution %(s)
           describing the differences
           between the expected values and the observed values
@@ -422,7 +351,7 @@ predictors variables, with dozens of associated $\beta$ coefficients.
 %%   \item For continuous explano
 %% \end{itemize}
 Linear models can also include polynomial terms and interactions
-between continuous and categorical predictors
+between predictors
 \end{frame}
 
 
@@ -486,7 +415,7 @@ between continuous and categorical predictors
   \frametitle{\small Interpretting $\beta$'s for categorical explantory
     variables}
   Another common method for creating dummy variables results in
-  $\beta$s that can be interpretted as the $\alpha$'s from the
+  $\beta$'s that can be interpretted as the $\alpha$'s from the
   additive models that we saw earlier in the class.
   \pause
   \vfill
@@ -644,12 +573,12 @@ between continuous and categorical predictors
 \end{alltt}
 \begin{verbatim}
 ##             x       y elevation forest chaparral habitat seeds jays
-## 2345 258636.7 3764124       423   0.00      0.02     Oak   Med   34
-## 740  261936.7 3769224       506   0.10      0.45     Oak   Med   38
-## 2304 246336.7 3764124       859   0.00      0.26     Oak  High   40
-## 2433 239436.7 3763524      1508   0.02      0.03    Pine   Med   43
-## 1104 239436.7 3767724       483   0.26      0.37     Oak   Med   36
-## 607  236436.7 3769524       830   0.00      0.01     Oak   Low   39
+## 1895 240336.7 3765324       812   0.00      0.12     Oak   Med   37
+## 1003 234636.7 3768024       182   0.00      0.29    Pine   Med   34
+## 969  249336.7 3768324       791   0.15      0.16    Pine  High   38
+## 1408 249336.7 3766824      1353   0.00      0.09    Pine   Med   42
+## 2002 242136.7 3765024       746   0.01      0.54    Pine   Low   38
+## 367  243336.7 3770724       988   0.08      0.17    Pine  High   40
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -673,18 +602,18 @@ between continuous and categorical predictors
 ## 
 ## Residuals:
 ##     Min      1Q  Median      3Q     Max 
-## -5.4874 -1.7539  0.1566  1.6159  4.6155 
+## -4.2433 -1.4388  0.2374  1.5347  4.9672 
 ## 
 ## Coefficients:
 ##              Estimate Std. Error t value Pr(>|t|)    
-## (Intercept) 33.082808   0.453997   72.87   <2e-16 ***
-## elevation    0.008337   0.000595   14.01   <2e-16 ***
+## (Intercept) 33.318197   0.456375   73.01   <2e-16 ***
+## elevation    0.008148   0.000508   16.04   <2e-16 ***
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
-## Residual standard error: 2.285 on 98 degrees of freedom
-## Multiple R-squared:  0.667,	Adjusted R-squared:  0.6636 
-## F-statistic: 196.3 on 1 and 98 DF,  p-value: < 2.2e-16
+## Residual standard error: 2.133 on 98 degrees of freedom
+## Multiple R-squared:  0.7242,	Adjusted R-squared:  0.7214 
+## F-statistic: 257.3 on 1 and 98 DF,  p-value: < 2.2e-16
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -717,19 +646,19 @@ between continuous and categorical predictors
 ## 
 ## Residuals:
 ##     Min      1Q  Median      3Q     Max 
-## -5.4717 -1.7384  0.1552  1.5993  4.6319 
+## -4.3053 -1.4577  0.1757  1.5512  4.8988 
 ## 
 ## Coefficients:
-##              Estimate Std. Error t value Pr(>|t|)    
-## (Intercept) 33.065994   0.467624  70.711   <2e-16 ***
-## elevation    0.008337   0.000598  13.943   <2e-16 ***
-## forest       0.294350   1.793079   0.164     0.87    
+##               Estimate Std. Error t value Pr(>|t|)    
+## (Intercept) 33.3707514  0.4622909  72.186   <2e-16 ***
+## elevation    0.0081741  0.0005101  16.025   <2e-16 ***
+## forest      -1.8556417  2.3911829  -0.776     0.44    
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
-## Residual standard error: 2.296 on 97 degrees of freedom
-## Multiple R-squared:  0.6671,	Adjusted R-squared:  0.6603 
-## F-statistic: 97.21 on 2 and 97 DF,  p-value: < 2.2e-16
+## Residual standard error: 2.137 on 97 degrees of freedom
+## Multiple R-squared:  0.7259,	Adjusted R-squared:  0.7202 
+## F-statistic: 128.4 on 2 and 97 DF,  p-value: < 2.2e-16
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -766,19 +695,19 @@ between continuous and categorical predictors
 ## 
 ## Residuals:
 ##     Min      1Q  Median      3Q     Max 
-## -7.9143 -2.3684 -0.3684  3.0857  8.6316 
+## -8.9062 -3.1129 -0.1129  2.8871  8.8871 
 ## 
 ## Coefficients:
 ##             Estimate Std. Error t value Pr(>|t|)    
-## (Intercept)   35.875      1.356  26.456   <2e-16 ***
-## habitatOak     3.493      1.448   2.413   0.0177 *  
-## habitatPine    2.039      1.503   1.357   0.1780    
+## (Intercept)   35.833      1.614  22.204   <2e-16 ***
+## habitatOak     4.280      1.690   2.532   0.0129 *  
+## habitatPine    4.073      1.759   2.316   0.0227 *  
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
-## Residual standard error: 3.835 on 97 degrees of freedom
-## Multiple R-squared:  0.07126,	Adjusted R-squared:  0.05211 
-## F-statistic: 3.721 on 2 and 97 DF,  p-value: 0.02773
+## Residual standard error: 3.953 on 97 degrees of freedom
+## Multiple R-squared:  0.06237,	Adjusted R-squared:  0.04304 
+## F-statistic: 3.226 on 2 and 97 DF,  p-value: 0.04401
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -813,20 +742,20 @@ between continuous and categorical predictors
 ## 
 ## Residuals:
 ##     Min      1Q  Median      3Q     Max 
-## -5.0327 -1.5356  0.0091  1.4686  4.2391 
+## -4.6171 -1.5698  0.0892  1.6378  4.3895 
 ## 
 ## Coefficients:
 ##              Estimate Std. Error t value Pr(>|t|)    
-## (Intercept) 3.072e+01  8.084e-01  37.997  < 2e-16 ***
-## elevation   8.289e-03  5.414e-04  15.308  < 2e-16 ***
-## habitatOak  3.166e+00  7.850e-01   4.034  0.00011 ***
-## habitatPine 1.695e+00  8.148e-01   2.081  0.04010 *  
+## (Intercept) 3.136e+01  8.622e-01  36.374  < 2e-16 ***
+## elevation   8.179e-03  4.888e-04  16.731  < 2e-16 ***
+## habitatOak  2.493e+00  8.651e-01   2.882  0.00488 ** 
+## habitatPine 1.205e+00  9.096e-01   1.325  0.18827    
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
-## Residual standard error: 2.078 on 96 degrees of freedom
-## Multiple R-squared:  0.7301,	Adjusted R-squared:  0.7217 
-## F-statistic: 86.56 on 3 and 96 DF,  p-value: < 2.2e-16
+## Residual standard error: 2.008 on 96 degrees of freedom
+## Multiple R-squared:  0.7606,	Adjusted R-squared:  0.7531 
+## F-statistic: 101.6 on 3 and 96 DF,  p-value: < 2.2e-16
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -861,23 +790,23 @@ between continuous and categorical predictors
 ## lm(formula = jays ~ elevation * habitat, data = jayData)
 ## 
 ## Residuals:
-##    Min     1Q Median     3Q    Max 
-## -5.008 -1.581 -0.103  1.420  4.184 
+##     Min      1Q  Median      3Q     Max 
+## -4.5238 -1.5586  0.1117  1.6228  4.6687 
 ## 
 ## Coefficients:
 ##                        Estimate Std. Error t value Pr(>|t|)    
-## (Intercept)           31.654383   1.446322  21.886  < 2e-16 ***
-## elevation              0.006781   0.001999   3.393  0.00101 ** 
-## habitatOak             2.428682   1.565227   1.552  0.12411    
-## habitatPine            0.399953   1.579874   0.253  0.80070    
-## elevation:habitatOak   0.001204   0.002153   0.559  0.57737    
-## elevation:habitatPine  0.002046   0.002151   0.951  0.34414    
+## (Intercept)           30.508235   1.592372  19.159  < 2e-16 ***
+## elevation              0.009741   0.002495   3.904 0.000178 ***
+## habitatOak             3.735717   1.689354   2.211 0.029437 *  
+## habitatPine            1.568104   1.771844   0.885 0.378408    
+## elevation:habitatOak  -0.002070   0.002580  -0.802 0.424382    
+## elevation:habitatPine -0.001015   0.002611  -0.389 0.698402    
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
-## Residual standard error: 2.087 on 94 degrees of freedom
-## Multiple R-squared:  0.7334,	Adjusted R-squared:  0.7192 
-## F-statistic: 51.72 on 5 and 94 DF,  p-value: < 2.2e-16
+## Residual standard error: 2.013 on 94 degrees of freedom
+## Multiple R-squared:  0.7643,	Adjusted R-squared:  0.7518 
+## F-statistic: 60.96 on 5 and 94 DF,  p-value: < 2.2e-16
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -915,19 +844,19 @@ between continuous and categorical predictors
 ## 
 ## Residuals:
 ##     Min      1Q  Median      3Q     Max 
-## -4.8429 -1.4608  0.1304  1.5908  4.7854 
+## -4.2656 -1.4829  0.2837  1.5030  4.9863 
 ## 
 ## Coefficients:
 ##                  Estimate Std. Error t value Pr(>|t|)    
-## (Intercept)     3.162e+01  7.631e-01  41.434  < 2e-16 ***
-## elevation       1.368e-02  2.342e-03   5.843 6.86e-08 ***
-## I(elevation^2) -3.542e-06  1.503e-06  -2.357   0.0204 *  
+## (Intercept)     3.312e+01  7.311e-01  45.304  < 2e-16 ***
+## elevation       8.774e-03  1.897e-03   4.624 1.16e-05 ***
+## I(elevation^2) -3.742e-07  1.093e-06  -0.342    0.733    
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
-## Residual standard error: 2.233 on 97 degrees of freedom
-## Multiple R-squared:  0.6851,	Adjusted R-squared:  0.6786 
-## F-statistic: 105.5 on 2 and 97 DF,  p-value: < 2.2e-16
+## Residual standard error: 2.143 on 97 degrees of freedom
+## Multiple R-squared:  0.7245,	Adjusted R-squared:  0.7188 
+## F-statistic: 127.6 on 2 and 97 DF,  p-value: < 2.2e-16
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -968,24 +897,24 @@ between continuous and categorical predictors
 ## 
 ## Residuals:
 ##     Min      1Q  Median      3Q     Max 
-## -5.2574 -1.4400  0.0487  1.4055  3.7924 
+## -4.4245 -1.4311  0.0855  1.6472  4.4907 
 ## 
 ## Coefficients:
 ##                      Estimate Std. Error t value Pr(>|t|)    
-## (Intercept)         2.920e+01  1.030e+00  28.338  < 2e-16 ***
-## habitatOak          3.705e+00  8.433e-01   4.394 2.98e-05 ***
-## habitatPine         2.216e+00  8.757e-01   2.531   0.0131 *  
-## forest              4.007e+01  2.780e+01   1.441   0.1529    
-## elevation           1.215e-02  2.300e-03   5.285 8.41e-07 ***
-## I(elevation^2)     -2.554e-06  1.484e-06  -1.721   0.0886 .  
-## habitatOak:forest  -4.292e+01  2.785e+01  -1.541   0.1267    
-## habitatPine:forest -3.918e+01  2.784e+01  -1.407   0.1627    
+## (Intercept)         3.022e+01  1.289e+00  23.444  < 2e-16 ***
+## habitatOak          3.756e+00  1.225e+00   3.065  0.00286 ** 
+## habitatPine         2.777e+00  1.266e+00   2.193  0.03086 *  
+## forest              7.414e+01  4.636e+01   1.599  0.11322    
+## elevation           7.519e-03  1.806e-03   4.162 7.08e-05 ***
+## I(elevation^2)      3.438e-07  1.044e-06   0.329  0.74276    
+## habitatOak:forest  -6.934e+01  4.660e+01  -1.488  0.14012    
+## habitatPine:forest -7.693e+01  4.645e+01  -1.656  0.10107    
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
-## Residual standard error: 2.044 on 92 degrees of freedom
-## Multiple R-squared:  0.7497,	Adjusted R-squared:  0.7307 
-## F-statistic: 39.37 on 7 and 92 DF,  p-value: < 2.2e-16
+## Residual standard error: 2.001 on 92 degrees of freedom
+## Multiple R-squared:  0.7721,	Adjusted R-squared:  0.7547 
+## F-statistic: 44.52 on 7 and 92 DF,  p-value: < 2.2e-16
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -1012,12 +941,12 @@ between continuous and categorical predictors
 \end{alltt}
 \begin{verbatim}
 ##          x       y      fit      lwr      upr
-## 1 230736.7 3774324 35.68349 34.86313 36.50386
-## 2 231036.7 3774324 35.07284 34.22917 35.91652
-## 3 231336.7 3774324 34.58427 33.72668 35.44186
-## 4 230436.7 3774024 33.06042 31.55907 34.56177
-## 5 230736.7 3774024 39.18440 38.49766 39.87113
-## 6 231036.7 3774024 38.65512 37.98859 39.32165
+## 1 230736.7 3774324 35.81133 34.95667 36.66599
+## 2 231036.7 3774324 35.46495 34.49121 36.43868
+## 3 231336.7 3774324 35.10958 34.09035 36.12882
+## 4 230436.7 3774024 34.07706 32.67001 35.48412
+## 5 230736.7 3774024 38.53521 37.91238 39.15803
+## 6 231036.7 3774024 38.08461 37.46267 38.70655
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -1167,6 +1096,7 @@ between continuous and categorical predictors
 
 \begin{frame}
   \frametitle{Matrix notation}
+  \large
   Linear models are often expressed in matrix notation \\
   \vfill
   There are two reasons for this: \\
@@ -1326,11 +1256,11 @@ between continuous and categorical predictors
 \end{alltt}
 \begin{verbatim}
 ##      (Intercept) elevation
-## 2345           1       423
-## 740            1       506
-## 2304           1       859
-## 2433           1      1508
-## 1104           1       483
+## 1895           1       812
+## 1003           1       182
+## 969            1       791
+## 1408           1      1353
+## 2002           1       746
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -1341,12 +1271,12 @@ between continuous and categorical predictors
 \begin{knitrout}\scriptsize
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlstd{beta.hat} \hlkwb{<-} \hlkwd{coef}\hlstd{(fm1)} \hlcom{# Estimates of beta0 and beta1}
-\hlstd{beta.hat}
+\hlstd{beta.hat1} \hlkwb{<-} \hlkwd{coef}\hlstd{(fm1)} \hlcom{# Estimates of beta0 and beta1}
+\hlstd{beta.hat1}
 \end{alltt}
 \begin{verbatim}
 ##  (Intercept)    elevation 
-## 33.082808066  0.008336657
+## 33.318196918  0.008148012
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -1368,7 +1298,8 @@ between continuous and categorical predictors
   \Large
   \begin{center}
     \[
-      \mathbb{E}({\bf y}) = {\bf X}{\bm \beta}
+%      \mathbb{E}({\bf y}) = {\bf X}{\bm \beta}
+      {E}({\bf y}) = {\bf X}{\bm \beta}
     \]
     \[
     \uncover<3->{
@@ -1425,23 +1356,23 @@ between continuous and categorical predictors
 %% \pause
 %\large
 \begin{center}
-  {$\mathbb{E}({\bf y}) = {\bf X}{\bm \beta}$ or $\mathbb{E}(y_i) = \beta_0 + \beta_1 \mathrm{ELEV}_i$}
+  {${E}({\bf y}) = {\bf X}{\bm \beta}$ or ${E}(y_i) = \beta_0 + \beta_1 \mathrm{ELEV}_i$}
 \end{center}
 \pause
 \small
 \begin{knitrout}\footnotesize
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlstd{Ey1} \hlkwb{<-} \hlstd{X1} \hlopt{%*%} \hlstd{beta.hat} \hlcom{# Expected number of jays at each site}
+\hlstd{Ey1} \hlkwb{<-} \hlstd{X1} \hlopt{%*%} \hlstd{beta.hat1} \hlcom{# Expected number of jays at each site}
 \hlkwd{head}\hlstd{(Ey1,} \hlnum{5}\hlstd{)}
 \end{alltt}
 \begin{verbatim}
 ##          [,1]
-## 2345 36.60921
-## 740  37.30116
-## 2304 40.24400
-## 2433 45.65449
-## 1104 37.10941
+## 1895 39.93438
+## 1003 34.80114
+## 969  39.76327
+## 1408 44.34246
+## 2002 39.39661
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -1478,11 +1409,11 @@ between continuous and categorical predictors
 \end{alltt}
 \begin{verbatim}
 ##      (Intercept) elevation habitatOak habitatPine
-## 2345           1       423          1           0
-## 740            1       506          1           0
-## 2304           1       859          1           0
-## 2433           1      1508          0           1
-## 1104           1       483          1           0
+## 1895           1       812          1           0
+## 1003           1       182          0           1
+## 969            1       791          0           1
+## 1408           1      1353          0           1
+## 2002           1       746          0           1
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -1496,7 +1427,7 @@ between continuous and categorical predictors
 \end{alltt}
 \begin{verbatim}
 ##  (Intercept)    elevation   habitatOak  habitatPine 
-## 30.716371786  0.008288617  3.166147905  1.695456106
+## 31.362322595  0.008178678  2.493232252  1.205352824
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -1513,7 +1444,7 @@ between continuous and categorical predictors
   \frametitle{Matrix multiplication}
 \begin{center}
   \small
-  {$\mathbb{E}({\bf y}) = {\bf X}{\bm \beta}$ or $\mathbb{E}(y_i) = \beta_0 +
+  {${E}({\bf y}) = {\bf X}{\bm \beta}$ or ${E}(y_i) = \beta_0 +
     \beta_1 \mathrm{ELEV}_i + \beta_2 \mathrm{OAK}_i + \beta_3 \mathrm{PINE}_i$}
 \end{center}
 \pause
@@ -1526,19 +1457,15 @@ between continuous and categorical predictors
 \end{alltt}
 \begin{verbatim}
 ##          [,1]
-## 2345 37.38860
-## 740  38.07656
-## 2304 41.00244
-## 2433 44.91106
-## 1104 37.88592
+## 1895 40.49664
+## 1003 34.05619
+## 969  39.03701
+## 1408 43.63343
+## 2002 38.66897
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
 \end{frame}
-
-
-
-
 
 
 
@@ -1559,258 +1486,6 @@ between continuous and categorical predictors
   are not normally distributed. Generalized linear models address this
   issue.
 \end{frame}
-
-
-
-
-
-%\subsection{Distributions}
-
-
-
-
-%\subsection{Fixed effects models}
-
-
-
-%% \begin{frame}
-%%   \frametitle{Linear regression}
-%% {\bf Deterministic part:}
-%% %\[
-%% %\mu_i = \mathbb{E}(\bf y) = \beta_0 + \beta_1x_i
-%% %\]
-%% %\pause
-%% %{\bf The same thing, using matrix notation:}
-%% \[
-%% {\bm \mu} = \mathbb{E}(\bf y) = {\bf X}{\bm \beta}
-%% \]
-%% \pause
-%% {\bf Stochastic part:}
-%% %\[
-%% %y_i \sim \mbox{Normal}(\mu_i, \sigma^2)
-%% %\]
-%% %\pause
-%% %\centering or \par
-%% \[
-%% \varepsilon_i \sim \mbox{Normal}(0, \sigma^2)
-%% \]
-%% \end{frame}
-
-
-
-
-%% \begin{frame}
-%%   \frametitle{One-way ANOVA}
-%% {\bf Deterministic part:}
-%% \[
-%% {\bm \mu} = \mathbb{E}(\bf y) = {\bf X}{\bm \beta}
-%% \]
-%% {\bf Stochastic part:}
-%% %\[
-%% %y_i \sim \mbox{Normal}(\mu_i, \sigma^2)
-%% %\]
-%% \[
-%% \varepsilon_i \sim \mbox{Normal}(0, \sigma^2)
-%% \]
-%% \end{frame}
-
-
-
-
-%% \begin{frame}
-%%   \frametitle{A$\times$B Factorial ANOVA}
-%% {\bf Deterministic part:}
-%% \[
-%% {\bm \mu} = \mathbb{E}(\bf y) = {\bf X}{\bm \beta}
-%% \]
-%% {\bf Stochastic part:}
-%% %\[
-%% %y_i \sim \mbox{Normal}(\mu_i, \sigma^2)
-%% %\]
-%% \[
-%% \varepsilon_i \sim \mbox{Normal}(0, \sigma^2)
-%% \]
-%% \end{frame}
-
-
-
-%% \begin{frame}
-%%   \frametitle{A$\times$B$\times$C Factorial ANOVA}
-%% {\bf Deterministic part:}
-%% \[
-%% {\bm \mu} = \mathbb{E}(\bf y) = {\bf X}{\bm \beta}
-%% \]
-%% {\bf Stochastic part:}
-%% %\[
-%% %y_i \sim \mbox{Normal}(\mu_i, \sigma^2)
-%% %\]
-%% \[
-%% \varepsilon_i \sim \mbox{Normal}(0, \sigma^2)
-%% \]
-%% \end{frame}
-
-
-
-%% \begin{frame}
-%%   \frametitle{ANCOVA}
-%% {\bf Deterministic part:}
-%% \[
-%% {\bm \mu} = \mathbb{E}(\bf y) = {\bf X}{\bm \beta}
-%% \]
-%% {\bf Stochastic part:}
-%% %\[
-%% %y_i \sim \mbox{Normal}(\mu_i, \sigma^2)
-%% %\]
-%% \[
-%% \varepsilon_i \sim \mbox{Normal}(0, \sigma^2)
-%% \]
-%% \end{frame}
-
-
-
-%% \begin{frame}
-%%   \frametitle{Another equivalent expression}
-%%   {\bf General linear model}
-%%   \[
-%%   {\bf y} = {\bf X}{\bm \beta} + {\bm \epsilon}
-%%   \]
-%%   {\bf where}
-%%   \[
-%%   {\bm \epsilon} \sim \mbox{Normal}(0, {\bf I}\sigma^2)
-%%   \]
-%% \end{frame}
-
-
-
-
-
-% \begin{frame}[fragile]
-%   \frametitle{One-way ANOVA}
-%   \scriptsize %\tiny
-% <<lm2,size='scriptsize'>>=
-% lm2 <- lm(weight ~ diet, data=dietData)
-% summary(lm2)
-% @
-% \end{frame}
-
-
-
-% \begin{frame}[fragile]
-%   \frametitle{One-way ANOVA: Design matrix}
-% <<X2>>=
-% X2 <- model.matrix(~diet, data=dietData)
-% X2[20:30,]
-% @
-% \end{frame}
-
-
-% \begin{frame}[fragile]
-%   \frametitle{One-way ANOVA: Expected values of $y$}
-%   \footnotesize %\scriptsize
-% <<betas2,size='footnotesize'>>=
-% betas2 <- coef(lm2)
-% betas2
-% @
-% \pause
-% <<Ey2,size='footnotesize'>>=
-% Ey2 <- X2 %*% betas2
-% head(Ey2)
-% @
-% \end{frame}
-
-
-
-% \begin{frame}[fragile]
-%   \frametitle{ANCOVA}
-%   \vspace{-2mm}
-%   \scriptsize %\tiny
-% <<lm3,size='scriptsize'>>=
-% lm3 <- lm(weight ~ age + diet, data=dietData)
-% summary(lm3)
-% @
-% \end{frame}
-
-
-
-% \begin{frame}[fragile]
-%   \frametitle{ANCOVA: Design matrix}
-% <<X3>>=
-% X3 <- model.matrix(~age+diet, data=dietData)
-% X3[20:30,]
-% @
-% \end{frame}
-
-
-
-
-% \begin{frame}[fragile]
-%   \frametitle{ANCOVA: Expected values of $y$}
-%   \footnotesize
-% <<betas3,size='footnotesize'>>=
-% betas3 <- coef(lm3)
-% betas3
-% @
-% <<Ey3,size='footnotesize'>>=
-% Ey3 <- X3 %*% betas3
-% head(Ey3)
-% @
-% \end{frame}
-
-
-
-% \begin{frame}[fragile]
-%   \frametitle{Beyond ANCOVA}
-%   {\bf Now the slopes differ for each treatment}
-%   \tiny
-% <<lm4,size='tiny'>>=
-% lm4 <- lm(weight ~ diet * age, data=dietData)
-% summary(lm4)
-% @
-% \end{frame}
-
-
-
-
-% \begin{frame}[fragile]
-%   \frametitle{The associated design matrix}
-%   \tiny
-% <<X4,size='tiny'>>=
-% X4 <- model.matrix(~ diet * age, data=dietData)
-% X4[20:30,]
-% @
-% \pause
-% <<betas4>>=
-% betas4 <- coef(lm4)
-% Ey4 <- X4 %*% betas4
-% @
-% \end{frame}
-
-
-
-
-
-%% \begin{frame}[fragile]
-%%   \frametitle{Beyond ANCOVA}
-%%   {\bf ... and we test for a moon effect}
-%%   \tiny
-%% <<>>=
-%% lm3 <- lm(weight ~ diet * age + moon, data=dietData)
-%% summary(lm3)
-%% @
-%% \end{frame}
-
-
-%% \begin{frame}
-%%   \frametitle{Mixed effects models}
-%% {\bf The notation is only slightly more complex}
-%% \end{frame}
-
-
-
-%\subsection{Mixed effects models}
-
-
-
 
 
 

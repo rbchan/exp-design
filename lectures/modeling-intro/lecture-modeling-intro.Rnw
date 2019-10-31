@@ -50,7 +50,7 @@ knit_theme$set("edit-kwrite")
   \textcolor{NavyBlue}{Introduction to Statistical Modeling} \\
   \vspace{1cm}
   \Large
-  November 2, 5, \& 7, 2018 \\
+%  November 2, 5, \& 7, 2018 \\
   FANR 6750 \\
   \vfill
   \large
@@ -59,32 +59,6 @@ knit_theme$set("edit-kwrite")
 
 
 \section{Motivation}
-
-
-
-\begin{frame}
-  \frametitle{Looking ahead}
-  \Large
-%  \begin{itemize}
-%    \item
-  Linear models
-%    \item[]
-%    \item Linear mixed effects models
-%    \item[]
-%    \item
-  \vfill
-  Generalized linear models
-%    \item[]
-%    \item
-  \vfill
-  Model selection and multi-model inference
-%    \item[]
-%    \item Goodness-of-fit
-%  \end{itemize}
-\end{frame}
-
-
-
 
 
 
@@ -105,98 +79,48 @@ knit_theme$set("edit-kwrite")
   \pause
 %\begin{enumerate}[<+- | visible@+->][\bf \color{PineGreen} (1)]
   \begin{itemize}%[<+->]
+    \item[]
     \item<2-> We have been modeling all along
     \item[]
-    \item<3-> Good experimental design + ANOVA is usually the most direct
+    \item<3-> Good experimental design + ANOVA is often the most direct
       route to causal inference
     \item[]
-    \item<4-> Often, however, it isn't possible (or even desirable) to
+    \item<4-> However, it isn't always possible (or even desirable) to
       control some aspects of the system being investigated
     \item[]
-    \item<5-> When manipulative experiments aren't %causal inference isn't
+    \item<5-> When manipulative experiments aren't 
       possible, observational studies
       and predictive models can be the next best option
   \end{itemize}
-%\end{enumerate}
-% Mention BLOGs
 \end{frame}
 
 
 
 
-%% \begin{frame}
-%%   \frametitle{Assignment}
-%% <<eval=true,echo=false,results=hide>>=
-%% set.seed(894)
-%% N <- 100
-%% a <- 4
-%% n <- N/a
-%% x <- runif(N, 5, 20)
-%% g <- gl(a, n, labels=c("Control", "Low", "Med", "High"))
-%% #contrasts(g) <- c("contr.sum", "contr.poly")
-%% dat <- data.frame(diet=g, length=x,
-%%                   moon=sample(1:4, N, replace=TRUE),
-%%                   sun=sample(1:10, N, replace=TRUE))
-%% X <- model.matrix(~diet+length, dat)
-%% X
-%% beta <- c(20, 1, 2, 4, 0.5)
-%% mu <- X %*% beta
-%% mu
-%% sigma <- 2
-%% set.seed(52)
-%% y <- rnorm(N, mu, sigma)
-%% tapply(y, g, mean)
-%% dat <- cbind(weight=y, dat)
-%% #plot(weight ~ x, dat, col=rep(1:4, each=n))
-%% #boxplot(weight ~ diet, dat)
-%% write.csv(dat, "dietData.csv", row.names=FALSE)
-%% @
-%% \end{frame}
-
-
-
-
-%\section{What is a model?}
-
-
-
 \begin{frame}
   \frametitle{What is a model?}
-%  \begin{block}
-%  \large
     {\bf Definition} \\
     A model is an abstraction of reality used to describe the
     relationship between two or more variables \par
-%  \end{block}
-%    \pause
+    \pause
     \vfill %\vspace{0.5cm}
-    \uncover<2->{
+    % \uncover<2->{
     {\bf Types of models}
     \begin{itemize}
       \item Conceptual
       \item Mathematical
       \item Statistical
     \end{itemize}
-  }
-  \uncover<3->{
-  {\bf Important point} \\
-  ``All models are wrong but some are useful'' (George Box, 1976) \\
-  }
-%  \pause
+  \pause
   \vfill
-  \begin{columns}%[c]
-    \begin{column}{0.65\textwidth}
-      %% \uncover<3->{
-      %% {\bf Types of models}
-      %% \begin{itemize}
-      %%   \item Conceptual
-      %%   \item Mathematical
-      %%   \item Statistical
-      %% \end{itemize}
-      %% }
+  \begin{columns}%[t]
+    \begin{column}[T]{0.75\textwidth}
+      {\bf Important point} \\
+      ``All models are wrong but some are useful'' \\ (George Box, 1976) %\\
     \end{column}
-    \begin{column}{0.15\textwidth}
-      \uncover<3->{\includegraphics[width=\textwidth]{figs/Box}} \\
+    \begin{column}[T]{0.15\textwidth}
+%      \uncover<3->{\includegraphics[width=\textwidth]{figs/Box}} \\
+      {\includegraphics[width=\textwidth]{figs/Box}} \\
     \end{column}
   \end{columns}
 \end{frame}
@@ -209,6 +133,7 @@ knit_theme$set("edit-kwrite")
   \large
   {\bf What are they \alert{useful} for?}
   \begin{itemize}%[<+->]
+    \item[]
     \item<2-> Formalizing hypotheses using math and probability
     \item[]
     \item<3-> Evaulating hypotheses by confronting models with data
@@ -222,24 +147,28 @@ knit_theme$set("edit-kwrite")
 
 \begin{frame}
   \frametitle{Statistical models}
-  {\bf \large Two important pieces \par}
   \large
+  {Unlike other types of models, statistical models are fitted to data \\}
+  \pause
+  \vspace{12pt} %\vfill
+  {Two important components: \\}
+  \vspace{6pt}
+%  \large
 %  \begin{enumerate}[<+- | visible@+->][\bf \color{PineGreen} (1)]
-  \begin{enumerate}[\bf \color{gb} (1)]
+  \begin{enumerate}[\normalsize \bf \color{gb} (1)]
     \large
     \item<1-> Deterministic component%(s)
       \begin{itemize}
-        \large
+        % \large
+        \normalsize
         \item Equation for the expected value of the response
           variable %, denoted $\mathbb{E}(y)$
-%        \item Often a linear model (LM), but could be a generalized
-%          linear model (GLM), a generalized additive (GAM), or a
-%          genearlized linear mixed effects model (GLMM), etc\dots
       \end{itemize}
     \item[]
     \item<2-> Stochastic component %(s)
       \begin{itemize}
-        \large
+%        \large
+        \normalsize
         \item Probability distribution %(s)
           describing the differences
           between the expected values and the observed values
@@ -395,7 +324,7 @@ predictors variables, with dozens of associated $\beta$ coefficients.
 %%   \item For continuous explano
 %% \end{itemize}
 Linear models can also include polynomial terms and interactions
-between continuous and categorical predictors
+between predictors
 \end{frame}
 
 
@@ -455,7 +384,7 @@ options(contrasts=c("contr.treatment","contr.poly"))
   \frametitle{\small Interpretting $\beta$'s for categorical explantory
     variables}
   Another common method for creating dummy variables results in
-  $\beta$s that can be interpretted as the $\alpha$'s from the
+  $\beta$'s that can be interpretted as the $\alpha$'s from the
   additive models that we saw earlier in the class.
   \pause
   \vfill
@@ -1031,6 +960,7 @@ levelplot(fit ~ x + y, data=future.pred2, aspect="iso",
 
 \begin{frame}
   \frametitle{Matrix notation}
+  \large
   Linear models are often expressed in matrix notation \\
   \vfill
   There are two reasons for this: \\
@@ -1187,8 +1117,8 @@ head(X1, n=5) # First 5 rows of design matrix
       {Estimated $\beta$ coefficients}
       \scriptsize %\tiny
 <<beta-hat,size='scriptsize'>>=
-beta.hat <- coef(fm1) # Estimates of beta0 and beta1
-beta.hat
+beta.hat1 <- coef(fm1) # Estimates of beta0 and beta1
+beta.hat1
 @
   \pause
   \vfill
@@ -1208,7 +1138,8 @@ beta.hat
   \Large
   \begin{center}
     \[
-      \mathbb{E}({\bf y}) = {\bf X}{\bm \beta}
+%      \mathbb{E}({\bf y}) = {\bf X}{\bm \beta}
+      {E}({\bf y}) = {\bf X}{\bm \beta}
     \]
     \[
     \uncover<3->{
@@ -1265,12 +1196,12 @@ beta.hat
 %% \pause
 %\large
 \begin{center}
-  {$\mathbb{E}({\bf y}) = {\bf X}{\bm \beta}$ or $\mathbb{E}(y_i) = \beta_0 + \beta_1 \mathrm{ELEV}_i$}
+  {${E}({\bf y}) = {\bf X}{\bm \beta}$ or ${E}(y_i) = \beta_0 + \beta_1 \mathrm{ELEV}_i$}
 \end{center}
 \pause
 \small
 <<Ey1,size='footnotesize'>>=
-Ey1 <- X1 %*% beta.hat # Expected number of jays at each site
+Ey1 <- X1 %*% beta.hat1 # Expected number of jays at each site
 head(Ey1, 5)
 @
 \end{frame}
@@ -1317,7 +1248,7 @@ beta.hat4
   \frametitle{Matrix multiplication}
 \begin{center}
   \small
-  {$\mathbb{E}({\bf y}) = {\bf X}{\bm \beta}$ or $\mathbb{E}(y_i) = \beta_0 +
+  {${E}({\bf y}) = {\bf X}{\bm \beta}$ or ${E}(y_i) = \beta_0 +
     \beta_1 \mathrm{ELEV}_i + \beta_2 \mathrm{OAK}_i + \beta_3 \mathrm{PINE}_i$}
 \end{center}
 \pause
@@ -1327,10 +1258,6 @@ Ey4 <- X4 %*% beta.hat4 # Expected number of jays at each site
 head(Ey4, 5)
 @
 \end{frame}
-
-
-
-
 
 
 
@@ -1351,258 +1278,6 @@ head(Ey4, 5)
   are not normally distributed. Generalized linear models address this
   issue.
 \end{frame}
-
-
-
-
-
-%\subsection{Distributions}
-
-
-
-
-%\subsection{Fixed effects models}
-
-
-
-%% \begin{frame}
-%%   \frametitle{Linear regression}
-%% {\bf Deterministic part:}
-%% %\[
-%% %\mu_i = \mathbb{E}(\bf y) = \beta_0 + \beta_1x_i
-%% %\]
-%% %\pause
-%% %{\bf The same thing, using matrix notation:}
-%% \[
-%% {\bm \mu} = \mathbb{E}(\bf y) = {\bf X}{\bm \beta}
-%% \]
-%% \pause
-%% {\bf Stochastic part:}
-%% %\[
-%% %y_i \sim \mbox{Normal}(\mu_i, \sigma^2)
-%% %\]
-%% %\pause
-%% %\centering or \par
-%% \[
-%% \varepsilon_i \sim \mbox{Normal}(0, \sigma^2)
-%% \]
-%% \end{frame}
-
-
-
-
-%% \begin{frame}
-%%   \frametitle{One-way ANOVA}
-%% {\bf Deterministic part:}
-%% \[
-%% {\bm \mu} = \mathbb{E}(\bf y) = {\bf X}{\bm \beta}
-%% \]
-%% {\bf Stochastic part:}
-%% %\[
-%% %y_i \sim \mbox{Normal}(\mu_i, \sigma^2)
-%% %\]
-%% \[
-%% \varepsilon_i \sim \mbox{Normal}(0, \sigma^2)
-%% \]
-%% \end{frame}
-
-
-
-
-%% \begin{frame}
-%%   \frametitle{A$\times$B Factorial ANOVA}
-%% {\bf Deterministic part:}
-%% \[
-%% {\bm \mu} = \mathbb{E}(\bf y) = {\bf X}{\bm \beta}
-%% \]
-%% {\bf Stochastic part:}
-%% %\[
-%% %y_i \sim \mbox{Normal}(\mu_i, \sigma^2)
-%% %\]
-%% \[
-%% \varepsilon_i \sim \mbox{Normal}(0, \sigma^2)
-%% \]
-%% \end{frame}
-
-
-
-%% \begin{frame}
-%%   \frametitle{A$\times$B$\times$C Factorial ANOVA}
-%% {\bf Deterministic part:}
-%% \[
-%% {\bm \mu} = \mathbb{E}(\bf y) = {\bf X}{\bm \beta}
-%% \]
-%% {\bf Stochastic part:}
-%% %\[
-%% %y_i \sim \mbox{Normal}(\mu_i, \sigma^2)
-%% %\]
-%% \[
-%% \varepsilon_i \sim \mbox{Normal}(0, \sigma^2)
-%% \]
-%% \end{frame}
-
-
-
-%% \begin{frame}
-%%   \frametitle{ANCOVA}
-%% {\bf Deterministic part:}
-%% \[
-%% {\bm \mu} = \mathbb{E}(\bf y) = {\bf X}{\bm \beta}
-%% \]
-%% {\bf Stochastic part:}
-%% %\[
-%% %y_i \sim \mbox{Normal}(\mu_i, \sigma^2)
-%% %\]
-%% \[
-%% \varepsilon_i \sim \mbox{Normal}(0, \sigma^2)
-%% \]
-%% \end{frame}
-
-
-
-%% \begin{frame}
-%%   \frametitle{Another equivalent expression}
-%%   {\bf General linear model}
-%%   \[
-%%   {\bf y} = {\bf X}{\bm \beta} + {\bm \epsilon}
-%%   \]
-%%   {\bf where}
-%%   \[
-%%   {\bm \epsilon} \sim \mbox{Normal}(0, {\bf I}\sigma^2)
-%%   \]
-%% \end{frame}
-
-
-
-
-
-% \begin{frame}[fragile]
-%   \frametitle{One-way ANOVA}
-%   \scriptsize %\tiny
-% <<lm2,size='scriptsize'>>=
-% lm2 <- lm(weight ~ diet, data=dietData)
-% summary(lm2)
-% @
-% \end{frame}
-
-
-
-% \begin{frame}[fragile]
-%   \frametitle{One-way ANOVA: Design matrix}
-% <<X2>>=
-% X2 <- model.matrix(~diet, data=dietData)
-% X2[20:30,]
-% @
-% \end{frame}
-
-
-% \begin{frame}[fragile]
-%   \frametitle{One-way ANOVA: Expected values of $y$}
-%   \footnotesize %\scriptsize
-% <<betas2,size='footnotesize'>>=
-% betas2 <- coef(lm2)
-% betas2
-% @
-% \pause
-% <<Ey2,size='footnotesize'>>=
-% Ey2 <- X2 %*% betas2
-% head(Ey2)
-% @
-% \end{frame}
-
-
-
-% \begin{frame}[fragile]
-%   \frametitle{ANCOVA}
-%   \vspace{-2mm}
-%   \scriptsize %\tiny
-% <<lm3,size='scriptsize'>>=
-% lm3 <- lm(weight ~ age + diet, data=dietData)
-% summary(lm3)
-% @
-% \end{frame}
-
-
-
-% \begin{frame}[fragile]
-%   \frametitle{ANCOVA: Design matrix}
-% <<X3>>=
-% X3 <- model.matrix(~age+diet, data=dietData)
-% X3[20:30,]
-% @
-% \end{frame}
-
-
-
-
-% \begin{frame}[fragile]
-%   \frametitle{ANCOVA: Expected values of $y$}
-%   \footnotesize
-% <<betas3,size='footnotesize'>>=
-% betas3 <- coef(lm3)
-% betas3
-% @
-% <<Ey3,size='footnotesize'>>=
-% Ey3 <- X3 %*% betas3
-% head(Ey3)
-% @
-% \end{frame}
-
-
-
-% \begin{frame}[fragile]
-%   \frametitle{Beyond ANCOVA}
-%   {\bf Now the slopes differ for each treatment}
-%   \tiny
-% <<lm4,size='tiny'>>=
-% lm4 <- lm(weight ~ diet * age, data=dietData)
-% summary(lm4)
-% @
-% \end{frame}
-
-
-
-
-% \begin{frame}[fragile]
-%   \frametitle{The associated design matrix}
-%   \tiny
-% <<X4,size='tiny'>>=
-% X4 <- model.matrix(~ diet * age, data=dietData)
-% X4[20:30,]
-% @
-% \pause
-% <<betas4>>=
-% betas4 <- coef(lm4)
-% Ey4 <- X4 %*% betas4
-% @
-% \end{frame}
-
-
-
-
-
-%% \begin{frame}[fragile]
-%%   \frametitle{Beyond ANCOVA}
-%%   {\bf ... and we test for a moon effect}
-%%   \tiny
-%% <<>>=
-%% lm3 <- lm(weight ~ diet * age + moon, data=dietData)
-%% summary(lm3)
-%% @
-%% \end{frame}
-
-
-%% \begin{frame}
-%%   \frametitle{Mixed effects models}
-%% {\bf The notation is only slightly more complex}
-%% \end{frame}
-
-
-
-%\subsection{Mixed effects models}
-
-
-
 
 
 
