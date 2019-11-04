@@ -107,7 +107,7 @@ write.csv(dat, "treeData.csv", row.names=FALSE)
   {\color{RoyalBlue}{Lab 11 -- ANCOVA}} \\
   \vspace{1cm}
   \Large
-  October 29 \& 30, 2018 \\
+%  October 29 \& 30, 2018 \\
   FANR 6750 \\
   \vfill
   \large
@@ -123,7 +123,8 @@ write.csv(dat, "treeData.csv", row.names=FALSE)
 
 \begin{frame}
   \frametitle{ANCOVA overview}
-  {\bf Scenario}
+  {%\bf
+    Scenario}
   \begin{itemize}
     \item We are interested in doing a one-way ANOVA
     \item However, we need to account for variation associated with a
@@ -131,19 +132,20 @@ write.csv(dat, "treeData.csv", row.names=FALSE)
   \end{itemize}
   \pause
   \vfill
-  {\bf  Additive model}
+  {%\bf
+    Additive model}
   \[
     y_{ij} = \mu + \alpha_i + \beta(x_{ij} - \bar{x}) + \varepsilon_{ij}
   \]
   \pause
   \vfill
 %  \centering
-  \bf
+%  \bf
   ANCOVA can be thought of as a hybrid between ANOVA and regression \\
   \pause
   \vfill
 %  \centering
-  \bf
+%  \bf
   ANOVA, regression, and ANCOVA are linear models \\
 \end{frame}
 
@@ -232,14 +234,15 @@ summary(fm1)
   \small
 <<pred1,size='footnotesize'>>=
 age <- dietData$age
-predData1 <- data.frame(age=seq(min(age), max(age), length=50))
+predData1 <- data.frame(age=seq(min(age), max(age), length=50)) 
 pred1 <- predict(fm1, newdata=predData1, se.fit=TRUE,
               interval="confidence")
 predictions1 <- data.frame(pred1$fit, predData1)
 @
-%\pause
-%\vfill
-%{\bf Plot raw data and the regression results}
+\pause
+\vfill
+% {\bf Plot raw data and the regression results}
+There's nothing special about \inr{length=50}, but in general, the longer the length of the sequence, the smoother the lines will look. 
 \end{frame}
 
 
@@ -249,10 +252,10 @@ predictions1 <- data.frame(pred1$fit, predData1)
   \frametitle{Regression line and confidence interval}
   \scriptsize
 <<plot-fm1,fig.show='hide',size='scriptsize'>>=
-plot(weight ~ age, data=dietData)                   # raw data
-lines(fit ~ age, data=predictions1, lwd=2)        # fitted line
-lines(lwr ~ age, data=predictions1, lwd=2, lty=3) # lower CI
-lines(upr ~ age, data=predictions1, lwd=2, lty=3) # upper CI
+plot(weight ~ age, data=dietData)                      # raw data
+lines(fit ~ age, data=predictions1, lwd=2)             # fitted line
+lines(lwr ~ age, data=predictions1, lwd=2, col="gray") # lower CI
+lines(upr ~ age, data=predictions1, lwd=2, col="gray") # upper CI
 @
   \vspace{-9mm}
   \begin{center}
@@ -272,7 +275,7 @@ lines(upr ~ age, data=predictions1, lwd=2, lty=3) # upper CI
   Change the \inr{contrasts} option so that the estimates will
   correspond to the additive model, and then fit the ANOVA
 }
-<<contr2>>=
+<<contr2,size='small'>>=
 options(contrasts=c("contr.sum", "contr.poly"))
 fm2 <- lm(weight ~ diet, dietData)
 summary.aov(fm2)
@@ -281,7 +284,7 @@ summary.aov(fm2)
 \vfill
 {%\bf
   The \inr{aov} function gives identical results}
-<<summary-aov>>=
+<<summary-aov,size='small'>>=
 summary(aov(weight ~ diet, dietData))
 @
 \end{frame}
@@ -304,7 +307,8 @@ cbind(1,contrasts(dietData$diet)) %*% coef(fm2)
 <<summary-fm2,size='tiny'>>=
 summary(fm2)
 @
- \pause
+\pause
+\vfill
  {%\bf
    Because we changed the \inr{contrast} option to {\tt
      contr.sum}, the intercept is the grand mean ($\mu$) and the other
@@ -312,6 +316,10 @@ summary(fm2)
 %     contr.sum}, The intercept is the mean weight for the reference level
 %   (Control) when age=0. The other estimates indicate the
 %   difference from the reference level. \\}
+ \pause
+ \vfill
+ The effect size for the last level of diet ({\tt diet4}) isn't shown because it is not a unique parameter (i.e., it is a function of the other parameters: $\alpha_4 = -\alpha_1 - \alpha_2 - \alpha_3$). \\
+
 \end{frame}
 
 
@@ -452,12 +460,14 @@ predictions3 <- data.frame(pred3$fit, predData3)
 \footnotesize %\small
 <<scatplot0,fig.show='hide',echo=FALSE,size='footnotesize'>>=
 colrs <- c("black", "royalblue", "orange", "darkcyan")
-plot(weight ~ ageCentered, dietData, pch=16, cex=1.2,
+plot(weight ~ ageCentered, dietData, cex=1.2,
+     pch=rep(15:18, each=15), 
      col=rep(colrs, each=15))
 @
 <<scatplot1,fig.show='hide',size='footnotesize'>>=
 colrs <- c("black", "royalblue", "orange", "darkcyan")
-plot(weight ~ ageCentered, dietData, pch=16, cex=1.2,
+plot(weight ~ ageCentered, dietData, cex=1.2,
+     pch=rep(15:18, each=15),
      col=rep(colrs, each=15))
 lines(fit ~ ageCentered, predictions3, subset=diet=="Control",
       col=colrs[1], lwd=2)
@@ -467,7 +477,7 @@ lines(fit ~ ageCentered, predictions3, subset=diet=="Med", lty=1,
       col=colrs[3], lwd=2)
 lines(fit ~ ageCentered, predictions3, subset=diet=="High", lty=1,
       col=colrs[4], lwd=2)
-legend(4, 23, c("High", "Med", "Low", "Control"), pch=16,
+legend(4, 23, c("High", "Med", "Low", "Control"), pch=18:15,
        title="Diet", lwd=2, col=rev(colrs))
 @
 \end{frame}
