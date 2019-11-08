@@ -1,6 +1,6 @@
 \documentclass[color=usenames,dvipsnames]{beamer}\usepackage[]{graphicx}\usepackage[]{color}
-%% maxwidth is the original width if it is less than linewidth
-%% otherwise use linewidth (to make sure the graphics do not exceed the margin)
+% maxwidth is the original width if it is less than linewidth
+% otherwise use linewidth (to make sure the graphics do not exceed the margin)
 \makeatletter
 \def\maxwidth{ %
   \ifdim\Gin@nat@width>\linewidth
@@ -83,7 +83,7 @@
   {\color{RoyalBlue}{Lab 10 -- Repeated Measures}} \\
   \vspace{1cm}
   \Large
-  October 22 \& 23, 2018 \\
+%  October 22 \& 23, 2018 \\
   FANR 6750 \\
   \vfill
   \large
@@ -119,19 +119,20 @@
 
 \begin{frame}[fragile]
    \frametitle{Approaches}
-      \large
+%      \large
       {\bf Univariate}
         \begin{itemize}
         \normalsize
-          \item<1-> This is just a split-plot analysis with adjusted $p$-values
-          \item<1-> Adjustments: Greenhouse-Geisser or Huynh-Feldt methods
+          \item<1-> This is similar to a split-plot (or nested and crossed) analysis, but with adjusted $p$-values 
+          \item<1-> Adjustments assuming `near-sphericity': Greenhouse-Geisser or Huynh-Feldt methods
           \item<1-> In \R, you must do a MANOVA to obtain these adjusted $P$-values
         \end{itemize}
       \vfill
       \uncover<2->{{\bf MANOVA \\}}
         \begin{itemize}
-          \large
+%          \large
           \item<2-> Testing based on Wilks' lambda or Pillai's trace %statistic
+          \item<2-> No assumptions about `sphericity' are required
           \item<2-> This is usually followed by a profile analysis
         \end{itemize}
       \vfill
@@ -214,7 +215,7 @@
 
 
 \begin{frame}[fragile]
-  \frametitle{Univariate split-plot approach}
+  \frametitle{Univariate approach}
   \scriptsize
 \begin{knitrout}\scriptsize
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
@@ -224,7 +225,6 @@
 \end{alltt}
 \end{kframe}
 \end{knitrout}
-%{\bf Actually, this is a nested and crossed example because there is no block}
 \pause
 \begin{knitrout}\scriptsize
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
@@ -249,14 +249,12 @@
 \end{kframe}
 \end{knitrout}
 \pause
-\vfill
+%\vfill
 \footnotesize
-{
-  We need to adjust the $p$-values for the time and
-  interaction effects \par
-  \pause
-  \vfill
-  In {\bf R}, this requires reformatting the data and running a MANOVA \par}
+We need to adjust the $p$-values for the time and interaction effects \\
+\pause
+\vfill
+In {\bf R}, this requires reformatting the data and running a MANOVA
 \end{frame}
 
 
@@ -270,22 +268,15 @@
 
 
 \begin{frame}[fragile]
-  \frametitle{Format data for MANOVA}
+  \frametitle{Format data and run the MANOVA}
 %  {\bf \small To obtain corrected $P$-values, we must conduct a MANOVA}
-  \footnotesize
-\begin{knitrout}\footnotesize
+  Convert from the ``long'' format to the ``wide'' format %\footnotesize
+\begin{knitrout}\scriptsize
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlstd{plantData2} \hlkwb{<-} \hlkwd{reshape}\hlstd{(plantData,} \hlkwc{idvar}\hlstd{=}\hlstr{"plant"}\hlstd{,}
                       \hlkwc{timevar}\hlstd{=}\hlstr{"week"}\hlstd{,} \hlkwc{v.names}\hlstd{=}\hlstr{"leaves"}\hlstd{,}
                       \hlkwc{direction}\hlstd{=}\hlstr{"wide"}\hlstd{)}
-\end{alltt}
-\end{kframe}
-\end{knitrout}
-\pause
-\begin{knitrout}\scriptsize
-\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
-\begin{alltt}
 \hlstd{plantData2}
 \end{alltt}
 \begin{verbatim}
@@ -303,6 +294,21 @@
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
+%\pause
+%<<plantData2print,size='scriptsize'>>=
+%plantData2
+%@
+\pause
+Do the MANOVA
+\begin{knitrout}\scriptsize
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{manova1} \hlkwb{<-} \hlkwd{manova}\hlstd{(}\hlkwd{cbind}\hlstd{(leaves.1, leaves.2, leaves.3,}
+                        \hlstd{leaves.4, leaves.5)} \hlopt{~} \hlstd{fertilizer,}
+                  \hlkwc{data}\hlstd{=plantData2)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
 \end{frame}
 
 
@@ -313,17 +319,13 @@
 
 \begin{frame}[fragile]
   \frametitle{MANOVA and adjusted $P$-values}
-  \scriptsize %\small
-\begin{knitrout}\scriptsize
-\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlstd{manova1} \hlkwb{<-} \hlkwd{manova}\hlstd{(}\hlkwd{cbind}\hlstd{(leaves.1, leaves.2, leaves.3,}
-                        \hlstd{leaves.4, leaves.5)} \hlopt{~} \hlstd{fertilizer,}
-                  \hlkwc{data}\hlstd{=plantData2)}
-\end{alltt}
-\end{kframe}
-\end{knitrout}
-\pause
+%  \scriptsize %\small
+%<<manova1,size='scriptsize'>>=
+%manova1 <- manova(cbind(leaves.1, leaves.2, leaves.3,
+%                        leaves.4, leaves.5) ~ fertilizer,
+%                  data=plantData2)
+%@
+%\pause
 \begin{knitrout}\scriptsize
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
@@ -348,14 +350,22 @@
 \end{knitrout}
 \pause
 \footnotesize
-{%\bf
-  The last 3 columns are $p$-values corresponding to the effects of time
-  (Intercept) and interaction (fertilizer).
-%  I suggest using the H-F $p$-values.
-  No adjustment is necessary
-  for the main effect so you can use the $p$-value from \inr{aov}.
-  \par}
+%{%\bf
+  The last 2 columns are adjusted $p$-values corresponding to the
+  effects of time (Intercept) and interaction (fertilizer). \\
+  \pause
+  \vfill
+  No adjustment is necessary for the main effect of treatment,
+  so you can use the $p$-value reported earlier by \inr{aov}. \\
+  % \pause
+  % \vfill
+  % If the HF epsilon is $>1$, you should use the unadjusted $p$-values,
+  % which are in the third-to-last column (and are the same as reported
+  % by \inr{aov} earlier).
+  % \pause
+  % \par}
 \end{frame}
+
 
 
 
@@ -365,18 +375,18 @@
 \begin{frame}[fragile]
   \frametitle{An aside -- sphericity}
   \small
-  {Technically, adjusted $p$-values and MANOVA aren't necessary if the
-    assumption of sphericity holds. \alert{However}, we recommend
-    doing the adjustments (or the MANOVA) anyway because the test of
-    sphericity has low power. \\}
-  \pause
-  \vfill
   Sphericity is the multivariate analogue of the homogeneity of
   variance assumption of ANOVA. \\
   \pause
   \vfill
-  Here is how you test the assumption: \\
-  \footnotesize
+  Technically, adjusted $p$-values and MANOVA aren't necessary if the
+  assumption of sphericity holds. However, Mauchly's sphericity test
+  has low power, and it is often recommended that the $p$-values be
+  adjusted even if the test fails to reject the sphericity assumption.
+  \pause
+  % \vfill
+  % Here is how you test the assumption: \\
+  % \footnotesize
 \begin{knitrout}\scriptsize
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
@@ -395,10 +405,10 @@
 \end{kframe}
 \end{knitrout}
 \pause
-\vfill
+%\vfill
 \small %\normalsize
 {\centering We fail to reject the null hypothesis, so sphericity
-  can be assumed. \\}
+  can be assumed, but the adjusted $p$-values should be reported anyway. \\}
 %  This tells us that the adjusted
 %  $p$-values are legitimate. \par }
 \end{frame}
@@ -565,7 +575,7 @@
 \begin{frame}[fragile]
   \frametitle{Profile analysis}
   {%\bf
-    Profile analysis requires calculating the differences (ie, the
+    Profile analysis requires calculating the differences (i.e., the 
     number of leaves grown each week).}
   \vspace{1cm}
   \footnotesize
@@ -676,7 +686,7 @@
 
 \begin{frame}[fragile]
   \frametitle{Plot the growth rates}
-\begin{knitrout}\small
+\begin{knitrout}\footnotesize
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlkwd{plot}\hlstd{(}\hlnum{1}\hlopt{:}\hlnum{4}\hlopt{-}\hlnum{0.05}\hlstd{, lowFertilizer,} \hlkwc{type}\hlstd{=}\hlstr{"b"}\hlstd{,} \hlkwc{xlim}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{0.9}\hlstd{,} \hlnum{4.1}\hlstd{),}
@@ -716,7 +726,7 @@
   \footnotesize
   A researcher wants to assess the effects of crowding on the growth
   of the dark toadfish ({\it Neophrynichthys latus}). 15 fish tanks
-  are stocked with three densities of conspecifics. Five tanks have
+  are stocked with three densities of toadfish. Five tanks have
   low density (1 fish), 5 tanks have medium density (5
   fish), and 5 tanks have high density (10 fish).
   In each tank, the weight of one ``focal fish'' is recorded on 6
@@ -725,8 +735,8 @@
   \vfill
   \begin{enumerate}[\bf (1)]
     \item Conduct the univariate repeated measures ANOVA using
-      \inr{aov}. Calculate  the adjusted $p$-values using the Huynh-Feldt
-      method. Does the effect of density change over time?
+      \inr{aov}. Calculate the adjusted $p$-values using the Huynh-Feldt
+      method. Does the effect of density on growth change over time?
     \item Conduct a multivariate repeated measures ANOVA and use
       Wilks' lambda to test if the effect of density changes over
       time. What is your conclusion?

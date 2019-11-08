@@ -110,6 +110,8 @@
   \large
   {\bf Why do we need this part of the course? \par}
   \pause
+ \begin{columns}
+   \begin{column}{0.75\paperwidth}
 %\begin{enumerate}[<+- | visible@+->][\bf \color{PineGreen} (1)]
   \begin{itemize}%[<+->]
     \item[]
@@ -125,6 +127,15 @@
       possible, observational studies
       and predictive models can be the next best option
   \end{itemize}
+  \end{column}
+  \begin{column}{0.19\paperwidth}
+    \uncover<6->{
+      \includegraphics[width=\textwidth]{figs/Pearl_Causality} \\
+      \vfill
+      \includegraphics[width=\textwidth]{figs/Pearl_Primer} \\
+    }
+\end{column}
+ \end{columns}
 \end{frame}
 
 
@@ -148,12 +159,12 @@
   \vfill
   \begin{columns}%[t]
     \begin{column}[T]{0.75\textwidth}
-      {\bf Important point} \\
+      {\bf Cautionary note} \\
       ``All models are wrong but some are useful'' \\ (George Box, 1976) %\\
     \end{column}
     \begin{column}[T]{0.15\textwidth}
 %      \uncover<3->{\includegraphics[width=\textwidth]{figs/Box}} \\
-      {\includegraphics[width=\textwidth]{figs/Box}} \\
+      {\includegraphics[width=\textwidth]{figs/Box2}} \\
     \end{column}
   \end{columns}
 \end{frame}
@@ -171,8 +182,11 @@
     \item[]
     \item<3-> Evaulating hypotheses by confronting models with data
     \item[]
-    \item<4-> Predicting future outcomes
+    \item<4-> Predicting unobserved (including future) outcomes
   \end{itemize}
+  \vfill
+  \centering
+  \uncover<5->{\includegraphics[width=0.6\textwidth]{figs/lich-forecasts}} \\
 \end{frame}
 
 
@@ -181,7 +195,7 @@
 \begin{frame}
   \frametitle{Statistical models}
   \large
-  {Unlike other types of models, statistical models are fitted to data \\}
+  {Unlike many other types of models, statistical models are fitted to data \\}
   \pause
   \vspace{12pt} %\vfill
   {Two important components: \\}
@@ -190,7 +204,7 @@
 %  \begin{enumerate}[<+- | visible@+->][\bf \color{PineGreen} (1)]
   \begin{enumerate}[\normalsize \bf \color{gb} (1)]
     \large
-    \item<1-> Deterministic component%(s)
+    \item<2-> Deterministic component%(s)
       \begin{itemize}
         % \large
         \normalsize
@@ -198,14 +212,14 @@
           variable %, denoted $\mathbb{E}(y)$
       \end{itemize}
     \item[]
-    \item<2-> Stochastic component %(s)
+    \item<3-> Stochastic component %(s)
       \begin{itemize}
 %        \large
         \normalsize
-        \item Probability distribution %(s)
+        \item<3-> Probability distribution %(s)
           describing the differences
           between the expected values and the observed values
-        \item In parametric statistics, we assume we know the
+        \item<4-> In parametric statistics, we assume we know the
           distribution, but not the parameters of the distribution
       \end{itemize}
   \end{enumerate}
@@ -304,6 +318,17 @@ y = 20 + 0.5 x - 0.3 x^2
 
 
 
+\begin{frame}
+  \frametitle{Linear models}
+  All fixed-effects regression and ANOVA models are linear models \\
+  \vfill
+  You must understand linear models before you can apply more advanced models such as GLMs, GAMS, GLMMs, etc\dots
+  \vfill
+  \centering
+  \includegraphics[width=0.25\textwidth]{figs/Rencher_Schaal_book} \hspace{1cm}
+  \includegraphics[width=0.25\textwidth]{figs/Hocking_book} \\
+\end{frame}
+
 
 
 \begin{frame}
@@ -351,13 +376,13 @@ predictors variables, with dozens of associated $\beta$ coefficients.
 %%   \item For continuous explano
 %% \end{itemize}
 Linear models can also include polynomial terms and interactions
-between predictors
 \end{frame}
 
 
-\begin{frame}
+\begin{frame}[fragile]
   \frametitle{Interpretting the $\beta$'s}% for continuous explanatory variables}
-  The intercept $\beta_0$ is the expected value of $y$, when all $x$'s are 0
+  \small 
+  The intercept $\beta_0$ is the expected value of $y$, when all $x$'s are 0 \\
   \pause
   \vfill
   If $x$ is a {\bf continuous} explanatory variable: %, $\beta$ is
@@ -367,9 +392,34 @@ between predictors
     \item In this case, $\beta$ is the
       change in $y$ resulting from a 1 unit change in $x$ (while
       holding the other predictors constant).
-  \end{itemize}
-%  \pause
-%  \vfill
+    \end{itemize}
+\pause
+\vfill
+
+\centering
+\begin{columns}
+  \begin{column}{0.5\textwidth}
+\begin{knitrout}\tiny
+\definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{lm}\hlstd{(y}\hlopt{~}\hlstd{x)}
+\end{alltt}
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = y ~ x)
+## 
+## Coefficients:
+## (Intercept)            x  
+##       9.116        1.032
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+  \end{column}
+  \begin{column}{0.4\textwidth}
+  \includegraphics[width=\textwidth]{figure/linmod-1} \\
+  \end{column}
+\end{columns}
 \end{frame}
 
 

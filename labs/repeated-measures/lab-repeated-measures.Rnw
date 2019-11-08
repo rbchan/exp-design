@@ -50,7 +50,7 @@ knit_theme$set("edit-kwrite")
   {\color{RoyalBlue}{Lab 10 -- Repeated Measures}} \\
   \vspace{1cm}
   \Large
-  October 22 \& 23, 2018 \\
+%  October 22 \& 23, 2018 \\
   FANR 6750 \\
   \vfill
   \large
@@ -86,18 +86,18 @@ knit_theme$set("edit-kwrite")
 
 \begin{frame}[fragile]
    \frametitle{Approaches}
-      \large
+%      \large
       {\bf Univariate}
         \begin{itemize}
         \normalsize
-          \item<1-> This is similar to a split-plot analysis, but with adjusted $p$-values
+          \item<1-> This is similar to a split-plot (or nested and crossed) analysis, but with adjusted $p$-values 
           \item<1-> Adjustments assuming `near-sphericity': Greenhouse-Geisser or Huynh-Feldt methods
           \item<1-> In \R, you must do a MANOVA to obtain these adjusted $P$-values
         \end{itemize}
       \vfill
       \uncover<2->{{\bf MANOVA \\}}
         \begin{itemize}
-          \large
+%          \large
           \item<2-> Testing based on Wilks' lambda or Pillai's trace %statistic
           \item<2-> No assumptions about `sphericity' are required
           \item<2-> This is usually followed by a profile analysis
@@ -165,20 +165,17 @@ legend(1,14,c("High fertilizer", "Low fertilizer"),
 aov1 <- aov(leaves ~ fertilizer*week + Error(plant),
             data=plantData)
 @
-%{\bf Actually, this is a nested and crossed example because there is no block}
 \pause
 <<aov1summary,size='scriptsize'>>=
 summary(aov1)
 @
 \pause
-\vfill
+%\vfill
 \footnotesize
-{
-  We need to adjust the $p$-values for the time and
-  interaction effects \par
-  \pause
-  \vfill
-  In {\bf R}, this requires reformatting the data and running a MANOVA \par}
+We need to adjust the $p$-values for the time and interaction effects \\
+\pause
+\vfill
+In {\bf R}, this requires reformatting the data and running a MANOVA
 \end{frame}
 
 
@@ -192,17 +189,25 @@ summary(aov1)
 
 
 \begin{frame}[fragile]
-  \frametitle{Format data for MANOVA}
+  \frametitle{Format data and run the MANOVA}
 %  {\bf \small To obtain corrected $P$-values, we must conduct a MANOVA}
-  \footnotesize
-<<plantData2,size='footnotesize'>>=
+  Convert from the ``long'' format to the ``wide'' format %\footnotesize
+<<plantData2,size='scriptsize'>>=
 plantData2 <- reshape(plantData, idvar="plant",
                       timevar="week", v.names="leaves",
                       direction="wide")
-@
-\pause
-<<plantData2print,size='scriptsize'>>=
 plantData2
+@
+%\pause
+%<<plantData2print,size='scriptsize'>>=
+%plantData2
+%@
+\pause
+Do the MANOVA
+<<manova1,size='scriptsize'>>=
+manova1 <- manova(cbind(leaves.1, leaves.2, leaves.3,
+                        leaves.4, leaves.5) ~ fertilizer,
+                  data=plantData2)
 @
 \end{frame}
 
@@ -214,26 +219,34 @@ plantData2
 
 \begin{frame}[fragile]
   \frametitle{MANOVA and adjusted $P$-values}
-  \scriptsize %\small
-<<manova1,size='scriptsize'>>=
-manova1 <- manova(cbind(leaves.1, leaves.2, leaves.3,
-                        leaves.4, leaves.5) ~ fertilizer,
-                  data=plantData2)
-@
-\pause
+%  \scriptsize %\small
+%<<manova1,size='scriptsize'>>=
+%manova1 <- manova(cbind(leaves.1, leaves.2, leaves.3,
+%                        leaves.4, leaves.5) ~ fertilizer,
+%                  data=plantData2)
+%@
+%\pause
 <<manova1anova,size='scriptsize'>>=
 anova(manova1, X=~1, test="Spherical")
 @
 \pause
 \footnotesize
-{%\bf
-  The last 3 columns are $p$-values corresponding to the effects of time
-  (Intercept) and interaction (fertilizer).
-%  I suggest using the H-F $p$-values.
-  No adjustment is necessary
-  for the main effect so you can use the $p$-value from \inr{aov}.
-  \par}
+%{%\bf
+  The last 2 columns are adjusted $p$-values corresponding to the
+  effects of time (Intercept) and interaction (fertilizer). \\
+  \pause
+  \vfill
+  No adjustment is necessary for the main effect of treatment,
+  so you can use the $p$-value reported earlier by \inr{aov}. \\
+  % \pause
+  % \vfill
+  % If the HF epsilon is $>1$, you should use the unadjusted $p$-values,
+  % which are in the third-to-last column (and are the same as reported
+  % by \inr{aov} earlier).
+  % \pause
+  % \par}
 \end{frame}
+
 
 
 
@@ -243,29 +256,26 @@ anova(manova1, X=~1, test="Spherical")
 \begin{frame}[fragile]
   \frametitle{An aside -- sphericity}
   \small
-  %% {Technically, adjusted $p$-values and MANOVA aren't necessary if the
-  %%   assumption of sphericity holds. \alert{However}, we recommend
-  %%   doing the adjustments (or the MANOVA) anyway because the test of
-  %%   sphericity has low power. \\}
-  The univariate approach is only valid under the sphericity
-  assumption. %if the variance-covariance
-%  matrix meets the
-  \pause
-  \vfill
   Sphericity is the multivariate analogue of the homogeneity of
   variance assumption of ANOVA. \\
   \pause
   \vfill
-  Here is how you test the assumption: \\
-  \footnotesize
+  Technically, adjusted $p$-values and MANOVA aren't necessary if the
+  assumption of sphericity holds. However, Mauchly's sphericity test
+  has low power, and it is often recommended that the $p$-values be
+  adjusted even if the test fails to reject the sphericity assumption.
+  \pause
+  % \vfill
+  % Here is how you test the assumption: \\
+  % \footnotesize
 <<mauchly,size='scriptsize'>>=
 mauchly.test(manova1, X=~1)
 @
 \pause
-\vfill
+%\vfill
 \small %\normalsize
 {\centering We fail to reject the null hypothesis, so sphericity
-  can be assumed, and the adjusted $p$-values are therefore legitimate. \\}
+  can be assumed, but the adjusted $p$-values should be reported anyway. \\}
 %  This tells us that the adjusted
 %  $p$-values are legitimate. \par }
 \end{frame}
@@ -358,7 +368,7 @@ anova(manova1, X=~1, test="Pillai")
 \begin{frame}[fragile]
   \frametitle{Profile analysis}
   {%\bf
-    Profile analysis requires calculating the differences (ie, the
+    Profile analysis requires calculating the differences (i.e., the 
     number of leaves grown each week).}
   \vspace{1cm}
   \footnotesize
@@ -417,7 +427,7 @@ unname(SE) ## Ignore the names
 
 \begin{frame}[fragile]
   \frametitle{Plot the growth rates}
-<<gr,fig.show='hide',fig.width=7,fig.height=5.5,size='small'>>=
+<<gr,fig.show='hide',fig.width=7,fig.height=5.5,size='footnotesize'>>=
 plot(1:4-0.05, lowFertilizer, type="b", xlim=c(0.9, 4.1),
      ylim=c(-1, 4), xaxp=c(1,4,3), cex.lab=1.5,
      xlab="Time interval", ylab="Growth rate (leaves/week)")
@@ -453,7 +463,7 @@ legend(1, 4, c("Low fertilizer", "High fertilizer"),
   \footnotesize
   A researcher wants to assess the effects of crowding on the growth
   of the dark toadfish ({\it Neophrynichthys latus}). 15 fish tanks
-  are stocked with three densities of conspecifics. Five tanks have
+  are stocked with three densities of toadfish. Five tanks have
   low density (1 fish), 5 tanks have medium density (5
   fish), and 5 tanks have high density (10 fish).
   In each tank, the weight of one ``focal fish'' is recorded on 6
@@ -462,8 +472,8 @@ legend(1, 4, c("Low fertilizer", "High fertilizer"),
   \vfill
   \begin{enumerate}[\bf (1)]
     \item Conduct the univariate repeated measures ANOVA using
-      \inr{aov}. Calculate  the adjusted $p$-values using the Huynh-Feldt
-      method. Does the effect of density change over time?
+      \inr{aov}. Calculate the adjusted $p$-values using the Huynh-Feldt
+      method. Does the effect of density on growth change over time?
     \item Conduct a multivariate repeated measures ANOVA and use
       Wilks' lambda to test if the effect of density changes over
       time. What is your conclusion?
