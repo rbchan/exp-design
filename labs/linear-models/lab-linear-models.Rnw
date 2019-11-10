@@ -1,0 +1,706 @@
+\documentclass[color=usenames,dvipsnames]{beamer}
+%\documentclass[color=usenames,dvipsnames,handout]{beamer}
+
+
+
+%\usepackage[roman]{../../lab1}
+\usepackage[sans]{../../lab1}
+\usepackage{bm}
+
+\hypersetup{pdftex,pdfstartview=FitV}
+
+
+
+<<build-fun, include=FALSE, cache=TRUE, eval=FALSE, purl=FALSE>>=
+## A function to compile and open the pdf
+## Usage:
+##
+source("../rnw2pdf.R")
+if(1==2) {
+  rnw2pdf("lab-linear-models")
+  rnw2pdf("lab-linear-models", clean=FALSE)
+  rnw2pdf("lab-linear-models", tangle=TRUE)
+}
+@
+
+
+<<knitr-theme,include=FALSE,purl=FALSE>>=
+##knit_theme$set("navajo-night")
+knit_theme$set("edit-kwrite")
+@
+
+
+%% New command for inline code that isn't to be evaluated
+\definecolor{inlinecolor}{rgb}{0.878, 0.918, 0.933}
+\newcommand{\inr}[1]{\colorbox{inlinecolor}{\texttt{#1}}}
+
+
+\begin{document}
+
+
+
+
+\begin{frame}[plain]
+  \huge
+  \centering \par
+  {\color{RoyalBlue}{Lab 12 -- Linear Models}} \\
+  \vfill
+  \LARGE
+  % November 11 \& 12, 2019
+  FANR 6750 \\
+  \vfill
+  Richard Chandler and Bob Cooper
+\end{frame}
+
+
+
+%\section{Switzerland}
+
+
+
+\section{Introduction}
+
+
+
+
+\begin{frame}
+  \frametitle{Linear model}
+{\bf A linear model is an equation of the form:}
+
+\[
+y_i = \beta_0 + \beta_1 x_{i1} + \beta_2 x_{i2} + \ldots + \beta_p
+x_{ip} + \varepsilon_i
+\]
+
+where the $\beta$'s are coefficients, and the $x$ values are predictor
+variables (or dummy variables for categorical predictors).
+%\pause
+
+\vspace{0.5cm}
+
+{\bf This equation is often expressed in matrix notation as:}
+
+\[
+{\bf y} = {\bf X} {\bm{\beta}} + {\bm \varepsilon}
+\]
+
+where $\bf X$ is a \alert{design matrix} and $\bm{\beta}$ is a
+vector of coefficients.
+\end{frame}
+
+
+
+
+
+
+
+\section{Island Scrub Jay}
+
+
+
+\begin{frame}[plain]
+  \frametitle{Example}
+  \Huge
+  \begin{center}
+    \includegraphics[width=0.5\textwidth]{../../lectures/modeling-intro/figs/issj}
+    The Island Scrub-Jay
+  \end{center}
+\end{frame}
+
+
+
+\begin{frame}[plain]
+  \frametitle{Example}
+  \Huge
+  \begin{center}
+    \includegraphics[width=0.8\textwidth]{../../lectures/modeling-intro/figs/Santa-Cruz} \\
+    Santa Cruz Island
+  \end{center}
+\end{frame}
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Santa Cruz Data}
+  \footnotesize
+%<<echo=false>>=
+%##library(unmarked)
+%##head(cruz)
+%@
+%<<echo=false,results=hide>>=
+%cruzData <- cruz
+%set.seed(43893)
+%<<>>=
+%cruzData$habitat <- factor(sample(c("Pine","Oak","Bare"),
+%                               size=nrow(cruzData), replace=TRUE,
+%                               prob=c(0.3, 0.6, 0.1)))
+%cruzData$seeds <- factor(sample(c("Low","Med","High"),
+%                               size=nrow(cruzData), replace=TRUE,
+%                               prob=c(0.3, 0.6, 0.1)))
+%@
+%plots <- sample(1:nrow(cruzData), size=100)
+%jayData <- cruzData[plots,]
+%jayX <- model.matrix(~elevation+I(elevation^2)+chaparral+habitat, jayData)
+%jayBeta <- c(30, 0.01, -0.000001, 1, 2.5, 1.5)
+%summary(jaymu <- jayX %*% jayBeta)
+%sigmaSq <- 5
+%set.seed(4530)
+%summary(jayData$jays <- round(rnorm(nrow(jayData), jaymu, sqrt(sigmaSq))))
+%# hist(jayData$jays)
+%summary(lm(jays ~ elevation + I(elevation^2) + chaparral + habitat + forest + seeds,
+%           jayData))
+%@
+%\pause
+%{\bf Add 2 fake variables}
+%<<>>=
+%head(cruzData)
+%@
+<<cruzData>>=
+cruzData <- read.csv("cruzData.csv")
+head(cruzData, n=7)
+@
+  {Each row of this data frame corresponds to a grid cell. There are 2787 grid cells covering the island. \\} 
+\end{frame}
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Maps of predictor variables}
+%  {\bf Elevation}
+  \scriptsize
+%% <<elevJay,include=TRUE,fig.width=6,fig.height=4,size='scriptsize'>>=
+<<elevJay,include=TRUE,fig.width=6,fig.height=4,size='scriptsize'>>=
+library(lattice)
+levelplot(elevation ~ x + y, data=cruzData,
+          aspect="iso", # Puts x and y axes on same scale
+          xlab="Easting", ylab="Northing", main="Elevation")
+@
+\centering
+\includegraphics[width=0.8\textwidth]{figure/elevJay-1} \\
+%{This ``raster'' image is the grid. Each grid cell has multiple
+%  predictor variables associated with it. \\}
+\end{frame}
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Maps of predictor variables}
+%  {\bf Forest cover}
+  \scriptsize
+%% <<forestJay,include=FALSE,fig.width=6,fig.height=4>>=
+<<forestJay,fig.width=6,fig.height=4,size='scriptsize'>>=
+levelplot(forest ~ x + y, data=cruzData, aspect="iso",
+          xlab="",ylab="",main="Forest Cover",
+          scales=list(draw=FALSE)) # suppress axes
+@
+\centering
+\includegraphics[width=0.8\textwidth]{figure/forestJay-1} \\
+\end{frame}
+
+
+
+\begin{comment}
+\begin{frame}[fragile]
+  \frametitle{Maps of predictor variables}
+%  {\bf Habitat type}
+  \scriptsize
+%% <<habitat,include=FALSE,fig.width=6,fig.height=4>>=
+<<habitat,fig.width=6,fig.height=4,size='scriptsize'>>=
+levelplot(habitat ~ x + y, data=cruzData, aspect="iso",
+          xlab="", ylab="", main="Habitat type",
+          scales=list(draw=FALSE))
+@
+\includegraphics[width=\textwidth]{figure/habitat-1} \\
+{This habitat layer is obviously fake.}
+\end{frame}
+\end{comment}
+
+
+
+\begin{comment}
+\begin{frame}
+  \frametitle{Questions}
+  \Large
+%  \begin{enumerate}[<+- | visible@+->][\bf \color{PineGreen} (1)]
+  \begin{enumerate}[\bf \color{PineGreen} (1)]
+    \item How many jays are on the island?
+    \item Where is abundance highest?
+%    \item In which habitat is abundance highest?
+    \item What variables are correlated with abundance?
+%    \item Can we predict the consequences of environmental change?
+  \end{enumerate}
+\end{frame}
+\end{comment}
+
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{The (fake) jay data}
+  \footnotesize
+<<jayData, size='scriptsize'>>=
+library(latticeExtra) ## install.packages("latticeExtra") ## Do this!
+jayData <- read.csv("jayData.csv")
+head(jayData)
+@
+<<jayData-str, size='scriptsize'>>=
+str(jayData) ## 100 rows
+@
+\end{frame}
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Maps of predictor variables}
+<<plots,fig.width=6,fig.height=4,size='scriptsize',fig.show='hide'>>=
+levelplot(chaparral ~ x + y, data=cruzData, aspect="iso",
+          xlab="", ylab="", main="Chaparral and survey plots",
+          scales=list(draw=FALSE)) +
+    xyplot(y ~ x, jayData, pch=0, col=1, cex=0.5)
+@
+%\vspace{-2cm}
+\footnotesize
+\centering
+\includegraphics[width=0.9\textwidth]{figure/plots-1} \\
+Jays were surveyed at this subset of 100 grid cells \\
+\end{frame}
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Fit some models -- Simple linear regression}
+%  {\bf Simple linear regression}
+  \scriptsize
+<<fm1>>=
+fm1 <- lm(jays ~ elevation, data=jayData)
+@
+\pause
+<<fm1s>>=
+summary(fm1)
+@
+\end{frame}
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{\normalsize Fit some models -- Linear regression with quadratic effects}
+%  {\bf Linear regression with quadratic term}
+  \scriptsize
+<<fm2,size='scriptsize'>>=
+fm2 <- lm(jays ~ elevation + I(elevation^2), data=jayData)
+@
+\pause
+<<fm2s,size='scriptsize'>>=
+summary(fm2)
+@
+\end{frame}
+
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Fit some models -- Multiple linear regression}
+%  {\bf Multiple linear regression}
+  \scriptsize
+<<fm3,size='scriptsize'>>=
+fm3 <- lm(jays ~ elevation + chaparral, data=jayData)
+@
+\pause
+<<fm3s,size='scriptsize'>>=
+summary(fm3)
+@
+\end{frame}
+
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Fit some models -- One-way ANOVA}
+%  {\bf One-way ANOVA}
+  \scriptsize
+<<fm4,size='scriptsize'>>=
+fm4 <- lm(jays ~ habitat, data=jayData)
+@
+\pause
+<<fm4s,size='scriptsize'>>=
+summary(fm4)
+@
+\end{frame}
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Fit some models -- ANCOVA}
+%  {\bf ANCOVA}
+%  \tiny
+<<fm5,size='scriptsize'>>=
+fm5 <- lm(jays ~ habitat + elevation, data=jayData)
+summary(fm5)
+@
+\end{frame}
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{\small One factor and continuous covariates with quadratic effects}
+%  {\small \bf Factor and two continuous covariates, one with quadratic effects}
+  \tiny
+<<fm6,size='tiny'>>=
+fm6 <- lm(jays ~ habitat + elevation +
+          I(elevation^2) + chaparral, data=jayData)
+summary(fm6)
+@
+\end{frame}
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Visualize the quadratic effect}
+  {\footnotesize
+    Create a sequence of values of elevation, holding other predictors
+    constant \\}  
+  \footnotesize
+<<nd1,size='footnotesize'>>=
+nd1 <- data.frame(habitat = "Oak",
+    elevation=seq(min(jayData$elev), max(jayData$elev), length=100),
+    chaparral=mean(jayData$chaparral))
+@
+\pause
+\vfill
+  \footnotesize
+{\small Obtain the predictions}
+\footnotesize
+<<E6pred,size='footnotesize'>>=
+E6.elev <- predict(fm6, newdata=nd1, type="response", se.fit=TRUE,
+                   interval="confidence")
+E6.elev <- cbind(E6.elev$fit, nd1)
+head(E6.elev)
+@
+\end{frame}
+
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Visualize the quadratic effect}
+%  \tiny
+<<E6elev,fig.width=8,fig.height=6,fig.show='hide',size='scriptsize'>>=
+plot(fit ~ elevation, E6.elev, type="l", ylim=c(20,50),
+     xlab="Elevation (m)", ylab="Expected number of jays")
+points(jays ~ elevation, jayData)
+lines(lwr ~ elevation, E6.elev, lty=2)
+lines(upr ~ elevation, E6.elev, lty=2)
+@
+\centering
+\includegraphics[width=0.75\textwidth]{figure/E6elev-1} \\
+\end{frame}
+
+
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{\normalsize Predict jay abundance at each pixel on Santa Cruz}
+  \scriptsize
+<<E6>>=
+E6 <- predict(fm6, type="response", newdata=cruzData, interval="confidence")
+@
+\pause
+<<E62>>=
+E6 <- cbind(cruzData[,c("x","y")], E6)
+head(E6, n=4)
+@
+\pause
+{\bf Another way to obtain the predictions:}
+<<X6>>=
+X <- model.matrix(~habitat+elevation+I(elevation^2)+
+                  chaparral, data=cruzData)
+beta <- coef(fm6) # beta estimates
+E <- X %*% beta   # expected number of jays at each pixel
+head(E, n=4)
+@
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{Map the predictions}
+  \scriptsize
+<<Ejay,include=FALSE,fig.width=6,fig.height=4>>=
+levelplot(fit ~ x + y, data=E6, aspect="iso",
+          xlab="", ylab="", main="Expected number of jays per grid cell",
+          at=25:55, colorkey=list(space="bottom"),
+          scales=list(draw=FALSE))
+@
+\includegraphics[width=\textwidth]{figure/Ejay-1}
+\end{frame}
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Map the predictions}
+  \scriptsize
+<<Ljay,include=FALSE,fig.width=6,fig.height=4>>=
+levelplot(lwr ~ x + y, data=E6, aspect="iso",
+          xlab="", ylab="", main="Lower CI",
+          at=25:55, colorkey=list(space="bottom"),
+          scales=list(draw=FALSE))
+@
+\includegraphics[width=\textwidth]{figure/Ljay-1}
+\end{frame}
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Map the predictions}
+  \scriptsize
+<<Ujay,include=FALSE,fig.width=6,fig.height=4>>=
+levelplot(upr ~ x + y, data=E6, aspect="iso",
+          xlab="", ylab="", main="Upper CI",
+          at=25:55, colorkey=list(space="bottom"),
+          scales=list(draw=FALSE))
+@
+\includegraphics[width=\textwidth]{figure/Ujay-1}
+\end{frame}
+
+
+
+
+%% \begin{frame}[fragile]
+%%   \frametitle{Future scenarios}
+%%   {\bf What if the pine and oak disappear? \par}
+%%   \pause
+%%   \vspace{0.3cm}
+%%   {\bf \dots assuming {\tt fm5} is the {\it correct} model}
+%%   \pause
+%%   \vspace{0.3cm}
+%%   \footnotesize
+%% <<>>=
+%% future1 <- cruzData
+%% future1$habitat[] <- "Bare"
+%% future.pred1 <- predict(fm5, type="response", newdata=future1,
+%%                         interval="confidence")
+%% future.pred1 <- cbind(cruzData[,c("x","y")], future.pred1)
+%% @
+%% \end{frame}
+
+
+
+%% \begin{frame}[fragile]
+%%   \frametitle{Future with no oak or pine}
+%%   \scriptsize
+%% <<future1,include=FALSE,fig.width=6,fig.height=4>>=
+%% levelplot(fit ~ x + y, data=future.pred1, aspect="iso",
+%%           xlab="", ylab="", main="Expected values",
+%%           at=25:55, colorkey=list(space="bottom"),
+%%           scales=list(draw=FALSE))
+%% @
+%% \includegraphics[width=\textwidth]{lab12-modeling-future1}
+%% \end{frame}
+
+
+
+
+
+%% \begin{frame}[fragile]
+%%   \frametitle{Future scenarios}
+%%   {\bf What if the island sinks 1000 m? \par}
+%%   \vspace{0.3cm}
+%% %  \pause
+%% %  {\bf \dots assuming {\tt fm5} is the {\it correct} model}
+%%   \pause
+%%   \footnotesize
+%% <<>>=
+%% future2 <- cruzData
+%% future2$elevation <- future2$elevation - 1000
+%% future2$elevation[future2$elevation < 0] <- NA
+%% future.pred2 <- predict(fm5, type="response", newdata=future2,
+%%                         interval="confidence")
+%% future.pred2 <- cbind(cruzData[,c("x","y")], future.pred2)
+%% @
+%% \end{frame}
+
+
+
+
+%% \begin{frame}[fragile]
+%%   \frametitle{The island sinks 1000 m}
+%%   \scriptsize
+%% <<future2,echo=false,include=FALSE,fig.width=6,fig.height=4>>=
+%% levelplot(fit ~ x + y, data=future.pred2, aspect="iso",
+%%           panel = function(...) {
+%%               panel.fill(col="skyblue1")
+%%               panel.levelplot(...)
+%%           },
+%%           xlab="", ylab="", main="Expected values",
+%%           at=25:55, colorkey=list(space="bottom"),
+%%           scales=list(draw=FALSE))
+%% @
+%% \includegraphics[width=\textwidth]{lab12-modeling-future2}
+%% \end{frame}
+
+
+
+
+
+
+
+
+
+
+
+
+
+\section{Switzerland Assignment}
+
+
+
+
+\begin{frame}
+  \centering \Huge \color{blue}{Assignment} \par
+\end{frame}
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Species Richness in Switzerland}
+  \large
+%  \begin{itemize}%[<+->]
+%    \item
+  Birds are sampled at 267 locations (quadrats) as part of the
+  Swiss breeding bird survey \\
+  \vfill
+%    \item
+  The following predictor variables are available: elevation,
+      percent cover of forest, and the presence of water \\
+  \vfill
+%    \item
+  The country-wide data are in the file {\tt Switzerland.csv} \\
+%    \item
+  \vfill
+  The species richness data for the 267 quadrats are in the
+      file {\tt swissBirds.csv}
+%  \end{itemize}
+\end{frame}
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Switzerland}
+  \tiny
+<<elev,include=FALSE,fig.width=6,fig.height=4>>=
+Switzerland <- read.csv("Switzerland.csv")
+levelplot(elevation ~ x + y, data=Switzerland, aspect="iso",
+          col.regions=terrain.colors(100), scales=list(draw=FALSE),
+          xlab="", ylab="", main="Elevation")
+@
+\includegraphics[width=\textwidth]{figure/elev-1}
+\end{frame}
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Switzerland}
+  \tiny
+<<forest,include=FALSE,fig.width=6,fig.height=4>>=
+levelplot(forest ~ x + y, data=Switzerland, aspect="iso",
+          col.regions=terrain.colors(100), scales=list(draw=FALSE),
+          xlab="", ylab="", main="Forest cover")
+@
+\includegraphics[width=\textwidth]{figure/forest-1}
+\end{frame}
+
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Switzerland}
+  \tiny
+<<water,include=FALSE,fig.width=6,fig.height=4>>=
+levelplot(water ~ x + y, data=Switzerland, aspect="iso",
+          col.regions=terrain.colors(100), scales=list(draw=FALSE),
+          xlab="", ylab="", main="Water")
+@
+\includegraphics[width=\textwidth]{figure/water-1}
+\end{frame}
+
+%\end{document}
+
+
+\begin{frame}[fragile]
+%summary(lm(sppRichness ~ forest + I(forest^2) + elevation * water, data=swissData))
+%#levelplot(I(43.24 + 0.317*forest + -0.00109*forest^2 + -0.009132*elevation) ~ x + y,
+%#          data=Switzerland, aspect="iso")
+%@
+<<>>=
+swissData <- read.csv("swissData.csv")
+head(swissData, n=7)
+@
+\end{frame}
+
+
+
+
+
+\begin{frame}
+  \frametitle{Assignment}
+  \large
+  {\bf Create an \R~script to do the following}
+%  \pause
+%  \begin{enumerate}[<+- | visible@+->][\bf \color{PineGreen} (1)]
+  \begin{enumerate}[\bf \color{PineGreen} (1)]
+    \item Fit 4 models of species richness using {\tt lm}.
+      \begin{itemize} \large
+        \item At least one model should include an interaction, and
+          one model should include quadratic effects
+%        \item But make sure you can think of justification for these terms
+      \end{itemize}
+    \item Intepret the $\beta$ parameter estimates for each model.
+    \item Create the design matrix for one of the models, and (matrix)
+      multiply it by the $\beta$ coefficients. Explain what the values
+      represent in the returned vector.
+    %% \item Create a table with following columns:
+    %%   \begin{itemize}
+    %%     \item Model ID
+    %%     \item Residual sum-of-squares
+    %%     \item AIC
+    %%     \item $\Delta$ AIC
+    %%     \item Model weight $w$
+    %%   \end{itemize}
+    \item Use {\tt predict} to plot the relationship between expected
+      species richness and the predictor variable with the quadratic
+      effects. Include 95\% CI in your plot.
+    \item Using the model with the interaction, predict species
+      richness at each location in Switzerland. Use {\tt levelplot} to
+      map the predicted values.
+      %% when: forest = 25, elevation = 1000, and
+      %% \begin{itemize}
+      %%   \item forest = 25
+      %%   \item elevation = 1000
+      %%   \item water = ``No''
+      %% \end{itemize}
+    %% \item Create model-averaged prediction of species richness under
+    %%   same conditions as above
+  \end{enumerate}
+\end{frame}
+
+
+
+
+
+\end{document}
+
