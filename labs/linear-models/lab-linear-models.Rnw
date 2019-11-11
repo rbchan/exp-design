@@ -642,11 +642,7 @@ levelplot(water ~ x + y, data=Switzerland, aspect="iso",
 
 
 \begin{frame}[fragile]
-%summary(lm(sppRichness ~ forest + I(forest^2) + elevation * water, data=swissData))
-%#levelplot(I(43.24 + 0.317*forest + -0.00109*forest^2 + -0.009132*elevation) ~ x + y,
-%#          data=Switzerland, aspect="iso")
-%@
-<<>>=
+<<swissData>>=
 swissData <- read.csv("swissData.csv")
 head(swissData, n=7)
 @
@@ -658,44 +654,30 @@ head(swissData, n=7)
 
 \begin{frame}
   \frametitle{Assignment}
-  \large
-  {\bf Create an \R~script to do the following}
-%  \pause
+  {\bf Create an \R~script to do the following \\}
 %  \begin{enumerate}[<+- | visible@+->][\bf \color{PineGreen} (1)]
   \begin{enumerate}[\bf \color{PineGreen} (1)]
-    \item Fit 4 models of species richness using {\tt lm}.
+    \normalsize
+    \item Fit 4 models of species richness using \inr{lm}.
       \begin{itemize} \large
         \item At least one model should include an interaction, and
           one model should include quadratic effects
-%        \item But make sure you can think of justification for these terms
       \end{itemize}
     \item Intepret the $\beta$ parameter estimates for each model.
     \item Create the design matrix for one of the models, and (matrix)
-      multiply it by the $\beta$ coefficients. Explain what the values
-      represent in the returned vector.
-    %% \item Create a table with following columns:
-    %%   \begin{itemize}
-    %%     \item Model ID
-    %%     \item Residual sum-of-squares
-    %%     \item AIC
-    %%     \item $\Delta$ AIC
-    %%     \item Model weight $w$
-    %%   \end{itemize}
-    \item Use {\tt predict} to plot the relationship between expected
+      multiply it by the $\beta$ coefficients to compute the expected
+      number of species at each plot.  
+    \item Use \inr{predict} to plot the relationship between expected
       species richness and the predictor variable with the quadratic
       effects. Include 95\% CI in your plot.
     \item Using the model with the interaction, predict species
-      richness at each location in Switzerland. Use {\tt levelplot} to
+      richness at each location in Switzerland. Use \inr{levelplot} to
       map the predicted values.
-      %% when: forest = 25, elevation = 1000, and
-      %% \begin{itemize}
-      %%   \item forest = 25
-      %%   \item elevation = 1000
-      %%   \item water = ``No''
-      %% \end{itemize}
-    %% \item Create model-averaged prediction of species richness under
-    %%   same conditions as above
-  \end{enumerate}
+    \end{enumerate}
+    \centering
+    \small
+    \bf
+    Upload your \R~script to ELC at least 1 day before your next lab \\
 \end{frame}
 
 
