@@ -50,7 +50,7 @@ knit_theme$set("edit-kwrite")
   {\color{RoyalBlue}{Lab 13 -- Generalized Linear Models}} \\
   \vspace{1cm}
   \LARGE
-  November 12 \& 13, 2018 \\
+%  November 12 \& 13, 2018 \\
   FANR 6750 \\
   \vfill
   \large
@@ -72,7 +72,8 @@ knit_theme$set("edit-kwrite")
       y_i \sim \mathrm{Binomial}(N, p_i)
   \end{gather*}
   \pause
-  {\bf where: \\}
+  {%\bf
+    where: \\}
   $N$ is the number of ``trials'' (e.g. coin flips) \\
   $p_i$ is the probability of a success for sample unit $i$
 \end{frame}
@@ -157,7 +158,8 @@ predData.elev <- data.frame(elevation=seq(12, 489, length=50),
 head(predData.elev)
 @
 \pause
-{\bf To get confidence intervals on (0,1) scale, predict on logit
+{%\bf
+  To get confidence intervals on probability scale, predict on logit
   (link) scale and then backtransform using inverse-link}
 \pause
 %\scriptsize
@@ -215,7 +217,8 @@ arrows(bp, plogis(pred$fit), bp, plogis(pred$fit + pred$se.fit),
       y_i \sim \mathrm{Poisson}(\lambda_i)
   \end{gather*}
   \pause
-  {\bf where: \\}
+  {%\bf
+    where: \\}
   $\lambda_i$ is the expected value of $y_i$
 \end{frame}
 
@@ -248,7 +251,8 @@ summary(fm2)
 %@
 \footnotesize
 %\pause
-{\bf To get confidence intervals on (0,$\infty$) scale, predict on log
+{%\bf
+  To get confidence intervals on (0,$\infty$) scale, predict on log
   (link) scale and then backtransform using inverse-link}
 \pause
 %\scriptsize
