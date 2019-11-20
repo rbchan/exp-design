@@ -1,5 +1,6 @@
 ## Ignore the 'exams' directory
 exams/
+grades/
 
 ## Ignore assignment KEYs
 KEY*
