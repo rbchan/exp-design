@@ -18,6 +18,7 @@ source("../rnw2pdf.R")
 if(1==2) {
     ## Usage:
     rnw2pdf("lecture-model-selection") # Don't include the file extension
+    rnw2pdf("lecture-model-selection", tangle=TRUE) 
 }
 @
 
@@ -52,7 +53,8 @@ knit_theme$set("edit-kwrite")
   \vspace{1cm}
 %  \LARGE
   \large
-  November 14 \& 26, 2018
+  FANR 6750 \\
+%  November 14 \& 26, 2018
 \end{frame}
 
 
@@ -110,6 +112,10 @@ knit_theme$set("edit-kwrite")
   A good model should be a good approximation of reality. It should
   describe how things actually work. \\
   \pause
+  \vspace{0.25cm}
+  In other words, a good model should describe the processes that give
+  rise to the patterns we observe. \\   
+  \pause
   \vspace{0.5cm}
   {\bf Prediction \par}
   A good model should have good predictive abilities. 
@@ -160,12 +166,22 @@ Why do we want simplicity? %\\
 
 
 
+\begin{frame}
+  \frametitle{Fit and overfit}
+  \centering
+  \includegraphics[width=0.8\textwidth]{Overfitted_data}   \\
+  \pause
+  \vfill
+  Much more info here: \url{https://speakerdeck.com/rmcelreath/l08-statistical-rethinking-winter-2019?slide=28}  
+\end{frame}
+
+
 
 \begin{frame}
   \frametitle{Prediction}
   \large
   Predictive ability is assessed by comparing observed and expected
-  values \\ 
+  values. \\ 
   \pause
   \vfill
   In non-scientific fields, we might not care about describing how
@@ -250,7 +266,9 @@ Why do we want simplicity? %\\
 %  \begin{align*}
 %  \mathrm{AIC} &=& -2\mathcal{L}(\theta|{\bf y}) &+ 2K \\
 %               &=& \text{measure of fit} &+ \text{complexity penalty}
-%  \end{align*}
+                                            %    \end{align*}
+  \pause
+  AIC is asymtotically equivalent to leave-one-out cross-validation \\
 \end{frame}
 
 
