@@ -84,7 +84,7 @@
   {\color{RoyalBlue}{Lab 14 -- Model Selection and Multimodel Inference}} \\
   \vspace{1cm}
   \LARGE
-  November 26 \& 27, 2018 \\
+%  November 26 \& 27, 2018 \\
   FANR 6750 \\
   \vfill
   \large
@@ -573,26 +573,30 @@ However, we will use the more general formula: $\mathrm{AIC} =
 
 
 
-% \begin{frame}
-%   \frametitle{Assignment}
+\begin{frame}
+  \frametitle{Assignment}
 
-%   NOTES FOR 2016: Elev model gets 100\% of the weight. Try to fix that somehow.
+%  NOTES FOR 2016: Elev model gets 100\% of the weight. Try to fix that somehow.
 
-%   {\bf Use the {\tt jayData} from lab 12 to do the following:}
-%   \begin{enumerate}[\bf (1)]
-%     \item Fit four linear models of jay abundance. Include at least
-%       one interaction, and one quadratic term for elevation.
-%     \item Create AIC table by hand, not using \R's {\tt AIC} function
-% %    \item Model-average predictions of jay abundance at 25\% forest
-% %      cover (i.e., forest=0.25)
-%     \item Model-average regression lines of jay abundance and
-%       elevation. Plot the averaged regression line along with the
-%       regression lines from each model.
-%     \item Create a map showing the model-averaged estimates of jay
-%       abundance on Santa Cruz Island. Hint: use {\tt predict} with
-%       {\tt cruzData} supplied as the {\tt newdata} argument.
-%   \end{enumerate}
-% \end{frame}
+  {\bf \large Use the {\tt jayData} from lab 12 to do the following: \\}
+  
+  \begin{enumerate}[\bf (1)]
+    \normalsize
+    \item Fit four linear models of jay abundance. Include elevation
+      all four models. Include at least 
+      one interaction, and one quadratic term for elevation.
+    \item Create AIC table by hand, not using \R's {\tt AIC} function
+%    \item Model-average predictions of jay abundance at 25\% forest
+%      cover (i.e., forest=0.25)
+    \item Model-average regression lines of jay abundance and
+      elevation. Plot the averaged regression line along with the
+      regression lines from each model.
+    \item Bonus problem with 10 extra points: Create a map showing the
+      model-averaged estimates of jay 
+      abundance on Santa Cruz Island. Hint: use {\tt predict} with
+      {\tt cruzData} supplied as the {\tt newdata} argument.
+  \end{enumerate}
+\end{frame}
 
 
 
