@@ -3,6 +3,8 @@
 
 \usepackage[sans]{../lab1}
 \usepackage[hang,flushmargin]{footmisc}
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows,snakes,backgrounds}
 
 
 \hypersetup{pdftex,pdfstartview=FitV}
@@ -47,18 +49,93 @@ knit_theme$set("edit-kwrite")
 
 
 
-\begin{frame}
-  \frametitle{Outline}
-  
-\end{frame}
+% \begin{frame}
+%   \frametitle{Outline}
+% \end{frame}
 
 
 \section{Background}
 
+
+\begin{frame}
+  \frametitle{Science}
+  The purpose of scientific research is to advance knowledge. \\
+  \pause
+  \vfill
+  We want to understand causal relationships between variables. \\
+  \begin{itemize}
+    \item How does drug $X$ affect disease $Y$?
+    \item How does management practice $X$ affect species $Y$?
+  \end{itemize}
+  \pause
+  \vfill
+  Two general approaches for achieving causal inference:
+  \begin{itemize}
+    \item Manipulative experiments
+    \item Observational studies (usually considered inferior)
+  \end{itemize}
+\end{frame}
+
+
+
+% \begin{frame}
+%   \frametitle{The Scientific Method}
+%   \begin{enumerate}[1.]
+%     \item State the problem
+%     \item Formulate the hypothesis
+%     \item Design the experiment or observational study
+%     \item Make observations
+%     \item Analyze data
+%     \item Draw conclusions
+%     \end{enumerate}
+% \vfill    
+% \centering    
+% Where does statistical analysis fit in?  Where do most courses in
+% statistics apply to the scientific method? \\
+% \vfill
+% Where does experimental design fit in?  Courses? \\
+% \end{frame}
+
+
+
+\begin{frame}
+  \frametitle{Terminology} 
+  {\bf Experiment} \\
+  An act or operation for the purpose of discovering something
+  unknown. \par
+  \pause
+  \vspace{12pt}
+  {\bf Experimental unit} \\
+  The unit to which the treatments are applied. \par
+  % \vfill
+  \pause
+  \vspace{12pt}
+  {\bf Manipulative experiment} \\
+  An experiment in which the different experimental units receive
+  different treatments and the assignment of the treatments is or can
+  be randomized. \\
+  % \vfill
+  \pause
+  \vspace{12pt}
+  {\bf Observational study} \\
+  Research that involves only the making of measurements at one
+  or more points in space or time (a.k.a. mesurative experiment). \par
+%  \vfill
+  % \vspace{2pt}
+  % \rule[0mm]{1cm}{0.1mm} \\
+  % \footnotesize
+  % Hurlbert, S.A. (1984) Pseudoreplication and the design of ecological field
+  % experiments.  Ecological Monographs 54:187-211.
+\end{frame}
+
+
+
+
 \begin{frame}
   \frametitle{Terminology}
-  {\bf Experimental Design:} \\
-  The logical structure of an experiment \\ %(Fisher 1971) \\
+  {\bf Experimental Design:} %\\
+  The logical structure of an experiment. \\ %(Fisher 1971) \\
+  \vspace{6pt}
   \vfill  
   Includes:
   \begin{itemize}
@@ -79,26 +156,31 @@ knit_theme$set("edit-kwrite")
 
 
 
+
+\section{Experiments}
+
+
 \begin{frame}
-  \frametitle{More terminology} 
-  {\bf Experiment} \\
-  An act or operation for the purpose of discovering something unknown \par
-  \vspace{6pt}
-  {\bf Experimental unit} \\
-  The unit to which the treatments are applied \par
-%  \vfill
-  \vspace{6pt}
-  {\bf Mensurative experiment} \\
-  An experiment that involves only the making of measurements at one
-  or more points in space or time. (a.k.a. observational study) \par
-%  \vfill
-  \vspace{6pt}
-  {\bf Manipulative experiment} \\
-  An experiment in which the different experimental units receive
-  different treatments and the assignment of the treatments is or can
-  be randomized. \\
+  \frametitle{Features of good experimental design}
+%  \small
+  {\bf Replication} \\
+  More than one experimental unit or replicate per treatment. Allows
+  one to account for variability among experimental units. \\
+  \pause
   \vfill
-  \vspace{6pt}
+  {\bf Randomization} \\
+  All units must have pre-determined probabilities of receiving all
+  treatments. Otherwise, estimates may be biased. \\
+  \pause
+  \vfill
+  {\bf Controls} \\
+  Allow one to isolate the causative agent of interest (treatment
+  effect).  Not always an untreated treatment. \\
+  \pause
+  \vfill
+  {\bf Interspersion} \\
+  Hurlbert (1984) recommendation that treatments be spatially interspersed.  \\
+  \vspace{1pt}
   \rule[0mm]{1cm}{0.1mm} \\
   \footnotesize
   Hurlbert, S.A. (1984) Pseudoreplication and the design of ecological field
@@ -108,34 +190,13 @@ knit_theme$set("edit-kwrite")
 
 
 \begin{frame}
-  \frametitle{The Scientific Method}
-  \begin{enumerate}[1.]
-    \item State the problem
-    \item Formulate the hypothesis
-    \item Design the experiment or observational study
-    \item Make observations
-    \item Analyze data
-    \item Draw conclusions
-    \end{enumerate}
-\vfill    
-\centering    
-Where does statistical analysis fit in?  Where do most courses in
-statistics apply to the scientific method? \\
-\vfill
-Where does experimental design fit in?  Courses? \\
-\end{frame}
-
-\section{Experiments}
-
-
-\begin{frame}
   \frametitle{Example: Timber harvest and salamanders}
   Suppose we wish to assess the effect of timber harvest on salamander
   abundance.  One plot is established in each of two forests, one
   thinned and the other untreated, in which we trap salamanders at n=9
-  pitfall traps.  The response variable of interest is the number of a
-  species captured per trap.  The explanatory variable is silvicultural
-  treatment. \\
+  pitfall traps.  %The response variable of interest is the number of a
+  %species captured per trap.  The explanatory variable is silvicultural
+  %treatment. \\
   \vfill
   \centering
   \includegraphics[width=\textwidth]{salamanders} \\
@@ -156,38 +217,92 @@ Where does experimental design fit in?  Courses? \\
 
 \begin{frame}
   \frametitle{Example: Timber harvest and salamanders}
-  Problems
+  {\bf Problems}
   \begin{itemize}
     \item Unreplicated
-    \item Confounding of sources of variation -- is the
-      difference due to treatment or location or some other unmeasured
-      variable?
+    \item No randomization. Leads to confounding of sources of
+      variation -- is the difference due to treatment or location or
+      some other unmeasured variable?
     \item Pseudoreplication -- use of the incorrect (higher) error
       degrees of freedom in a statistical test. 
   \end{itemize}
 \end{frame}
 
 
+\begin{frame}[fragile]
+  \frametitle{Replication}
+  Without replication {\it of experimental units}, we don't know if
+  differences are due to other sources of variation. \\
+  % R code
+  \vfill
+<<replication,out.width='0.75\\textwidth',fig.align='center',size='scriptsize',echo=FALSE,fig.width=9,fig.height=7>>=
+meanAbundanceThinned <- 10      ## Mean salamanders in thinned
+meanAbundanceUnthinned <- 15    ## Mean salamanders in unthinned
+StdDev <- 3                     ## Variability among experimental units
+par(mai=c(0.9,0.9,0.1,0.1))
+curve(dnorm(x, meanAbundanceThinned, StdDev), from=0, to=25,
+      xlab="Salamander abundance", ylab="Probability density", cex.lab=1.7, lwd=2)
+curve(dnorm(x, meanAbundanceUnthinned, StdDev), from=0, to=25,
+      add=TRUE, col="blue", lwd=2)
+legend(18, 0.13, c("Thinned", "Unthinned"), lty=1, col=c("black", "blue"), cex=1.5, lwd=2)
+@ 
+\end{frame}
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Replication}
+  Here's what happens with $n=1$ experimental unit (per treatment) \\
+<<replication-test1,out.width='0.75\\textwidth',fig.align='center',size='scriptsize',echo=-1>>=
+set.seed(340923)
+meanAbundanceThinned <- 10      ## Mean salamanders in thinned
+meanAbundanceUnthinned <- 15    ## Mean salamanders in unthinned
+StdDev <- 3                     ## Variability among experimental units
+dataThinned <- rnorm(n=1, meanAbundanceThinned, StdDev)
+dataUnthinned <- rnorm(n=1, meanAbundanceUnthinned, StdDev)
+t.test(dataThinned, dataUnthinned, var.equal=TRUE)
+@ 
+\end{frame}
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Replication}
+  Things look better with $n=10$ experimental units \\
+<<replication-test2,out.width='0.75\\textwidth',fig.align='center',size='scriptsize'>>=
+meanAbundanceThinned <- 10      ## Mean salamanders in thinned
+meanAbundanceUnthinned <- 15    ## Mean salamanders in unthinned
+StdDev <- 3                     ## Variability among experimental units
+dataThinned <- rnorm(n=10, meanAbundanceThinned, StdDev)
+dataUnthinned <- rnorm(n=10, meanAbundanceUnthinned, StdDev)
+t.test(dataThinned, dataUnthinned, var.equal=TRUE)
+@ 
+\end{frame}
+
+
 
 \begin{frame}
-  \frametitle{Features of good experimental design}
-  {\bf Replication} \\
-  More than one experimental unit or replicate per treatment. Allows
-  one to estimate experimental error (variability among experimental
-  units). 
-  \vfill
-  {\bf Randomization} \\
-  All units must have an equal chance of receiving all treatments.
-  Otherwise, estimates may be biased.  Depends on a mechanical
-  process. 
-  \vfill
-  {\bf Controls} \\
-  Allows one to isolate the causative agent of interest (treatment
-  effect).  Not always an untreated treatment. 
-  \vfill
-  {\bf Interspersion} \\
-  Hurlbert's recommendation that treatments be spatially interspersed.  
+  \frametitle{Randomization}
+  Imagine that ``thinning'' and ``distance to stream'' influence
+  salamander abundance.
+  % \tikzstyle{level 1} = [circle, draw, text width=1cm, minimum size=2cm,
+  % node distance=4cm, text centered, fill=blue!10]
+  \begin{center}
+    \begin{tikzpicture}
+      \draw
+      (0,0) \node (x1) {Thinning} -- 
+      (0,10) \node (x2) {Distance to stream} -- 
+      (10,5) \node (y) {Salamanders};
+      % \draw[->,thick]  (x1) to (y);
+      % \draw[->,thick] (x2) to (y);
+      % \draw[->,thick] (x2) to (x1);
+   \end{tikzpicture}
+ \end{center}
 \end{frame}
+
+
 
 
 \begin{frame}
