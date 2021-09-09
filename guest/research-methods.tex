@@ -207,18 +207,18 @@
   \frametitle{Features of good experimental design}
 %  \small
   {\bf Replication} \\
-  More than one experimental unit or replicate per treatment. Allows
-  one to account for variability among experimental units. \\
+  More than one experimental unit or replicate per treatment. \\
+  % Allows one to account for variability among experimental units. \\
   \pause
   \vfill
   {\bf Randomization} \\
   All units must have pre-determined probabilities of receiving all
-  treatments. Otherwise, estimates may be biased. \\
+  treatments. \\ % Otherwise, estimates may be biased. \\
   \pause
   \vfill
   {\bf Controls} \\
   Allow one to isolate the causative agent of interest (treatment
-  effect).  Not always an untreated treatment. \\
+  effect). \\ % Not always an untreated treatment. \\
   \pause
   \vfill
   {\bf Interspersion} \\
@@ -263,12 +263,25 @@
   {\bf Problems}
   \begin{itemize}
     \item Unreplicated
-    \item No randomization. Leads to confounding of sources of
-      variation -- is the difference due to treatment or location or
-      some other unmeasured variable?
-    \item Pseudoreplication -- use of the incorrect (higher) error
-      degrees of freedom in a statistical test. 
-  \end{itemize}
+      \begin{itemize}
+      \item Impossible to account for other sources of variation.
+      \item Increasing sample size will yield more precise estimates
+        of treatment effects.
+        \end{itemize}
+    \item[]
+    \item<2-> No randomization
+      \begin{itemize}
+        \item Confounding of sources of variation -- is the difference
+          due to treatment or location or some other unmeasured variable? 
+        \item Randomization will reduce potential for bias in
+          estimates of treatment effects.
+      \end{itemize}      
+    \item[]
+    \item<3-> Pseudoreplication
+      \begin{itemize}
+      \item Incorrect error degrees of freedom in a statistical test.
+      \end{itemize}
+    \end{itemize}
 \end{frame}
 
 
@@ -320,9 +333,6 @@
 \begin{knitrout}\scriptsize
 \definecolor{shadecolor}{rgb}{0.878, 0.918, 0.933}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlstd{meanAbundanceThinned} \hlkwb{<-} \hlnum{10}      \hlcom{## Mean salamanders in thinned}
-\hlstd{meanAbundanceUnthinned} \hlkwb{<-} \hlnum{15}    \hlcom{## Mean salamanders in unthinned}
-\hlstd{StdDev} \hlkwb{<-} \hlnum{3}                     \hlcom{## Variability among experimental units}
 \hlstd{dataThinned} \hlkwb{<-} \hlkwd{rnorm}\hlstd{(}\hlkwc{n}\hlstd{=}\hlnum{10}\hlstd{, meanAbundanceThinned, StdDev)}
 \hlstd{dataUnthinned} \hlkwb{<-} \hlkwd{rnorm}\hlstd{(}\hlkwc{n}\hlstd{=}\hlnum{10}\hlstd{, meanAbundanceUnthinned, StdDev)}
 \hlkwd{t.test}\hlstd{(dataThinned, dataUnthinned,} \hlkwc{var.equal}\hlstd{=}\hlnum{TRUE}\hlstd{)}
@@ -348,61 +358,101 @@
 
 \begin{frame}
   \frametitle{Randomization}
+  \small
+  Without randomization, the observed effect could be due to a
+  confounding variable. \\ %, say ``distance to stream.'' \\
+  \vfill
   Imagine that ``thinning'' and ``distance to stream'' influence
-  salamander abundance.
+  salamander abundance. But distance to stream also
+  influences thinning. \\
   % \tikzstyle{level 1} = [circle, draw, text width=1cm, minimum size=2cm,
   % node distance=4cm, text centered, fill=blue!10]
   \begin{center}
-    \begin{tikzpicture}
-      \draw
-      (0,0) \node (x1) {Thinning} -- 
-      (0,10) \node (x2) {Distance to stream} -- 
-      (10,5) \node (y) {Salamanders};
-      % \draw[->,thick]  (x1) to (y);
-      % \draw[->,thick] (x2) to (y);
-      % \draw[->,thick] (x2) to (x1);
+    \begin{tikzpicture}[scale=0.8]
+      \node[circle,draw,minimum size=2cm] at (0,0) (x1) {\scriptsize Thinning}; 
+      \node[circle,draw,minimum size=2cm,align=center] at (3,3) (x2)
+        {\scriptsize Distance to \\ \scriptsize stream}; 
+      \node[circle,draw,minimum size=2cm] at (6,0) (y) {\scriptsize Salamanders}; 
+      \draw[->] (x1) to (y);
+      \draw[->] (x2) to (y);
+      \draw[->] (x2) to (x1);
    \end{tikzpicture}
  \end{center}
+ \pause
+ \vfill
+ The estimated effect of thinning will be biased if the confounder
+ isn't accounted for. 
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Randomization}
+  
 \end{frame}
 
 
 
-
 \begin{frame}
-  \frametitle{Various designs}
-  \includegraphics[width=\textwidth]{Hurlbert-schema} \\
+  \frametitle{Designs}
   \centering
+  \includegraphics[width=0.9\textwidth]{Hurlbert-schema} \\
   From Hurlbert (1984) \\
 \end{frame}
 
 
 
 \begin{frame}
-  \frametitle{Example 2: Factors that affect growth and survival of
+  \frametitle{Example 2: Growth and survival of
     tree seedlings in a bottomland forest}
   Suppose we wish to understand the factors that influence growth and
   survival of tree seedlings in a periodically flooded bottomland
   forest.  Depending on our objectives (and prior knowledge), we might
   take several approaches to address this topic. \\
+  \vfill
+  \includegraphics[height=1.6in]{seedlings-obs} \hfill
+  \includegraphics[height=1.6in]{seedlings-exp} 
+\end{frame}
 
+
+
+
+\begin{frame}
+  \frametitle{Example 2: Growth and survival of
+    tree seedlings in a bottomland forest}
   Option 1: Observation study -- measure factors (variables) {\it in
     situ} that you think will influence growth and survival of seedlings. 
-	(a) controlling and manipulating nothing
-	(b) examining correlations between growth of seedlings and the variables
-	(c) modeling: finding the best model from a candidate
-        set. Ideally, the models should be predictive and mechanistic
-        (based on theory).
+  \begin{itemize}
+    \item controlling and manipulating nothing
+    \item examining correlations between growth of seedlings and
+      the variables
+    \item modeling: finding the best model from a candidate set. Ideally,
+    the models should be predictive and mechanistic (based on theory).
+  \end{itemize}
+\end{frame}
 
 
+
+
+
+\begin{frame}
+  \frametitle{Example 2: Growth and survival of
+    tree seedlings in a bottomland forest}
   Option 2: Manipulative experiment -- focus on a few key variables of
   particular interest and attempt to hold all else constant. 
-	(a) e.g., manipulate shading and flooding (plus interactions) in a greenhouse setting.
-	(b) other factors (soil, herbivory, etc.) held constant.
-	(c) features of good experimental design still needed, even in
-        a highly controlled laboratory and greenhouse setting. 
-	(d) cause and effect can be established in the greenhouse –
-        extrapolation to a field setting?         
+  \begin{itemize}
+    \item e.g., manipulate shading and flooding (plus interactions)
+      in a greenhouse setting.
+    \item other factors (soil, herbivory,
+      etc.)  held constant.
+    \item features of good experimental design
+    still needed, even in a highly controlled laboratory and
+    greenhouse setting.
+    \item cause and effect can be established in
+    the greenhouse – extrapolation to a field setting?
+  \end{itemize}
 \end{frame}
+
+
 
 
 
@@ -422,7 +472,7 @@
   \frametitle{Example 3: Effect of effluent from a new power plant on
     fish species richness in a river}
   \centering
-  \includegraphics[width=\textwidth]{power-plant-river} \\
+  \includegraphics[width=0.9\textwidth]{power-plant-river} \\
 \end{frame}
 
 
@@ -430,7 +480,7 @@
   \frametitle{Example 3: Effect of effluent from a new power plant on
     fish species richness in a river}
   \centering
-  \includegraphics[width=\textwidth]{power-plant} \\
+  \includegraphics[width=0.8\textwidth]{power-plant} \\
 \end{frame}
 
 
@@ -440,11 +490,11 @@
 \begin{frame}
   \frametitle{Observational studies}
   Are (properly designed) manipulative experiments better than
-  observation studies?
-
+  observation studies? \\
+  \vfill
   Yes, correlation does not imply causation. But, manipulative
-  experiments aren't always possible or necessary. 
-
+  experiments aren't always possible or necessary. \\
+  \vfill
   Extensive, ongoing research on methods for causal inference in
   observational research.
   
