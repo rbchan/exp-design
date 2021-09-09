@@ -92,9 +92,11 @@
 
 
 
-% \begin{frame}
-%   \frametitle{Outline}
-% \end{frame}
+\begin{frame}
+  \frametitle{Outline}
+  \Large
+  \tableofcontents%[hideallsubsections]}
+\end{frame}
 
 
 \section{Background}
@@ -142,33 +144,44 @@
 
 
 \begin{frame}
-  \frametitle{Terminology} 
+  \frametitle{Terminology for experiments}
+  \small
   {\bf Experiment} \\
   An act or operation for the purpose of discovering something
   unknown. \par
   \pause
-  \vspace{12pt}
+  \vfill %\vspace{12pt}
   {\bf Experimental unit} \\
   The unit to which the treatments are applied. \par
   % \vfill
   \pause
-  \vspace{12pt}
+  \vfill %\vspace{12pt}
   {\bf Manipulative experiment} \\
-  An experiment in which the different experimental units receive
-  different treatments and the assignment of the treatments is or can
+  An experiment in which the experimental units receive
+  different treatments and the assignment of treatments is or can
   be randomized. \\
   % \vfill
-  \pause
-  \vspace{12pt}
-  {\bf Observational study} \\
-  Research that involves only the making of measurements at one
-  or more points in space or time (a.k.a. mesurative experiment). \par
+  % \pause
+  % \vspace{12pt}
+  % {\bf Observational study} \\
+  % Research that involves only the making of measurements at one
+  % or more points in space or time (a.k.a. mesurative experiment). \par
 %  \vfill
   % \vspace{2pt}
   % \rule[0mm]{1cm}{0.1mm} \\
   % \footnotesize
   % Hurlbert, S.A. (1984) Pseudoreplication and the design of ecological field
   % experiments.  Ecological Monographs 54:187-211.
+  \pause
+  \vfill
+  {\bf Response variable } \\
+  The variable that is the focus of the research. Also known as the
+  dependent variable or outcome variable.
+  \pause
+  \vfill
+  {\bf Explanatory variable } \\
+  A variable thought to affect the response variable. Also known as the 
+  independent variable or predictor variable.
 \end{frame}
 
 
@@ -205,15 +218,17 @@
 
 \begin{frame}
   \frametitle{Features of good experimental design}
-%  \small
+  \pause
+  \small
   {\bf Replication} \\
   More than one experimental unit or replicate per treatment. \\
-  % Allows one to account for variability among experimental units. \\
+  Allows one to account for variability among experimental units and
+  obtain precise parameter estimates. \\
   \pause
   \vfill
   {\bf Randomization} \\
-  All units must have pre-determined probabilities of receiving all
-  treatments. \\ % Otherwise, estimates may be biased. \\
+  All units must have pre-determined probabilities of receiving each
+  treatments. Otherwise, estimates may be biased. \\
   \pause
   \vfill
   {\bf Controls} \\
@@ -236,7 +251,7 @@
   \frametitle{Example: Timber harvest and salamanders}
   Suppose we wish to assess the effect of timber harvest on salamander
   abundance.  One plot is established in each of two forests, one
-  thinned and the other untreated, in which we trap salamanders at n=9
+  thinned and the other untreated, in which we trap salamanders at $n=9$
   pitfall traps.  %The response variable of interest is the number of a
   %species captured per trap.  The explanatory variable is silvicultural
   %treatment. \\
@@ -362,41 +377,52 @@
   Without randomization, the observed effect could be due to a
   confounding variable. \\ %, say ``distance to stream.'' \\
   \vfill
-  Imagine that ``thinning'' and ``distance to stream'' influence
-  salamander abundance. But distance to stream also
-  influences thinning. \\
-  % \tikzstyle{level 1} = [circle, draw, text width=1cm, minimum size=2cm,
-  % node distance=4cm, text centered, fill=blue!10]
+  For example, imagine that thinning does not influence salamander
+  abundance, but ``distance to stream'' is a {\it common cause} of
+  both thinning and salamander abundance. \\ 
+  \vfill
   \begin{center}
     \begin{tikzpicture}[scale=0.8]
       \node[circle,draw,minimum size=2cm] at (0,0) (x1) {\scriptsize Thinning}; 
       \node[circle,draw,minimum size=2cm,align=center] at (3,3) (x2)
         {\scriptsize Distance to \\ \scriptsize stream}; 
       \node[circle,draw,minimum size=2cm] at (6,0) (y) {\scriptsize Salamanders}; 
-      \draw[->] (x1) to (y);
+%      \draw[->] (x1) to (y);
       \draw[->] (x2) to (y);
       \draw[->] (x2) to (x1);
    \end{tikzpicture}
  \end{center}
  \pause
  \vfill
- The estimated effect of thinning will be biased if the confounder
- isn't accounted for. 
+ If we select treatment plots based on distance to stream, we might
+ find a spurious effect of thinning.  
 \end{frame}
 
 
-\begin{frame}
-  \frametitle{Randomization}
-  
-\end{frame}
+%\begin{frame}[fragile]
+%  \frametitle{Randomization}
+
+%\end{frame}
 
 
 
 \begin{frame}
-  \frametitle{Designs}
+  \frametitle{Experimental Designs}
   \centering
   \includegraphics[width=0.9\textwidth]{Hurlbert-schema} \\
   From Hurlbert (1984) \\
+\end{frame}
+
+
+
+\section{Observational Studies}
+
+
+
+\begin{frame}
+  \frametitle{Outline}
+  \Large
+  \tableofcontents[currentsection]
 \end{frame}
 
 
@@ -415,44 +441,57 @@
 
 
 
+\begin{frame}
+  \frametitle{Example 2: Growth and survival of
+    tree seedlings in a bottomland forest}
+  Option 1: Manipulative experiment -- focus on a few key variables of
+  particular interest and attempt to hold all else constant.
+  \vspace{6pt}
+  \begin{itemize}
+    \item For example, manipulate shading and flooding (plus
+      interactions) in a greenhouse setting.
+    \item Other factors (soil, herbivory, etc.)  held constant.
+    \item Features of good experimental design still needed, even in a
+      highly controlled laboratory and greenhouse setting.
+    \item Cause and effect can be established in the greenhouse, but
+      will they extrapolate to a field setting?
+  \end{itemize}
+\end{frame}
+
+
 
 \begin{frame}
   \frametitle{Example 2: Growth and survival of
     tree seedlings in a bottomland forest}
-  Option 1: Observation study -- measure factors (variables) {\it in
+  Option 2: Observation study -- measure factors (variables) {\it in
     situ} that you think will influence growth and survival of seedlings. 
+  \vspace{6pt}
   \begin{itemize}
-    \item controlling and manipulating nothing
-    \item examining correlations between growth of seedlings and
-      the variables
-    \item modeling: finding the best model from a candidate set. Ideally,
-    the models should be predictive and mechanistic (based on theory).
+    \item Control and manipulate nothing
+    \item Examine correlations between growth of seedlings and
+      the explantory variables
+    \item Find the best model from a candidate set based upon
+      hypotheses. Models should be predictive and
+      mechanistic (based on theory).
+    \item Must be wary of confounding variables, especially
+      confounders that cannot (or were not) be measured.
+    \item Remember that {\it ``correlation does not imply
+        causation''}, but in certain cases it does. 
   \end{itemize}
 \end{frame}
-
-
 
 
 
 \begin{frame}
-  \frametitle{Example 2: Growth and survival of
-    tree seedlings in a bottomland forest}
-  Option 2: Manipulative experiment -- focus on a few key variables of
-  particular interest and attempt to hold all else constant. 
-  \begin{itemize}
-    \item e.g., manipulate shading and flooding (plus interactions)
-      in a greenhouse setting.
-    \item other factors (soil, herbivory,
-      etc.)  held constant.
-    \item features of good experimental design
-    still needed, even in a highly controlled laboratory and
-    greenhouse setting.
-    \item cause and effect can be established in
-    the greenhouse – extrapolation to a field setting?
-  \end{itemize}
+  \frametitle{Causal inference in observational studies}
+  \small
+  A huge body of literature now exists on causal inference in
+  observational studies. These methods allow researchers to determine
+  when correlation implies causation. Details are fairly technical. \\
+  \vfill
+  \centering
+  \includegraphics[width=0.7\textwidth]{pearl} \\
 \end{frame}
-
-
 
 
 
@@ -484,38 +523,41 @@
 \end{frame}
 
 
-\section{Observational Studies}
 
 
 \begin{frame}
-  \frametitle{Observational studies}
-  Are (properly designed) manipulative experiments better than
-  observation studies? \\
-  \vfill
-  Yes, correlation does not imply causation. But, manipulative
-  experiments aren't always possible or necessary. \\
-  \vfill
-  Extensive, ongoing research on methods for causal inference in
-  observational research.
-  
+  \frametitle{Observational vs experimental research}
+  Are manipulative experiments better than observation studies? \\
+  \begin{itemize}
+    \item Typically, yes, if good experimental design is used and the
+      variables of interest can be manipulated.
+    \item However, a poorly designed experiment can be worse a good
+      observational study and manipulative experiments aren't always
+      possible. 
+  \end{itemize}
+  % \pause
+  % \vfill
+  % Consider using a combination of experimental and observational
+  % methods.
 \end{frame}
 
 
 \begin{frame}
   \frametitle{Conclusions}
   What does this mean for graduate student research?
-  \begin{itemize}
+  \begin{itemize}[<+->]
     \item Graduate students only have a couple of years to create an
       interesting question, design a study to address that question,
       collect and analyze data, and write a thesis.
     \item Long-term study usually out of the question.
-    \item Focus on a particular question in a
-      broader framework.
+    \item Focus on a particular question in a broader framework.
     \item Often, students are handed a thesis topic. Pros and cons.
-    \item Manipulative experiments make for stronger
-      inference but are not always appropriate or possible.
-    \item Observational studies are fine -- consider
-      developing predictive models based on hypotheses.
+    \item Well-designed manipulative experiments usually make for
+      stronger inference but are not always appropriate or possible. 
+    \item Observational studies are fine, but there are many pitfalls
+      to be wary of, e.g. confounders.
+    \item Consider using a combination of observational and
+      experimental methods.
   \end{itemize}
 \end{frame}
 
