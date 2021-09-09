@@ -114,9 +114,8 @@ knit_theme$set("edit-kwrite")
   \pause
   \vfill %\vspace{12pt}
   {\bf Manipulative experiment} \\
-  An experiment in which the experimental units receive
-  different treatments and the assignment of treatments is or can
-  be randomized. \\
+  An experiment in which the experimental units receive different
+  treatments and the assignment of treatments is or can be randomized. \\
   % \vfill
   % \pause
   % \vspace{12pt}
@@ -136,9 +135,9 @@ knit_theme$set("edit-kwrite")
   dependent variable or outcome variable.
   \pause
   \vfill
-  {\bf Explanatory variable } \\
+  {\bf Treatment variable } \\
   A variable thought to affect the response variable. Also known as the 
-  independent variable or predictor variable.
+  explanatory variable, independent variable, or predictor variable.
 \end{frame}
 
 
@@ -194,7 +193,7 @@ knit_theme$set("edit-kwrite")
   \pause
   \vfill
   {\bf Interspersion} \\
-  Hurlbert (1984) recommendation that treatments be spatially interspersed.  \\
+  Hurlbert's (1984) recommendation that treatments be spatially interspersed.  \\
   \vspace{1pt}
   \rule[0mm]{1cm}{0.1mm} \\
   \footnotesize
@@ -315,11 +314,10 @@ t.test(dataThinned, dataUnthinned, var.equal=TRUE)
   \frametitle{Randomization}
   \small
   Without randomization, the observed effect could be due to a
-  confounding variable. \\ %, say ``distance to stream.'' \\
-  \vfill
-  For example, imagine that thinning does not influence salamander
-  abundance, but ``distance to stream'' is a {\it common cause} of
-  both thinning and salamander abundance. \\ 
+  \alert{confounding variable}. For example, imagine that thinning
+  does not influence salamander abundance, but \alert{distance to
+    stream} is a {\it common cause} of both thinning and salamander
+  abundance. \\  
   \vfill
   \begin{center}
     \begin{tikzpicture}[scale=0.8]
@@ -335,7 +333,8 @@ t.test(dataThinned, dataUnthinned, var.equal=TRUE)
  \pause
  \vfill
  If we select treatment plots based on distance to stream, we might
- find a spurious effect of thinning.  
+ find a spurious effect of thinning, even though thinning has no
+ causal effect.  
 \end{frame}
 
 
@@ -361,8 +360,10 @@ summary(lm(y ~ x1, subset=select==1))
 \begin{frame}
   \frametitle{Experimental Designs}
   \centering
-  \includegraphics[width=0.9\textwidth]{Hurlbert-schema} \\
-  From Hurlbert (1984) \\
+  \includegraphics[width=0.8\textwidth]{Hurlbert-schema} \\
+  \vfill
+  Fig. 1 from Hurlbert (1984). Good designs (A) and designs without
+  interspersion (B). \\
 \end{frame}
 
 
@@ -439,7 +440,8 @@ summary(lm(y ~ x1, subset=select==1))
   \small
   A huge body of literature now exists on causal inference in
   observational studies. These methods allow researchers to determine
-  when correlation implies causation. Details are fairly technical. \\
+  when causal effects can be estimated without manipulation. Details
+  are fairly technical. \\ 
   \vfill
   \centering
   \includegraphics[width=0.7\textwidth]{pearl} \\
