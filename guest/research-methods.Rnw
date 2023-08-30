@@ -44,7 +44,7 @@ knit_theme$set("edit-kwrite")
   Richard Chandler \\
   (Based on presentation by Dr. Bob Cooper) \\
   Warnell School of Forestry and Natural Resources \\
-  September 9, 2021
+  August 30, 2023
 \end{frame}
 
 
